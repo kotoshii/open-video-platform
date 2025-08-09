@@ -11,6 +11,10 @@
 					"level": "warn",
 					"options": {}
 				}
+			},
+			"style": {
+				"useImportType": "off",
+				"useExportType": "off"
 			}
 		}
 	},
