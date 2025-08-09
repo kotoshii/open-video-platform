@@ -1,0 +1,32 @@
+{
+	"formatter": {
+		"lineWidth": 120
+	},
+	"linter": {
+		"rules": {
+			"recommended": true,
+			"correctness": {
+				"noUnusedImports": {
+					"fix": "safe",
+					"level": "warn",
+					"options": {}
+				}
+			}
+		}
+	},
+	"assist": {
+		"actions": {
+			"recommended": true,
+			"source": {
+				"useSortedAttributes": "on",
+				"useSortedProperties": "on",
+				"organizeImports": {
+					"options": {
+						"groups": [":NODE:", ":BLANK_LINE:", ":PACKAGE:", ":BLANK_LINE:", ":ALIAS:"]
+					},
+					"level": "on"
+				}
+			}
+		}
+	}
+}
