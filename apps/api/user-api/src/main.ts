@@ -1,5 +1,6 @@
 import { ClassSerializerInterceptor, Logger, ValidationPipe } from "@nestjs/common";
 import { NestFactory, Reflector } from "@nestjs/core";
+import { DocumentBuilder, SwaggerModule } from "@nestjs/swagger";
 
 import { AppModule } from "~src/app.module";
 import { LoggingInterceptor } from "~src/common/interceptors/logging.interceptor";
@@ -25,6 +26,20 @@ async function bootstrap() {
 
 	app.useGlobalInterceptors(new ClassSerializerInterceptor(app.get(Reflector)));
 	app.useGlobalInterceptors(new LoggingInterceptor());
+
+	const swaggerConfig = new DocumentBuilder()
+		.setTitle("User API Specification")
+		.setVersion("1.0")
+		.addBearerAuth()
+		.build();
+
+	const document = SwaggerModule.createDocument(app, swaggerConfig);
+	SwaggerModule.setup("docs/api", app, document, {
+		swaggerOptions: {
+			tagsSorter: "alpha",
+			operationsSorter: "method",
+		},
+	});
 
 	await app.listen(appConfig.port);
 
