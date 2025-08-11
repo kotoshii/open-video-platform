@@ -1,0 +1,7 @@
+{
+	"camelCase": true,
+	"dialect": "postgres",
+	"excludePattern": "schema_migrations",
+	"outFile": "./db/schema.ts",
+	"singularize": true
+}
