@@ -11,6 +11,9 @@ $ yarn install
 NODE_ENV=local
 PORT=3001
 CORS_DOMAINS=*
+
+# Database
+DATABASE_URL=postgres://user:password@localhost:5432/postgres?sslmode=disable
 ```
 
 ## Compile and run the project
