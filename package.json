@@ -4,9 +4,12 @@
 	"author": "pusuwa <40234487+kotoshii@users.noreply.github.com>",
 	"license": "LGPL-3.0-only",
 	"private": true,
-	"scripts": {},
+	"scripts": {
+		"proto:generate": "yarn workspace @ovp-proto/types run proto:generate && yarn workspace @ovp-proto/types run build"
+	},
 	"workspaces": [
-		"lib",
+		"proto",
+		"lib/*",
 		"apps/*"
 	]
 }
