@@ -3,7 +3,8 @@
 	"version": "0.1.0",
 	"license": "LGPL-3.0-only",
 	"exports": {
-		"./*": "./dist/generated/*.js"
+		"./*": "./dist/generated/*.js",
+		"./utils/*": "./dist/src/utils/*.js"
 	},
 	"devDependencies": {
 		"ncp": "^2.0.0",
