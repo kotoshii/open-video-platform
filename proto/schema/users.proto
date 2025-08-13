@@ -10,9 +10,8 @@ service UserService {
 
 message CreateUserRequest {
   string email = 1;
-  google.protobuf.Timestamp date_of_birth = 2;
+  string date_of_birth = 2; // date string
   string password = 3;
-  string password_confirm = 4;
 }
 
 message CreateUserResponse {
@@ -24,7 +23,7 @@ message CreateUserResponse {
 message User {
   string id = 1;
   string email = 2;
-  google.protobuf.Timestamp date_of_birth = 3;
-  google.protobuf.Timestamp created_at = 4;
-  google.protobuf.Timestamp updated_at = 5;
+  string date_of_birth = 3; // date string
+  string created_at = 4; // date string
+  string updated_at = 5; // date string
 }

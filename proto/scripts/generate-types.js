@@ -3,7 +3,7 @@ const os = require("node:os");
 const fs = require("node:fs");
 const path = require("node:path");
 
-const PB_FILES_DIR = "src";
+const PB_FILES_DIR = "schema";
 const PB_FILES_DIR_PATH = path.join(process.cwd(), PB_FILES_DIR);
 const TYPES_DIR = "generated";
 const TYPES_DIR_PATH = path.join(process.cwd(), TYPES_DIR);
