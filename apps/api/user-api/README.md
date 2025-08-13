@@ -14,6 +14,10 @@ CORS_DOMAINS=*
 
 # Database
 DATABASE_URL=postgres://user:password@localhost:5432/postgres?sslmode=disable
+
+# gRPC
+GRPC_URL=0.0.0.0:5001
+GRPC_PACKAGE=users
 ```
 
 ## Compile and run the project
