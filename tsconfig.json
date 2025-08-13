@@ -1,12 +1,15 @@
 {
-  "extends": ["./tsconfig-base.json"],
-  "files": [],
-  "references": [
-    {
-      "path": "./lib"
-    },
-    {
-      "path": "./apps/*"
-    }
-  ]
+	"extends": ["./tsconfig-base.json"],
+	"files": [],
+	"references": [
+		{
+			"path": "./proto"
+		},
+		{
+			"path": "./lib/*"
+		},
+		{
+			"path": "./apps/**/*"
+		}
+	]
 }
