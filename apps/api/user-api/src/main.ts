@@ -1,47 +1,36 @@
-import { ClassSerializerInterceptor, Logger, ValidationPipe } from "@nestjs/common";
-import { NestFactory, Reflector } from "@nestjs/core";
-import { DocumentBuilder, SwaggerModule } from "@nestjs/swagger";
+import { Logger } from "@nestjs/common";
+import { Transport } from "@nestjs/microservices";
+import { NestAppConfigBuilderFactory } from "@ovp-lib/api/config/nest-app-config-builder";
+import { ProtoPaths } from "@ovp-proto/types/utils/paths";
 
 import { AppModule } from "~src/app.module";
-import { LoggingInterceptor } from "~src/common/interceptors/logging.interceptor";
 import { AppConfig } from "~src/config/providers/app.config";
+import { GrpcConfig } from "~src/config/providers/grpc.config";
 
 const logger = new Logger("bootstrap");
 
 async function bootstrap() {
-	const app = await NestFactory.create(AppModule);
-	const appConfig = app.get(AppConfig);
+	const configBuilder = await NestAppConfigBuilderFactory.create(AppModule);
 
-	app.setGlobalPrefix("api");
-
-	app.enableCors({ origin: appConfig.corsDomains });
-
-	app.useGlobalPipes(
-		new ValidationPipe({
-			whitelist: true,
-			transform: true,
-			transformOptions: { enableImplicitConversion: true },
-		}),
-	);
-
-	app.useGlobalInterceptors(new ClassSerializerInterceptor(app.get(Reflector)));
-	app.useGlobalInterceptors(new LoggingInterceptor());
-
-	const swaggerConfig = new DocumentBuilder()
-		.setTitle("User API Specification")
-		.setVersion("1.0")
-		.addBearerAuth()
+	const app = configBuilder
+		.provideConfig(AppConfig)
+		.provideConfig(GrpcConfig)
+		.setGlobalPrefix()
+		.addCors()
+		.addDefaults()
+		.addSwagger("User API Specification")
+		.addMicroservice({
+			transport: Transport.GRPC,
+			options: {
+				package: configBuilder.lookupConfigValue("grpcPackage"),
+				url: configBuilder.lookupConfigValue("grpcUrl"),
+				protoPath: ProtoPaths.Users,
+			},
+		})
 		.build();
 
-	const document = SwaggerModule.createDocument(app, swaggerConfig);
-	SwaggerModule.setup("docs/api", app, document, {
-		swaggerOptions: {
-			tagsSorter: "alpha",
-			operationsSorter: "method",
-		},
-	});
-
-	await app.listen(appConfig.port);
+	await app.startAllMicroservices();
+	await app.listen(configBuilder.lookupConfigValue("port") as number);
 
 	logger.debug(`Application is running on: ${await app.getUrl()}`);
 }
