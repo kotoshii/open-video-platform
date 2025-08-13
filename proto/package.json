@@ -6,13 +6,15 @@
 		"./*": "./dist/generated/*.js"
 	},
 	"devDependencies": {
+		"ncp": "^2.0.0",
 		"rimraf": "^6.0.1",
 		"ts-proto": "^2.7.7",
 		"typescript": "^5.9.2"
 	},
 	"scripts": {
+		"copy-files": "ncp schema dist/schema",
 		"clean": "rimraf dist/",
 		"proto:generate": "node scripts/generate-types.js",
-		"build": "yarn clean && tsc"
+		"build": "yarn clean && tsc && yarn copy-files"
 	}
 }
