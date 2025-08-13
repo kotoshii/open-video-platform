@@ -10,6 +10,6 @@
 	"workspaces": [
 		"proto",
 		"lib/*",
-		"apps/*"
+		"apps/**/*"
 	]
 }
