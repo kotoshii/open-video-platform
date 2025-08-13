@@ -6,10 +6,13 @@
 			"path": "./proto"
 		},
 		{
-			"path": "./lib/*"
+			"path": "./lib/api"
 		},
 		{
-			"path": "./apps/**/*"
+			"path": "./lib/common"
+		},
+		{
+			"path": "./apps/api/user-api"
 		}
 	]
 }
