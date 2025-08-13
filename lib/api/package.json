@@ -1,0 +1,22 @@
+{
+	"name": "@ovp-lib/api",
+	"version": "0.1.0",
+	"license": "LGPL-3.0-only",
+	"exports": {
+		"./common/*": "./dist/common/*.js",
+		"./config/*": "./dist/config/*.js",
+		"./database/*": "./dist/database/*.js"
+	},
+	"devDependencies": {
+		"rimraf": "^6.0.1",
+		"tsc-alias": "^1.8.16",
+		"typescript": "^5.9.2"
+	},
+	"dependencies": {
+		"@ovp-lib/common": "^0.1.0"
+	},
+	"scripts": {
+		"clean": "rimraf dist/",
+		"build": "yarn clean && tsc && tsc-alias"
+	}
+}

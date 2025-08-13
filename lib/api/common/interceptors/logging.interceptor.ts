@@ -1,7 +1,7 @@
 import { CallHandler, ExecutionContext, Injectable, Logger, NestInterceptor } from "@nestjs/common";
 import { catchError, Observable, tap } from "rxjs";
 
-import { maskSensitiveData } from "~src/common/utils/logging";
+import { maskSensitiveData } from "~common/utils/logging";
 
 @Injectable()
 export class LoggingInterceptor implements NestInterceptor {
