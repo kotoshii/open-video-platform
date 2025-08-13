@@ -1,0 +1,20 @@
+{
+	"extends": "../../tsconfig-base.json",
+	"compilerOptions": {
+		"baseUrl": ".",
+		"outDir": "./dist",
+		"rootDir": ".",
+		"composite": true,
+		"paths": {
+			"~types/*": ["./types/*"],
+			"~utils/*": ["./utils/*"]
+		}
+	},
+	"tsc-alias": {
+		"replacers": {
+			"base-url": {
+				"enabled": false
+			}
+		}
+	}
+}
