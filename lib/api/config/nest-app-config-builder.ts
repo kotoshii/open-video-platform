@@ -16,6 +16,7 @@ import { MaybeArray } from "@ovp-lib/common/types/maybe-array";
 import { toArray } from "@ovp-lib/common/utils/arrays";
 import { ClassConstructor } from "class-transformer";
 
+import { InternalServerErrorFilter } from "~common/filters/internal-server-error.filter";
 import { LoggingInterceptor } from "~common/interceptors/logging.interceptor";
 
 // copypasted from Nest type definitions
@@ -75,6 +76,11 @@ class NestAppConfigBuilder {
 		return this;
 	}
 
+	addGlobalInternalServerErrorExceptionFilter() {
+		this.app.useGlobalFilters(new InternalServerErrorFilter());
+		return this;
+	}
+
 	addSwagger(title: string, version = "1.0", path = "docs/api") {
 		const swaggerConfig = new DocumentBuilder().setTitle(title).setVersion(version).addBearerAuth().build();
 		const document = SwaggerModule.createDocument(this.app, swaggerConfig);
@@ -99,6 +105,7 @@ class NestAppConfigBuilder {
 	 * 1. Global validation pipe with the following options:
 	 * `{ whitelist: true, transform: true, transformOptions: { enableImplicitConversion: true } }`
 	 * 2. Global interceptors: ClassSerializerInterceptor and LoggingInterceptor
+	 * 3. Global exception filter: InternalServerErrorFilter
 	 *
 	 * It **DOES NOT** include: global prefix, CORS, Swagger, anything related to microservices.
 	 * */
@@ -110,6 +117,7 @@ class NestAppConfigBuilder {
 		});
 		this.addGlobalClassSerializerInterceptor();
 		this.addGlobalLoggingInterceptor();
+		this.addGlobalInternalServerErrorExceptionFilter();
 
 		return this;
 	}
