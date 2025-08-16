@@ -6,20 +6,28 @@
 import type { ColumnType } from "kysely";
 
 export type Generated<T> = T extends ColumnType<infer S, infer I, infer U>
-  ? ColumnType<S, I | undefined, U>
-  : ColumnType<T, T | undefined, T>;
+	? ColumnType<S, I | undefined, U>
+	: ColumnType<T, T | undefined, T>;
 
 export type Timestamp = ColumnType<Date, Date | string, Date | string>;
 
+export interface UserPassword {
+	createdDate: Generated<Timestamp>;
+	id: Generated<string>;
+	passwordHash: string;
+	updatedDate: Generated<Timestamp>;
+	userId: string | null;
+}
+
 export interface User {
-  createdDate: Generated<Timestamp>;
-  dateOfBirth: Timestamp;
-  email: string;
-  id: Generated<string>;
-  passwordHash: string;
-  updatedDate: Generated<Timestamp>;
+	createdDate: Generated<Timestamp>;
+	dateOfBirth: Timestamp;
+	email: string;
+	id: Generated<string>;
+	updatedDate: Generated<Timestamp>;
 }
 
 export interface DB {
-  users: User;
+	userPasswords: UserPassword;
+	users: User;
 }
