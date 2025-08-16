@@ -12,8 +12,4 @@ export class GrpcConfig extends CommonGrpcConfig {
 	override get grpcUrl() {
 		return this.config.get<string>("GRPC_URL", "0.0.0.0:5001");
 	}
-
-	override get grpcPackage() {
-		return this.config.get<string>("GRPC_PACKAGE", "users");
-	}
 }
