@@ -1,3 +1,4 @@
+import { ReflectionService } from "@grpc/reflection";
 import { Logger } from "@nestjs/common";
 import { Transport } from "@nestjs/microservices";
 import { NestAppConfigBuilderFactory } from "@ovp-lib/api/config/nest-app-config-builder";
@@ -25,6 +26,9 @@ async function bootstrap() {
 				package: configBuilder.lookupConfigValue("grpcPackage"),
 				url: configBuilder.lookupConfigValue("grpcUrl"),
 				protoPath: ProtoPaths.Users,
+				onLoadPackageDefinition: (pkg, server) => {
+					new ReflectionService(pkg).addToServer(server);
+				},
 			},
 		})
 		.build();
