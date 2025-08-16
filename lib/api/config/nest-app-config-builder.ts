@@ -26,6 +26,7 @@ type IEntryNestModule = Type | DynamicModule | ForwardReference | Promise<IEntry
 type ConfigInstance = InstanceType<any>;
 
 export class NestAppConfigBuilderFactory {
+	// to make it not callable with `new` keyword
 	private constructor() {}
 
 	static async create(module: IEntryNestModule, options?: NestApplicationOptions) {
@@ -139,7 +140,13 @@ class NestAppConfigBuilder {
 
 	lookupConfigValue<R = unknown>(key: string): R | null {
 		const instance = this.findFirstConfigInstanceWithKey(key);
-		return instance?.[key] || null;
+		const value = instance?.[key] || null;
+
+		if (!value) {
+			this.logger.warn(`Could not find config value: ${key}`);
+		}
+
+		return value;
 	}
 
 	/* private methods for internal usage */
