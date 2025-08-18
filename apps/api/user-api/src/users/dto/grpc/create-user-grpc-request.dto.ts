@@ -1,6 +1,7 @@
+import { CreateUserRequest } from "@ovp-proto/types/users";
 import { IsDate, IsEmail, IsNotEmpty, IsString } from "class-validator";
 
-export class CreateUserDto {
+export class CreateUserGrpcRequestDto implements CreateUserRequest {
 	@IsEmail()
 	@IsString()
 	@IsNotEmpty()
@@ -10,8 +11,6 @@ export class CreateUserDto {
 	@IsNotEmpty()
 	dateOfBirth: Date;
 
-	// TODO: Add password strength validation via custom decorator
-	// TODO: Move password hashing to auth-api service
 	@IsString()
 	@IsNotEmpty()
 	password: string;
