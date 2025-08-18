@@ -9,11 +9,11 @@ export class UserRepository {
 	constructor(@InjectKysely() private readonly db: Kysely<DB>) {}
 
 	async getUserById(userId: string) {
-		return this.userWithoutPasswordHashQuery.where("id", "=", userId).executeTakeFirst();
+		return this.userQuery.where("id", "=", userId).executeTakeFirst();
 	}
 
 	async getUserByEmail(email: string) {
-		return this.userWithoutPasswordHashQuery.where("email", "=", email).executeTakeFirst();
+		return this.userQuery.where("email", "=", email).executeTakeFirst();
 	}
 
 	async createUser(data: Insertable<User>, passwordHash: string) {
@@ -25,7 +25,7 @@ export class UserRepository {
 		});
 	}
 
-	private get userWithoutPasswordHashQuery() {
+	private get userQuery() {
 		return this.db
 			.selectFrom("users")
 			.select("id")
