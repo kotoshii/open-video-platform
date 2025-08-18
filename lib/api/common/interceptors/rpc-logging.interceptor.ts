@@ -40,7 +40,14 @@ export class RpcLoggingInterceptor implements NestInterceptor {
 				this.logger.verbose(responseLog);
 			}),
 			catchError((error) => {
-				const errorLog = ["[RpcError]", servicePath, `(${handlerPath})`, `Error: ${error.message};`, error.stack]
+				const errorLog = [
+					"[RpcError]",
+					servicePath,
+					`(${handlerPath})`,
+					`Error: ${error.message};`,
+					error.response?.message ? `Details: ${JSON.stringify(error.response.message)};` : null,
+					error.stack,
+				]
 					.filter(Boolean)
 					.join(" ");
 				this.logger.error(errorLog);
