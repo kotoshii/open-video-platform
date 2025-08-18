@@ -2,6 +2,7 @@
 	"camelCase": true,
 	"dialect": "postgres",
 	"excludePattern": "schema_migrations",
+	"includePattern": "(users|user_passwords)",
 	"outFile": "./db/schema.ts",
 	"singularize": true
 }
