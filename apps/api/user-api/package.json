@@ -1,5 +1,5 @@
 {
-	"name": "users-api",
+	"name": "@ovp-apis/user-api",
 	"version": "0.1.0",
 	"private": true,
 	"license": "UNLICENSED",
