@@ -1,0 +1,28 @@
+syntax = "proto3";
+
+package channels;
+
+import "google/protobuf/timestamp.proto";
+
+service ChannelService {
+	rpc CreateChannel (CreateChannelRequest) returns (CreateChannelResponse);
+}
+
+message CreateChannelRequest {
+	string user_id = 1;
+	string name = 2;
+}
+
+message CreateChannelResponse {
+	Channel channel = 1;
+}
+
+message Channel {
+	string id = 1;
+	string user_id = 2;
+	string name = 3;
+	optional string description = 4;
+	string subscriber_count = 5;
+	google.protobuf.Timestamp created_date = 6;
+	google.protobuf.Timestamp updated_date = 7;
+}
