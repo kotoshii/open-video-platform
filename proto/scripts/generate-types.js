@@ -25,9 +25,10 @@ const command = [
 	"--ts_proto_opt=outputClientImpl=false",
 	"--ts_proto_opt=snakeToCamel=true",
 	"--ts_proto_opt=nestJs=true",
-	"--ts_proto_opt=addGrpcMetadata=true",
+	"--ts_proto_opt=addGrpcMetadata=false",
 	"--ts_proto_opt=addNestjsRestParameter=true",
 	"--ts_proto_opt=useDate=true",
+	"--ts_proto_opt=returnObservable=false",
 ].join(" ");
 
 try {
