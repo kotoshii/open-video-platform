@@ -13,6 +13,16 @@ export class UserService {
 
 	constructor(private readonly userRepository: UserRepository) {}
 
+	async getUserById(userId: string) {
+		const user = await this.userRepository.getUserById(userId);
+		return user ? new GetUserDto(user) : null;
+	}
+
+	async getUserByEmail(email: string) {
+		const user = await this.userRepository.getUserByEmail(email);
+		return user ? new GetUserDto(user) : null;
+	}
+
 	async getUserByIdOrThrow(userId: string) {
 		const user = await this.userRepository.getUserById(userId);
 
