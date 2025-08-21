@@ -25,6 +25,10 @@ export class UserRepository {
 		});
 	}
 
+	async deleteUserById(userId: string) {
+		return this.db.deleteFrom("users").where("id", "=", userId).returning("id").executeTakeFirstOrThrow();
+	}
+
 	private get userQuery() {
 		return this.db
 			.selectFrom("users")

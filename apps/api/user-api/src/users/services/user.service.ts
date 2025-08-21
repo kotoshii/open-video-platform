@@ -23,6 +23,11 @@ export class UserService {
 		return user ? new GetUserDto(user) : null;
 	}
 
+	async deleteUserById(userId: string) {
+		const { id: deletedUserId } = await this.userRepository.deleteUserById(userId);
+		return deletedUserId;
+	}
+
 	async getUserByIdOrThrow(userId: string) {
 		const user = await this.userRepository.getUserById(userId);
 
@@ -48,6 +53,7 @@ export class UserService {
 		const passwordHash = await this.passwordHasher.hash(password);
 
 		const userId = await this.userRepository.createUser(data, passwordHash);
+		// todo remove extra db query
 
 		return this.getUserByIdOrThrow(userId);
 	}
