@@ -13,7 +13,7 @@ service UserService {
 message CreateUserRequest {
 	string email = 1;
 	google.protobuf.Timestamp date_of_birth = 2;
-	string password = 3;
+	string password_hash = 3;
 }
 
 message CreateUserResponse {

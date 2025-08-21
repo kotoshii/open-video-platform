@@ -28,7 +28,7 @@ export class UserGrpcController implements UserServiceController {
 		// TODO: Use mapper or factory method
 		dto.email = body.email;
 		dto.dateOfBirth = body.dateOfBirth;
-		dto.password = body.password;
+		dto.passwordHash = body.passwordHash;
 
 		const user = await this.userService.createUserOrThrow(dto);
 		return new CreateUserGrpcResponseDto(user);

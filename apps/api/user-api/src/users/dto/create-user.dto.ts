@@ -14,5 +14,5 @@ export class CreateUserDto {
 	// TODO: Move password hashing to auth-api service
 	@IsString()
 	@IsNotEmpty()
-	password: string;
+	passwordHash: string;
 }

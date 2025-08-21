@@ -1,5 +1,4 @@
 import { ConflictException, Injectable, NotFoundException } from "@nestjs/common";
-import { PasswordHasher } from "@ovp-lib/common/utils/password-hasher";
 import { Insertable } from "kysely";
 
 import { User } from "~db/schema";
@@ -9,8 +8,6 @@ import { UserRepository } from "~src/users/repositories/user.repository";
 
 @Injectable()
 export class UserService {
-	private readonly passwordHasher = new PasswordHasher();
-
 	constructor(private readonly userRepository: UserRepository) {}
 
 	async getUserById(userId: string) {
@@ -39,7 +36,7 @@ export class UserService {
 	}
 
 	async createUserOrThrow(dto: CreateUserDto) {
-		const { email, dateOfBirth, password } = dto;
+		const { email, dateOfBirth, passwordHash } = dto;
 
 		const existing = await this.userRepository.getUserByEmail(email);
 		if (existing) {
@@ -50,7 +47,6 @@ export class UserService {
 			email,
 			dateOfBirth,
 		};
-		const passwordHash = await this.passwordHasher.hash(password);
 
 		const userId = await this.userRepository.createUser(data, passwordHash);
 		// todo remove extra db query

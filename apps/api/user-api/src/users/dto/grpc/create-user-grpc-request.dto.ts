@@ -13,5 +13,5 @@ export class CreateUserGrpcRequestDto implements CreateUserRequest {
 
 	@IsString()
 	@IsNotEmpty()
-	password: string;
+	passwordHash: string;
 }
