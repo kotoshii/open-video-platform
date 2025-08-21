@@ -1,0 +1,8 @@
+{
+	"camelCase": true,
+	"dialect": "postgres",
+	"excludePattern": "schema_migrations",
+	"includePattern": "(auth_sessions|refresh_tokens)",
+	"outFile": "./db/schema.ts",
+	"singularize": true
+}
