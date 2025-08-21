@@ -21,6 +21,11 @@ export class ChannelService implements OnModuleInit {
 		this.userGrpcService = this.clientGrpc.getService<UserServiceClient>(USER_SERVICE_NAME);
 	}
 
+	async deleteChannelById(channelId: string) {
+		const { id: deletedChannelId } = await this.channelRepository.deleteChannelById(channelId);
+		return deletedChannelId;
+	}
+
 	async getChannelByIdOrThrow(channelId: string) {
 		const channel = await this.channelRepository.getChannelById(channelId);
 
@@ -46,7 +51,7 @@ export class ChannelService implements OnModuleInit {
 		};
 
 		const { id: channelId } = await this.channelRepository.createChannel(data);
-
+		// todo remove extra db query
 		return this.getChannelByIdOrThrow(channelId);
 	}
 }

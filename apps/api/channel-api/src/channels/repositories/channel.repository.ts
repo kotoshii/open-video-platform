@@ -16,6 +16,10 @@ export class ChannelRepository {
 		return this.db.insertInto("channels").values(data).returning("id").executeTakeFirstOrThrow();
 	}
 
+	async deleteChannelById(channelId: string) {
+		return this.db.deleteFrom("channels").where("id", "=", channelId).returning("id").executeTakeFirstOrThrow();
+	}
+
 	private get channelQuery() {
 		return this.db
 			.selectFrom("channels")
