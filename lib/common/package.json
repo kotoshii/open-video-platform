@@ -13,7 +13,8 @@
 		"typescript": "^5.9.2"
 	},
 	"dependencies": {
-		"bcrypt": "^6.0.0"
+		"bcrypt": "^6.0.0",
+		"ip-location-api": "^3.0.3"
 	},
 	"scripts": {
 		"clean": "rimraf dist/",
