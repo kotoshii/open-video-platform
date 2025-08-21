@@ -1,14 +1,7 @@
 import { status as GrpcStatus } from "@grpc/grpc-js";
-import { Catch, HttpException, HttpStatus, RpcExceptionFilter } from "@nestjs/common";
-import { toArray } from "@ovp-lib/common/utils/arrays";
-import { Observable, throwError } from "rxjs";
+import { HttpStatus } from "@nestjs/common";
 
-interface HttpErrorResponse {
-	details?: unknown;
-	message: unknown;
-}
-
-const HttpStatusCode: Record<number, number> = {
+export const HttpToGrpcStatusCode: Record<number, number> = {
 	[HttpStatus.BAD_REQUEST]: GrpcStatus.INVALID_ARGUMENT,
 	[HttpStatus.UNAUTHORIZED]: GrpcStatus.UNAUTHENTICATED,
 	[HttpStatus.FORBIDDEN]: GrpcStatus.PERMISSION_DENIED,
@@ -30,21 +23,3 @@ const HttpStatusCode: Record<number, number> = {
 	[HttpStatus.METHOD_NOT_ALLOWED]: GrpcStatus.CANCELLED,
 	[HttpStatus.PRECONDITION_FAILED]: GrpcStatus.FAILED_PRECONDITION,
 };
-
-@Catch(HttpException)
-export class HttpToGrpcExceptionFilter implements RpcExceptionFilter {
-	catch(exception: HttpException): Observable<never> {
-		const httpStatus = exception.getStatus();
-		const httpResponse = exception.getResponse() as HttpErrorResponse;
-
-		const code = HttpStatusCode[httpStatus] ?? GrpcStatus.UNKNOWN;
-		const message = httpResponse.message || exception.message;
-		const details = toArray(httpResponse.details || message);
-
-		return throwError(() => ({
-			code,
-			message,
-			details,
-		}));
-	}
-}

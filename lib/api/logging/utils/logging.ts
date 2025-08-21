@@ -1,4 +1,4 @@
-import { SENSITIVE_FIELDS } from "~common/constants/logging";
+import { SENSITIVE_FIELDS } from "~logging/constants/logging";
 
 /**
  * Recursively masks sensitive fields in an object by replacing their values with asterisks (`****`).

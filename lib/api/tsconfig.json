@@ -9,7 +9,10 @@
 		"paths": {
 			"~common/*": ["./common/*"],
 			"~config/*": ["./config/*"],
-			"~database/*": ["./database/*"]
+			"~database/*": ["./database/*"],
+			"~grpc/*": ["./grpc/*"],
+			"~logging/*": ["./logging/*"],
+			"~validation/*": ["./validation/*"]
 		}
 	},
 	"tsc-alias": {

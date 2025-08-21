@@ -5,7 +5,10 @@
 	"exports": {
 		"./common/*": "./dist/common/*.js",
 		"./config/*": "./dist/config/*.js",
-		"./database/*": "./dist/database/*.js"
+		"./database/*": "./dist/database/*.js",
+		"./grpc/*": "./dist/grpc/*.js",
+		"./logging/*": "./dist/logging/*.js",
+		"./validation/*": "./dist/validation/*.js"
 	},
 	"devDependencies": {
 		"rimraf": "^6.0.1",

@@ -1,5 +1,5 @@
 import { Payload } from "@nestjs/microservices";
-import { GrpcController } from "@ovp-lib/api/common/decorators/grpc-controller.decorator";
+import { GrpcController } from "@ovp-lib/api/grpc/decorators/grpc-controller.decorator";
 import {
 	ChannelServiceController,
 	ChannelServiceControllerMethods,

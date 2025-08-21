@@ -1,11 +1,11 @@
 import { CallHandler, ExecutionContext, Injectable, Logger, NestInterceptor } from "@nestjs/common";
 import { catchError, Observable, tap } from "rxjs";
 
-import { maskSensitiveData } from "~common/utils/logging";
+import { maskSensitiveData } from "~logging/utils/logging";
 
 @Injectable()
-export class LoggingInterceptor implements NestInterceptor {
-	private readonly logger = new Logger(LoggingInterceptor.name);
+export class HttpLoggingInterceptor implements NestInterceptor {
+	private readonly logger = new Logger(HttpLoggingInterceptor.name);
 
 	intercept(context: ExecutionContext, next: CallHandler): Observable<unknown> {
 		const req = context.switchToHttp().getRequest();

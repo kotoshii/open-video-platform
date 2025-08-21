@@ -1,6 +1,8 @@
 import { CallHandler, ExecutionContext, Injectable, Logger, NestInterceptor } from "@nestjs/common";
 import { catchError, Observable, tap } from "rxjs";
 
+import { maskSensitiveData } from "~logging/utils/logging";
+
 @Injectable()
 export class RpcLoggingInterceptor implements NestInterceptor {
 	private readonly logger = new Logger(RpcLoggingInterceptor.name);
@@ -23,7 +25,7 @@ export class RpcLoggingInterceptor implements NestInterceptor {
 			"[RpcRequest]",
 			servicePath,
 			`(${handlerPath})`,
-			`Body: ${JSON.stringify(body)};`,
+			`Body: ${JSON.stringify(maskSensitiveData(body))};`,
 			`Metadata: ${JSON.stringify(metadata)}`,
 		]
 			.filter(Boolean)
@@ -33,7 +35,12 @@ export class RpcLoggingInterceptor implements NestInterceptor {
 
 		return next.handle().pipe(
 			tap((data) => {
-				const responseLog = ["[RpcResponse]", servicePath, `(${handlerPath})`, `Data: ${JSON.stringify(data)}`]
+				const responseLog = [
+					"[RpcResponse]",
+					servicePath,
+					`(${handlerPath})`,
+					`Data: ${JSON.stringify(maskSensitiveData(data))}`,
+				]
 					.filter(Boolean)
 					.join(" ");
 

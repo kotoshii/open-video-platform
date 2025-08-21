@@ -17,7 +17,7 @@ import { toArray } from "@ovp-lib/common/utils/arrays";
 import { ClassConstructor } from "class-transformer";
 
 import { InternalServerErrorFilter } from "~common/filters/internal-server-error.filter";
-import { LoggingInterceptor } from "~common/interceptors/logging.interceptor";
+import { HttpLoggingInterceptor } from "~logging/interceptors/http-logging.interceptor";
 
 // copypasted from Nest type definitions
 type IEntryNestModule = Type | DynamicModule | ForwardReference | Promise<IEntryNestModule>;
@@ -73,7 +73,7 @@ class NestAppConfigBuilder {
 	}
 
 	addGlobalLoggingInterceptor() {
-		this.app.useGlobalInterceptors(new LoggingInterceptor());
+		this.app.useGlobalInterceptors(new HttpLoggingInterceptor());
 		return this;
 	}
 
