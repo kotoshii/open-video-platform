@@ -6,6 +6,7 @@ import "google/protobuf/timestamp.proto";
 
 service ChannelService {
 	rpc CreateChannel (CreateChannelRequest) returns (CreateChannelResponse);
+	rpc DeleteChannel (DeleteChannelRequest) returns (DeleteChannelResponse);
 }
 
 message CreateChannelRequest {
@@ -15,6 +16,14 @@ message CreateChannelRequest {
 
 message CreateChannelResponse {
 	Channel channel = 1;
+}
+
+message DeleteChannelRequest {
+	string channel_id = 1;
+}
+
+message DeleteChannelResponse {
+	bool deleted = 1;
 }
 
 message Channel {
