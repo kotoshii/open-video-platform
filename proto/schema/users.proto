@@ -6,6 +6,7 @@ import "google/protobuf/timestamp.proto";
 
 service UserService {
 	rpc CreateUser (CreateUserRequest) returns (CreateUserResponse);
+	rpc DeleteUser (DeleteUserRequest) returns (DeleteUserResponse);
 	rpc UserExists (UserExistsRequest) returns (UserExistsResponse);
 }
 
@@ -17,6 +18,14 @@ message CreateUserRequest {
 
 message CreateUserResponse {
 	User user = 1;
+}
+
+message DeleteUserRequest {
+	string user_id = 1;
+}
+
+message DeleteUserResponse {
+	bool deleted = 1;
 }
 
 message UserExistsRequest {
