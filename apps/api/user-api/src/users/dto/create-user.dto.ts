@@ -10,8 +10,6 @@ export class CreateUserDto {
 	@IsNotEmpty()
 	dateOfBirth: Date;
 
-	// TODO: Add password strength validation via custom decorator
-	// TODO: Move password hashing to auth-api service
 	@IsString()
 	@IsNotEmpty()
 	passwordHash: string;
