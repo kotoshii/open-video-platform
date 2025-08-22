@@ -1,5 +1,5 @@
 import { Module } from "@nestjs/common";
-import { KyselyModuleConfigBuilder } from "@ovp-lib/api/database/kysely-module-config-builder";
+import { JwtModuleConfigBuilder } from "@ovp-lib/api/config/builders/jwt-module-config-builder";
 import { KyselyModuleConfigBuilder } from "@ovp-lib/api/config/builders/kysely-module-config-builder";
 
 import { ConfigModule } from "~src/config/config.module";
@@ -10,6 +10,7 @@ import { UsersModule } from "~src/users/users.module";
 	imports: [
 		ConfigModule,
 		new KyselyModuleConfigBuilder().setDatabaseConfigClass(DatabaseConfig).addDefaults().build(),
+		new JwtModuleConfigBuilder().build(),
 		UsersModule,
 	],
 })
