@@ -11,4 +11,8 @@ export class AuthSessionRepository {
 	async createAuthSession(data: Insertable<AuthSession>) {
 		return this.db.insertInto("authSessions").values(data).returningAll().executeTakeFirstOrThrow();
 	}
+
+	async deleteAuthSessionById(sessionId: string) {
+		return this.db.deleteFrom("authSessions").where("id", "=", sessionId).executeTakeFirstOrThrow();
+	}
 }

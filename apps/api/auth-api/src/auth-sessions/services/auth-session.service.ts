@@ -38,4 +38,8 @@ export class AuthSessionService {
 
 		return new GetAuthSessionDto(authSession);
 	}
+
+	async deleteAuthSessionById(sessionId: string) {
+		await this.authSessionRepository.deleteAuthSessionById(sessionId);
+	}
 }

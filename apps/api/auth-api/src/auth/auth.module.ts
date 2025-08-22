@@ -13,6 +13,7 @@ import { TokensModule } from "~src/tokens/tokens.module";
 
 @Module({
 	imports: [
+		// todo move these to some config builder or whatever
 		ClientsModule.registerAsync([
 			{
 				name: USERS_PACKAGE_NAME,
