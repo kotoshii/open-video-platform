@@ -1,4 +1,4 @@
-import { ClassConstructor } from "class-transformer";
+import { Type } from "@nestjs/common";
 import { CamelCasePlugin, DeduplicateJoinsPlugin, KyselyPlugin, PostgresDialect } from "kysely";
 import { KyselyModule } from "nestjs-kysely";
 import { Pool } from "pg";
@@ -8,11 +8,11 @@ import { ICommonDatabaseConfig } from "~config/interfaces/common-database-config
 type DialectName = "postgres";
 
 export class KyselyModuleConfigBuilder {
-	private DatabaseConfigClass: ClassConstructor<ICommonDatabaseConfig> | null = null;
+	private DatabaseConfigClass: Type<ICommonDatabaseConfig> | null = null;
 	private dialect: DialectName | null = null;
 	private readonly plugins: KyselyPlugin[] = [];
 
-	setDatabaseConfigClass(DatabaseConfigClass: ClassConstructor<ICommonDatabaseConfig>) {
+	setDatabaseConfigClass(DatabaseConfigClass: Type<ICommonDatabaseConfig>) {
 		this.DatabaseConfigClass = DatabaseConfigClass;
 		return this;
 	}

@@ -1,5 +1,6 @@
 import { Module } from "@nestjs/common";
 import { KyselyModuleConfigBuilder } from "@ovp-lib/api/database/kysely-module-config-builder";
+import { KyselyModuleConfigBuilder } from "@ovp-lib/api/config/builders/kysely-module-config-builder";
 
 import { AuthModule } from "~src/auth/auth.module";
 import { AuthSessionsModule } from "~src/auth-sessions/auth-sessions.module";

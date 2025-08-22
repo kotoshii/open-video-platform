@@ -1,5 +1,6 @@
 import { Module } from "@nestjs/common";
 import { KyselyModuleConfigBuilder } from "@ovp-lib/api/database/kysely-module-config-builder";
+import { KyselyModuleConfigBuilder } from "@ovp-lib/api/config/builders/kysely-module-config-builder";
 
 import { ChannelsModule } from "~src/channels/channels.module";
 import { ConfigModule } from "~src/config/config.module";
