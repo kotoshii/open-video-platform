@@ -1,7 +1,7 @@
 import { ReflectionService } from "@grpc/reflection";
 import { Logger } from "@nestjs/common";
 import { Transport } from "@nestjs/microservices";
-import { NestAppConfigBuilderFactory } from "@ovp-lib/api/config/nest-app-config-builder";
+import { NestAppConfigBuilderFactory } from "@ovp-lib/api/config/builders/nest-app-config-builder";
 import { USERS_PACKAGE_NAME } from "@ovp-proto/types/users";
 import { ProtoPaths } from "@ovp-proto/types/utils/paths";
 

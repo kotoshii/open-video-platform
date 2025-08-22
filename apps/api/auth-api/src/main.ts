@@ -1,5 +1,5 @@
 import { Logger } from "@nestjs/common";
-import { NestAppConfigBuilderFactory } from "@ovp-lib/api/config/nest-app-config-builder";
+import { NestAppConfigBuilderFactory } from "@ovp-lib/api/config/builders/nest-app-config-builder";
 
 import { AppModule } from "~src/app.module";
 import { AppConfig } from "~src/config/providers/app.config";

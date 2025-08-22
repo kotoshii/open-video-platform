@@ -10,13 +10,16 @@ import {
 } from "@nestjs/common";
 import { NestApplicationOptions } from "@nestjs/common/interfaces/nest-application-options.interface";
 import { NestFactory, Reflector } from "@nestjs/core";
+import { JwtService } from "@nestjs/jwt";
 import { MicroserviceOptions } from "@nestjs/microservices";
 import { DocumentBuilder, SwaggerModule } from "@nestjs/swagger";
 import { MaybeArray } from "@ovp-lib/common/types/maybe-array";
 import { toArray } from "@ovp-lib/common/utils/arrays";
 import { ClassConstructor } from "class-transformer";
 
+import { JwtAuthGuard } from "~auth/guards/jwt-auth.guard";
 import { InternalServerErrorFilter } from "~common/filters/internal-server-error.filter";
+import { JWT_CONFIG_INJECTION_TOKEN } from "~config/constants/injection-tokens";
 import { HttpLoggingInterceptor } from "~logging/interceptors/http-logging.interceptor";
 
 // copypasted from Nest type definitions
@@ -62,6 +65,14 @@ class NestAppConfigBuilder {
 		return this;
 	}
 
+	addGlobalJwtAuthGuard() {
+		const jwtService = this.app.get(JwtService);
+		const jwtConfig = this.app.get(JWT_CONFIG_INJECTION_TOKEN);
+		const reflector = this.app.get(Reflector);
+
+		this.app.useGlobalGuards(new JwtAuthGuard(jwtService, jwtConfig, reflector));
+	}
+
 	addGlobalValidationPipe(options?: ValidationPipeOptions) {
 		this.app.useGlobalPipes(new ValidationPipe(options));
 		return this;
@@ -103,14 +114,16 @@ class NestAppConfigBuilder {
 
 	/**
 	 * Default config includes
-	 * 1. Global validation pipe with the following options:
+	 * 1. Global JWT auth guard.
+	 * 2. Global validation pipe with the following options:
 	 * `{ whitelist: true, transform: true, transformOptions: { enableImplicitConversion: true } }`
-	 * 2. Global interceptors: ClassSerializerInterceptor and LoggingInterceptor
-	 * 3. Global exception filter: InternalServerErrorFilter
+	 * 3. Global interceptors: ClassSerializerInterceptor and LoggingInterceptor.
+	 * 4. Global exception filter: InternalServerErrorFilter.
 	 *
 	 * It **DOES NOT** include: global prefix, CORS, Swagger, anything related to microservices.
 	 * */
 	addDefaults() {
+		this.addGlobalJwtAuthGuard();
 		this.addGlobalValidationPipe({
 			whitelist: true,
 			transform: true,
