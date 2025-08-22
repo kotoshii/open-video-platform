@@ -12,6 +12,6 @@ export class CommonJwtConfig implements ICommonJwtConfig {
 	}
 
 	get jwtExpiresIn(): string {
-		return this.config.get<string>("JWT_EXPIRES_IN", "");
+		return this.config.get<string>("JWT_EXPIRES_IN", "1h");
 	}
 }
