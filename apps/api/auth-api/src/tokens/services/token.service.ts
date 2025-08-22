@@ -2,12 +2,12 @@ import * as crypto from "node:crypto";
 
 import { Injectable } from "@nestjs/common";
 import { JwtService } from "@nestjs/jwt";
+import { AccessTokenPayload } from "@ovp-lib/api/auth/types/access-token-payload";
 import { StringHasher } from "@ovp-lib/common/utils/string-hasher";
 import ms from "ms";
 
 import { AuthSessionConfig } from "~src/config/providers/auth-session.config";
 import { TokenRepository } from "~src/tokens/repositories/token.repository";
-import { AccessTokenPayload } from "~src/tokens/types/access-token-payload";
 
 const MAX_REFRESH_TOKEN_GENERATION_ATTEMPTS = 10;
 
