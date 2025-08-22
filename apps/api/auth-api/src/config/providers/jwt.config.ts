@@ -8,8 +8,4 @@ export class JwtConfig extends CommonJwtConfig {
 	constructor(config: ConfigService) {
 		super(config);
 	}
-
-	override get jwtExpiresIn(): string {
-		return this.config.get<string>("JWT_EXPIRES_IN", "1h");
-	}
 }
