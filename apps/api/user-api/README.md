@@ -5,6 +5,7 @@ $ yarn install
 ```
 
 ## Environment variables
+
 ```dotenv
 # App
 # local | development | production
@@ -17,6 +18,10 @@ DATABASE_URL=postgres://user:password@localhost:5432/postgres?sslmode=disable
 
 # gRPC
 GRPC_URL=0.0.0.0:5001
+
+# JWT
+JWT_SECRET=jwt-local-secret
+JWT_EXPIRES_IN=1h
 ```
 
 ## Compile and run the project
