@@ -1,4 +1,5 @@
-import { Injectable } from "@nestjs/common";
+import { Inject, Injectable } from "@nestjs/common";
+import { JWT_CONFIG_INJECTION_TOKEN } from "@ovp-lib/api/config/constants/injection-tokens";
 import ms from "ms";
 
 import { GetAuthSessionDto } from "~src/auth-sessions/dto/get-auth-session.dto";
@@ -9,7 +10,7 @@ import { JwtConfig } from "~src/config/providers/jwt.config";
 export class AuthSessionService {
 	constructor(
 		private readonly authSessionRepository: AuthSessionRepository,
-		private readonly jwtConfig: JwtConfig,
+		@Inject(JWT_CONFIG_INJECTION_TOKEN) private readonly jwtConfig: JwtConfig,
 	) {}
 
 	async createAuthSession(
