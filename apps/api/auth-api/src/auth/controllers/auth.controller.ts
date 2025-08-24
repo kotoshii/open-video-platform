@@ -10,14 +10,17 @@ import {
 import { NoChannel } from "@ovp-lib/api/auth/decorators/no-channel.decorator";
 import { Public } from "@ovp-lib/api/auth/decorators/public.decorator";
 import { SessionId } from "@ovp-lib/api/auth/decorators/session-id.decorator";
+import { UserId } from "@ovp-lib/api/auth/decorators/user-id.decorator";
 import { NestErrorResponseDto } from "@ovp-lib/api/common/dto/nest-error-response.dto";
 import type { Response } from "express";
 import { RealIP } from "nestjs-real-ip";
 
+import { AuthenticateChannelDto } from "~src/auth/dto/authenticate-channel.dto";
 import { CreateAccountDto } from "~src/auth/dto/create-account.dto";
 import { LoginDto } from "~src/auth/dto/login.dto";
 import { AuthService } from "~src/auth/services/auth.service";
 import { AuthSessionService } from "~src/auth-sessions/services/auth-session.service";
+import { AccessTokenDto } from "~src/tokens/dto/access-token.dto";
 import { AuthTokensDto } from "~src/tokens/dto/auth-tokens.dto";
 
 @Controller("auth")
@@ -28,7 +31,6 @@ export class AuthController {
 	) {}
 
 	/*
-  TODO: POST /auth/authenticate-channel
   TODO: POST /auth/refresh
   */
 
@@ -54,7 +56,21 @@ export class AuthController {
 		return this.authService.loginOrThrow(body, ipAddress, userAgent);
 	}
 
-	async authenticateChannel() {}
+	@NoChannel()
+	@ApiOkResponse({ type: AccessTokenDto })
+	@ApiUnauthorizedResponse({
+		type: NestErrorResponseDto,
+		description: "Channel not found or current user does not have access to it",
+	})
+	@ApiBadRequestResponse({ type: NestErrorResponseDto, description: "Params validation failed" })
+	@Post("authenticate-channel")
+	async authenticateChannel(
+		@UserId() userId: string,
+		@SessionId() sessionId: string,
+		@Body() body: AuthenticateChannelDto,
+	) {
+		return this.authService.authenticateChannelOrThrow(userId, sessionId, body);
+	}
 
 	async refresh() {}
 

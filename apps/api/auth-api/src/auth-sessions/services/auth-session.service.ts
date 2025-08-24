@@ -22,9 +22,6 @@ export class AuthSessionService {
 		ipAddress: string | null,
 		userAgent: string | null,
 	) {
-		const expiresInMs = ms(this.jwtConfig.jwtExpiresIn as ms.StringValue);
-		const expiresAt = new Date(Date.now() + expiresInMs);
-
 		const authSession = await this.authSessionRepository.createAuthSession({
 			userId,
 			channelId,
@@ -33,13 +30,26 @@ export class AuthSessionService {
 			cityName,
 			ipAddress,
 			userAgent,
-			expiresAt,
+			expiresAt: this.newSessionExpiresAt,
 		});
 
 		return new GetAuthSessionDto(authSession);
 	}
 
+	async setChannelId(sessionId: string, channelId: string) {
+		await this.authSessionRepository.updateAuthSession(sessionId, { channelId });
+	}
+
+	async resetSessionExpiration(sessionId: string) {
+		await this.authSessionRepository.updateAuthSession(sessionId, { expiresAt: this.newSessionExpiresAt });
+	}
+
 	async deleteAuthSessionById(sessionId: string) {
 		await this.authSessionRepository.deleteAuthSessionById(sessionId);
+	}
+
+	private get newSessionExpiresAt() {
+		const expiresInMs = ms(this.jwtConfig.jwtExpiresIn as ms.StringValue);
+		return new Date(Date.now() + expiresInMs);
 	}
 }
