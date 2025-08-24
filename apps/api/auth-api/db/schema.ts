@@ -26,6 +26,7 @@ export interface AuthSession {
 }
 
 export interface RefreshToken {
+  active: Generated<boolean>;
   authSessionId: string;
   createdDate: Generated<Timestamp>;
   expiresAt: Timestamp;
