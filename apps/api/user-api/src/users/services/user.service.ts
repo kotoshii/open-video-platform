@@ -35,6 +35,16 @@ export class UserService {
 		return new GetUserDto(user);
 	}
 
+	async getCurrentUserByIdOrThrow(userId: string) {
+		const user = await this.userRepository.getUserById(userId);
+
+		if (!user) {
+			throw new UnauthorizedException();
+		}
+
+		return new GetUserDto(user);
+	}
+
 	async createUserOrThrow(dto: CreateUserDto) {
 		const { email, dateOfBirth, passwordHash } = dto;
 
