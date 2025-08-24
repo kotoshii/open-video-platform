@@ -13,6 +13,8 @@ import { CreateUserGrpcRequestDto } from "~src/users/dto/grpc/create-user-grpc-r
 import { CreateUserGrpcResponseDto } from "~src/users/dto/grpc/create-user-grpc-response.dto";
 import { DeleteUserGrpcRequestDto } from "~src/users/dto/grpc/delete-user-grpc-request.dto";
 import { DeleteUserGrpcResponseDto } from "~src/users/dto/grpc/delete-user-grpc-response.dto";
+import { UserAuthDetailsGrpcRequestDto } from "~src/users/dto/grpc/user-auth-details-grpc-request.dto";
+import { UserAuthDetailsGrpcResponseDto } from "~src/users/dto/grpc/user-auth-details-grpc-response.dto";
 import { UserExistsGrpcRequestDto } from "~src/users/dto/grpc/user-exists-grpc-request.dto";
 import { UserExistsGrpcResponseDto } from "~src/users/dto/grpc/user-exists-grpc-response.dto";
 import { UserService } from "~src/users/services/user.service";
@@ -53,5 +55,11 @@ export class UserGrpcController implements UserServiceController {
 		}
 
 		return new UserExistsGrpcResponseDto(Boolean(user));
+	}
+
+	async validateAuthenticationDetails(
+		@Payload() body: UserAuthDetailsGrpcRequestDto,
+	): Promise<UserAuthDetailsGrpcResponseDto> {
+		return this.userService.validateAuthenticationDetails(body);
 	}
 }

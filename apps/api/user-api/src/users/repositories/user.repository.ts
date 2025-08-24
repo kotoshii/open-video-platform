@@ -16,6 +16,10 @@ export class UserRepository {
 		return this.userQuery.where("email", "=", email).executeTakeFirst();
 	}
 
+	async getPasswordHashByUserId(userId: string) {
+		return this.userPasswordHashQuery.where("id", "=", userId).executeTakeFirst();
+	}
+
 	async createUser(data: Insertable<User>, passwordHash: string) {
 		return this.db.transaction().execute(async (trx) => {
 			const { id: userId } = await trx.insertInto("users").values(data).returning("id").executeTakeFirstOrThrow();
@@ -35,6 +39,16 @@ export class UserRepository {
 			.select("id")
 			.select("email")
 			.select("dateOfBirth")
+			.select("createdDate")
+			.select("updatedDate");
+	}
+
+	private get userPasswordHashQuery() {
+		return this.db
+			.selectFrom("userPasswords")
+			.select("id")
+			.select("userId")
+			.select("passwordHash")
 			.select("createdDate")
 			.select("updatedDate");
 	}

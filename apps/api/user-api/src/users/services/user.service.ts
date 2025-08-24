@@ -1,9 +1,11 @@
-import { ConflictException, Injectable, NotFoundException } from "@nestjs/common";
+import { ConflictException, Injectable, NotFoundException, UnauthorizedException } from "@nestjs/common";
 import { Insertable } from "kysely";
 
 import { User } from "~db/schema";
 import { CreateUserDto } from "~src/users/dto/create-user.dto";
 import { GetUserDto } from "~src/users/dto/get-user.dto";
+import { UserAuthDetailsGrpcRequestDto } from "~src/users/dto/grpc/user-auth-details-grpc-request.dto";
+import { UserAuthDetailsGrpcResponseDto } from "~src/users/dto/grpc/user-auth-details-grpc-response.dto";
 import { UserRepository } from "~src/users/repositories/user.repository";
 
 @Injectable()
@@ -18,6 +20,11 @@ export class UserService {
 	async getUserByEmail(email: string) {
 		const user = await this.userRepository.getUserByEmail(email);
 		return user ? new GetUserDto(user) : null;
+	}
+
+	async getPasswordHashByUserId(userId: string) {
+		const passwordHash = await this.userRepository.getPasswordHashByUserId(userId);
+		return passwordHash ? passwordHash.passwordHash : null;
 	}
 
 	async deleteUserById(userId: string) {
@@ -62,5 +69,20 @@ export class UserService {
 		// todo remove extra db query
 
 		return this.getUserByIdOrThrow(userId);
+	}
+
+	async validateAuthenticationDetails(body: UserAuthDetailsGrpcRequestDto): Promise<UserAuthDetailsGrpcResponseDto> {
+		const { email, passwordHash } = body;
+
+		const user = await this.getUserByEmail(email);
+
+		if (user) {
+			const userPasswordHash = await this.getPasswordHashByUserId(user.id);
+			const valid = userPasswordHash === passwordHash;
+
+			return new UserAuthDetailsGrpcResponseDto(valid, valid ? user.id : undefined);
+		}
+
+		return new UserAuthDetailsGrpcResponseDto(false);
 	}
 }
