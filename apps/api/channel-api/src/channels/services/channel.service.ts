@@ -1,4 +1,4 @@
-import { Inject, Injectable, NotFoundException, OnModuleInit } from "@nestjs/common";
+import { Inject, Injectable, NotFoundException, OnModuleInit, UnauthorizedException } from "@nestjs/common";
 import type { ClientGrpc } from "@nestjs/microservices";
 import { USER_SERVICE_NAME, USERS_PACKAGE_NAME, UserServiceClient } from "@ovp-proto/types/users";
 import { Insertable } from "kysely";
@@ -6,6 +6,8 @@ import { Insertable } from "kysely";
 import { Channel } from "~db/schema";
 import { CreateChannelDto } from "~src/channels/dto/create-channel.dto";
 import { GetChannelDto } from "~src/channels/dto/get-channel.dto";
+import { ChannelAuthDetailsGrpcRequestDto } from "~src/channels/dto/grpc/channel-auth-details-grpc-request.dto";
+import { ChannelAuthDetailsGrpcResponseDto } from "~src/channels/dto/grpc/channel-auth-details-grpc-response.dto";
 import { UpdateChannelDto } from "~src/channels/dto/update-channel.dto";
 import { ChannelRepository } from "~src/channels/repositories/channel.repository";
 
@@ -78,5 +80,19 @@ export class ChannelService implements OnModuleInit {
 		const updatedChannel = await this.channelRepository.updateChannelById(channelId, { name, description });
 
 		return new GetChannelDto(updatedChannel);
+	}
+
+	async validateAuthenticationDetails(
+		body: ChannelAuthDetailsGrpcRequestDto,
+	): Promise<ChannelAuthDetailsGrpcResponseDto> {
+		const { userId, channelId } = body;
+
+		const channel = await this.channelRepository.getChannelById(channelId);
+
+		if (channel) {
+			return new ChannelAuthDetailsGrpcResponseDto(channel.userId === userId, channelId);
+		}
+
+		return new ChannelAuthDetailsGrpcResponseDto(false);
 	}
 }

@@ -7,6 +7,8 @@ import {
 } from "@ovp-proto/types/channels";
 
 import { CreateChannelDto } from "~src/channels/dto/create-channel.dto";
+import { ChannelAuthDetailsGrpcRequestDto } from "~src/channels/dto/grpc/channel-auth-details-grpc-request.dto";
+import { ChannelAuthDetailsGrpcResponseDto } from "~src/channels/dto/grpc/channel-auth-details-grpc-response.dto";
 import { CreateChannelGrpcRequestDto } from "~src/channels/dto/grpc/create-channel-grpc-request.dto";
 import { CreateChannelGrpcResponseDto } from "~src/channels/dto/grpc/create-channel-grpc-response.dto";
 import { DeleteChannelGrpcRequestDto } from "~src/channels/dto/grpc/delete-channel-grpc-request.dto";
@@ -32,5 +34,11 @@ export class ChannelGrpcController implements ChannelServiceController {
 		const deletedChannelId = await this.channelService.deleteChannelById(channelId);
 
 		return new DeleteChannelGrpcResponseDto(channelId === deletedChannelId);
+	}
+
+	async validateAuthenticationDetails(
+		@Payload() body: ChannelAuthDetailsGrpcRequestDto,
+	): Promise<ChannelAuthDetailsGrpcResponseDto> {
+		return this.channelService.validateAuthenticationDetails(body);
 	}
 }
