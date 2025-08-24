@@ -3,7 +3,7 @@ create table if not exists auth_sessions
 (
     id           uuid primary key                  default gen_random_uuid(),
     user_id      uuid                     not null,
-    channel_id   uuid                     not null,
+    channel_id   uuid                              default null,
     country_code varchar(2)                        default null,
     country_name text                              default null,
     city_name    text                              default null,

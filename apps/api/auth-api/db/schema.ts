@@ -12,7 +12,7 @@ export type Generated<T> = T extends ColumnType<infer S, infer I, infer U>
 export type Timestamp = ColumnType<Date, Date | string, Date | string>;
 
 export interface AuthSession {
-  channelId: string;
+  channelId: string | null;
   cityName: string | null;
   countryCode: Generated<string | null>;
   countryName: string | null;
