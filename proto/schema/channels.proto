@@ -7,6 +7,7 @@ import "google/protobuf/timestamp.proto";
 service ChannelService {
 	rpc CreateChannel (CreateChannelRequest) returns (CreateChannelResponse);
 	rpc DeleteChannel (DeleteChannelRequest) returns (DeleteChannelResponse);
+	rpc ValidateAuthenticationDetails (ChannelAuthenticationDetailsRequest) returns (ChannelAuthenticationDetailsResponse);
 }
 
 message CreateChannelRequest {
@@ -24,6 +25,16 @@ message DeleteChannelRequest {
 
 message DeleteChannelResponse {
 	bool deleted = 1;
+}
+
+message ChannelAuthenticationDetailsRequest {
+	string user_id = 1;
+	string channel_id = 2;
+}
+
+message ChannelAuthenticationDetailsResponse {
+	bool valid = 1;
+	optional string channel_id = 2;
 }
 
 message Channel {
