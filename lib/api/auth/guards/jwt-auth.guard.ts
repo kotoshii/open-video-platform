@@ -4,6 +4,7 @@ import { JwtService } from "@nestjs/jwt";
 import { extractBearerTokenFromRequest } from "@ovp-lib/common/utils/tokens";
 import { Request } from "express";
 
+import { ALLOW_EXPIRED_KEY } from "~auth/decorators/allow-expired.decorator";
 import { NO_CHANNEL_KEY } from "~auth/decorators/no-channel.decorator";
 import { IS_PUBLIC_KEY } from "~auth/decorators/public.decorator";
 import { AccessTokenPayload } from "~auth/types/access-token-payload";
@@ -37,8 +38,14 @@ export class JwtAuthGuard implements CanActivate {
 			throw new UnauthorizedException();
 		}
 
+		const allowExpired = this.reflector.getAllAndOverride<boolean>(ALLOW_EXPIRED_KEY, [
+			context.getHandler(),
+			context.getClass(),
+		]);
+
 		const payload = await this.jwtService.verifyAsync<AccessTokenPayload>(token, {
 			secret: this.jwtConfig.jwtSecret,
+			ignoreExpiration: allowExpired,
 		});
 
 		if (!payload.user_id || !payload.session_id) {
