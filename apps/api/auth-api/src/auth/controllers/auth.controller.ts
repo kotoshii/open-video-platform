@@ -33,10 +33,6 @@ export class AuthController {
 		private readonly authSessionService: AuthSessionService,
 	) {}
 
-	/*
-  TODO: POST /auth/refresh
-  */
-
 	@Public()
 	@ApiCreatedResponse({ type: AuthTokensDto })
 	@ApiBadRequestResponse({ type: NestErrorResponseDto, description: "Params validation failed" })
