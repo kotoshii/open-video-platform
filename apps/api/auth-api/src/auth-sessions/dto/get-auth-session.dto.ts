@@ -22,7 +22,7 @@ export class GetAuthSessionDto {
 
 	userId: string;
 
-	channelId: string;
+	channelId: string | null;
 
 	countryCode: string | null;
 

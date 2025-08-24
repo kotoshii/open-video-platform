@@ -15,7 +15,7 @@ export class AuthSessionService {
 
 	async createAuthSession(
 		userId: string,
-		channelId: string,
+		channelId: string | null,
 		countryCode: string | null,
 		countryName: string | null,
 		cityName: string | null,
