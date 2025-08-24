@@ -57,7 +57,7 @@ export class JwtAuthGuard implements CanActivate {
 		}
 
 		request.userId = payload.user_id;
-		request.channelId = payload.channel_id;
+		request.channelId = payload.channel_id || null;
 		request.sessionId = payload.session_id;
 
 		return true;
