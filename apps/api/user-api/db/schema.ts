@@ -16,7 +16,7 @@ export interface UserPassword {
 	id: Generated<string>;
 	passwordHash: string;
 	updatedDate: Generated<Timestamp>;
-	userId: string | null;
+	userId: string;
 }
 
 export interface User {
