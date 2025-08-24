@@ -3,8 +3,9 @@ import {
 	ApiBadRequestResponse,
 	ApiConflictResponse,
 	ApiCreatedResponse,
-	ApiInternalServerErrorResponse,
 	ApiNoContentResponse,
+	ApiOkResponse,
+	ApiUnauthorizedResponse,
 } from "@nestjs/swagger";
 import { NoChannel } from "@ovp-lib/api/auth/decorators/no-channel.decorator";
 import { Public } from "@ovp-lib/api/auth/decorators/public.decorator";
@@ -14,11 +15,12 @@ import type { Response } from "express";
 import { RealIP } from "nestjs-real-ip";
 
 import { CreateAccountDto } from "~src/auth/dto/create-account.dto";
+import { LoginDto } from "~src/auth/dto/login.dto";
 import { AuthService } from "~src/auth/services/auth.service";
 import { AuthSessionService } from "~src/auth-sessions/services/auth-session.service";
 import { AuthTokensDto } from "~src/tokens/dto/auth-tokens.dto";
 
-@Controller()
+@Controller("auth")
 export class AuthController {
 	constructor(
 		private readonly authService: AuthService,
@@ -26,17 +28,14 @@ export class AuthController {
 	) {}
 
 	/*
-	POST /auth/create-account
-  POST /auth/login
-  POST /auth/refresh
-  POST /auth/logout
+  TODO: POST /auth/authenticate-channel
+  TODO: POST /auth/refresh
   */
 
 	@Public()
 	@ApiCreatedResponse({ type: AuthTokensDto })
 	@ApiBadRequestResponse({ type: NestErrorResponseDto, description: "Params validation failed" })
 	@ApiConflictResponse({ type: NestErrorResponseDto, description: "User with provided email already exists" })
-	@ApiInternalServerErrorResponse({ type: NestErrorResponseDto })
 	@Post("create-account")
 	async createAccount(
 		@Body() body: CreateAccountDto,
@@ -46,17 +45,21 @@ export class AuthController {
 		return this.authService.createAccountOrThrow(body, ipAddress, userAgent);
 	}
 
-	async login() {}
+	@Public()
+	@ApiOkResponse({ type: AuthTokensDto })
+	@ApiUnauthorizedResponse({ type: NestErrorResponseDto, description: "Incorrect email or password" })
+	@ApiBadRequestResponse({ type: NestErrorResponseDto, description: "Params validation failed" })
+	@Post("login")
+	async login(@Body() body: LoginDto, @RealIP() ipAddress: string, @Headers("user-agent") userAgent: string) {
+		return this.authService.loginOrThrow(body, ipAddress, userAgent);
+	}
 
 	async authenticateChannel() {}
-
-	/* require authentication */
 
 	async refresh() {}
 
 	@NoChannel()
 	@ApiNoContentResponse({ description: "Logout successful or user was already logged out" })
-	@ApiInternalServerErrorResponse({ type: NestErrorResponseDto })
 	@Post("logout")
 	async logout(@Res() res: Response, @SessionId() sessionId: string) {
 		await this.authSessionService.deleteAuthSessionById(sessionId);

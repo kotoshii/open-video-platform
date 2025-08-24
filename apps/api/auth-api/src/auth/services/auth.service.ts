@@ -1,4 +1,4 @@
-import { Inject, Injectable, OnModuleInit } from "@nestjs/common";
+import { Inject, Injectable, OnModuleInit, UnauthorizedException } from "@nestjs/common";
 import type { ClientGrpc } from "@nestjs/microservices";
 import { IpGeoLocator } from "@ovp-lib/common/utils/ip-geo-locator";
 import { SagaBuilder } from "@ovp-lib/common/utils/saga-pattern/saga-builder";
@@ -6,6 +6,7 @@ import { CHANNEL_SERVICE_NAME, CHANNELS_PACKAGE_NAME, ChannelServiceClient } fro
 import { USER_SERVICE_NAME, USERS_PACKAGE_NAME, UserServiceClient } from "@ovp-proto/types/users";
 
 import { CreateAccountDto } from "~src/auth/dto/create-account.dto";
+import { LoginDto } from "~src/auth/dto/login.dto";
 import { AuthSessionService } from "~src/auth-sessions/services/auth-session.service";
 import { PasswordService } from "~src/passwords/services/password.service";
 import { AuthTokensDto } from "~src/tokens/dto/auth-tokens.dto";
@@ -60,6 +61,42 @@ export class AuthService implements OnModuleInit {
 		const accessToken = await this.tokenService.issueNewAccessToken({
 			user_id: userId,
 			channel_id: channelId,
+			session_id: authSession.id,
+		});
+
+		return new AuthTokensDto(accessToken, refreshToken);
+	}
+
+	async loginOrThrow(dto: LoginDto, ipAddress: string | null = null, userAgent: string | null = null) {
+		const { email, password } = dto;
+
+		const passwordHash = await this.passwordService.hashPassword(password);
+
+		const authDetailsValidationResponse = await this.userGrpcService
+			.validateAuthenticationDetails({ email, passwordHash })
+			.toPromise();
+
+		const valid = authDetailsValidationResponse?.valid || false;
+		const userId = authDetailsValidationResponse?.userId || null;
+
+		if (!valid || !userId) {
+			throw new UnauthorizedException("Incorrect email or password");
+		}
+
+		const { countryCode, countryName, cityName } = await this.ipGeoLocator.lookup(ipAddress);
+
+		const authSession = await this.authSessionService.createAuthSession(
+			userId,
+			null,
+			countryCode,
+			countryName,
+			cityName,
+			ipAddress,
+			userAgent,
+		);
+		const refreshToken = await this.tokenService.issueNewRefreshToken(authSession.id);
+		const accessToken = await this.tokenService.issueNewAccessToken({
+			user_id: userId,
 			session_id: authSession.id,
 		});
 
