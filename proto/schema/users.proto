@@ -8,6 +8,7 @@ service UserService {
 	rpc CreateUser (CreateUserRequest) returns (CreateUserResponse);
 	rpc DeleteUser (DeleteUserRequest) returns (DeleteUserResponse);
 	rpc UserExists (UserExistsRequest) returns (UserExistsResponse);
+	rpc ValidateAuthenticationDetails (UserAuthenticationDetailsRequest) returns (UserAuthenticationDetailsResponse);
 }
 
 message CreateUserRequest {
@@ -37,6 +38,16 @@ message UserExistsRequest {
 
 message UserExistsResponse {
 	bool exists = 1;
+}
+
+message UserAuthenticationDetailsRequest {
+	string email = 1;
+	string password_hash = 2;
+}
+
+message UserAuthenticationDetailsResponse {
+	bool valid = 1;
+	optional string user_id = 2;
 }
 
 message User {
