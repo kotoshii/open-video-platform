@@ -45,11 +45,7 @@ export class AuthService implements OnModuleInit {
 			throw new Error(`Failed to create account: userId ${userId}, channelId ${channelId}`);
 		}
 
-		const ipLocationData = ipAddress ? await this.ipGeoLocator.lookup(ipAddress) : null;
-
-		const countryCode = ipLocationData?.country || null;
-		const countryName = ipLocationData?.country_name || null;
-		const cityName = ipLocationData?.city || null;
+		const { countryCode, countryName, cityName } = await this.ipGeoLocator.lookup(ipAddress);
 
 		const authSession = await this.authSessionService.createAuthSession(
 			userId,
