@@ -1,5 +1,5 @@
 import { Injectable } from "@nestjs/common";
-import { Insertable, Kysely } from "kysely";
+import { Insertable, Kysely, Updateable } from "kysely";
 import { InjectKysely } from "nestjs-kysely";
 
 import { Channel, DB } from "~db/schema";
@@ -18,6 +18,15 @@ export class ChannelRepository {
 
 	async deleteChannelById(channelId: string) {
 		return this.db.deleteFrom("channels").where("id", "=", channelId).returning("id").executeTakeFirstOrThrow();
+	}
+
+	async updateChannelById(channelId: string, data: Updateable<Channel>) {
+		return this.db
+			.updateTable("channels")
+			.set(data)
+			.where("id", "=", channelId)
+			.returningAll()
+			.executeTakeFirstOrThrow();
 	}
 
 	private get channelQuery() {

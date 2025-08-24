@@ -6,6 +6,7 @@ import { Insertable } from "kysely";
 import { Channel } from "~db/schema";
 import { CreateChannelDto } from "~src/channels/dto/create-channel.dto";
 import { GetChannelDto } from "~src/channels/dto/get-channel.dto";
+import { UpdateChannelDto } from "~src/channels/dto/update-channel.dto";
 import { ChannelRepository } from "~src/channels/repositories/channel.repository";
 
 @Injectable()
@@ -36,6 +37,16 @@ export class ChannelService implements OnModuleInit {
 		return new GetChannelDto(channel);
 	}
 
+	async getCurrentChannelByIdOrThrow(channelId: string) {
+		const channel = await this.channelRepository.getChannelById(channelId);
+
+		if (!channel) {
+			throw new UnauthorizedException();
+		}
+
+		return new GetChannelDto(channel);
+	}
+
 	async createChannelOrThrow(userId: string, dto: CreateChannelDto) {
 		const userExistsResponse = await this.userGrpcService.userExists({ userId }).toPromise();
 		if (!userExistsResponse?.exists) {
@@ -53,5 +64,19 @@ export class ChannelService implements OnModuleInit {
 		const { id: channelId } = await this.channelRepository.createChannel(data);
 		// todo remove extra db query
 		return this.getChannelByIdOrThrow(channelId);
+	}
+
+	async updateCurrentChannelByIdOrThrow(channelId: string, dto: UpdateChannelDto) {
+		const channel = await this.channelRepository.getChannelById(channelId);
+
+		if (!channel) {
+			throw new UnauthorizedException();
+		}
+
+		const { name, description } = dto;
+
+		const updatedChannel = await this.channelRepository.updateChannelById(channelId, { name, description });
+
+		return new GetChannelDto(updatedChannel);
 	}
 }

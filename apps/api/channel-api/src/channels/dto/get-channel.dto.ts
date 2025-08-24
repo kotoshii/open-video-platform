@@ -1,3 +1,5 @@
+import { ApiProperty } from "@nestjs/swagger";
+import { Exclude } from "class-transformer";
 import { Selectable } from "kysely";
 
 import { Channel } from "~db/schema";
@@ -15,17 +17,24 @@ export class GetChannelDto {
 		this.updatedDate = updatedDate;
 	}
 
+	@ApiProperty()
 	id: string;
 
+	@ApiProperty()
 	userId: string;
 
+	@ApiProperty()
 	name: string;
 
+	@ApiProperty({ type: "string", nullable: true })
 	description: string | null;
 
+	@ApiProperty()
 	subscriberCount: string;
 
+	@ApiProperty()
 	createdDate: Date;
 
+	@Exclude()
 	updatedDate: Date;
 }
