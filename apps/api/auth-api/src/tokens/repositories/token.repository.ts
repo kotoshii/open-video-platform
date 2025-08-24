@@ -1,5 +1,5 @@
 import { Injectable } from "@nestjs/common";
-import { Insertable, Kysely } from "kysely";
+import { Insertable, Kysely, Updateable } from "kysely";
 import { InjectKysely } from "nestjs-kysely";
 
 import { DB, RefreshToken } from "~db/schema";
@@ -16,13 +16,24 @@ export class TokenRepository {
 		return this.db.insertInto("refreshTokens").values(data).returningAll().executeTakeFirstOrThrow();
 	}
 
+	async updateRefreshTokenById(tokenId: string, data: Updateable<RefreshToken>) {
+		return this.db
+			.updateTable("refreshTokens")
+			.set(data)
+			.where("id", "=", tokenId)
+			.returningAll()
+			.executeTakeFirstOrThrow();
+	}
+
 	private get refreshTokenQuery() {
 		return this.db
 			.selectFrom("refreshTokens")
 			.select("id")
 			.select("authSessionId")
 			.select("refreshTokenHash")
+			.select("active")
 			.select("expiresAt")
+			.select("usedDate")
 			.select("createdDate")
 			.select("updatedDate");
 	}

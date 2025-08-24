@@ -7,6 +7,8 @@ import {
 	ApiOkResponse,
 	ApiUnauthorizedResponse,
 } from "@nestjs/swagger";
+import { AllowExpired } from "@ovp-lib/api/auth/decorators/allow-expired.decorator";
+import { ChannelId } from "@ovp-lib/api/auth/decorators/channel-id.decorator";
 import { NoChannel } from "@ovp-lib/api/auth/decorators/no-channel.decorator";
 import { Public } from "@ovp-lib/api/auth/decorators/public.decorator";
 import { SessionId } from "@ovp-lib/api/auth/decorators/session-id.decorator";
@@ -18,6 +20,7 @@ import { RealIP } from "nestjs-real-ip";
 import { AuthenticateChannelDto } from "~src/auth/dto/authenticate-channel.dto";
 import { CreateAccountDto } from "~src/auth/dto/create-account.dto";
 import { LoginDto } from "~src/auth/dto/login.dto";
+import { RefreshTokensRequestDto } from "~src/auth/dto/refresh-tokens-request.dto";
 import { AuthService } from "~src/auth/services/auth.service";
 import { AuthSessionService } from "~src/auth-sessions/services/auth-session.service";
 import { AccessTokenDto } from "~src/tokens/dto/access-token.dto";
@@ -72,7 +75,23 @@ export class AuthController {
 		return this.authService.authenticateChannelOrThrow(userId, sessionId, body);
 	}
 
-	async refresh() {}
+	@NoChannel()
+	@AllowExpired()
+	@ApiOkResponse({ type: AuthTokensDto })
+	@ApiUnauthorizedResponse({
+		type: NestErrorResponseDto,
+		description: "Refresh token is invalid or expired",
+	})
+	@ApiBadRequestResponse({ type: NestErrorResponseDto, description: "Params validation failed" })
+	@Post("refresh")
+	async refresh(
+		@UserId() userId: string,
+		@ChannelId() channelId: string | null,
+		@SessionId() sessionId: string,
+		@Body() body: RefreshTokensRequestDto,
+	) {
+		return this.authService.refreshTokens(userId, channelId, sessionId, body);
+	}
 
 	@NoChannel()
 	@ApiNoContentResponse({ description: "Logout successful or user was already logged out" })

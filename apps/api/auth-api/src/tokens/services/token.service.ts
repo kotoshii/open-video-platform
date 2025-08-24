@@ -7,6 +7,7 @@ import { StringHasher } from "@ovp-lib/common/utils/string-hasher";
 import ms from "ms";
 
 import { AuthSessionConfig } from "~src/config/providers/auth-session.config";
+import { GetRefreshTokenInfoDto } from "~src/tokens/dto/get-refresh-token-info.dto";
 import { TokenRepository } from "~src/tokens/repositories/token.repository";
 
 const MAX_REFRESH_TOKEN_GENERATION_ATTEMPTS = 10;
@@ -37,6 +38,21 @@ export class TokenService {
 
 	async issueNewAccessToken(payload: AccessTokenPayload) {
 		return this.jwtService.signAsync(payload);
+	}
+
+	async getRefreshTokenByValue(refreshToken: string) {
+		const refreshTokenHash = await this.stringHasher.hash(refreshToken);
+		const refreshTokenRecord = await this.tokenRepository.getRefreshTokenByHash(refreshTokenHash);
+
+		return refreshTokenRecord ? new GetRefreshTokenInfoDto(refreshTokenRecord) : null;
+	}
+
+	async setRefreshTokenActive(tokenId: string, active: boolean) {
+		await this.tokenRepository.updateRefreshTokenById(tokenId, { active });
+	}
+
+	async markRefreshTokenUsed(tokenId: string) {
+		await this.tokenRepository.updateRefreshTokenById(tokenId, { usedDate: new Date() });
 	}
 
 	private async attemptGenerateNewRefreshToken() {

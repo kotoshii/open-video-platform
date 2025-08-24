@@ -48,6 +48,11 @@ export class AuthSessionService {
 		await this.authSessionRepository.deleteAuthSessionById(sessionId);
 	}
 
+	async getAuthSessionById(sessionId: string) {
+		const authSession = await this.authSessionRepository.getAuthSessionById(sessionId);
+		return authSession ? new GetAuthSessionDto(authSession) : null;
+	}
+
 	private get newSessionExpiresAt() {
 		const expiresInMs = ms(this.jwtConfig.jwtExpiresIn as ms.StringValue);
 		return new Date(Date.now() + expiresInMs);

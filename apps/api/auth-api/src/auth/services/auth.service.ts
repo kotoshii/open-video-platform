@@ -1,4 +1,4 @@
-import { Inject, Injectable, OnModuleInit, UnauthorizedException } from "@nestjs/common";
+import { Inject, Injectable, Logger, OnModuleInit, UnauthorizedException } from "@nestjs/common";
 import type { ClientGrpc } from "@nestjs/microservices";
 import { IpGeoLocator } from "@ovp-lib/common/utils/ip-geo-locator";
 import { SagaBuilder } from "@ovp-lib/common/utils/saga-pattern/saga-builder";
@@ -8,6 +8,7 @@ import { USER_SERVICE_NAME, USERS_PACKAGE_NAME, UserServiceClient } from "@ovp-p
 import { AuthenticateChannelDto } from "~src/auth/dto/authenticate-channel.dto";
 import { CreateAccountDto } from "~src/auth/dto/create-account.dto";
 import { LoginDto } from "~src/auth/dto/login.dto";
+import { RefreshTokensRequestDto } from "~src/auth/dto/refresh-tokens-request.dto";
 import { AuthSessionService } from "~src/auth-sessions/services/auth-session.service";
 import { PasswordService } from "~src/passwords/services/password.service";
 import { AccessTokenDto } from "~src/tokens/dto/access-token.dto";
@@ -16,6 +17,7 @@ import { TokenService } from "~src/tokens/services/token.service";
 
 @Injectable()
 export class AuthService implements OnModuleInit {
+	private readonly logger = new Logger(AuthService.name);
 	private readonly ipGeoLocator: IpGeoLocator = new IpGeoLocator();
 
 	private userGrpcService: UserServiceClient;
@@ -118,16 +120,68 @@ export class AuthService implements OnModuleInit {
 			throw new UnauthorizedException("Unable to authenticate selected channel");
 		}
 
-		await this.authSessionService.setChannelId(sessionId, channelId);
-		await this.authSessionService.resetSessionExpiration(sessionId);
-
 		const accessToken = await this.tokenService.issueNewAccessToken({
 			user_id: userId,
 			channel_id: channelId,
 			session_id: sessionId,
 		});
 
+		await this.authSessionService.setChannelId(sessionId, channelId);
+		await this.authSessionService.resetSessionExpiration(sessionId);
+
 		return new AccessTokenDto(accessToken);
+	}
+
+	async refreshTokens(userId: string, channelId: string | null, sessionId: string, dto: RefreshTokensRequestDto) {
+		if (!channelId) {
+			await this.authSessionService.deleteAuthSessionById(sessionId);
+			throw new UnauthorizedException();
+		}
+
+		const authSession = await this.authSessionService.getAuthSessionById(sessionId);
+		if (!authSession) {
+			throw new UnauthorizedException();
+		}
+
+		if (authSession.userId !== userId || authSession.channelId !== channelId) {
+			await this.authSessionService.deleteAuthSessionById(sessionId);
+			throw new UnauthorizedException();
+		}
+
+		const { refreshToken } = dto;
+
+		const refreshTokenInfo = await this.tokenService.getRefreshTokenByValue(refreshToken);
+		if (!refreshTokenInfo || !refreshTokenInfo.active || refreshTokenInfo.isUsed) {
+			await this.authSessionService.deleteAuthSessionById(sessionId);
+			throw new UnauthorizedException();
+		}
+
+		if (refreshTokenInfo.isExpired) {
+			await this.authSessionService.deleteAuthSessionById(sessionId);
+			await this.tokenService.setRefreshTokenActive(refreshTokenInfo.id, false);
+
+			throw new UnauthorizedException();
+		}
+
+		try {
+			const newRefreshToken = await this.tokenService.issueNewRefreshToken(authSession.id);
+			const newAccessToken = await this.tokenService.issueNewAccessToken({
+				user_id: userId,
+				channel_id: channelId,
+				session_id: sessionId,
+			});
+
+			await this.authSessionService.resetSessionExpiration(sessionId);
+			await this.tokenService.markRefreshTokenUsed(refreshTokenInfo.id);
+			await this.tokenService.setRefreshTokenActive(refreshTokenInfo.id, false);
+
+			return new AuthTokensDto(newAccessToken, newRefreshToken);
+		} catch (error) {
+			this.logger.error(`Failed to refresh tokens: ${error}`);
+			await this.authSessionService.deleteAuthSessionById(sessionId);
+
+			throw error;
+		}
 	}
 
 	private async createAccountSaga(dto: CreateAccountDto) {

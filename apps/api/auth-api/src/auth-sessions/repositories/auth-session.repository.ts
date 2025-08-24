@@ -25,6 +25,10 @@ export class AuthSessionRepository {
 		return this.db.deleteFrom("authSessions").where("id", "=", sessionId).executeTakeFirstOrThrow();
 	}
 
+	async getAuthSessionById(sessionId: string) {
+		return this.authSessionQuery.where("id", "=", sessionId).executeTakeFirst();
+	}
+
 	private get authSessionQuery() {
 		return this.db
 			.selectFrom("authSessions")
