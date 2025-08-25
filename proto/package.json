@@ -14,8 +14,8 @@
 	},
 	"scripts": {
 		"copy-files": "ncp schema dist/schema",
-		"clean": "rimraf dist/",
+		"clean": "rimraf dist/ && rimraf generated/",
 		"proto:generate": "node scripts/generate-types.js",
-		"build": "yarn clean && tsc && yarn copy-files"
+		"build": "yarn clean && yarn proto:generate && tsc && yarn copy-files"
 	}
 }
