@@ -19,6 +19,9 @@
 		},
 		{
 			"path": "./apps/api/auth-api"
+		},
+		{
+			"path": "./apps/api/subscription-api"
 		}
 	]
 }
