@@ -1,0 +1,16 @@
+syntax = "proto3";
+
+package subscriptions;
+
+service SubscriptionService {
+	rpc CheckSubscription (CheckSubscriptionRequest) returns (CheckSubscriptionResponse);
+}
+
+message CheckSubscriptionRequest {
+	string subscriber_channel_id = 1;
+	string subscribed_channel_id = 2;
+}
+
+message CheckSubscriptionResponse {
+	bool is_subscribed = 1;
+}

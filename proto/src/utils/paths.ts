@@ -7,4 +7,5 @@ export function getProtoPath(protoFileName: string): string {
 export const ProtoPaths = {
 	Users: getProtoPath("users.proto"),
 	Channels: getProtoPath("channels.proto"),
+	Subscriptions: getProtoPath("subscriptions.proto"),
 } as const;
