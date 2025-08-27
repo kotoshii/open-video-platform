@@ -23,6 +23,10 @@ GRPC_CHANNEL_SERVICE_URL=localhost:5002
 # JWT
 JWT_SECRET=jwt-local-secret
 JWT_EXPIRES_IN=1h
+
+# Kafka
+KAFKA_BROKERS=localhost:9092
+KAFKA_CLIENT_ID=subscription-api
 ```
 
 ## Compile and run the project
