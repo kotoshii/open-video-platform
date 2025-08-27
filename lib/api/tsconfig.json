@@ -12,7 +12,9 @@
 			"~config/*": ["./config/*"],
 			"~database/*": ["./database/*"],
 			"~grpc/*": ["./grpc/*"],
+			"~kysely/*": ["./kysely/*"],
 			"~logging/*": ["./logging/*"],
+			"~pagination/*": ["./pagination/*"],
 			"~validation/*": ["./validation/*"]
 		}
 	},

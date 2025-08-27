@@ -8,7 +8,9 @@
 		"./config/*": "./dist/config/*.js",
 		"./database/*": "./dist/database/*.js",
 		"./grpc/*": "./dist/grpc/*.js",
+		"./kysely/*": "./dist/kysely/*.js",
 		"./logging/*": "./dist/logging/*.js",
+		"./pagination/*": "./dist/pagination/*.js",
 		"./validation/*": "./dist/validation/*.js"
 	},
 	"devDependencies": {

@@ -6,6 +6,7 @@
 		"rootDir": ".",
 		"composite": true,
 		"paths": {
+			"~constants/*": ["./constants/*"],
 			"~types/*": ["./types/*"],
 			"~utils/*": ["./utils/*"]
 		}

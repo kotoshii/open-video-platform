@@ -3,6 +3,7 @@
 	"version": "0.1.0",
 	"license": "LGPL-3.0-only",
 	"exports": {
+		"./constants/*": "./dist/constants/*.js",
 		"./types/*": "./dist/types/*.js",
 		"./utils/*": "./dist/utils/*.js"
 	},
