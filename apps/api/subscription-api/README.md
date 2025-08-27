@@ -18,6 +18,7 @@ DATABASE_URL=postgres://user:password@localhost:5432/postgres?sslmode=disable
 
 # gRPC
 GRPC_URL=0.0.0.0:5004
+GRPC_CHANNEL_SERVICE_URL=localhost:5002
 
 # JWT
 JWT_SECRET=jwt-local-secret

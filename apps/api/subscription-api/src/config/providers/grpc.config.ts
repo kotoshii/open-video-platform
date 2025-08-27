@@ -12,4 +12,8 @@ export class GrpcConfig extends CommonGrpcConfig {
 	override get grpcUrl() {
 		return this.config.get<string>("GRPC_URL", "0.0.0.0:5004");
 	}
+
+	get grpcChannelServiceUrl() {
+		return this.config.get<string>("GRPC_CHANNEL_SERVICE_URL", "0.0.0.0:5002");
+	}
 }
