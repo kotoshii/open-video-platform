@@ -2370,6 +2370,11 @@ jws@^3.2.2:
     jwa "^1.4.1"
     safe-buffer "^5.0.1"
 
+kafkajs@^2.2.4:
+  version "2.2.4"
+  resolved "https://registry.yarnpkg.com/kafkajs/-/kafkajs-2.2.4.tgz#59e6e16459d87fdf8b64be73970ed5aa42370a5b"
+  integrity sha512-j/YeapB1vfPT2iOIUn/vxdyKEuhuY2PxMBvf5JWux6iSaukAccrMtXEY/Lb7OvavDhOWME589bpLrEdnVHjfjA==
+
 kysely-codegen@^0.18.5:
   version "0.18.5"
   resolved "https://registry.yarnpkg.com/kysely-codegen/-/kysely-codegen-0.18.5.tgz#d512585a80043289c2acddbbf86c337b9d3f7d51"
