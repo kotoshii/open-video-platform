@@ -1,3 +1,4 @@
 export enum KafkaTopic {
-	SubscriptionCreated = "subscription.created",
+    SubscriptionCreated = "subscription.created",
+    SubscriptionDeleted = "subscription.deleted",
 }
