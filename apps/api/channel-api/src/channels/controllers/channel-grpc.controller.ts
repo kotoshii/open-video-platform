@@ -13,6 +13,8 @@ import { CreateChannelGrpcRequestDto } from "~src/channels/dto/grpc/create-chann
 import { CreateChannelGrpcResponseDto } from "~src/channels/dto/grpc/create-channel-grpc-response.dto";
 import { DeleteChannelGrpcRequestDto } from "~src/channels/dto/grpc/delete-channel-grpc-request.dto";
 import { DeleteChannelGrpcResponseDto } from "~src/channels/dto/grpc/delete-channel-grpc-response.dto";
+import { GetChannelGrpcRequestDto } from "~src/channels/dto/grpc/get-channel-grpc-request.dto";
+import { GetChannelGrpcResponseDto } from "~src/channels/dto/grpc/get-channel-grpc-response.dto";
 import { ChannelService } from "~src/channels/services/channel.service";
 
 @GrpcController()
@@ -34,6 +36,13 @@ export class ChannelGrpcController implements ChannelServiceController {
 		const deletedChannelId = await this.channelService.deleteChannelById(channelId);
 
 		return new DeleteChannelGrpcResponseDto(channelId === deletedChannelId);
+	}
+
+	async getChannel(@Payload() body: GetChannelGrpcRequestDto) {
+		const { channelId } = body;
+		const channel = await this.channelService.getChannelByIdOrThrow(channelId);
+
+		return new GetChannelGrpcResponseDto(channel);
 	}
 
 	async validateAuthenticationDetails(
