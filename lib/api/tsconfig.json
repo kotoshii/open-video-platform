@@ -12,6 +12,7 @@
 			"~config/*": ["./config/*"],
 			"~database/*": ["./database/*"],
 			"~grpc/*": ["./grpc/*"],
+			"~kafka/*": ["./kafka/*"],
 			"~kysely/*": ["./kysely/*"],
 			"~logging/*": ["./logging/*"],
 			"~pagination/*": ["./pagination/*"],
