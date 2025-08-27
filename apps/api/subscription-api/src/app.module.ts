@@ -4,14 +4,14 @@ import { KyselyModuleConfigBuilderFactory } from "@ovp-lib/api/config/builders/k
 
 import { ConfigModule } from "~src/config/config.module";
 import { DatabaseConfig } from "~src/config/providers/database.config";
+import { SubscriptionsModule } from "~src/subscriptions/subscriptions.module";
 
 @Module({
 	imports: [
 		ConfigModule,
-		new KyselyModuleConfigBuilder().setDatabaseConfigClass(DatabaseConfig).addDefaults().build(),
-		new JwtModuleConfigBuilder().build(),
 		KyselyModuleConfigBuilderFactory.create(DatabaseConfig, "postgres").addDefaults().build(),
 		JwtModuleConfigBuilderFactory.create().build(),
+		SubscriptionsModule,
 	],
 })
 export class AppModule {}
