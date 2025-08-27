@@ -1,4 +1,4 @@
-import { Body, Controller, Headers, HttpStatus, Post, Res } from "@nestjs/common";
+import { Body, Controller, Headers, HttpCode, HttpStatus, Post, Res } from "@nestjs/common";
 import {
 	ApiBadRequestResponse,
 	ApiConflictResponse,
@@ -89,6 +89,7 @@ export class AuthController {
 		return this.authService.refreshTokens(userId, channelId, sessionId, body);
 	}
 
+	@HttpCode(HttpStatus.OK)
 	@NoChannel()
 	@ApiNoContentResponse({ description: "Logout successful or user was already logged out" })
 	@Post("logout")
