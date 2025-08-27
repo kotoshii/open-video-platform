@@ -1,6 +1,6 @@
 import { Module } from "@nestjs/common";
-import { JwtModuleConfigBuilder } from "@ovp-lib/api/config/builders/jwt-module-config-builder";
-import { KyselyModuleConfigBuilder } from "@ovp-lib/api/config/builders/kysely-module-config-builder";
+import { JwtModuleConfigBuilderFactory } from "@ovp-lib/api/config/builders/jwt-module-config-builder";
+import { KyselyModuleConfigBuilderFactory } from "@ovp-lib/api/config/builders/kysely-module-config-builder";
 
 import { AuthModule } from "~src/auth/auth.module";
 import { AuthSessionsModule } from "~src/auth-sessions/auth-sessions.module";
@@ -12,8 +12,8 @@ import { TokensModule } from "~src/tokens/tokens.module";
 @Module({
 	imports: [
 		ConfigModule,
-		new KyselyModuleConfigBuilder().setDatabaseConfigClass(DatabaseConfig).addDefaults().build(),
-		new JwtModuleConfigBuilder().build(),
+		KyselyModuleConfigBuilderFactory.create(DatabaseConfig, "postgres").addDefaults().build(),
+		JwtModuleConfigBuilderFactory.create().build(),
 		AuthModule,
 		AuthSessionsModule,
 		PasswordsModule,

@@ -3,7 +3,13 @@ import { JwtModule } from "@nestjs/jwt";
 import { JWT_CONFIG_INJECTION_TOKEN } from "~config/constants/injection-tokens";
 import { ICommonJwtConfig } from "~config/interfaces/common-jwt-config.interface";
 
-export class JwtModuleConfigBuilder {
+export class JwtModuleConfigBuilderFactory {
+	static create() {
+		return new JwtModuleConfigBuilder();
+	}
+}
+
+class JwtModuleConfigBuilder {
 	build() {
 		return JwtModule.registerAsync({
 			useFactory: (jwtConfig: ICommonJwtConfig) => ({
