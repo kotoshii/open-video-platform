@@ -1,5 +1,5 @@
 import { Module } from "@nestjs/common";
-import { ClientsModule, Transport } from "@nestjs/microservices";
+import { GrpcClientsModuleConfigBuilderFactory } from "@ovp-lib/api/config/builders/grpc-clients-module-config-builder";
 import { USERS_PACKAGE_NAME } from "@ovp-proto/types/users";
 import { ProtoPaths } from "@ovp-proto/types/utils/paths";
 
@@ -11,20 +11,9 @@ import { GrpcConfig } from "~src/config/providers/grpc.config";
 
 @Module({
 	imports: [
-		ClientsModule.registerAsync([
-			{
-				name: USERS_PACKAGE_NAME,
-				useFactory: (grpcConfig: GrpcConfig) => ({
-					transport: Transport.GRPC,
-					options: {
-						package: USERS_PACKAGE_NAME,
-						url: grpcConfig.grpcUserServiceUrl,
-						protoPath: ProtoPaths.Users,
-					},
-				}),
-				inject: [GrpcConfig],
-			},
-		]),
+		GrpcClientsModuleConfigBuilderFactory.create(GrpcConfig)
+			.addClient(USERS_PACKAGE_NAME, "grpcUserServiceUrl", ProtoPaths.Users)
+			.build(),
 	],
 	controllers: [ChannelController, ChannelGrpcController],
 	providers: [ChannelService, ChannelRepository],
