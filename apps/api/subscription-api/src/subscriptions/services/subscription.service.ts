@@ -1,8 +1,8 @@
 import { Inject, Injectable, NotFoundException, OnModuleInit } from "@nestjs/common";
 import type { ClientGrpc, ClientKafka } from "@nestjs/microservices";
 import { KAFKA_CLIENT } from "@ovp-lib/api/kafka/constants/client-names";
-import { SubscriptionCreatedKafkaPayloadDto } from "@ovp-lib/api/kafka/dto/subscription-created-kafka-payload.dto";
-import { SubscriptionDeletedKafkaPayloadDto } from "@ovp-lib/api/kafka/dto/subscription-deleted-kafka-payload.dto";
+import { SubscriptionCreatedKafkaEventPayloadDto } from "@ovp-lib/api/kafka/dto/subscription-created-kafka-event-payload.dto";
+import { SubscriptionDeletedKafkaEventPayloadDto } from "@ovp-lib/api/kafka/dto/subscription-deleted-kafka-event-payload.dto";
 import { OrderByKey } from "@ovp-lib/api/kysely/types/order-by-key";
 import { PaginatedResponseDto } from "@ovp-lib/api/pagination/dto/paginated-response.dto";
 import { PaginationOptionsDto } from "@ovp-lib/api/pagination/dto/pagination-options.dto";
@@ -63,8 +63,8 @@ export class SubscriptionService implements OnModuleInit {
 		await this.subscriptionRepository.deleteSubscription(subscriberId, channelId);
 		await this.kafkaClient
 			.emit(
-				SubscriptionDeletedKafkaPayloadDto.Topic,
-				SubscriptionDeletedKafkaPayloadDto.createPayload(subscriberId, channelId),
+				SubscriptionDeletedKafkaEventPayloadDto.Topic,
+				SubscriptionDeletedKafkaEventPayloadDto.createPayload(subscriberId, channelId),
 			)
 			.toPromise();
 	}
@@ -105,8 +105,8 @@ export class SubscriptionService implements OnModuleInit {
 				async (input) => {
 					await this.kafkaClient
 						.emit(
-							SubscriptionCreatedKafkaPayloadDto.Topic,
-							SubscriptionCreatedKafkaPayloadDto.createPayload(input.subscriberId, input.channelId),
+							SubscriptionCreatedKafkaEventPayloadDto.Topic,
+							SubscriptionCreatedKafkaEventPayloadDto.createPayload(input.subscriberId, input.channelId),
 						)
 						.toPromise();
 				},
