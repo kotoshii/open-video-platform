@@ -6,6 +6,7 @@
 		"rootDir": ".",
 		"composite": true,
 		"experimentalDecorators": true,
+		"strictPropertyInitialization": false,
 		"paths": {
 			"~auth/*": ["./auth/*"],
 			"~common/*": ["./common/*"],
