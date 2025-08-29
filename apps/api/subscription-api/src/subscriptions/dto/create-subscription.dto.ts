@@ -6,5 +6,5 @@ export class CreateSubscriptionDto {
 	@IsString()
 	@IsNotEmpty()
 	@ApiProperty()
-	subscribedChannelId: string;
+	channelId: string;
 }

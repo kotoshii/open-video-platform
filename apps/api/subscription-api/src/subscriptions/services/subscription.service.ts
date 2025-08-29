@@ -29,26 +29,22 @@ export class SubscriptionService implements OnModuleInit {
 		this.channelGrpcService = this.channelClientGrpc.getService<ChannelServiceClient>(CHANNEL_SERVICE_NAME);
 	}
 
-	async createSubscriptionOrThrow(subscriberChannelId: string, dto: CreateSubscriptionDto) {
-		const { subscribedChannelId } = dto;
+	async createSubscriptionOrThrow(subscriberId: string, dto: CreateSubscriptionDto) {
+		const { channelId } = dto;
 
-		const subscribedChannel = await this.channelGrpcService.getChannel({ channelId: subscribedChannelId }).toPromise();
-		if (!subscribedChannel?.channel) {
+		const channel = await this.channelGrpcService.getChannel({ channelId }).toPromise();
+		if (!channel?.channel) {
 			throw new NotFoundException("Channel not found");
 		}
 
-		const existing = this.getSubscription(subscriberChannelId, subscribedChannelId);
+		const existing = this.getSubscription(subscriberId, channelId);
 		if (existing) {
 			return existing;
 		}
 
-		const subscribedChannelName = subscribedChannel.channel.name;
+		const channelName = channel.channel.name;
 
-		const sagaResults = await this.createSubscriptionSaga(
-			subscriberChannelId,
-			subscribedChannelId,
-			subscribedChannelName,
-		);
+		const sagaResults = await this.createSubscriptionSaga(subscriberId, channelId, channelName);
 
 		if (sagaResults.error) {
 			throw sagaResults.error;
@@ -57,64 +53,51 @@ export class SubscriptionService implements OnModuleInit {
 		const subscription = sagaResults.results?.createSubscription || null;
 
 		if (!subscription) {
-			throw new Error(
-				`Failed to create subscription: subscriberChannelId ${subscriberChannelId}, subscribedChannelId ${subscribedChannelId}`,
-			);
+			throw new Error(`Failed to create subscription: subscriberId ${subscriberId}, channelId ${channelId}`);
 		}
 
 		return new GetSubscriptionDto(subscription);
 	}
 
-	async deleteSubscription(subscriberChannelId: string, subscribedChannelId: string) {
-		await this.subscriptionRepository.deleteSubscription(subscriberChannelId, subscribedChannelId);
+	async deleteSubscription(subscriberId: string, channelId: string) {
+		await this.subscriptionRepository.deleteSubscription(subscriberId, channelId);
 		await this.kafkaClient
 			.emit(
 				SubscriptionDeletedKafkaPayloadDto.Topic,
-				SubscriptionDeletedKafkaPayloadDto.createPayload(subscriberChannelId, subscribedChannelId),
+				SubscriptionDeletedKafkaPayloadDto.createPayload(subscriberId, channelId),
 			)
 			.toPromise();
 	}
 
-	async getSubscription(subscriberChannelId: string, subscribedChannelId: string) {
-		const subscription = await this.subscriptionRepository.getSubscription(subscriberChannelId, subscribedChannelId);
+	async getSubscription(subscriberId: string, channelId: string) {
+		const subscription = await this.subscriptionRepository.getSubscription(subscriberId, channelId);
 		return subscription ? new GetSubscriptionDto(subscription) : null;
 	}
 
 	async getPaginatedSubscriptionsBySubscriberId(
-		subscriberChannelId: string,
+		subscriberId: string,
 		filter: GetSubscriptionsFilterDto,
 		pagination: PaginationOptionsDto<OrderByKey<Subscription>>,
 	): Promise<PaginatedResponseDto<GetSubscriptionDto>> {
-		const data = await this.subscriptionRepository.getSubscriptionsBySubscriberChannelId(
-			subscriberChannelId,
-			filter,
-			pagination,
-		);
-		const { count } = await this.subscriptionRepository.getSubscriptionsBySubscriberChannelIdCount(
-			subscriberChannelId,
-			filter,
-		);
+		const data = await this.subscriptionRepository.getSubscriptionsBySubscriberId(subscriberId, filter, pagination);
+		const { count } = await this.subscriptionRepository.getSubscriptionsBySubscriberIdCount(subscriberId, filter);
 
 		return new PaginatedResponseDto(data, pagination, Number(count));
 	}
 
-	private async createSubscriptionSaga(
-		subscriberChannelId: string,
-		subscribedChannelId: string,
-		subscribedChannelName: string,
-	) {
-		return SagaBuilder.create(`create-subscription-${subscriberChannelId}-to-${subscribedChannelId}`)
+	private async createSubscriptionSaga(subscriberId: string, channelId: string, channelName: string) {
+		return SagaBuilder.create(`create-subscription-${subscriberId}-to-${channelId}`)
 			.addStep(
 				"createSubscription",
 				async () => {
 					return this.subscriptionRepository.createSubscription({
-						subscriberChannelId,
-						subscribedChannelId,
-						subscribedChannelName,
+						subscriberId,
+						channelId,
+						channelName,
 					});
 				},
 				async (_, output) => {
-					await this.subscriptionRepository.deleteSubscription(output.subscriberChannelId, output.subscribedChannelId);
+					await this.subscriptionRepository.deleteSubscription(output.subscriberId, output.channelId);
 				},
 			)
 			.addStep(
@@ -123,7 +106,7 @@ export class SubscriptionService implements OnModuleInit {
 					await this.kafkaClient
 						.emit(
 							SubscriptionCreatedKafkaPayloadDto.Topic,
-							SubscriptionCreatedKafkaPayloadDto.createPayload(input.subscriberChannelId, input.subscribedChannelId),
+							SubscriptionCreatedKafkaPayloadDto.createPayload(input.subscriberId, input.channelId),
 						)
 						.toPromise();
 				},

@@ -12,8 +12,8 @@ export class SubscriptionGrpcController implements SubscriptionServiceController
 	constructor(private readonly subscriptionService: SubscriptionService) {}
 
 	async checkSubscription(@Payload() body: CheckSubscriptionGrpcRequestDto): Promise<CheckSubscriptionGrpcResponseDto> {
-		const { subscriberChannelId, subscribedChannelId } = body;
-		const subscription = await this.subscriptionService.getSubscription(subscriberChannelId, subscribedChannelId);
+		const { subscriberId, channelId } = body;
+		const subscription = await this.subscriptionService.getSubscription(subscriberId, channelId);
 
 		return new CheckSubscriptionGrpcResponseDto(Boolean(subscription));
 	}

@@ -15,41 +15,41 @@ export class SubscriptionRepository {
 		return this.db.insertInto("subscriptions").values(data).returningAll().executeTakeFirstOrThrow();
 	}
 
-	async getSubscription(subscriberChannelId: string, subscribedChannelId: string) {
+	async getSubscription(subscriberId: string, channelId: string) {
 		return this.subscriptionQuery
-			.where("subscriberChannelId", "=", subscriberChannelId)
-			.where("subscribedChannelId", "=", subscribedChannelId)
+			.where("subscriberId", "=", subscriberId)
+			.where("channelId", "=", channelId)
 			.executeTakeFirst();
 	}
 
-	async getSubscriptionsBySubscriberChannelId(
-		subscriberChannelId: string,
+	async getSubscriptionsBySubscriberId(
+		subscriberId: string,
 		filter: GetSubscriptionsFilterDto,
 		pagination: PaginationOptionsDto<OrderByKey<Subscription>>,
 	) {
 		const { offset, limit, orderBy, order } = pagination;
 
 		return this.createFilteredSubscriptionQuery(filter)
-			.where("subscriberChannelId", "=", subscriberChannelId)
+			.where("subscriberId", "=", subscriberId)
 			.offset(offset)
 			.limit(limit)
 			.orderBy(orderBy, order)
 			.execute();
 	}
 
-	async getSubscriptionsBySubscriberChannelIdCount(subscriberChannelId: string, filter: GetSubscriptionsFilterDto) {
+	async getSubscriptionsBySubscriberIdCount(subscriberId: string, filter: GetSubscriptionsFilterDto) {
 		return this.createFilteredSubscriptionQuery(filter)
 			.clearSelect()
 			.select((eb) => eb.fn.countAll().as("count"))
-			.where("subscriberChannelId", "=", subscriberChannelId)
+			.where("subscriberId", "=", subscriberId)
 			.executeTakeFirstOrThrow();
 	}
 
-	async deleteSubscription(subscriberChannelId: string, subscribedChannelId: string) {
+	async deleteSubscription(subscriberId: string, channelId: string) {
 		return this.db
 			.deleteFrom("subscriptions")
-			.where("subscriberChannelId", "=", subscriberChannelId)
-			.where("subscribedChannelId", "=", subscribedChannelId)
+			.where("subscriberId", "=", subscriberId)
+			.where("channelId", "=", channelId)
 			.returningAll()
 			.executeTakeFirstOrThrow();
 	}
@@ -58,9 +58,9 @@ export class SubscriptionRepository {
 		return this.db
 			.selectFrom("subscriptions")
 			.select("id")
-			.select("subscriberChannelId")
-			.select("subscribedChannelId")
-			.select("subscribedChannelName")
+			.select("subscriberId")
+			.select("channelId")
+			.select("channelName")
 			.select("createdDate")
 			.select("updatedDate");
 	}
@@ -71,7 +71,7 @@ export class SubscriptionRepository {
 		const query = this.subscriptionQuery;
 
 		if (search) {
-			query.where("subscribedChannelName", "=", search);
+			query.where("channelName", "ilike", search);
 		}
 
 		return query;

@@ -5,10 +5,10 @@ export class CheckSubscriptionGrpcRequestDto implements CheckSubscriptionRequest
 	@IsUUID()
 	@IsString()
 	@IsNotEmpty()
-	subscriberChannelId: string;
+	subscriberId: string;
 
 	@IsUUID()
 	@IsString()
 	@IsNotEmpty()
-	subscribedChannelId: string;
+	channelId: string;
 }

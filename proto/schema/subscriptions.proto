@@ -7,8 +7,8 @@ service SubscriptionService {
 }
 
 message CheckSubscriptionRequest {
-	string subscriber_channel_id = 1;
-	string subscribed_channel_id = 2;
+	string subscriber_id = 1;
+	string channel_id = 2;
 }
 
 message CheckSubscriptionResponse {

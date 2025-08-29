@@ -6,13 +6,12 @@ import { Subscription } from "~db/schema";
 
 export class GetSubscriptionDto {
 	constructor(subscription: Selectable<Subscription>) {
-		const { id, subscriberChannelId, subscribedChannelId, subscribedChannelName, createdDate, updatedDate } =
-			subscription;
+		const { id, subscriberId, channelId, channelName, createdDate, updatedDate } = subscription;
 
 		this.id = id;
-		this.subscriberChannelId = subscriberChannelId;
-		this.subscribedChannelId = subscribedChannelId;
-		this.subscribedChannelName = subscribedChannelName;
+		this.subscriberId = subscriberId;
+		this.channelId = channelId;
+		this.channelName = channelName;
 		this.createdDate = createdDate;
 		this.updatedDate = updatedDate;
 	}
@@ -21,13 +20,13 @@ export class GetSubscriptionDto {
 	id: string;
 
 	@ApiProperty()
-	subscriberChannelId: string;
+	subscriberId: string;
 
 	@ApiProperty()
-	subscribedChannelId: string;
+	channelId: string;
 
 	@ApiProperty()
-	subscribedChannelName: string;
+	channelName: string;
 
 	@Exclude()
 	createdDate: Date;

@@ -23,15 +23,15 @@ export class SubscriptionController {
 	@ApiNotFoundResponse({ type: NestErrorResponseDto, description: "Channel not found" })
 	@ApiBadRequestResponse({ type: NestErrorResponseDto, description: "Params validation failed" })
 	@Post()
-	async createSubscription(@ChannelId() subscriberChannelId: string, @Body() body: CreateSubscriptionDto) {
-		return this.subscriptionService.createSubscriptionOrThrow(subscriberChannelId, body);
+	async createSubscription(@ChannelId() subscriberId: string, @Body() body: CreateSubscriptionDto) {
+		return this.subscriptionService.createSubscriptionOrThrow(subscriberId, body);
 	}
 
 	@HttpCode(HttpStatus.NO_CONTENT)
 	@ApiNoContentResponse({ description: "Subscription successfully deleted or it didn't even exist" })
 	@Delete(":channelId")
-	async deleteSubscription(@ChannelId() subscriberChannelId: string, @Param("channelId") subscribedChannelId: string) {
-		return this.subscriptionService.deleteSubscription(subscriberChannelId, subscribedChannelId);
+	async deleteSubscription(@ChannelId() subscriberId: string, @Param("channelId") channelId: string) {
+		return this.subscriptionService.deleteSubscription(subscriberId, channelId);
 	}
 
 	@ApiPaginatedResponse(GetSubscriptionDto, {
@@ -39,11 +39,11 @@ export class SubscriptionController {
 	})
 	@Get("current")
 	async getCurrentChannelSubscriptions(
-		@ChannelId() subscriberChannelId: string,
+		@ChannelId() subscriberId: string,
 		@Query() filter: GetSubscriptionsFilterDto,
-		@Pagination<OrderByKey<Subscription>>({ order: SortOrder.Asc, orderBy: "subscribedChannelName", limit: 50 })
+		@Pagination<OrderByKey<Subscription>>({ order: SortOrder.Asc, orderBy: "channelName", limit: 50 })
 		pagination: PaginationOptionsDto<OrderByKey<Subscription>>,
 	) {
-		return this.subscriptionService.getPaginatedSubscriptionsBySubscriberId(subscriberChannelId, filter, pagination);
+		return this.subscriptionService.getPaginatedSubscriptionsBySubscriberId(subscriberId, filter, pagination);
 	}
 }
