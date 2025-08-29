@@ -1,3 +1,5 @@
+import { ulid } from "ulid";
+
 import { BaseKafkaEventPayload } from "~kafka/types/events/base-kafka-event-payload";
 
 type BaseKafkaEventPayloadDtoClassWithStaticFields = BaseKafkaEventPayloadDto & { EventType: string };
@@ -15,7 +17,7 @@ export abstract class BaseKafkaEventPayloadDto {
 		TExtraFields extends object,
 	>(this: TBase, extraFields: TExtraFields): BuildPayloadReturnType<TBase, TExtraFields> {
 		return {
-			eventId: crypto.randomUUID(),
+			eventId: ulid(),
 			timestamp: Date.now(),
 			type: BaseKafkaEventPayloadDto.EventType,
 			...extraFields,

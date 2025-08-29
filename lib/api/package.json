@@ -25,7 +25,8 @@
 		"@nestjs/core": "^11.1.6",
 		"@nestjs/jwt": "^11.0.0",
 		"@ovp-lib/common": "^0.1.0",
-		"express": "^5.1.0"
+		"express": "^5.1.0",
+		"ulid": "^3.0.1"
 	},
 	"scripts": {
 		"clean": "rimraf dist/",
