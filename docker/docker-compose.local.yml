@@ -48,3 +48,14 @@ services:
     environment:
       KAFKA_CLUSTERS_0_NAME: local
       KAFKA_CLUSTERS_0_BOOTSTRAPSERVERS: kafka:29092
+
+  redis:
+    # REDIS_URL=redis://default:localpassword@127.0.0.1:6379
+
+    image: redis/redis-stack:latest
+    container_name: redis-shared
+    ports:
+      - "6379:6379"
+    environment:
+      REDIS_PASSWORD: localpassword
+      REDIS_PORT: 6379
