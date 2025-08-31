@@ -1,9 +1,7 @@
 import { Inject, Injectable, NotFoundException, OnModuleInit, UnauthorizedException } from "@nestjs/common";
 import type { ClientGrpc } from "@nestjs/microservices";
 import { USER_SERVICE_NAME, USERS_PACKAGE_NAME, UserServiceClient } from "@ovp-proto/types/users";
-import { Insertable } from "kysely";
 
-import { Channel } from "~db/schema";
 import { CreateChannelDto } from "~src/channels/dto/create-channel.dto";
 import { GetChannelDto } from "~src/channels/dto/get-channel.dto";
 import { ChannelAuthDetailsGrpcRequestDto } from "~src/channels/dto/grpc/channel-auth-details-grpc-request.dto";
@@ -57,13 +55,11 @@ export class ChannelService implements OnModuleInit {
 
 		const { name, description } = dto;
 
-		const data: Insertable<Channel> = {
+		const { id: channelId } = await this.channelRepository.createChannel({
 			userId,
 			name,
 			description,
-		};
-
-		const { id: channelId } = await this.channelRepository.createChannel(data);
+		});
 		// todo remove extra db query
 		return this.getChannelByIdOrThrow(channelId);
 	}
