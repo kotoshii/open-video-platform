@@ -1,6 +1,8 @@
 import { KafkaEventTypes } from "~kafka/constants/event-types";
 import { BaseKafkaEventPayload } from "~kafka/types/events/base-kafka-event-payload";
 
+export type SubscriptionKafkaEventPayload = SubscriptionCreatedKafkaEventPayload | SubscriptionDeletedKafkaEventPayload;
+
 export interface SubscriptionCreatedKafkaEventPayload extends BaseKafkaEventPayload {
 	type: typeof KafkaEventTypes.Subscriptions.SubscriptionCreated;
 	subscriberId: string;
