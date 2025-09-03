@@ -1,6 +1,7 @@
 import { Inject, Injectable, NotFoundException, OnModuleInit } from "@nestjs/common";
 import type { ClientGrpc, ClientKafka } from "@nestjs/microservices";
 import { KAFKA_CLIENT } from "@ovp-lib/api/kafka/constants/client-names";
+import { KafkaTopic } from "@ovp-lib/api/kafka/constants/topic-names";
 import { SubscriptionCreatedKafkaEventPayloadDto } from "@ovp-lib/api/kafka/dto/subscription-created-kafka-event-payload.dto";
 import { SubscriptionDeletedKafkaEventPayloadDto } from "@ovp-lib/api/kafka/dto/subscription-deleted-kafka-event-payload.dto";
 import { OrderByKey } from "@ovp-lib/api/kysely/types/order-by-key";
@@ -63,7 +64,7 @@ export class SubscriptionService implements OnModuleInit {
 		await this.subscriptionRepository.deleteSubscription(subscriberId, channelId);
 		await this.kafkaClient
 			.emit(
-				SubscriptionDeletedKafkaEventPayloadDto.Topic,
+				KafkaTopic.SubscriptionEvents,
 				SubscriptionDeletedKafkaEventPayloadDto.createPayload(subscriberId, channelId),
 			)
 			.toPromise();
@@ -105,7 +106,7 @@ export class SubscriptionService implements OnModuleInit {
 				async (input) => {
 					await this.kafkaClient
 						.emit(
-							SubscriptionCreatedKafkaEventPayloadDto.Topic,
+							KafkaTopic.SubscriptionEvents,
 							SubscriptionCreatedKafkaEventPayloadDto.createPayload(input.subscriberId, input.channelId),
 						)
 						.toPromise();
