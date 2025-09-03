@@ -15,9 +15,4 @@ export class CommonAppConfig implements ICommonAppConfig {
 	get port() {
 		return parseInt(this.config.get<string>("PORT", ""), 10);
 	}
-
-	get corsDomains() {
-		const domains = this.config.get<string>("CORS_DOMAINS", "*").split(",");
-		return domains.includes("*") ? "*" : domains;
-	}
 }

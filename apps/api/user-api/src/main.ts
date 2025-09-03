@@ -14,18 +14,17 @@ const logger = new Logger("bootstrap");
 async function bootstrap() {
 	const configBuilder = await NestAppConfigBuilderFactory.create(AppModule);
 
+	const appConfig = configBuilder.getProvider(AppConfig);
+	const grpcConfig = configBuilder.getProvider(GrpcConfig);
+
 	const app = configBuilder
-		.provideConfig(AppConfig)
-		.provideConfig(GrpcConfig)
-		.setGlobalPrefix()
-		.addCors()
 		.addDefaults()
 		.addSwagger("User API Specification")
 		.addMicroservice({
 			transport: Transport.GRPC,
 			options: {
 				package: USERS_PACKAGE_NAME,
-				url: configBuilder.lookupConfigValue("grpcUrl"),
+				url: grpcConfig.grpcUrl,
 				protoPath: ProtoPaths.Users,
 				onLoadPackageDefinition: (pkg, server) => {
 					new ReflectionService(pkg).addToServer(server);
@@ -35,7 +34,7 @@ async function bootstrap() {
 		.build();
 
 	await app.startAllMicroservices();
-	await app.listen(configBuilder.lookupConfigValue("port") as number);
+	await app.listen(appConfig.port);
 
 	logger.debug(`Application is running on: ${await app.getUrl()}`);
 }

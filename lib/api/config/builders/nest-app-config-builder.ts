@@ -13,20 +13,15 @@ import { NestFactory, Reflector } from "@nestjs/core";
 import { JwtService } from "@nestjs/jwt";
 import { MicroserviceOptions } from "@nestjs/microservices";
 import { DocumentBuilder, SwaggerModule } from "@nestjs/swagger";
-import { MaybeArray } from "@ovp-lib/common/types/maybe-array";
-import { toArray } from "@ovp-lib/common/utils/arrays";
-import { ClassConstructor } from "class-transformer";
 
 import { JwtAuthGuard } from "~auth/guards/jwt-auth.guard";
 import { InternalServerErrorFilter } from "~common/filters/internal-server-error.filter";
-import { JWT_CONFIG_INJECTION_TOKEN } from "~config/constants/injection-tokens";
+import { CORS_CONFIG_INJECTION_TOKEN, JWT_CONFIG_INJECTION_TOKEN } from "~config/constants/injection-tokens";
+import { ICommonCorsConfig } from "~config/interfaces/common-cors-config.interface";
 import { HttpLoggingInterceptor } from "~logging/interceptors/http-logging.interceptor";
 
 // copypasted from Nest type definitions
 type IEntryNestModule = Type | DynamicModule | ForwardReference | Promise<IEntryNestModule>;
-
-// biome-ignore lint/suspicious/noExplicitAny: exact type is unknown, but `unknown` type is not allowed in `InstanceType`
-type ConfigInstance = InstanceType<any>;
 
 export class NestAppConfigBuilderFactory {
 	// to make it not callable with `new` keyword
@@ -41,11 +36,7 @@ export class NestAppConfigBuilderFactory {
 class NestAppConfigBuilder {
 	private readonly logger = new Logger(NestAppConfigBuilder.name);
 
-	private readonly configInstances: ConfigInstance[] = [];
-
 	constructor(private readonly app: INestApplication) {}
-
-	/* methods directly related to "building" process; start with "add", e.g. addLoggingInterceptor() */
 
 	setGlobalPrefix(prefix = "api") {
 		this.app.setGlobalPrefix(prefix);
@@ -53,7 +44,8 @@ class NestAppConfigBuilder {
 	}
 
 	addCors(corsDomainsConfigKey = "corsDomains") {
-		const corsDomains = this.lookupConfigValue<string[] | "*">(corsDomainsConfigKey);
+		const corsConfig = this.app.get<ICommonCorsConfig>(CORS_CONFIG_INJECTION_TOKEN);
+		const corsDomains = corsConfig?.corsDomains;
 
 		if (!corsDomains) {
 			this.logger.warn(`Could not add CORS config: ${corsDomainsConfigKey} config value not found`);
@@ -114,15 +106,20 @@ class NestAppConfigBuilder {
 
 	/**
 	 * Default config includes
-	 * 1. Global JWT auth guard.
-	 * 2. Global validation pipe with the following options:
+	 * 1. Global routes prefix ("api" by default)
+	 * 2. CORS config based on env variables
+	 * 3. Global JWT auth guard.
+	 * 4. Global validation pipe with the following options:
 	 * `{ whitelist: true, transform: true, transformOptions: { enableImplicitConversion: true } }`
-	 * 3. Global interceptors: ClassSerializerInterceptor and LoggingInterceptor.
-	 * 4. Global exception filter: InternalServerErrorFilter.
+	 * 5. Global ClassSerializerInterceptor
+	 * 6. Global LoggingInterceptor
+	 * 7. Global exception filter: InternalServerErrorFilter.
 	 *
-	 * It **DOES NOT** include: global prefix, CORS, Swagger, anything related to microservices.
+	 * It **DOES NOT** include: Swagger, anything related to microservices.
 	 * */
 	addDefaults() {
+		this.setGlobalPrefix();
+		this.addCors();
 		this.addGlobalJwtAuthGuard();
 		this.addGlobalValidationPipe({
 			whitelist: true,
@@ -140,31 +137,7 @@ class NestAppConfigBuilder {
 		return this.app;
 	}
 
-	/* public methods that are not related to "building" process itself */
-
-	provideConfig<T extends ClassConstructor<ConfigInstance>>(configInstanceClass: MaybeArray<T>) {
-		const instances = toArray(configInstanceClass)
-			.map((cls) => this.app.get(cls))
-			.filter(Boolean);
-		this.configInstances.push(...instances);
-
-		return this;
-	}
-
-	lookupConfigValue<R = unknown>(key: string): R | null {
-		const instance = this.findFirstConfigInstanceWithKey(key);
-		const value = instance?.[key] || null;
-
-		if (!value) {
-			this.logger.warn(`Could not find config value: ${key}`);
-		}
-
-		return value;
-	}
-
-	/* private methods for internal usage */
-
-	private findFirstConfigInstanceWithKey(key: string) {
-		return this.configInstances.find((instance) => typeof instance[key] !== "undefined") || null;
+	getProvider<T>(ProviderClass: Type<T>) {
+		return this.app.get(ProviderClass);
 	}
 }

@@ -8,16 +8,11 @@ const logger = new Logger("bootstrap");
 
 async function bootstrap() {
 	const configBuilder = await NestAppConfigBuilderFactory.create(AppModule);
+	const appConfig = configBuilder.getProvider(AppConfig);
 
-	const app = configBuilder
-		.provideConfig(AppConfig)
-		.setGlobalPrefix()
-		.addCors()
-		.addDefaults()
-		.addSwagger("Auth API Specification")
-		.build();
+	const app = configBuilder.addDefaults().addSwagger("Auth API Specification").build();
 
-	await app.listen(configBuilder.lookupConfigValue("port") as number);
+	await app.listen(appConfig.port);
 
 	logger.debug(`Application is running on: ${await app.getUrl()}`);
 }
