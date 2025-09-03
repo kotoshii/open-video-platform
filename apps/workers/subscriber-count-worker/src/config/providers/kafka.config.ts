@@ -1,0 +1,16 @@
+import { Injectable } from "@nestjs/common";
+import { ConfigService } from "@nestjs/config";
+import { CommonKafkaConfig } from "@ovp-lib/api/config/providers/common-kafka.config";
+
+@Injectable()
+export class KafkaConfig extends CommonKafkaConfig {
+	// biome-ignore lint/complexity/noUselessConstructor: needed for cross-package inheritance
+	constructor(config: ConfigService) {
+		super(config);
+	}
+
+	// default: 5 MB (5242880 bytes)
+	get minBytes(): number {
+		return parseInt(this.config.get<string>("KAFKA_MIN_BYTES", "5242880"));
+	}
+}
