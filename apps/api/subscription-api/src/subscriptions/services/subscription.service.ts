@@ -33,6 +33,10 @@ export class SubscriptionService implements OnModuleInit {
 	async createSubscriptionOrThrow(subscriberId: string, dto: CreateSubscriptionDto) {
 		const { channelId } = dto;
 
+		if (subscriberId === channelId) {
+			throw new BadRequestException("Cannot subscribe to yourself");
+		}
+
 		const channel = await this.channelGrpcService.getChannel({ channelId }).toPromise();
 		if (!channel?.channel) {
 			throw new NotFoundException("Channel not found");
