@@ -1,33 +1,15 @@
 import { Logger } from "@nestjs/common";
-import { Transport } from "@nestjs/microservices";
-import { NestMicroserviceAppConfigBuilderFactory } from "@ovp-lib/api/config/builders/nest-microservice-app-config-builder";
+import { NestAppConfigBuilderFactory } from "@ovp-lib/api/config/builders/nest-app-config-builder";
 
 import { AppModule } from "~src/app.module";
-import { KafkaConfig } from "~src/config/providers/kafka.config";
 
 const logger = new Logger("bootstrap");
 
 async function bootstrap() {
-	const configBuilder = await NestMicroserviceAppConfigBuilderFactory.create(AppModule);
-	const kafkaConfig = configBuilder.getProvider(KafkaConfig);
+	const configBuilder = await NestAppConfigBuilderFactory.create(AppModule);
 
-	const app = await configBuilder
-		.createMicroservice({
-			transport: Transport.KAFKA,
-			options: {
-				client: {
-					brokers: kafkaConfig.kafkaBrokers,
-					clientId: kafkaConfig.kafkaClientId,
-				},
-				consumer: {
-					groupId: kafkaConfig.kafkaGroupId,
-					minBytes: kafkaConfig.minBytes,
-				},
-			},
-		})
-		.then((builder) => builder.addDefaults().build());
-
-	await app.listen();
+	const app = configBuilder.build();
+	await app.init();
 
 	logger.debug("Application is running.");
 }
