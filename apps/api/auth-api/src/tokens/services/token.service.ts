@@ -40,11 +40,18 @@ export class TokenService {
 		return this.jwtService.signAsync(payload);
 	}
 
-	async getRefreshTokenByValue(refreshToken: string) {
-		const refreshTokenHash = await this.stringHasher.hash(refreshToken);
-		const refreshTokenRecord = await this.tokenRepository.getRefreshTokenByHash(refreshTokenHash);
+	async getRefreshTokenByValue(refreshTokenValue: string, authSessionId: string) {
+		const refreshTokenRecords = await this.tokenRepository.getRefreshTokensBySessionId(authSessionId);
 
-		return refreshTokenRecord ? new GetRefreshTokenInfoDto(refreshTokenRecord) : null;
+		for (const refreshTokenRecord of refreshTokenRecords) {
+			const matches = await this.stringHasher.verify(refreshTokenValue, refreshTokenRecord.refreshTokenHash);
+
+			if (matches) {
+				return new GetRefreshTokenInfoDto(refreshTokenRecord);
+			}
+		}
+
+		return null;
 	}
 
 	async setRefreshTokenActive(tokenId: string, active: boolean) {

@@ -148,7 +148,7 @@ export class AuthService implements OnModuleInit {
 
 		const { refreshToken } = dto;
 
-		const refreshTokenInfo = await this.tokenService.getRefreshTokenByValue(refreshToken);
+		const refreshTokenInfo = await this.tokenService.getRefreshTokenByValue(refreshToken, sessionId);
 		if (!refreshTokenInfo || !refreshTokenInfo.active || refreshTokenInfo.isUsed) {
 			await this.authSessionService.deleteAuthSessionById(sessionId);
 			throw new UnauthorizedException();

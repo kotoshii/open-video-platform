@@ -12,6 +12,10 @@ export class TokenRepository {
 		return this.refreshTokenQuery.where("refreshTokenHash", "=", hash).executeTakeFirst();
 	}
 
+	async getRefreshTokensBySessionId(sessionId: string) {
+		return this.refreshTokenQuery.where("authSessionId", "=", sessionId).execute();
+	}
+
 	async createRefreshToken(data: Insertable<RefreshToken>) {
 		return this.db.insertInto("refreshTokens").values(data).returningAll().executeTakeFirstOrThrow();
 	}
