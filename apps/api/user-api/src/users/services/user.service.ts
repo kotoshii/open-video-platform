@@ -1,4 +1,5 @@
 import { ConflictException, Injectable, NotFoundException, UnauthorizedException } from "@nestjs/common";
+import { StringHasher } from "@ovp-lib/common/utils/string-hasher";
 import { Insertable } from "kysely";
 
 import { User } from "~db/schema";
@@ -10,6 +11,8 @@ import { UserRepository } from "~src/users/repositories/user.repository";
 
 @Injectable()
 export class UserService {
+	private readonly stringHasher = new StringHasher();
+
 	constructor(private readonly userRepository: UserRepository) {}
 
 	async getUserById(userId: string) {
@@ -72,13 +75,13 @@ export class UserService {
 	}
 
 	async validateAuthenticationDetails(body: UserAuthDetailsGrpcRequestDto): Promise<UserAuthDetailsGrpcResponseDto> {
-		const { email, passwordHash } = body;
+		const { email, password } = body;
 
 		const user = await this.getUserByEmail(email);
 
 		if (user) {
 			const userPasswordHash = await this.getPasswordHashByUserId(user.id);
-			const valid = userPasswordHash === passwordHash;
+			const valid = userPasswordHash ? await this.stringHasher.verify(password, userPasswordHash) : false;
 
 			return new UserAuthDetailsGrpcResponseDto(valid, valid ? user.id : undefined);
 		}

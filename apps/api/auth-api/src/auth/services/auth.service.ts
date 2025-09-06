@@ -74,10 +74,8 @@ export class AuthService implements OnModuleInit {
 	async loginOrThrow(dto: LoginDto, ipAddress: string | null = null, userAgent: string | null = null) {
 		const { email, password } = dto;
 
-		const passwordHash = await this.passwordService.hashPassword(password);
-
 		const authDetailsValidationResponse = await this.userGrpcService
-			.validateAuthenticationDetails({ email, passwordHash })
+			.validateAuthenticationDetails({ email, password })
 			.toPromise();
 
 		const valid = authDetailsValidationResponse?.valid || false;

@@ -9,5 +9,5 @@ export class UserAuthDetailsGrpcRequestDto implements UserAuthenticationDetailsR
 
 	@IsString()
 	@IsNotEmpty()
-	passwordHash: string;
+	password: string;
 }
