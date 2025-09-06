@@ -38,7 +38,7 @@ export class SubscriptionService implements OnModuleInit {
 			throw new NotFoundException("Channel not found");
 		}
 
-		const existing = this.getSubscription(subscriberId, channelId);
+		const existing = await this.getSubscription(subscriberId, channelId);
 		if (existing) {
 			return existing;
 		}
