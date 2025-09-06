@@ -1,6 +1,5 @@
 import { Injectable } from "@nestjs/common";
 import { ConfigService } from "@nestjs/config";
-import ms, { StringValue } from "ms";
 
 import { ICommonKafkaDedupConfig } from "~config/interfaces/common-kafka-dedup-config.interface";
 
@@ -12,7 +11,8 @@ export class CommonKafkaDedupConfig implements ICommonKafkaDedupConfig {
 		return this.config.get<string>("KAFKA_DEDUP_REDIS_URL", "");
 	}
 
+	// default: 1 hour (in seconds)
 	get kafkaDedupTtl() {
-		return ms(this.config.get<string>("KAFKA_DEDUP_TTL", "7d") as StringValue);
+		return parseInt(this.config.get<string>("KAFKA_DEDUP_TTL", "3600"), 10);
 	}
 }
