@@ -10,6 +10,7 @@ import { DatabaseConfig } from "~src/config/providers/database.config";
 		ConfigModule,
 		KyselyModuleConfigBuilderFactory.create(DatabaseConfig, "postgres").addDefaults().build(),
 		// ChannelsModule,
+		ChannelsModule,
 	],
 })
 export class AppModule {}
