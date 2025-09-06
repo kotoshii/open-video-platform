@@ -6,7 +6,6 @@
 		"./auth/*": "./dist/auth/*.js",
 		"./common/*": "./dist/common/*.js",
 		"./config/*": "./dist/config/*.js",
-		"./database/*": "./dist/database/*.js",
 		"./grpc/*": "./dist/grpc/*.js",
 		"./kafka/*": "./dist/kafka/*.js",
 		"./kysely/*": "./dist/kysely/*.js",
