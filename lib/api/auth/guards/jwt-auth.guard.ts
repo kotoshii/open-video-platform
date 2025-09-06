@@ -1,6 +1,7 @@
 import { CanActivate, ExecutionContext, Injectable, Logger, UnauthorizedException } from "@nestjs/common";
 import { Reflector } from "@nestjs/core";
 import { JwtService } from "@nestjs/jwt";
+import { runCatching } from "@ovp-lib/common/utils/lang";
 import { extractBearerTokenFromRequest } from "@ovp-lib/common/utils/tokens";
 import { Request } from "express";
 
@@ -9,6 +10,8 @@ import { NO_CHANNEL_KEY } from "~auth/decorators/no-channel.decorator";
 import { IS_PUBLIC_KEY } from "~auth/decorators/public.decorator";
 import { AccessTokenPayload } from "~auth/types/access-token-payload";
 import { ICommonJwtConfig } from "~config/interfaces/common-jwt-config.interface";
+
+const JWT_ERROR_MESSAGE = "Tokens is invalid or expired";
 
 @Injectable()
 export class JwtAuthGuard implements CanActivate {
@@ -43,14 +46,21 @@ export class JwtAuthGuard implements CanActivate {
 			context.getClass(),
 		]);
 
-		const payload = await this.jwtService.verifyAsync<AccessTokenPayload>(token, {
-			secret: this.jwtConfig.jwtSecret,
-			ignoreExpiration: allowExpired,
-		});
+		const payload = await runCatching(() =>
+			this.jwtService.verifyAsync<AccessTokenPayload>(token, {
+				secret: this.jwtConfig.jwtSecret,
+				ignoreExpiration: allowExpired,
+			}),
+		);
+
+		if (!payload) {
+			this.logger.error("Authorization error: token is invalid or expired");
+			throw new UnauthorizedException(JWT_ERROR_MESSAGE);
+		}
 
 		if (!payload.user_id || !payload.session_id) {
 			this.logger.error("Authorization error: missing required JWT fields");
-			throw new UnauthorizedException();
+			throw new UnauthorizedException(JWT_ERROR_MESSAGE);
 		}
 
 		const noChannelRequired = this.reflector.getAllAndOverride<boolean>(NO_CHANNEL_KEY, [
@@ -60,7 +70,7 @@ export class JwtAuthGuard implements CanActivate {
 
 		if (!noChannelRequired && !payload.channel_id) {
 			this.logger.error("Authorization error: channel ID required for this endpoint");
-			throw new UnauthorizedException();
+			throw new UnauthorizedException(JWT_ERROR_MESSAGE);
 		}
 
 		request.userId = payload.user_id;
