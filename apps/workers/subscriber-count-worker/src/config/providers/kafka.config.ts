@@ -8,9 +8,4 @@ export class KafkaConfig extends CommonKafkaConfig {
 	constructor(config: ConfigService) {
 		super(config);
 	}
-
-	// default: 5 MB (5242880 bytes)
-	get minBytes(): number {
-		return parseInt(this.config.get<string>("KAFKA_MIN_BYTES", "5242880"));
-	}
 }
