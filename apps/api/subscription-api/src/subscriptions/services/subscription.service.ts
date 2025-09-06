@@ -84,7 +84,9 @@ export class SubscriptionService implements OnModuleInit {
 		const data = await this.subscriptionRepository.getSubscriptionsBySubscriberId(subscriberId, filter, pagination);
 		const { count } = await this.subscriptionRepository.getSubscriptionsBySubscriberIdCount(subscriberId, filter);
 
-		return new PaginatedResponseDto(data, pagination, Number(count));
+		const dto = data.map((item) => new GetSubscriptionDto(item));
+
+		return new PaginatedResponseDto(dto, pagination, Number(count));
 	}
 
 	private async createSubscriptionSaga(subscriberId: string, channelId: string, channelName: string) {
