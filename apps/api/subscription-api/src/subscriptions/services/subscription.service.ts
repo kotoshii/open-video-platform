@@ -66,8 +66,9 @@ export class SubscriptionService implements OnModuleInit {
 			await this.kafkaProducerService.emit(
 				KafkaTopic.SubscriptionEvents,
 				SubscriptionDeletedKafkaEventPayloadDto.createPayload(subscriberId, channelId),
-			)
-			.toPromise();
+				channelId,
+			);
+		}
 	}
 
 	async getSubscription(subscriberId: string, channelId: string) {
