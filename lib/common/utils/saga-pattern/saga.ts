@@ -9,7 +9,7 @@ import {
 	SagaStatus,
 	SagaStep,
 } from "~utils/saga-pattern/types";
-
+// todo add better logging, maybe optionally pass smth to saga factory or whatever, idk
 export class Saga<TCurrentOutput = undefined, TPreviousResults extends Record<string, unknown> = {}> {
 	private status: SagaStatus = "PENDING";
 
@@ -53,6 +53,8 @@ export class Saga<TCurrentOutput = undefined, TPreviousResults extends Record<st
 				try {
 					const stepOutput = await step.action(currentInput, this.context);
 
+					this.log("log", `Completed step: ${step.name}`);
+
 					// Record successful execution
 					this.executionHistory.push({
 						stepName: step.name,
@@ -69,6 +71,8 @@ export class Saga<TCurrentOutput = undefined, TPreviousResults extends Record<st
 					// Use step output as input for the next step (if needed)
 					currentInput = stepOutput;
 				} catch (error) {
+					this.log("error", `Failed step: ${step.name}; ${error}`);
+
 					// Record failed execution
 					this.executionHistory.push({
 						stepName: step.name,
@@ -119,6 +123,8 @@ export class Saga<TCurrentOutput = undefined, TPreviousResults extends Record<st
 			try {
 				await step.compensate(input, output, this.context);
 
+				this.log("log", `Compensated step: ${step.name}`);
+
 				// Record successful compensation
 				this.executionHistory.push({
 					stepName: step.name,
@@ -130,6 +136,8 @@ export class Saga<TCurrentOutput = undefined, TPreviousResults extends Record<st
 
 				compensatedSteps.push(step.name);
 			} catch (error) {
+				this.log("error", `Failed to compensate step: ${step.name}; ${error}`);
+
 				compensationErrors.push(
 					new SagaCompensationError(
 						`Compensation failed for step '${step.name}': ${(error as Error).message}`,
@@ -171,5 +179,11 @@ export class Saga<TCurrentOutput = undefined, TPreviousResults extends Record<st
 	 */
 	getStepResult<TStepName extends string>(stepName: TStepName): TPreviousResults[TStepName] | undefined {
 		return this.results[stepName];
+	}
+
+	private log(level: "log" | "warn" | "error", message: string) {
+		console[level](
+			`${new Date().toISOString()} ${level.toUpperCase()} [Saga: ${this.context.transactionId}] ${message}`,
+		);
 	}
 }
