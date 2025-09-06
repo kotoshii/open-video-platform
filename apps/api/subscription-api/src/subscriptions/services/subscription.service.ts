@@ -1,9 +1,9 @@
-import { Inject, Injectable, NotFoundException, OnModuleInit } from "@nestjs/common";
-import type { ClientGrpc, ClientKafka } from "@nestjs/microservices";
-import { KAFKA_CLIENT } from "@ovp-lib/api/kafka/constants/client-names";
+import { BadRequestException, Inject, Injectable, NotFoundException, OnModuleInit } from "@nestjs/common";
+import type { ClientGrpc } from "@nestjs/microservices";
 import { KafkaTopic } from "@ovp-lib/api/kafka/constants/topic-names";
 import { SubscriptionCreatedKafkaEventPayloadDto } from "@ovp-lib/api/kafka/dto/subscription-created-kafka-event-payload.dto";
 import { SubscriptionDeletedKafkaEventPayloadDto } from "@ovp-lib/api/kafka/dto/subscription-deleted-kafka-event-payload.dto";
+import { KafkaProducerService } from "@ovp-lib/api/kafka/services/kafka-producer.service";
 import { OrderByKey } from "@ovp-lib/api/kysely/types/order-by-key";
 import { PaginatedResponseDto } from "@ovp-lib/api/pagination/dto/paginated-response.dto";
 import { PaginationOptionsDto } from "@ovp-lib/api/pagination/dto/pagination-options.dto";
@@ -22,7 +22,7 @@ export class SubscriptionService implements OnModuleInit {
 
 	constructor(
 		@Inject(CHANNELS_PACKAGE_NAME) private channelClientGrpc: ClientGrpc,
-		@Inject(KAFKA_CLIENT) private readonly kafkaClient: ClientKafka,
+		private readonly kafkaProducerService: KafkaProducerService,
 		private readonly subscriptionRepository: SubscriptionRepository,
 	) {}
 
@@ -61,9 +61,9 @@ export class SubscriptionService implements OnModuleInit {
 	}
 
 	async deleteSubscription(subscriberId: string, channelId: string) {
-		await this.subscriptionRepository.deleteSubscription(subscriberId, channelId);
-		await this.kafkaClient
-			.emit(
+		const deleted = await this.subscriptionRepository.deleteSubscription(subscriberId, channelId);
+		if (deleted) {
+			await this.kafkaProducerService.emit(
 				KafkaTopic.SubscriptionEvents,
 				SubscriptionDeletedKafkaEventPayloadDto.createPayload(subscriberId, channelId),
 			)
@@ -104,12 +104,11 @@ export class SubscriptionService implements OnModuleInit {
 			.addStep(
 				"sendSubscriptionCreatedKafkaEvent",
 				async (input) => {
-					await this.kafkaClient
-						.emit(
-							KafkaTopic.SubscriptionEvents,
-							SubscriptionCreatedKafkaEventPayloadDto.createPayload(input.subscriberId, input.channelId),
-						)
-						.toPromise();
+					await this.kafkaProducerService.emit(
+						KafkaTopic.SubscriptionEvents,
+						SubscriptionCreatedKafkaEventPayloadDto.createPayload(input.subscriberId, input.channelId),
+						input.channelId,
+					);
 				},
 				async () => {},
 			)
