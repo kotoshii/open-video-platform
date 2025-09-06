@@ -19,7 +19,8 @@ export abstract class BaseKafkaEventPayloadDto {
 		return {
 			eventId: ulid(),
 			timestamp: Date.now(),
-			type: BaseKafkaEventPayloadDto.EventType,
+			// biome-ignore lint/complexity/noThisInStatic: <need to use the child class constructor>
+			type: this.EventType,
 			...extraFields,
 		};
 	}
