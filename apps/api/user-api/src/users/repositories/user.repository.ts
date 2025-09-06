@@ -17,7 +17,7 @@ export class UserRepository {
 	}
 
 	async getPasswordHashByUserId(userId: string) {
-		return this.userPasswordHashQuery.where("id", "=", userId).executeTakeFirst();
+		return this.userPasswordHashQuery.where("userId", "=", userId).executeTakeFirst();
 	}
 
 	async createUser(data: Insertable<User>, passwordHash: string) {
