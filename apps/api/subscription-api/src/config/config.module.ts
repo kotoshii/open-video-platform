@@ -3,6 +3,7 @@ import { ConfigModule as NestConfigModule } from "@nestjs/config";
 import {
 	CORS_CONFIG_INJECTION_TOKEN,
 	JWT_CONFIG_INJECTION_TOKEN,
+	KAFKA_CONFIG_INJECTION_TOKEN,
 } from "@ovp-lib/api/config/constants/injection-tokens";
 
 import { AppConfig } from "~src/config/providers/app.config";
@@ -21,7 +22,7 @@ import { KafkaConfig } from "~src/config/providers/kafka.config";
 		DatabaseConfig,
 		GrpcConfig,
 		{ provide: JWT_CONFIG_INJECTION_TOKEN, useClass: JwtConfig },
-		KafkaConfig,
+		{ provide: KAFKA_CONFIG_INJECTION_TOKEN, useClass: KafkaConfig },
 	],
 	exports: [
 		AppConfig,
@@ -29,7 +30,7 @@ import { KafkaConfig } from "~src/config/providers/kafka.config";
 		DatabaseConfig,
 		GrpcConfig,
 		JWT_CONFIG_INJECTION_TOKEN,
-		KafkaConfig,
+		KAFKA_CONFIG_INJECTION_TOKEN,
 	],
 })
 export class ConfigModule {}
