@@ -13,7 +13,7 @@ export class ChannelRepository {
 	}
 
 	async createChannel(data: Insertable<Channel>) {
-		return this.db.insertInto("channels").values(data).returning("id").executeTakeFirstOrThrow();
+		return this.db.insertInto("channels").values(data).returningAll().executeTakeFirstOrThrow();
 	}
 
 	async deleteChannelById(channelId: string) {

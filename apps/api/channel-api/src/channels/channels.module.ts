@@ -1,5 +1,6 @@
 import { Module } from "@nestjs/common";
 import { GrpcClientsModuleConfigBuilderFactory } from "@ovp-lib/api/config/builders/grpc-clients-module-config-builder";
+import { KafkaProducerService } from "@ovp-lib/api/kafka/services/kafka-producer.service";
 import { USERS_PACKAGE_NAME } from "@ovp-proto/types/users";
 import { ProtoPaths } from "@ovp-proto/types/utils/paths";
 
@@ -16,6 +17,6 @@ import { GrpcConfig } from "~src/config/providers/grpc.config";
 			.build(),
 	],
 	controllers: [ChannelController, ChannelGrpcController],
-	providers: [ChannelService, ChannelRepository],
+	providers: [ChannelService, ChannelRepository, KafkaProducerService],
 })
 export class ChannelsModule {}

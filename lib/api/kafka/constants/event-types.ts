@@ -3,4 +3,8 @@ export const KafkaEventTypes = {
 		SubscriptionCreated: "SUBSCRIPTION_CREATED",
 		SubscriptionDeleted: "SUBSCRIPTION_DELETED",
 	},
+	Channels: {
+		ChannelCreated: "CHANNEL_CREATED",
+		ChannelUpdated: "CHANNEL_UPDATED",
+	},
 } as const;
