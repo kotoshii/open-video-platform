@@ -1,10 +1,10 @@
 import { Injectable, Logger } from "@nestjs/common";
-import { EachBatchPayload } from "@nestjs/microservices/external/kafka.interface";
 import { KafkaEventTypes } from "@ovp-lib/api/kafka/constants/event-types";
 import { KafkaTopic } from "@ovp-lib/api/kafka/constants/topic-names";
 import { KafkaDeduplicationService } from "@ovp-lib/api/kafka/services/kafka-deduplication.service";
 import { SubscriptionKafkaEventPayload } from "@ovp-lib/api/kafka/types/events/subscriptions";
 import { jsonParseOrNull } from "@ovp-lib/common/utils/json";
+import { EachBatchPayload } from "kafkajs";
 
 import { ChannelService } from "~src/channels/services/channel.service";
 
