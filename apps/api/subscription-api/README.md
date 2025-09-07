@@ -27,6 +27,7 @@ JWT_EXPIRES_IN=1h
 # Kafka
 KAFKA_BROKERS=localhost:9092
 KAFKA_CLIENT_ID=subscription-api
+KAFKA_GROUP_ID=subscription-api
 ```
 
 ## Compile and run the project

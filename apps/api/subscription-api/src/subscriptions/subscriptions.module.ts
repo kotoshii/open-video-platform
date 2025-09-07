@@ -1,5 +1,6 @@
 import { Module } from "@nestjs/common";
 import { GrpcClientsModuleConfigBuilderFactory } from "@ovp-lib/api/config/builders/grpc-clients-module-config-builder";
+import { KafkaConsumerService } from "@ovp-lib/api/kafka/services/kafka-consumer.service";
 import { KafkaProducerService } from "@ovp-lib/api/kafka/services/kafka-producer.service";
 import { CHANNELS_PACKAGE_NAME } from "@ovp-proto/types/channels";
 import { ProtoPaths } from "@ovp-proto/types/utils/paths";
@@ -17,7 +18,7 @@ import { SubscriptionService } from "~src/subscriptions/services/subscription.se
 			.build(),
 	],
 	controllers: [SubscriptionController, SubscriptionGrpcController],
-	providers: [SubscriptionService, SubscriptionRepository, KafkaProducerService],
+	providers: [SubscriptionService, SubscriptionRepository, KafkaProducerService, KafkaConsumerService],
 	exports: [SubscriptionService],
 })
 export class SubscriptionsModule {}

@@ -1,7 +1,7 @@
 import { Injectable } from "@nestjs/common";
 import { OrderByKey } from "@ovp-lib/api/kysely/types/order-by-key";
 import { PaginationOptionsDto } from "@ovp-lib/api/pagination/dto/pagination-options.dto";
-import { Insertable, Kysely } from "kysely";
+import { Insertable, Kysely, Updateable } from "kysely";
 import { InjectKysely } from "nestjs-kysely";
 
 import { DB, Subscription } from "~db/schema";
@@ -20,6 +20,10 @@ export class SubscriptionRepository {
 			.where("subscriberId", "=", subscriberId)
 			.where("channelId", "=", channelId)
 			.executeTakeFirst();
+	}
+
+	async updateSubscriptionsByChannelId(channelId: string, data: Updateable<Subscription>) {
+		return this.db.updateTable("subscriptions").set(data).where("channelId", "=", channelId).execute();
 	}
 
 	async getSubscriptionsBySubscriberId(
