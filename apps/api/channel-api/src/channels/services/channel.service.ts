@@ -5,6 +5,11 @@ import { ChannelCreatedKafkaEventPayloadDto } from "@ovp-lib/api/kafka/dto/chann
 import { ChannelUpdatedKafkaEventPayloadDto } from "@ovp-lib/api/kafka/dto/channel-updated-kafka-event-payload.dto";
 import { KafkaProducerService } from "@ovp-lib/api/kafka/services/kafka-producer.service";
 import { SagaBuilder } from "@ovp-lib/common/utils/saga-pattern/saga-builder";
+import {
+	SUBSCRIPTION_SERVICE_NAME,
+	SUBSCRIPTIONS_PACKAGE_NAME,
+	SubscriptionServiceClient,
+} from "@ovp-proto/types/subscriptions";
 import { USER_SERVICE_NAME, USERS_PACKAGE_NAME, UserServiceClient } from "@ovp-proto/types/users";
 import { Selectable } from "kysely";
 
@@ -19,15 +24,19 @@ import { ChannelRepository } from "~src/channels/repositories/channel.repository
 @Injectable()
 export class ChannelService implements OnModuleInit {
 	private userGrpcService: UserServiceClient;
+	private subscriptionGrpcService: SubscriptionServiceClient;
 
 	constructor(
-		@Inject(USERS_PACKAGE_NAME) private clientGrpc: ClientGrpc,
+		@Inject(USERS_PACKAGE_NAME) private userClientGrpc: ClientGrpc,
+		@Inject(SUBSCRIPTIONS_PACKAGE_NAME) private subscriptionClientGrpc: ClientGrpc,
 		private readonly channelRepository: ChannelRepository,
 		private readonly kafkaProducerService: KafkaProducerService,
 	) {}
 
 	onModuleInit() {
-		this.userGrpcService = this.clientGrpc.getService<UserServiceClient>(USER_SERVICE_NAME);
+		this.userGrpcService = this.userClientGrpc.getService<UserServiceClient>(USER_SERVICE_NAME);
+		this.subscriptionGrpcService =
+			this.subscriptionClientGrpc.getService<SubscriptionServiceClient>(SUBSCRIPTION_SERVICE_NAME);
 	}
 
 	async deleteChannelById(channelId: string) {
@@ -35,14 +44,18 @@ export class ChannelService implements OnModuleInit {
 		return deletedChannelId;
 	}
 
-	async getChannelByIdOrThrow(channelId: string) {
+	async getChannelByIdOrThrow(channelId: string, subscriberId?: string) {
 		const channel = await this.channelRepository.getChannelById(channelId);
 
 		if (!channel) {
 			throw new NotFoundException("Channel not found");
 		}
 
-		return new GetChannelDto(channel);
+		const isSubscribed = subscriberId
+			? (await this.subscriptionGrpcService.checkSubscription({ channelId, subscriberId }).toPromise())?.isSubscribed
+			: undefined;
+
+		return new GetChannelDto(channel, isSubscribed);
 	}
 
 	async getCurrentChannelByIdOrThrow(channelId: string) {

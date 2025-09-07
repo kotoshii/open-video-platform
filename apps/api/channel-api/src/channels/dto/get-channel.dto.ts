@@ -1,11 +1,11 @@
-import { ApiProperty } from "@nestjs/swagger";
+import { ApiProperty, ApiPropertyOptional } from "@nestjs/swagger";
 import { Exclude } from "class-transformer";
 import { Selectable } from "kysely";
 
 import { Channel } from "~db/schema";
 
 export class GetChannelDto {
-	constructor(channel: Selectable<Channel>) {
+	constructor(channel: Selectable<Channel>, isSubscribed?: boolean) {
 		const { id, userId, name, description, subscriberCount, createdDate, updatedDate } = channel;
 
 		this.id = id;
@@ -15,6 +15,8 @@ export class GetChannelDto {
 		this.subscriberCount = subscriberCount;
 		this.createdDate = createdDate;
 		this.updatedDate = updatedDate;
+
+		this.isSubscribed = isSubscribed;
 	}
 
 	@ApiProperty()
@@ -37,4 +39,7 @@ export class GetChannelDto {
 
 	@Exclude()
 	updatedDate: Date;
+
+	@ApiPropertyOptional()
+	isSubscribed?: boolean;
 }

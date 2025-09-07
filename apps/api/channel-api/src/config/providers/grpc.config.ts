@@ -16,4 +16,8 @@ export class GrpcConfig extends CommonGrpcConfig {
 	get grpcUserServiceUrl() {
 		return this.config.get<string>("GRPC_USER_SERVICE_URL", "0.0.0.0:5001");
 	}
+
+	get grpcSubscriptionServiceUrl() {
+		return this.config.get<string>("GRPC_SUBSCRIPTION_SERVICE_URL", "0.0.0.0:5004");
+	}
 }

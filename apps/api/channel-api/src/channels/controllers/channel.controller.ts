@@ -33,7 +33,7 @@ export class ChannelController {
 	@ApiOkResponse({ type: GetChannelDto })
 	@ApiNotFoundResponse({ type: NestErrorResponseDto, description: "Channel not found" })
 	@Get(":id")
-	async getChannelById(@Param("id") channelId: string) {
-		return this.channelService.getChannelByIdOrThrow(channelId);
+	async getChannelById(@Param("id") channelId: string, @ChannelId() subscriberId: string) {
+		return this.channelService.getChannelByIdOrThrow(channelId, subscriberId);
 	}
 }
