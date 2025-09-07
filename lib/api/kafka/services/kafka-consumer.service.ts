@@ -1,8 +1,8 @@
 import { Inject, Injectable, OnApplicationShutdown } from "@nestjs/common";
-import { ConsumerRunConfig, EachBatchHandler } from "@nestjs/microservices/external/kafka.interface";
+import { ConsumerRunConfig } from "@nestjs/microservices/external/kafka.interface";
 import { MaybeArray } from "@ovp-lib/common/types/maybe-array";
 import { toArray } from "@ovp-lib/common/utils/arrays";
-import { Consumer, Kafka } from "kafkajs";
+import { Consumer, EachBatchHandler, EachMessageHandler, Kafka } from "kafkajs";
 
 import { KAFKA_CONFIG_INJECTION_TOKEN } from "~config/constants/injection-tokens";
 import { ICommonKafkaConfig } from "~config/interfaces/common-kafka-config.interface";
@@ -25,6 +25,16 @@ export class KafkaConsumerService implements OnApplicationShutdown {
 		for (const consumer of this.consumers) {
 			await consumer.disconnect();
 		}
+	}
+
+	async subscribe(topics: MaybeArray<string>, handler: EachMessageHandler, config?: SubscribeConfig) {
+		const consumer = this.createConsumer();
+
+		await consumer.connect();
+		await consumer.subscribe({ topics: toArray(topics), fromBeginning: false });
+		await consumer.run({ ...config, eachMessage: handler });
+
+		this.consumers.push(consumer);
 	}
 
 	async subscribeBatch(topics: MaybeArray<string>, handler: EachBatchHandler, config?: SubscribeConfig) {
