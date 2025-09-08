@@ -5,7 +5,7 @@ create type video_selected_thumbnail as enum ('first', 'second', 'third', 'custo
 
 create table if not exists videos
 (
-    id                 uuid primary key                  default gen_random_uuid(),
+    id                 uuid primary key         not null default gen_random_uuid(),
     channel_id         uuid                     not null,
     channel_name       varchar(255)             not null,
     title              varchar(255)             not null,
