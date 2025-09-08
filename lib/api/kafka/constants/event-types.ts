@@ -7,4 +7,7 @@ export const KafkaEventTypes = {
 		ChannelCreated: "CHANNEL_CREATED",
 		ChannelUpdated: "CHANNEL_UPDATED",
 	},
+	Videos: {
+		VideoViewed: "VIDEO_VIEWED",
+	},
 } as const;
