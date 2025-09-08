@@ -3,6 +3,7 @@ import { StringHasher } from "@ovp-lib/common/utils/string-hasher";
 import { Insertable } from "kysely";
 
 import { User } from "~db/schema";
+import { NsfwConfig } from "~src/config/providers/nsfw.config";
 import { CreateUserDto } from "~src/users/dto/create-user.dto";
 import { GetUserDto } from "~src/users/dto/get-user.dto";
 import { UserAuthDetailsGrpcRequestDto } from "~src/users/dto/grpc/user-auth-details-grpc-request.dto";
@@ -13,7 +14,10 @@ import { UserRepository } from "~src/users/repositories/user.repository";
 export class UserService {
 	private readonly stringHasher = new StringHasher();
 
-	constructor(private readonly userRepository: UserRepository) {}
+	constructor(
+		private readonly userRepository: UserRepository,
+		private readonly nsfwConfig: NsfwConfig,
+	) {}
 
 	async getUserById(userId: string) {
 		const user = await this.userRepository.getUserById(userId);
@@ -87,5 +91,10 @@ export class UserService {
 		}
 
 		return new UserAuthDetailsGrpcResponseDto(false);
+	}
+
+	async canAccessNsfw(userId: string) {
+		const user = await this.userRepository.getUserByIdAndAge(userId, this.nsfwConfig.allowNsfwFromYears);
+		return Boolean(user);
 	}
 }

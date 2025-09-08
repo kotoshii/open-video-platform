@@ -1,5 +1,5 @@
 import { Injectable } from "@nestjs/common";
-import { Insertable, Kysely } from "kysely";
+import { Insertable, Kysely, sql } from "kysely";
 import { InjectKysely } from "nestjs-kysely";
 
 import { DB, User } from "~db/schema";
@@ -10,6 +10,13 @@ export class UserRepository {
 
 	async getUserById(userId: string) {
 		return this.userQuery.where("id", "=", userId).executeTakeFirst();
+	}
+
+	async getUserByIdAndAge(userId: string, years: string | number) {
+		return this.userQuery
+			.where("id", "=", userId)
+			.where("dateOfBirth", "<=", sql<Date>`current_date - interval '${sql.lit(years)} years'`)
+			.executeTakeFirst();
 	}
 
 	async getUserByEmail(email: string) {

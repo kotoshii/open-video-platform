@@ -9,6 +9,8 @@ import {
 
 import { CreateUserDto } from "~src/users/dto/create-user.dto";
 import { GetUserDto } from "~src/users/dto/get-user.dto";
+import { CanAccessNsfwGrpcRequestDto } from "~src/users/dto/grpc/can-access-nsfw-grpc-request.dto";
+import { CanAccessNsfwGrpcResponseDto } from "~src/users/dto/grpc/can-access-nsfw-grpc-response.dto";
 import { CreateUserGrpcRequestDto } from "~src/users/dto/grpc/create-user-grpc-request.dto";
 import { CreateUserGrpcResponseDto } from "~src/users/dto/grpc/create-user-grpc-response.dto";
 import { DeleteUserGrpcRequestDto } from "~src/users/dto/grpc/delete-user-grpc-request.dto";
@@ -61,5 +63,12 @@ export class UserGrpcController implements UserServiceController {
 		@Payload() body: UserAuthDetailsGrpcRequestDto,
 	): Promise<UserAuthDetailsGrpcResponseDto> {
 		return this.userService.validateAuthenticationDetails(body);
+	}
+
+	async canAccessNsfw(@Payload() body: CanAccessNsfwGrpcRequestDto): Promise<CanAccessNsfwGrpcResponseDto> {
+		const { userId } = body;
+
+		const canAccessNsfw = await this.userService.canAccessNsfw(userId);
+		return new CanAccessNsfwGrpcResponseDto(canAccessNsfw);
 	}
 }

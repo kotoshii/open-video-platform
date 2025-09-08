@@ -9,6 +9,7 @@ service UserService {
 	rpc DeleteUser (DeleteUserRequest) returns (DeleteUserResponse);
 	rpc UserExists (UserExistsRequest) returns (UserExistsResponse);
 	rpc ValidateAuthenticationDetails (UserAuthenticationDetailsRequest) returns (UserAuthenticationDetailsResponse);
+	rpc CanAccessNsfw (CanAccessNsfwRequest) returns (CanAccessNsfwResponse);
 }
 
 message CreateUserRequest {
@@ -48,6 +49,14 @@ message UserAuthenticationDetailsRequest {
 message UserAuthenticationDetailsResponse {
 	bool valid = 1;
 	optional string user_id = 2;
+}
+
+message CanAccessNsfwRequest {
+	string user_id = 1;
+}
+
+message CanAccessNsfwResponse {
+	bool can_access_nsfw = 1;
 }
 
 message User {
