@@ -6,37 +6,37 @@
 import type { ColumnType } from "kysely";
 
 export type Generated<T> = T extends ColumnType<infer S, infer I, infer U>
-  ? ColumnType<S, I | undefined, U>
-  : ColumnType<T, T | undefined, T>;
+	? ColumnType<S, I | undefined, U>
+	: ColumnType<T, T | undefined, T>;
 
 export type Timestamp = ColumnType<Date, Date | string, Date | string>;
 
 export interface AuthSession {
-  channelId: string | null;
-  cityName: string | null;
-  countryCode: Generated<string | null>;
-  countryName: string | null;
-  createdDate: Generated<Timestamp>;
-  expiresAt: Timestamp;
-  id: Generated<string>;
-  ipAddress: string | null;
-  updatedDate: Generated<Timestamp>;
-  userAgent: string | null;
-  userId: string;
+	channelId: string | null;
+	cityName: string | null;
+	countryCode: Generated<string | null>;
+	countryName: string | null;
+	createdDate: Generated<Timestamp>;
+	expiresAt: Timestamp;
+	id: Generated<string>;
+	ipAddress: string | null;
+	updatedDate: Generated<Timestamp>;
+	userAgent: string | null;
+	userId: string;
 }
 
 export interface RefreshToken {
-  active: Generated<boolean>;
-  authSessionId: string;
-  createdDate: Generated<Timestamp>;
-  expiresAt: Timestamp;
-  id: Generated<string>;
-  refreshTokenHash: string;
-  updatedDate: Generated<Timestamp>;
-  usedDate: Timestamp | null;
+	active: Generated<boolean>;
+	authSessionId: string;
+	createdDate: Generated<Timestamp>;
+	expiresAt: Timestamp;
+	id: Generated<string>;
+	refreshTokenHash: string;
+	updatedDate: Generated<Timestamp>;
+	usedDate: Timestamp | null;
 }
 
 export interface DB {
-  authSessions: AuthSession;
-  refreshTokens: RefreshToken;
+	authSessions: AuthSession;
+	refreshTokens: RefreshToken;
 }
