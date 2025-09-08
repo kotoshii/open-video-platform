@@ -12,4 +12,8 @@ export class KafkaConfig extends CommonKafkaConfig {
 	override get kafkaClientId() {
 		return this.config.get<string>("KAFKA_CLIENT_ID", "subscriptions-api");
 	}
+
+	override get kafkaGroupId() {
+		return this.config.get<string>("KAFKA_GROUP_ID", "subscriptions-api");
+	}
 }
