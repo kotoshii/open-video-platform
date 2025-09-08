@@ -5,6 +5,19 @@
 
 import type { ColumnType } from "kysely";
 
+export enum VideoSelectedThumbnail {
+  Custom = "custom",
+  First = "first",
+  Second = "second",
+  Third = "third",
+}
+
+export enum VideoVisibility {
+  AccessibleByLink = "accessible_by_link",
+  Private = "private",
+  Public = "public",
+}
+
 export type Generated<T> = T extends ColumnType<infer S, infer I, infer U>
   ? ColumnType<S, I | undefined, U>
   : ColumnType<T, T | undefined, T>;
@@ -13,14 +26,11 @@ export type Int8 = ColumnType<string, bigint | number | string, bigint | number 
 
 export type Timestamp = ColumnType<Date, Date | string, Date | string>;
 
-export type VideoSelectedThumbnail = "1" | "2" | "3" | "custom";
-
-export type VideoVisibility = "accessible_by_link" | "private" | "public";
-
 export interface Video {
   allowComments: Generated<boolean>;
   allowRates: Generated<boolean>;
   channelId: string;
+  channelName: string;
   createdDate: Generated<Timestamp>;
   description: Generated<string | null>;
   dislikes: Generated<Int8>;

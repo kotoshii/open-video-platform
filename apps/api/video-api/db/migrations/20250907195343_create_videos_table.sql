@@ -1,7 +1,7 @@
 -- migrate:up
 create type video_visibility as enum ('public', 'accessible_by_link', 'private');
 
-create type video_selected_thumbnail as enum ('1', '2', '3', 'custom');
+create type video_selected_thumbnail as enum ('first', 'second', 'third', 'custom');
 
 create table if not exists videos
 (
@@ -13,7 +13,7 @@ create table if not exists videos
     tags               varchar(255)[]           not null default '{}',
     allow_comments     boolean                  not null default true,
     allow_rates        boolean                  not null default true,
-    selected_thumbnail video_selected_thumbnail not null default '1',
+    selected_thumbnail video_selected_thumbnail not null default 'first',
     visibility         video_visibility         not null default 'public',
     is_published       boolean                  not null default false,
     is_nsfw            boolean                  not null default true,
