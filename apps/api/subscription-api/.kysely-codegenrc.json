@@ -4,5 +4,7 @@
 	"excludePattern": "schema_migrations",
 	"includePattern": "subscriptions",
 	"outFile": "./db/schema.ts",
-	"singularize": true
+	"singularize": true,
+	"numericParser": "number",
+	"runtimeEnums": "pascal-case"
 }
