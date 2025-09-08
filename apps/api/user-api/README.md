@@ -22,6 +22,10 @@ GRPC_URL=0.0.0.0:5001
 # JWT
 JWT_SECRET=jwt-local-secret
 JWT_EXPIRES_IN=1h
+
+# NSFW resrictions
+# User should be at least this (years) old to access NSFW content 
+ALLOW_NSFW_FROM_YEARS=18
 ```
 
 ## Compile and run the project

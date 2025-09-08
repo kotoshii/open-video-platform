@@ -10,6 +10,7 @@ import { CorsConfig } from "~src/config/providers/cors.config";
 import { DatabaseConfig } from "~src/config/providers/database.config";
 import { GrpcConfig } from "~src/config/providers/grpc.config";
 import { JwtConfig } from "~src/config/providers/jwt.config";
+import { NsfwConfig } from "~src/config/providers/nsfw.config";
 
 @Global()
 @Module({
@@ -20,7 +21,8 @@ import { JwtConfig } from "~src/config/providers/jwt.config";
 		DatabaseConfig,
 		GrpcConfig,
 		{ provide: JWT_CONFIG_INJECTION_TOKEN, useClass: JwtConfig },
+		NsfwConfig,
 	],
-	exports: [AppConfig, CORS_CONFIG_INJECTION_TOKEN, DatabaseConfig, GrpcConfig, JWT_CONFIG_INJECTION_TOKEN],
+	exports: [AppConfig, CORS_CONFIG_INJECTION_TOKEN, DatabaseConfig, GrpcConfig, JWT_CONFIG_INJECTION_TOKEN, NsfwConfig],
 })
 export class ConfigModule {}
