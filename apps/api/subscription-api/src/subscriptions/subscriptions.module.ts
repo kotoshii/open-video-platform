@@ -8,6 +8,7 @@ import { ProtoPaths } from "@ovp-proto/types/utils/paths";
 import { GrpcConfig } from "~src/config/providers/grpc.config";
 import { SubscriptionController } from "~src/subscriptions/controllers/subscription.controller";
 import { SubscriptionGrpcController } from "~src/subscriptions/controllers/subscription-grpc.controller";
+import { SubscriptionKafkaController } from "~src/subscriptions/controllers/subscription-kafka.controller";
 import { SubscriptionRepository } from "~src/subscriptions/repositories/subscription.repository";
 import { SubscriptionService } from "~src/subscriptions/services/subscription.service";
 
@@ -17,7 +18,7 @@ import { SubscriptionService } from "~src/subscriptions/services/subscription.se
 			.addClient(CHANNELS_PACKAGE_NAME, "grpcChannelServiceUrl", ProtoPaths.Channels)
 			.build(),
 	],
-	controllers: [SubscriptionController, SubscriptionGrpcController],
+	controllers: [SubscriptionController, SubscriptionGrpcController, SubscriptionKafkaController],
 	providers: [SubscriptionService, SubscriptionRepository, KafkaProducerService, KafkaConsumerService],
 	exports: [SubscriptionService],
 })

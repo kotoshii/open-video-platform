@@ -1,9 +1,7 @@
-import { Body, Controller, Delete, Get, HttpCode, HttpStatus, OnModuleInit, Param, Post, Query } from "@nestjs/common";
+import { Body, Controller, Delete, Get, HttpCode, HttpStatus, Param, Post, Query } from "@nestjs/common";
 import { ApiBadRequestResponse, ApiNoContentResponse, ApiNotFoundResponse, ApiOkResponse } from "@nestjs/swagger";
 import { ChannelId } from "@ovp-lib/api/auth/decorators/channel-id.decorator";
 import { NestErrorResponseDto } from "@ovp-lib/api/common/dto/nest-error-response.dto";
-import { KafkaTopic } from "@ovp-lib/api/kafka/constants/topic-names";
-import { KafkaConsumerService } from "@ovp-lib/api/kafka/services/kafka-consumer.service";
 import { OrderByKey } from "@ovp-lib/api/kysely/types/order-by-key";
 import { ApiPaginatedResponse } from "@ovp-lib/api/pagination/decorators/api-paginated-response.decorator";
 import { Pagination } from "@ovp-lib/api/pagination/decorators/pagination.decorator";
@@ -17,21 +15,8 @@ import { GetSubscriptionsFilterDto } from "~src/subscriptions/dto/get-subscripti
 import { SubscriptionService } from "~src/subscriptions/services/subscription.service";
 
 @Controller("subscriptions")
-export class SubscriptionController implements OnModuleInit {
-	constructor(
-		private readonly subscriptionService: SubscriptionService,
-		private readonly kafkaConsumerService: KafkaConsumerService,
-	) {}
-
-	async onModuleInit() {
-		await this.handleChannelEvents();
-	}
-
-	async handleChannelEvents() {
-		await this.kafkaConsumerService.subscribe(KafkaTopic.ChannelEvents, async (payload) => {
-			await this.subscriptionService.handleChannelEvents(payload);
-		});
-	}
+export class SubscriptionController {
+	constructor(private readonly subscriptionService: SubscriptionService) {}
 
 	@HttpCode(HttpStatus.OK)
 	@ApiOkResponse({ type: GetSubscriptionDto, description: "Subscription created or already exists" })
