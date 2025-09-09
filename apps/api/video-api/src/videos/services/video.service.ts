@@ -20,6 +20,7 @@ import { EachMessagePayload } from "kafkajs";
 
 import { VideoVisibility } from "~db/schema";
 import { GetVideoDto } from "~src/videos/dto/get-video.dto";
+import { GetVideoForEditingDto } from "~src/videos/dto/get-video-for-editing.dto";
 import { GetVideoForViewerDto } from "~src/videos/dto/get-video-for-viewer.dto";
 import { VideoRepository } from "~src/videos/repositories/video.repository";
 
@@ -133,5 +134,22 @@ export class VideoService implements OnModuleInit {
 
 		// TODO: add HLS playlist URL to response
 		return new GetVideoForViewerDto(video.toPlain());
+	}
+
+	async getVideoByIdForEditingOrThrow(videoId: string, channelId: string) {
+		const video = await this.videoRepository.getVideoById(videoId);
+
+		if (!video) {
+			throw new NotFoundException("Video not found");
+		}
+
+		const isAuthor = video.channelId === channelId;
+
+		if (!isAuthor) {
+			throw new ForbiddenException("You do not have permissions to view this content");
+		}
+
+		// TODO: Add thumbnails
+		return new GetVideoForEditingDto(video, []);
 	}
 }
