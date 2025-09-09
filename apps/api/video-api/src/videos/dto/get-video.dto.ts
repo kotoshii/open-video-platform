@@ -1,10 +1,7 @@
 import { ApiProperty } from "@nestjs/swagger";
-import { Exclude } from "class-transformer";
 import { Selectable } from "kysely";
 
 import { Video, VideoSelectedThumbnail, VideoVisibility } from "~db/schema";
-
-// TODO: add HLS playlist URL and selected thumbnail URL. Maybe it'll be worth renaming it to WatchVideoDto.
 
 export class GetVideoDto {
 	constructor(video: Selectable<Video>) {
@@ -62,7 +59,6 @@ export class GetVideoDto {
 	@ApiProperty({ type: "string", nullable: true })
 	description: string | null;
 
-	@Exclude()
 	@ApiProperty()
 	tags: string[];
 
@@ -72,15 +68,12 @@ export class GetVideoDto {
 	@ApiProperty()
 	allowRates: boolean;
 
-	@Exclude()
 	@ApiProperty({ enum: VideoSelectedThumbnail })
 	selectedThumbnail: VideoSelectedThumbnail;
 
-	@Exclude()
 	@ApiProperty({ enum: VideoVisibility })
 	visibility: VideoVisibility;
 
-	@Exclude()
 	@ApiProperty()
 	isPublished: boolean;
 
@@ -99,7 +92,6 @@ export class GetVideoDto {
 	@ApiProperty()
 	createdDate: Date;
 
-	@Exclude()
 	@ApiProperty()
 	updatedDate: Date;
 

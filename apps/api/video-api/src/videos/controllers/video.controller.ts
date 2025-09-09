@@ -6,13 +6,14 @@ import { NestErrorResponseDto } from "@ovp-lib/api/common/dto/nest-error-respons
 import { RealIP } from "nestjs-real-ip";
 
 import { GetVideoDto } from "~src/videos/dto/get-video.dto";
+import { GetVideoForViewerDto } from "~src/videos/dto/get-video-for-viewer.dto";
 import { VideoService } from "~src/videos/services/video.service";
 
 @Controller("videos")
 export class VideoController {
 	constructor(private readonly videoService: VideoService) {}
 
-	@ApiOkResponse({ type: GetVideoDto })
+	@ApiOkResponse({ type: GetVideoForViewerDto })
 	@ApiForbiddenResponse({
 		type: NestErrorResponseDto,
 		description: "Video is private or video is NSFW and user cannot access it",

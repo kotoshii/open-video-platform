@@ -20,6 +20,7 @@ import { EachMessagePayload } from "kafkajs";
 
 import { VideoVisibility } from "~db/schema";
 import { GetVideoDto } from "~src/videos/dto/get-video.dto";
+import { GetVideoForViewerDto } from "~src/videos/dto/get-video-for-viewer.dto";
 import { VideoRepository } from "~src/videos/repositories/video.repository";
 
 @Injectable()
@@ -130,6 +131,7 @@ export class VideoService implements OnModuleInit {
 			videoId,
 		);
 
-		return video;
+		// TODO: add HLS playlist URL to response
+		return new GetVideoForViewerDto(video.toPlain());
 	}
 }
