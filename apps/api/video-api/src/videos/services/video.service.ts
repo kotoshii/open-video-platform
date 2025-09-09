@@ -108,7 +108,7 @@ export class VideoService implements OnModuleInit {
 			const canAccessNsfw = canAccessNsfwResponse?.canAccessNsfw || false;
 
 			if (!canAccessNsfw) {
-				throw new ForbiddenException("You do not have permissions to access this content");
+				throw new ForbiddenException("You do not have permissions to view this content");
 			}
 		}
 
