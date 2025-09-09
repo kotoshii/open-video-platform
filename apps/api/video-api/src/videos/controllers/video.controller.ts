@@ -15,9 +15,9 @@ export class VideoController {
 	@ApiOkResponse({ type: GetVideoDto })
 	@ApiForbiddenResponse({
 		type: NestErrorResponseDto,
-		description: "Video is marked as NSFW and user cannot access it",
+		description: "Video is private or video is NSFW and user cannot access it",
 	})
-	@ApiNotFoundResponse({ type: NestErrorResponseDto, description: "Video not found or is private" })
+	@ApiNotFoundResponse({ type: NestErrorResponseDto, description: "Video not found" })
 	@Get(":id/watch")
 	async watchVideoById(
 		@Param("id") videoId: string,
