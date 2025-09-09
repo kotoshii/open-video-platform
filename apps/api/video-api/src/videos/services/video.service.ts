@@ -17,8 +17,10 @@ import { jsonParseOrNull } from "@ovp-lib/common/utils/json";
 import { CHANNEL_SERVICE_NAME, CHANNELS_PACKAGE_NAME, ChannelServiceClient } from "@ovp-proto/types/channels";
 import { USER_SERVICE_NAME, USERS_PACKAGE_NAME, UserServiceClient } from "@ovp-proto/types/users";
 import { EachMessagePayload } from "kafkajs";
+import _ from "lodash";
 
 import { VideoVisibility } from "~db/schema";
+import { EditVideoDetailsDto } from "~src/videos/dto/edit-video-details.dto";
 import { GetVideoDto } from "~src/videos/dto/get-video.dto";
 import { GetVideoForEditingDto } from "~src/videos/dto/get-video-for-editing.dto";
 import { GetVideoForViewerDto } from "~src/videos/dto/get-video-for-viewer.dto";
@@ -156,6 +158,20 @@ export class VideoService implements OnModuleInit {
 		const video = await this.getVideoByIdForAuthorOrThrow(videoId, channelId);
 
 		// TODO: Add thumbnails
-		return new GetVideoForEditingDto(video, []);
+		return new GetVideoForEditingDto(video.toPlain(), []);
+	}
+
+	async editVideoDetailsByIdOrThrow(videoId: string, channelId: string, dto: EditVideoDetailsDto) {
+		const video = await this.getVideoByIdForAuthorOrThrow(videoId, channelId);
+
+		if (_.isEmpty(dto.toPlain())) {
+			// TODO: Add thumbnails
+			return new GetVideoForEditingDto(video.toPlain(), []);
+		}
+
+		const updatedVideo = await this.videoRepository.updateVideoById(videoId, dto.toPlain());
+
+		// TODO: Add thumbnails
+		return new GetVideoForEditingDto(updatedVideo, []);
 	}
 }

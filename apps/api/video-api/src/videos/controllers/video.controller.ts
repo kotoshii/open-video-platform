@@ -1,10 +1,11 @@
-import { Controller, Get, Headers, Param } from "@nestjs/common";
+import { Body, Controller, Get, Headers, Param, Put } from "@nestjs/common";
 import { ApiForbiddenResponse, ApiNotFoundResponse, ApiOkResponse } from "@nestjs/swagger";
 import { ChannelId } from "@ovp-lib/api/auth/decorators/channel-id.decorator";
 import { UserId } from "@ovp-lib/api/auth/decorators/user-id.decorator";
 import { NestErrorResponseDto } from "@ovp-lib/api/common/dto/nest-error-response.dto";
 import { RealIP } from "nestjs-real-ip";
 
+import { EditVideoDetailsDto } from "~src/videos/dto/edit-video-details.dto";
 import { GetVideoForEditingDto } from "~src/videos/dto/get-video-for-editing.dto";
 import { GetVideoForViewerDto } from "~src/videos/dto/get-video-for-viewer.dto";
 import { VideoService } from "~src/videos/services/video.service";
@@ -39,6 +40,21 @@ export class VideoController {
 	@Get(":id/edit")
 	async getVideoByIdForEditing(@Param("id") videoId: string, @ChannelId() channelId: string) {
 		return this.videoService.getVideoByIdForEditingOrThrow(videoId, channelId);
+	}
+
+	@ApiOkResponse({ type: GetVideoForEditingDto })
+	@ApiForbiddenResponse({
+		type: NestErrorResponseDto,
+		description: "User is trying to access someone else's video",
+	})
+	@ApiNotFoundResponse({ type: NestErrorResponseDto, description: "Video not found" })
+	@Put(":id/edit")
+	async editVideoDetailsById(
+		@Param("id") videoId: string,
+		@ChannelId() channelId: string,
+		@Body() body: EditVideoDetailsDto,
+	) {
+		return this.videoService.editVideoDetailsByIdOrThrow(videoId, channelId, body);
 	}
 
 }
