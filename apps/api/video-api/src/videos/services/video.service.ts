@@ -117,6 +117,22 @@ export class VideoService implements OnModuleInit {
 		return new GetVideoDto(video);
 	}
 
+	async getVideoByIdForAuthorOrThrow(videoId: string, channelId: string) {
+		const video = await this.videoRepository.getVideoById(videoId);
+
+		if (!video) {
+			throw new NotFoundException("Video not found");
+		}
+
+		const isAuthor = video.channelId === channelId;
+
+		if (!isAuthor) {
+			throw new ForbiddenException("You do not have permissions to view this content");
+		}
+
+		return new GetVideoDto(video);
+	}
+
 	async watchVideoByIdOrThrow(
 		videoId: string,
 		userId: string,
@@ -137,17 +153,7 @@ export class VideoService implements OnModuleInit {
 	}
 
 	async getVideoByIdForEditingOrThrow(videoId: string, channelId: string) {
-		const video = await this.videoRepository.getVideoById(videoId);
-
-		if (!video) {
-			throw new NotFoundException("Video not found");
-		}
-
-		const isAuthor = video.channelId === channelId;
-
-		if (!isAuthor) {
-			throw new ForbiddenException("You do not have permissions to view this content");
-		}
+		const video = await this.getVideoByIdForAuthorOrThrow(videoId, channelId);
 
 		// TODO: Add thumbnails
 		return new GetVideoForEditingDto(video, []);
