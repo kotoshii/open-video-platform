@@ -1,5 +1,5 @@
-import { Body, Controller, Get, Headers, Param, Put } from "@nestjs/common";
-import { ApiForbiddenResponse, ApiNotFoundResponse, ApiOkResponse } from "@nestjs/swagger";
+import { Body, Controller, Delete, Get, Headers, HttpCode, HttpStatus, Param, Put } from "@nestjs/common";
+import { ApiForbiddenResponse, ApiNoContentResponse, ApiNotFoundResponse, ApiOkResponse } from "@nestjs/swagger";
 import { ChannelId } from "@ovp-lib/api/auth/decorators/channel-id.decorator";
 import { UserId } from "@ovp-lib/api/auth/decorators/user-id.decorator";
 import { NestErrorResponseDto } from "@ovp-lib/api/common/dto/nest-error-response.dto";
@@ -55,6 +55,18 @@ export class VideoController {
 		@Body() body: EditVideoDetailsDto,
 	) {
 		return this.videoService.editVideoDetailsByIdOrThrow(videoId, channelId, body);
+	}
+
+	@HttpCode(HttpStatus.NO_CONTENT)
+	@ApiNoContentResponse({ description: "Successfully created video deletion request" })
+	@ApiForbiddenResponse({
+		type: NestErrorResponseDto,
+		description: "User is trying to access someone else's video",
+	})
+	@ApiNotFoundResponse({ type: NestErrorResponseDto, description: "Video not found" })
+	@Delete(":id")
+	async deleteVideoById(@Param("id") videoId: string, @ChannelId() channelId: string) {
+		return this.videoService.deleteVideoByIdOrThrow(videoId, channelId);
 	}
 
 }

@@ -174,4 +174,12 @@ export class VideoService implements OnModuleInit {
 		// TODO: Add thumbnails
 		return new GetVideoForEditingDto(updatedVideo, []);
 	}
+
+	async deleteVideoByIdOrThrow(videoId: string, channelId: string) {
+		await this.getVideoByIdForAuthorOrThrow(videoId, channelId);
+		await this.videoRepository.deleteVideoById(videoId);
+		// TODO: Once video-uploading-api and file-storage are done (i.e. we have the flow of storing files somewhere)
+		//  weed to schedule a video deletion job to delete the actual file.
+		//  Or maybe Kafka event will work too, idk, need to think about this.
+	}
 }
