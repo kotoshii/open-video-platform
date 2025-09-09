@@ -95,8 +95,12 @@ export class VideoService implements OnModuleInit {
 
 		const isAuthor = video.channelId === channelId;
 
-		if (!isAuthor && (!video.isPublished || video.visibility === VideoVisibility.Private)) {
+		if (!isAuthor && !video.isPublished) {
 			throw new NotFoundException("Video not found");
+		}
+
+		if (!isAuthor && video.visibility === VideoVisibility.Private) {
+			throw new ForbiddenException("You do not have permissions to view this content");
 		}
 
 		if (!isAuthor && video.isNsfw) {
