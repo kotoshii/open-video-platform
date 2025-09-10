@@ -16,6 +16,7 @@
 			"~kysely/*": ["./kysely/*"],
 			"~logging/*": ["./logging/*"],
 			"~pagination/*": ["./pagination/*"],
+			"~serialization/*": ["./serialization/*"],
 			"~validation/*": ["./validation/*"]
 		}
 	},
