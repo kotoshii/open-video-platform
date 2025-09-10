@@ -2,11 +2,11 @@ import { Body, Controller, Delete, Get, HttpCode, HttpStatus, Param, Post, Query
 import { ApiBadRequestResponse, ApiNoContentResponse, ApiNotFoundResponse, ApiOkResponse } from "@nestjs/swagger";
 import { ChannelId } from "@ovp-lib/api/auth/decorators/channel-id.decorator";
 import { NestErrorResponseDto } from "@ovp-lib/api/common/dto/nest-error-response.dto";
-import { OrderByKey } from "@ovp-lib/api/kysely/types/order-by-key";
 import { ApiPaginatedResponse } from "@ovp-lib/api/pagination/decorators/api-paginated-response.decorator";
 import { Pagination } from "@ovp-lib/api/pagination/decorators/pagination.decorator";
 import { PaginationOptionsDto } from "@ovp-lib/api/pagination/dto/pagination-options.dto";
 import { SortOrder } from "@ovp-lib/common/constants/sort-order";
+import { Selectable } from "kysely";
 
 import { Subscription } from "~db/schema";
 import { CreateSubscriptionDto } from "~src/subscriptions/dto/create-subscription.dto";
@@ -41,8 +41,12 @@ export class SubscriptionController {
 	async getCurrentChannelSubscriptions(
 		@ChannelId() subscriberId: string,
 		@Query() filter: GetSubscriptionsFilterDto,
-		@Pagination<OrderByKey<Subscription>>({ order: SortOrder.Asc, orderBy: "channelName", limit: 50 })
-		pagination: PaginationOptionsDto<OrderByKey<Subscription>>,
+		@Pagination<Selectable<Subscription>>({
+			defaults: { limit: 50 },
+			options: { maxLimit: 50 },
+			overrides: { order: SortOrder.Asc, orderBy: "channelName" },
+		})
+		pagination: PaginationOptionsDto<Selectable<Subscription>>,
 	) {
 		return this.subscriptionService.getPaginatedSubscriptionsBySubscriberId(subscriberId, filter, pagination);
 	}

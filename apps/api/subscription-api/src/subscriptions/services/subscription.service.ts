@@ -6,13 +6,13 @@ import { SubscriptionCreatedKafkaEventPayloadDto } from "@ovp-lib/api/kafka/dto/
 import { SubscriptionDeletedKafkaEventPayloadDto } from "@ovp-lib/api/kafka/dto/subscription-deleted-kafka-event-payload.dto";
 import { KafkaProducerService } from "@ovp-lib/api/kafka/services/kafka-producer.service";
 import { ChannelKafkaEventPayload } from "@ovp-lib/api/kafka/types/events/channels";
-import { OrderByKey } from "@ovp-lib/api/kysely/types/order-by-key";
 import { PaginatedResponseDto } from "@ovp-lib/api/pagination/dto/paginated-response.dto";
 import { PaginationOptionsDto } from "@ovp-lib/api/pagination/dto/pagination-options.dto";
 import { jsonParseOrNull } from "@ovp-lib/common/utils/json";
 import { SagaBuilder } from "@ovp-lib/common/utils/saga-pattern/saga-builder";
 import { CHANNEL_SERVICE_NAME, CHANNELS_PACKAGE_NAME, ChannelServiceClient } from "@ovp-proto/types/channels";
 import { EachMessagePayload } from "kafkajs";
+import { Selectable } from "kysely";
 
 import { Subscription } from "~db/schema";
 import { CreateSubscriptionDto } from "~src/subscriptions/dto/create-subscription.dto";
@@ -114,7 +114,7 @@ export class SubscriptionService implements OnModuleInit {
 	async getPaginatedSubscriptionsBySubscriberId(
 		subscriberId: string,
 		filter: GetSubscriptionsFilterDto,
-		pagination: PaginationOptionsDto<OrderByKey<Subscription>>,
+		pagination: PaginationOptionsDto<Selectable<Subscription>>,
 	): Promise<PaginatedResponseDto<GetSubscriptionDto>> {
 		const data = await this.subscriptionRepository.getSubscriptionsBySubscriberId(subscriberId, filter, pagination);
 		const { count } = await this.subscriptionRepository.getSubscriptionsBySubscriberIdCount(subscriberId, filter);

@@ -5,23 +5,32 @@ import { Request } from "express";
 import { PaginationOptionsDto } from "~pagination/dto/pagination-options.dto";
 import { validateInstance } from "~validation/utils/validation-helpers";
 
-type DefaultOverrides<TOrderBy extends string> = Partial<Omit<PaginationOptionsDto<TOrderBy>, "page" | "offset">>;
+type OverridablePaginationOptions<TEntity> = Partial<
+	Omit<PaginationOptionsDto<TEntity>, "page" | "offset" | "maxLimit">
+>;
+
+interface PaginationConfigOptions {
+	maxLimit?: number;
+}
+
+interface PaginationConfig<TEntity> {
+	defaults?: OverridablePaginationOptions<TEntity>;
+	overrides?: OverridablePaginationOptions<TEntity>;
+	options?: PaginationConfigOptions;
+}
 
 export const Pagination = createParamDecorator(
-	async <TOrderBy extends string = string>(
-		defaultOverrides: DefaultOverrides<TOrderBy> = {},
-		ctx: ExecutionContext,
-	) => {
+	async <TEntity = object>(paginationConfig: PaginationConfig<TEntity> = {}, ctx: ExecutionContext) => {
 		const req: Request = ctx.switchToHttp().getRequest();
+		const { defaults, overrides, options = {} } = paginationConfig;
 
-		const options = plainToInstance(PaginationOptionsDto, Object.assign({}, defaultOverrides, req.query), {
+		const dto = plainToInstance(PaginationOptionsDto, Object.assign({}, defaults, req.query, overrides, options), {
 			enableImplicitConversion: true,
-			excludeExtraneousValues: true,
 			exposeDefaultValues: true,
 		});
 
-		await validateInstance(options);
+		await validateInstance(dto);
 
-		return options;
+		return dto;
 	},
 );

@@ -1,7 +1,6 @@
 import { Injectable } from "@nestjs/common";
-import { OrderByKey } from "@ovp-lib/api/kysely/types/order-by-key";
 import { PaginationOptionsDto } from "@ovp-lib/api/pagination/dto/pagination-options.dto";
-import { Insertable, Kysely, Updateable } from "kysely";
+import { Insertable, Kysely, Selectable, Updateable } from "kysely";
 import { InjectKysely } from "nestjs-kysely";
 
 import { DB, Subscription } from "~db/schema";
@@ -29,7 +28,7 @@ export class SubscriptionRepository {
 	async getSubscriptionsBySubscriberId(
 		subscriberId: string,
 		filter: GetSubscriptionsFilterDto,
-		pagination: PaginationOptionsDto<OrderByKey<Subscription>>,
+		pagination: PaginationOptionsDto<Selectable<Subscription>>,
 	) {
 		const { offset, limit, orderBy, order } = pagination;
 

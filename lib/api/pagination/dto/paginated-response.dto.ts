@@ -40,15 +40,15 @@ export class PageMetaDto {
 	}
 }
 
-export class PaginatedResponseDto<T> {
+export class PaginatedResponseDto<TEntity> {
 	@IsArray()
 	@ApiProperty({ isArray: true, type: "array" })
-	data: T[];
+	data: TEntity[];
 
 	@ApiProperty({ type: PageMetaDto })
 	meta: PageMetaDto;
 
-	constructor(data: T[], pagination: PaginationOptionsDto, itemCount: number) {
+	constructor(data: TEntity[], pagination: PaginationOptionsDto<TEntity>, itemCount: number) {
 		const { page, limit } = pagination;
 
 		this.data = data;

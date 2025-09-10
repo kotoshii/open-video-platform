@@ -1,9 +1,11 @@
 import { ApiPropertyOptional } from "@nestjs/swagger";
 import { SortOrder } from "@ovp-lib/common/constants/sort-order";
-import { Expose } from "class-transformer";
+import { Transform } from "class-transformer";
 import { IsEnum, IsInt, IsOptional, IsString, Min } from "class-validator";
 
-export class PaginationOptionsDto<TOrderBy extends string = string> {
+export class PaginationOptionsDto<TEntity> {
+	readonly maxLimit: number;
+
 	@ApiPropertyOptional({
 		minimum: 1,
 		default: 1,
@@ -12,8 +14,7 @@ export class PaginationOptionsDto<TOrderBy extends string = string> {
 	@IsInt()
 	@Min(1)
 	@IsOptional()
-	@Expose()
-	page: number = 1;
+	readonly page: number = 1;
 
 	@ApiPropertyOptional({
 		default: 20,
@@ -21,20 +22,21 @@ export class PaginationOptionsDto<TOrderBy extends string = string> {
 	})
 	@IsInt()
 	@IsOptional()
-	@Expose()
+	@Transform(({ obj, value }) => {
+		const limit = parseInt(value) || 0;
+		return typeof obj.maxLimit !== "undefined" && limit > obj.maxLimit ? obj.maxLimit : limit;
+	})
 	limit: number = 20;
 
 	@ApiPropertyOptional({ enum: SortOrder, default: SortOrder.Asc })
 	@IsEnum(SortOrder)
 	@IsOptional()
-	@Expose()
-	order: SortOrder = SortOrder.Asc;
+	order: SortOrder = SortOrder.Desc;
 
 	@ApiPropertyOptional({ default: "id", type: "string" })
 	@IsString()
 	@IsOptional()
-	@Expose()
-	orderBy: TOrderBy = "id" as TOrderBy;
+	orderBy: keyof TEntity = "createdDate" as keyof TEntity;
 
 	get offset(): number {
 		return (this.page - 1) * this.limit;
