@@ -1,8 +1,8 @@
 import { ApiProperty } from "@nestjs/swagger";
-import { Exclude } from "class-transformer";
+import { Expose } from "class-transformer";
 import { Selectable } from "kysely";
 
-import { Video } from "~db/schema";
+import { Video, VideoSelectedThumbnail, VideoVisibility } from "~db/schema";
 import { GetVideoDto } from "~src/videos/dto/get-video.dto";
 import { GetVideoThumbnailDto } from "~src/videos/dto/get-video-thumbnail.dto";
 import { VideoThumbnail } from "~src/videos/types/video-thumbnail";
@@ -14,27 +14,36 @@ export class GetVideoForEditingDto extends GetVideoDto {
 		this.thumbnails = GetVideoThumbnailDto.fromArray(thumbnails);
 	}
 
+	@Expose()
+	declare id: string;
+
+	@Expose()
+	declare title: string;
+
+	@Expose()
+	declare description: string | null;
+
+	@Expose()
+	declare tags: string[];
+
+	@Expose()
+	declare allowComments: boolean;
+
+	@Expose()
+	declare allowRates: boolean;
+
 	@ApiProperty({ type: [GetVideoThumbnailDto] })
 	thumbnails: GetVideoThumbnailDto[];
 
-	@Exclude()
-	declare channelId: string;
+	@Expose()
+	declare selectedThumbnail: VideoSelectedThumbnail;
 
-	@Exclude()
-	declare channelName: string;
+	@Expose()
+	declare visibility: VideoVisibility;
 
-	@Exclude()
-	declare isPublished: boolean;
+	@Expose()
+	declare isNsfw: boolean;
 
-	@Exclude()
-	declare viewCount: string;
-
-	@Exclude()
-	declare likes: string;
-
-	@Exclude()
-	declare dislikes: string;
-
-	@Exclude()
-	declare updatedDate: Date;
+	@Expose()
+	declare createdDate: Date;
 }

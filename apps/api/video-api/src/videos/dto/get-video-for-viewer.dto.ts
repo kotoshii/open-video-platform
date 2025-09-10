@@ -1,21 +1,41 @@
-import { Exclude } from "class-transformer";
+import { Expose } from "class-transformer";
 
-import { VideoSelectedThumbnail, VideoVisibility } from "~db/schema";
 import { GetVideoDto } from "~src/videos/dto/get-video.dto";
 
 export class GetVideoForViewerDto extends GetVideoDto {
-	@Exclude()
-	declare tags: string[];
+	@Expose()
+	declare id: string;
 
-	@Exclude()
-	declare selectedThumbnail: VideoSelectedThumbnail;
+	@Expose()
+	declare channelId: string;
 
-	@Exclude()
-	declare visibility: VideoVisibility;
+	@Expose()
+	declare channelName: string;
 
-	@Exclude()
-	declare isPublished: boolean;
+	@Expose()
+	declare title: string;
 
-	@Exclude()
-	declare updatedDate: Date;
+	@Expose()
+	declare description: string | null;
+
+	@Expose()
+	declare allowComments: boolean;
+
+	@Expose()
+	declare allowRates: boolean;
+
+	@Expose()
+	declare isNsfw: boolean;
+
+	@Expose()
+	declare viewCount: string;
+
+	@Expose()
+	declare likes: string;
+
+	@Expose()
+	declare dislikes: string;
+
+	@Expose()
+	declare createdDate: Date;
 }

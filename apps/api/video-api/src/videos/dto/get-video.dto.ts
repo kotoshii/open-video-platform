@@ -1,8 +1,10 @@
 import { ApiProperty } from "@nestjs/swagger";
-import { Selectable } from "kysely";
+import { Exclude } from "class-transformer";
+import type { Selectable } from "kysely";
 
 import { Video, VideoSelectedThumbnail, VideoVisibility } from "~db/schema";
 
+@Exclude()
 export class GetVideoDto {
 	constructor(video: Selectable<Video>) {
 		const {
