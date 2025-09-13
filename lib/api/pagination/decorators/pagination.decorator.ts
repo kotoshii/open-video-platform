@@ -1,30 +1,15 @@
-import { createParamDecorator, ExecutionContext } from "@nestjs/common";
+import { createParamDecorator, ExecutionContext, Type } from "@nestjs/common";
 import { plainToInstance } from "class-transformer";
 import { Request } from "express";
 
 import { PaginationOptionsDto } from "~pagination/dto/pagination-options.dto";
 import { validateInstance } from "~validation/utils/validation-helpers";
 
-type OverridablePaginationOptions<TEntity> = Partial<
-	Omit<PaginationOptionsDto<TEntity>, "page" | "offset" | "maxLimit">
->;
-
-interface PaginationConfigOptions {
-	maxLimit?: number;
-}
-
-interface PaginationConfig<TEntity> {
-	defaults?: OverridablePaginationOptions<TEntity>;
-	overrides?: OverridablePaginationOptions<TEntity>;
-	options?: PaginationConfigOptions;
-}
-
-export const Pagination = createParamDecorator(
-	async <TEntity = object>(paginationConfig: PaginationConfig<TEntity> = {}, ctx: ExecutionContext) => {
+export const Pagination = <TPaginationOptionsDto extends PaginationOptionsDto>(DtoClass: Type<TPaginationOptionsDto>) =>
+	createParamDecorator(async (_, ctx: ExecutionContext) => {
 		const req: Request = ctx.switchToHttp().getRequest();
-		const { defaults, overrides, options = {} } = paginationConfig;
 
-		const dto = plainToInstance(PaginationOptionsDto, Object.assign({}, defaults, req.query, overrides, options), {
+		const dto = plainToInstance(DtoClass, Object.assign({}, req.query), {
 			enableImplicitConversion: true,
 			exposeDefaultValues: true,
 		});
@@ -32,5 +17,4 @@ export const Pagination = createParamDecorator(
 		await validateInstance(dto);
 
 		return dto;
-	},
-);
+	})();

@@ -48,7 +48,7 @@ export class PaginatedResponseDto<TEntity> {
 	@ApiProperty({ type: PageMetaDto })
 	meta: PageMetaDto;
 
-	constructor(data: TEntity[], pagination: PaginationOptionsDto<TEntity>, itemCount: number) {
+	constructor(data: TEntity[], pagination: PaginationOptionsDto, itemCount: number) {
 		const { page, limit } = pagination;
 
 		this.data = data;
