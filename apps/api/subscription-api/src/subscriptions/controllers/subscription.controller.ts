@@ -4,14 +4,11 @@ import { ChannelId } from "@ovp-lib/api/auth/decorators/channel-id.decorator";
 import { NestErrorResponseDto } from "@ovp-lib/api/common/dto/nest-error-response.dto";
 import { ApiPaginatedResponse } from "@ovp-lib/api/pagination/decorators/api-paginated-response.decorator";
 import { Pagination } from "@ovp-lib/api/pagination/decorators/pagination.decorator";
-import { PaginationOptionsDto } from "@ovp-lib/api/pagination/dto/pagination-options.dto";
-import { SortOrder } from "@ovp-lib/common/constants/sort-order";
-import { Selectable } from "kysely";
 
-import { Subscription } from "~db/schema";
 import { CreateSubscriptionDto } from "~src/subscriptions/dto/create-subscription.dto";
 import { GetSubscriptionDto } from "~src/subscriptions/dto/get-subscription.dto";
 import { GetSubscriptionsFilterDto } from "~src/subscriptions/dto/get-subscriptions-filter.dto";
+import { GetSubscriptionsPaginationOptionsDto } from "~src/subscriptions/dto/get-subscriptions-pagination-options.dto";
 import { SubscriptionService } from "~src/subscriptions/services/subscription.service";
 
 @Controller("subscriptions")
@@ -34,19 +31,12 @@ export class SubscriptionController {
 		return this.subscriptionService.deleteSubscription(subscriberId, channelId);
 	}
 
-	@ApiPaginatedResponse(GetSubscriptionDto, {
-		description: "List of current user (channel) subscriptions",
-	})
+	@ApiPaginatedResponse(GetSubscriptionDto, GetSubscriptionsPaginationOptionsDto)
 	@Get("current")
 	async getCurrentChannelSubscriptions(
 		@ChannelId() subscriberId: string,
 		@Query() filter: GetSubscriptionsFilterDto,
-		@Pagination<Selectable<Subscription>>({
-			defaults: { limit: 50 },
-			options: { maxLimit: 50 },
-			overrides: { order: SortOrder.Asc, orderBy: "channelName" },
-		})
-		pagination: PaginationOptionsDto<Selectable<Subscription>>,
+		@Pagination(GetSubscriptionsPaginationOptionsDto) pagination: GetSubscriptionsPaginationOptionsDto,
 	) {
 		return this.subscriptionService.getPaginatedSubscriptionsBySubscriberId(subscriberId, filter, pagination);
 	}

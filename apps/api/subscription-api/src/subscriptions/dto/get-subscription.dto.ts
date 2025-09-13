@@ -33,4 +33,8 @@ export class GetSubscriptionDto {
 
 	@Exclude()
 	updatedDate: Date;
+
+	static fromArray(subscriptions: Selectable<Subscription>[]) {
+		return subscriptions.map((subscription) => new GetSubscriptionDto(subscription));
+	}
 }

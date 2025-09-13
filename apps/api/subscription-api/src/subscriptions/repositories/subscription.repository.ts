@@ -1,10 +1,10 @@
 import { Injectable } from "@nestjs/common";
-import { PaginationOptionsDto } from "@ovp-lib/api/pagination/dto/pagination-options.dto";
-import { Insertable, Kysely, Selectable, Updateable } from "kysely";
+import { Insertable, Kysely, Updateable } from "kysely";
 import { InjectKysely } from "nestjs-kysely";
 
 import { DB, Subscription } from "~db/schema";
 import { GetSubscriptionsFilterDto } from "~src/subscriptions/dto/get-subscriptions-filter.dto";
+import { GetSubscriptionsPaginationOptionsDto } from "~src/subscriptions/dto/get-subscriptions-pagination-options.dto";
 
 @Injectable()
 export class SubscriptionRepository {
@@ -28,7 +28,7 @@ export class SubscriptionRepository {
 	async getSubscriptionsBySubscriberId(
 		subscriberId: string,
 		filter: GetSubscriptionsFilterDto,
-		pagination: PaginationOptionsDto<Selectable<Subscription>>,
+		pagination: GetSubscriptionsPaginationOptionsDto,
 	) {
 		const { offset, limit, orderBy, order } = pagination;
 
@@ -43,9 +43,10 @@ export class SubscriptionRepository {
 	async getSubscriptionsBySubscriberIdCount(subscriberId: string, filter: GetSubscriptionsFilterDto) {
 		return this.createFilteredSubscriptionQuery(filter)
 			.clearSelect()
-			.select((eb) => eb.fn.countAll().as("count"))
+			.select((eb) => eb.fn.countAll<string>().as("count"))
 			.where("subscriberId", "=", subscriberId)
-			.executeTakeFirstOrThrow();
+			.executeTakeFirstOrThrow()
+			.then((result) => Number(result.count) || 0);
 	}
 
 	async deleteSubscription(subscriberId: string, channelId: string) {

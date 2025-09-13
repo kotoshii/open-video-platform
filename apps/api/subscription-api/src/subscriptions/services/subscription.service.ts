@@ -7,17 +7,15 @@ import { SubscriptionDeletedKafkaEventPayloadDto } from "@ovp-lib/api/kafka/dto/
 import { KafkaProducerService } from "@ovp-lib/api/kafka/services/kafka-producer.service";
 import { ChannelKafkaEventPayload } from "@ovp-lib/api/kafka/types/events/channels";
 import { PaginatedResponseDto } from "@ovp-lib/api/pagination/dto/paginated-response.dto";
-import { PaginationOptionsDto } from "@ovp-lib/api/pagination/dto/pagination-options.dto";
 import { jsonParseOrNull } from "@ovp-lib/common/utils/json";
 import { SagaBuilder } from "@ovp-lib/common/utils/saga-pattern/saga-builder";
 import { CHANNEL_SERVICE_NAME, CHANNELS_PACKAGE_NAME, ChannelServiceClient } from "@ovp-proto/types/channels";
 import { EachMessagePayload } from "kafkajs";
-import { Selectable } from "kysely";
 
-import { Subscription } from "~db/schema";
 import { CreateSubscriptionDto } from "~src/subscriptions/dto/create-subscription.dto";
 import { GetSubscriptionDto } from "~src/subscriptions/dto/get-subscription.dto";
 import { GetSubscriptionsFilterDto } from "~src/subscriptions/dto/get-subscriptions-filter.dto";
+import { GetSubscriptionsPaginationOptionsDto } from "~src/subscriptions/dto/get-subscriptions-pagination-options.dto";
 import { SubscriptionRepository } from "~src/subscriptions/repositories/subscription.repository";
 
 @Injectable()
@@ -112,14 +110,16 @@ export class SubscriptionService implements OnModuleInit {
 	async getPaginatedSubscriptionsBySubscriberId(
 		subscriberId: string,
 		filter: GetSubscriptionsFilterDto,
-		pagination: PaginationOptionsDto<Selectable<Subscription>>,
+		pagination: GetSubscriptionsPaginationOptionsDto,
 	): Promise<PaginatedResponseDto<GetSubscriptionDto>> {
-		const data = await this.subscriptionRepository.getSubscriptionsBySubscriberId(subscriberId, filter, pagination);
-		const { count } = await this.subscriptionRepository.getSubscriptionsBySubscriberIdCount(subscriberId, filter);
+		const subscriptions = await this.subscriptionRepository.getSubscriptionsBySubscriberId(
+			subscriberId,
+			filter,
+			pagination,
+		);
+		const count = await this.subscriptionRepository.getSubscriptionsBySubscriberIdCount(subscriberId, filter);
 
-		const dto = data.map((item) => new GetSubscriptionDto(item));
-
-		return new PaginatedResponseDto(dto, pagination, Number(count));
+		return new PaginatedResponseDto(GetSubscriptionDto.fromArray(subscriptions), pagination, count);
 	}
 
 	private async createSubscriptionSaga(subscriberId: string, channelId: string, channelName: string) {
