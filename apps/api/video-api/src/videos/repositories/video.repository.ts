@@ -3,6 +3,8 @@ import { Insertable, Kysely, Updateable } from "kysely";
 import { InjectKysely } from "nestjs-kysely";
 
 import { DB, Video } from "~db/schema";
+import { GetVideosForChannelFilterDto } from "~src/videos/dto/get-videos-for-channel-filter.dto";
+import { GetVideosForChannelPaginationOptionsDto } from "~src/videos/dto/get-videos-for-channel-pagination-options.dto";
 
 @Injectable()
 export class VideoRepository {
@@ -14,6 +16,30 @@ export class VideoRepository {
 
 	async getVideoById(id: string) {
 		return this.videoQuery.where("id", "=", id).executeTakeFirst();
+	}
+
+	async getVideosByChannelId(
+		channelId: string,
+		filter: GetVideosForChannelFilterDto,
+		pagination: GetVideosForChannelPaginationOptionsDto,
+	) {
+		const { offset, limit, orderBy, order } = pagination;
+
+		return this.createFilteredVideosByChannelIdQuery(filter)
+			.where("channelId", "=", channelId)
+			.offset(offset)
+			.limit(limit)
+			.orderBy(orderBy, order)
+			.execute();
+	}
+
+	async getVideosByChannelIdCount(channelId: string, filter: GetVideosForChannelFilterDto) {
+		return this.createFilteredVideosByChannelIdQuery(filter)
+			.clearSelect()
+			.select((eb) => eb.fn.countAll<string>().as("count"))
+			.where("channelId", "=", channelId)
+			.executeTakeFirstOrThrow()
+			.then((result) => Number(result.count) || 0);
 	}
 
 	async updateVideoById(id: string, data: Updateable<Video>) {
@@ -48,5 +74,17 @@ export class VideoRepository {
 			.select("dislikes")
 			.select("createdDate")
 			.select("updatedDate");
+	}
+
+	private createFilteredVideosByChannelIdQuery(filter: GetVideosForChannelFilterDto) {
+		const { search } = filter;
+
+		const query = this.videoQuery;
+
+		if (search) {
+			query.where("title", "ilike", search);
+		}
+
+		return query;
 	}
 }

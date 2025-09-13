@@ -5,6 +5,7 @@ import { KafkaTopic } from "@ovp-lib/api/kafka/constants/topic-names";
 import { VideoViewedKafkaEventPayloadDto } from "@ovp-lib/api/kafka/dto/video-viewed-kafka-event-payload.dto";
 import { KafkaProducerService } from "@ovp-lib/api/kafka/services/kafka-producer.service";
 import { ChannelKafkaEventPayload } from "@ovp-lib/api/kafka/types/events/channels";
+import { PaginatedResponseDto } from "@ovp-lib/api/pagination/dto/paginated-response.dto";
 import { jsonParseOrNull } from "@ovp-lib/common/utils/json";
 import { CHANNEL_SERVICE_NAME, CHANNELS_PACKAGE_NAME, ChannelServiceClient } from "@ovp-proto/types/channels";
 import { USER_SERVICE_NAME, USERS_PACKAGE_NAME, UserServiceClient } from "@ovp-proto/types/users";
@@ -14,8 +15,11 @@ import _ from "lodash";
 import { VideoVisibility } from "~db/schema";
 import { EditVideoDetailsDto } from "~src/videos/dto/edit-video-details.dto";
 import { GetVideoDto } from "~src/videos/dto/get-video.dto";
+import { GetVideoForChannelDto } from "~src/videos/dto/get-video-for-channel.dto";
 import { GetVideoForEditingDto } from "~src/videos/dto/get-video-for-editing.dto";
 import { GetVideoForViewerDto } from "~src/videos/dto/get-video-for-viewer.dto";
+import { GetVideosForChannelFilterDto } from "~src/videos/dto/get-videos-for-channel-filter.dto";
+import { GetVideosForChannelPaginationOptionsDto } from "~src/videos/dto/get-videos-for-channel-pagination-options.dto";
 import { VideoRepository } from "~src/videos/repositories/video.repository";
 
 @Injectable()
@@ -148,6 +152,26 @@ export class VideoService implements OnModuleInit {
 
 		// TODO: Add thumbnails
 		return new GetVideoForEditingDto(video.toPlain(), []);
+	}
+
+	async getPaginatedVideosByChannelId(
+		channelId: string,
+		filter: GetVideosForChannelFilterDto,
+		pagination: GetVideosForChannelPaginationOptionsDto,
+		currentChannelId: string,
+	): Promise<PaginatedResponseDto<GetVideoForChannelDto>> {
+		const channel = await this.getChannelById(channelId);
+
+		if (!channel) {
+			throw new NotFoundException("Channel not found");
+		}
+
+		const videos = await this.videoRepository.getVideosByChannelId(channelId, filter, pagination);
+		const count = await this.videoRepository.getVideosByChannelIdCount(channelId, filter);
+
+		const isAuthor = currentChannelId === channelId;
+
+		return new PaginatedResponseDto(GetVideoForChannelDto.fromArray(videos, isAuthor), pagination, count);
 	}
 
 	async editVideoDetailsByIdOrThrow(videoId: string, channelId: string, dto: EditVideoDetailsDto) {
