@@ -1,12 +1,4 @@
-import {
-	BadRequestException,
-	ForbiddenException,
-	Inject,
-	Injectable,
-	Logger,
-	NotFoundException,
-	OnModuleInit,
-} from "@nestjs/common";
+import { ForbiddenException, Inject, Injectable, Logger, NotFoundException, OnModuleInit } from "@nestjs/common";
 import type { ClientGrpc } from "@nestjs/microservices";
 import { KafkaEventTypes } from "@ovp-lib/api/kafka/constants/event-types";
 import { KafkaTopic } from "@ovp-lib/api/kafka/constants/topic-names";
@@ -76,7 +68,7 @@ export class VideoService implements OnModuleInit {
 		const channel = await this.getChannelById(channelId);
 
 		if (!channel) {
-			throw new BadRequestException("Failed to create a video: provided channel ID does not exist");
+			throw new NotFoundException("Failed to create a video: provided channel ID does not exist");
 		}
 
 		const video = await this.videoRepository.createVideo({
