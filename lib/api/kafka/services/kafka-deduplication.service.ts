@@ -33,12 +33,13 @@ export class KafkaDeduplicationService implements OnModuleDestroy {
 		const pipeline = this.redis.pipeline();
 
 		for (const id of eventIds) {
-			pipeline.setex(this.buildRedisKey(id), this.kafkaDedupConfig.kafkaDedupTtl, EVENT_RECORD_VALUE);
+			pipeline.call("SET", this.buildRedisKey(id), EVENT_RECORD_VALUE, "EX", this.kafkaDedupConfig.kafkaDedupTtl, "NX");
 		}
 
 		const results = await pipeline.exec();
 
 		const reserved: string[] = [];
+		// todo add better error handling - here and in other similar services
 		results?.forEach((res, i) => {
 			if (res[1] === "OK") {
 				reserved.push(eventIds[i]);
