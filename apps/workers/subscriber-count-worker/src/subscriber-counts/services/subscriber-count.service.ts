@@ -1,58 +1,26 @@
-import { Injectable, Logger } from "@nestjs/common";
+import { Injectable } from "@nestjs/common";
 import { KafkaEventTypes } from "@ovp-lib/api/kafka/constants/event-types";
-import { KafkaTopic } from "@ovp-lib/api/kafka/constants/topic-names";
 import { KafkaDeduplicationService } from "@ovp-lib/api/kafka/services/kafka-deduplication.service";
 import { SubscriptionKafkaEventPayload } from "@ovp-lib/api/kafka/types/events/subscriptions";
-import { jsonParseOrNull } from "@ovp-lib/common/utils/json";
+import { BaseCountWorkerService } from "@ovp-lib/workers/counts/services/base-count-worker.service";
+import { KafkaEventPayloadWithOffset } from "@ovp-lib/workers/counts/types/kafka-event-payload-with-offset";
 import { EachBatchPayload } from "kafkajs";
 
 import { ChannelService } from "~src/channels/services/channel.service";
 
 @Injectable()
-export class SubscriberCountService {
-	private readonly logger = new Logger(SubscriberCountService.name);
-
+export class SubscriberCountService extends BaseCountWorkerService<SubscriptionKafkaEventPayload> {
 	constructor(
-		private readonly deduplicationService: KafkaDeduplicationService,
+		deduplicationService: KafkaDeduplicationService,
 		private readonly channelService: ChannelService,
-	) {}
+	) {
+		super(deduplicationService);
+	}
 
-	async handleSubscriptionEvents(payload: EachBatchPayload) {
+	async handleEvents(payload: EachBatchPayload) {
 		try {
-			const { batch, isStale, isRunning, commitOffsetsIfNecessary, resolveOffset, heartbeat } = payload;
-
-			if (isStale() || !isRunning()) {
-				return;
-			}
-
-			const events = batch.messages
-				.map((message) => {
-					const payload = message.value
-						? jsonParseOrNull<SubscriptionKafkaEventPayload>(message.value.toString())
-						: null;
-					if (payload) {
-						return { offset: message.offset, payload };
-					}
-					return null;
-				})
-				.filter((event) => event !== null);
-			const eventIds = events.map((event) => event.payload.eventId);
-
-			let newEventIds: string[] = [];
-
-			try {
-				newEventIds = await this.deduplicationService.reserveEventIds(eventIds);
-			} catch (e) {
-				this.logger.error(`Failed to reserve event IDs: ${e}`);
-				return;
-			}
-
-			const newEventIdsMap = new Map(newEventIds.map((eventId) => [eventId, 0]));
-
-			const newEvents = events.filter((event) => newEventIdsMap.has(event.payload.eventId));
-			const newEventPayloads = newEvents.map((event) => event.payload);
-
-			const { channelIds, deltas } = this.calculateSubscriberCountDeltas(newEventPayloads);
+			const events = await this.deduplicateEvents(payload);
+			const { channelIds, deltas } = this.calculateSubscriberCountDeltas(events);
 
 			try {
 				await this.channelService.updateSubscriberCounts(channelIds, deltas);
@@ -61,21 +29,18 @@ export class SubscriberCountService {
 				return;
 			}
 
-			for (const event of events) {
-				resolveOffset(event.offset);
-			}
-			await commitOffsetsIfNecessary();
-			await heartbeat();
+			await this.resolveOffsets(payload, events);
 		} catch (e) {
-			this.logger.error(`Error in "${KafkaTopic.SubscriptionEvents}" topic handler: ${e}`);
+			this.logger.error(`Error in "${payload.batch.topic}" topic handler: ${e}`);
 			return;
 		}
 	}
 
-	private calculateSubscriberCountDeltas(payloads: SubscriptionKafkaEventPayload[]) {
+	private calculateSubscriberCountDeltas(events: KafkaEventPayloadWithOffset<SubscriptionKafkaEventPayload>[]) {
 		const deltas = new Map<string, number>();
 
-		for (const payload of payloads) {
+		for (const event of events) {
+			const payload = event.payload;
 			let delta = deltas.get(payload.channelId) || 0;
 
 			if (payload.type === KafkaEventTypes.Subscriptions.SubscriptionCreated) {

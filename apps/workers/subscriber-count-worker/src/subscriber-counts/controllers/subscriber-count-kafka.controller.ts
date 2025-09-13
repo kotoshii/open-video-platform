@@ -19,7 +19,7 @@ export class SubscriberCountKafkaController implements OnModuleInit {
 		await this.kafkaConsumerService.subscribeBatch(
 			KafkaTopic.SubscriptionEvents,
 			async (payload) => {
-				await this.subscriberCountService.handleSubscriptionEvents(payload);
+				await this.subscriberCountService.handleEvents(payload);
 			},
 			{
 				autoCommit: false,
