@@ -74,12 +74,7 @@ export class AuthService implements OnModuleInit {
 	async loginOrThrow(dto: LoginDto, ipAddress: string | null = null, userAgent: string | null = null) {
 		const { email, password } = dto;
 
-		const authDetailsValidationResponse = await this.userGrpcService
-			.validateAuthenticationDetails({ email, password })
-			.toPromise();
-
-		const valid = authDetailsValidationResponse?.valid || false;
-		const userId = authDetailsValidationResponse?.userId || null;
+		const { valid, userId } = await this.validateUserAuthenticationDetails(email, password);
 
 		if (!valid || !userId) {
 			throw new UnauthorizedException("Incorrect email or password");
@@ -108,11 +103,7 @@ export class AuthService implements OnModuleInit {
 	async authenticateChannelOrThrow(userId: string, sessionId: string, dto: AuthenticateChannelDto) {
 		const { channelId } = dto;
 
-		const authDetailsValidationResponse = await this.channelGrpcService
-			.validateAuthenticationDetails({ userId, channelId })
-			.toPromise();
-
-		const valid = authDetailsValidationResponse?.valid || false;
+		const { valid } = await this.validateChannelAuthenticationDetails(userId, channelId);
 
 		if (!valid) {
 			throw new UnauthorizedException("Unable to authenticate selected channel");
@@ -194,7 +185,7 @@ export class AuthService implements OnModuleInit {
 				async () => {
 					const passwordHash = await this.passwordService.hashPassword(password);
 
-					return this.userGrpcService.createUser({ email, dateOfBirth, passwordHash }).toPromise();
+					return this.createUser(email, dateOfBirth, passwordHash);
 				},
 				async (_, output) => {
 					const userId = output?.user?.id;
@@ -202,7 +193,7 @@ export class AuthService implements OnModuleInit {
 						throw new Error('Could not compensate "createUser": userId is empty');
 					}
 
-					await this.userGrpcService.deleteUser({ userId }).toPromise();
+					await this.deleteUser(userId);
 				},
 			)
 			.addStep(
@@ -213,7 +204,7 @@ export class AuthService implements OnModuleInit {
 						throw new Error('Could not run "createChannel": userId is empty');
 					}
 
-					return this.channelGrpcService.createChannel({ userId, name: channelName }).toPromise();
+					return this.createChannel(userId, channelName);
 				},
 				async (_, output) => {
 					const channelId = output?.channel?.id;
@@ -221,9 +212,49 @@ export class AuthService implements OnModuleInit {
 						throw new Error('Could not compensate "createChannel": channelId is empty');
 					}
 
-					await this.channelGrpcService.deleteChannel({ channelId }).toPromise();
+					await this.deleteChannel(channelId);
 				},
 			)
 			.execute();
+	}
+
+	private async validateUserAuthenticationDetails(email: string, password: string) {
+		const authDetailsValidationResponse = await this.userGrpcService
+			.validateAuthenticationDetails({ email, password })
+			.toPromise();
+
+		const valid = authDetailsValidationResponse?.valid || false;
+		const userId = authDetailsValidationResponse?.userId || null;
+
+		return {
+			valid,
+			userId,
+		};
+	}
+
+	private async createUser(email: string, dateOfBirth: Date, passwordHash: string) {
+		return this.userGrpcService.createUser({ email, dateOfBirth, passwordHash }).toPromise();
+	}
+
+	private async deleteUser(userId: string) {
+		await this.userGrpcService.deleteUser({ userId }).toPromise();
+	}
+
+	private async validateChannelAuthenticationDetails(userId: string, channelId: string) {
+		const authDetailsValidationResponse = await this.channelGrpcService
+			.validateAuthenticationDetails({ userId, channelId })
+			.toPromise();
+
+		const valid = authDetailsValidationResponse?.valid || false;
+
+		return { valid };
+	}
+
+	private async createChannel(userId: string, channelName: string) {
+		return this.channelGrpcService.createChannel({ userId, name: channelName }).toPromise();
+	}
+
+	private async deleteChannel(channelId: string) {
+		await this.channelGrpcService.deleteChannel({ channelId }).toPromise();
 	}
 }

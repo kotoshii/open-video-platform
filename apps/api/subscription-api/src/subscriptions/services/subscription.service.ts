@@ -68,8 +68,8 @@ export class SubscriptionService implements OnModuleInit {
 			throw new BadRequestException("Cannot subscribe to yourself");
 		}
 
-		const channel = await this.channelGrpcService.getChannel({ channelId }).toPromise();
-		if (!channel?.channel) {
+		const channel = await this.getChannel(channelId);
+		if (!channel) {
 			throw new NotFoundException("Channel not found");
 		}
 
@@ -78,9 +78,7 @@ export class SubscriptionService implements OnModuleInit {
 			return existing;
 		}
 
-		const channelName = channel.channel.name;
-
-		const sagaResults = await this.createSubscriptionSaga(subscriberId, channelId, channelName);
+		const sagaResults = await this.createSubscriptionSaga(subscriberId, channelId, channel.name);
 
 		if (sagaResults.error) {
 			throw sagaResults.error;
@@ -151,5 +149,10 @@ export class SubscriptionService implements OnModuleInit {
 				async () => {},
 			)
 			.execute();
+	}
+
+	private async getChannel(channelId: string) {
+		const channelResponse = await this.channelGrpcService.getChannel({ channelId }).toPromise();
+		return channelResponse?.channel || null;
 	}
 }

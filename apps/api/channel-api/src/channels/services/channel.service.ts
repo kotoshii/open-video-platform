@@ -51,9 +51,7 @@ export class ChannelService implements OnModuleInit {
 			throw new NotFoundException("Channel not found");
 		}
 
-		const isSubscribed = subscriberId
-			? (await this.subscriptionGrpcService.checkSubscription({ channelId, subscriberId }).toPromise())?.isSubscribed
-			: undefined;
+		const isSubscribed = subscriberId ? await this.isSubscribed(channelId, subscriberId) : undefined;
 
 		return new GetChannelDto(channel, isSubscribed);
 	}
@@ -69,9 +67,9 @@ export class ChannelService implements OnModuleInit {
 	}
 
 	async createChannelOrThrow(userId: string, dto: CreateChannelDto) {
-		const userExistsResponse = await this.userGrpcService.userExists({ userId }).toPromise();
+		const userExists = await this.userExists(userId);
 
-		if (!userExistsResponse?.exists) {
+		if (!userExists) {
 			throw new NotFoundException("Could not create channel: user not found");
 		}
 
@@ -187,5 +185,17 @@ export class ChannelService implements OnModuleInit {
 				async () => {},
 			)
 			.execute();
+	}
+
+	private async userExists(userId: string) {
+		const userExistsResponse = await this.userGrpcService.userExists({ userId }).toPromise();
+		return userExistsResponse?.exists || false;
+	}
+
+	private async isSubscribed(channelId: string, subscriberId: string) {
+		const checkSubscriptionResponse = await this.subscriptionGrpcService
+			.checkSubscription({ channelId, subscriberId })
+			.toPromise();
+		return checkSubscriptionResponse?.isSubscribed || false;
 	}
 }

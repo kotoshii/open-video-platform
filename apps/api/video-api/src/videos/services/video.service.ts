@@ -73,9 +73,7 @@ export class VideoService implements OnModuleInit {
 	}
 
 	async createVideoOrThrow(title: string, channelId: string) {
-		const response = await this.channelGrpcService.getChannel({ channelId }).toPromise();
-
-		const channel = response?.channel || null;
+		const channel = await this.getChannelById(channelId);
 
 		if (!channel) {
 			throw new BadRequestException("Failed to create a video: provided channel ID does not exist");
@@ -108,8 +106,7 @@ export class VideoService implements OnModuleInit {
 		}
 
 		if (!isAuthor && video.isNsfw) {
-			const canAccessNsfwResponse = await this.userGrpcService.canAccessNsfw({ userId }).toPromise();
-			const canAccessNsfw = canAccessNsfwResponse?.canAccessNsfw || false;
+			const canAccessNsfw = await this.canAccessNsfw(userId);
 
 			if (!canAccessNsfw) {
 				throw new ForbiddenException("You do not have permissions to view this content");
@@ -181,5 +178,16 @@ export class VideoService implements OnModuleInit {
 		// TODO: Once video-uploading-api and file-storage are done (i.e. we have the flow of storing files somewhere)
 		//  weed to schedule a video deletion job to delete the actual file.
 		//  Or maybe Kafka event will work too, idk, need to think about this.
+		// TODO: Once search service is done (ElasticSearch), remove the indexed video record from there too.
+	}
+
+	private async getChannelById(channelId: string) {
+		const response = await this.channelGrpcService.getChannel({ channelId }).toPromise();
+		return response?.channel || null;
+	}
+
+	private async canAccessNsfw(userId: string) {
+		const canAccessNsfwResponse = await this.userGrpcService.canAccessNsfw({ userId }).toPromise();
+		return canAccessNsfwResponse?.canAccessNsfw || false;
 	}
 }
