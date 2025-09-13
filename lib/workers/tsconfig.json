@@ -1,0 +1,29 @@
+{
+	"extends": "../../tsconfig-base.json",
+	"compilerOptions": {
+		"baseUrl": ".",
+		"outDir": "./dist",
+		"rootDir": ".",
+		"composite": true,
+		"experimentalDecorators": true,
+		"strictPropertyInitialization": false,
+		"paths": {
+			"~counts/*": ["./counts/*"]
+		}
+	},
+	"tsc-alias": {
+		"replacers": {
+			"base-url": {
+				"enabled": false
+			}
+		}
+	},
+	"references": [
+		{
+			"path": "../common"
+		},
+		{
+			"path": "../api"
+		}
+	]
+}
