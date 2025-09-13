@@ -12,16 +12,28 @@
 			"path": "./lib/common"
 		},
 		{
-			"path": "./apps/api/user-api"
-		},
-		{
-			"path": "./apps/api/channel-api"
+			"path": "./lib/workers"
 		},
 		{
 			"path": "./apps/api/auth-api"
 		},
 		{
+			"path": "./apps/api/channel-api"
+		},
+		{
 			"path": "./apps/api/subscription-api"
+		},
+		{
+			"path": "./apps/api/user-api"
+		},
+		{
+			"path": "./apps/api/video-api"
+		},
+		{
+			"path": "./apps/workers/subscriber-count-worker"
+		},
+		{
+			"path": "./apps/workers/video-view-count-worker"
 		}
 	]
 }
