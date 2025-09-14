@@ -1,7 +1,10 @@
 import { KafkaEventTypes } from "~kafka/constants/event-types";
 import { BaseKafkaEventPayload } from "~kafka/types/events/base-kafka-event-payload";
 
-export type VideoRateKafkaEventPayload = VideoRateCreatedKafkaEventPayload | VideoRateDeletedKafkaEventPayload;
+export type VideoRateKafkaEventPayload =
+	| VideoRateCreatedKafkaEventPayload
+	| VideoRateDeletedKafkaEventPayload
+	| VideoRateUpdatedKafkaEventPayload;
 
 export type VideoRateType = "like" | "dislike";
 
