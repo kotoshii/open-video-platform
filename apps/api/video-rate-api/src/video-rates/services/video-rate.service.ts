@@ -41,7 +41,7 @@ export class VideoRateService implements OnModuleInit {
 
 		if (existing) {
 			if (existing.type !== type) {
-				const sagaResults = await this.updateVideoRateSaga(videoId, existing.type, type);
+				const sagaResults = await this.updateVideoRateSaga(existing.id, existing.type, type);
 
 				if (sagaResults.error) {
 					throw sagaResults.error;
@@ -131,7 +131,7 @@ export class VideoRateService implements OnModuleInit {
 			.addStep(
 				"updateVideoRate",
 				async () => {
-					return await this.videoRateRepository.updateVideoRateById(rateId, { type: newRateType });
+					return this.videoRateRepository.updateVideoRateById(rateId, { type: newRateType });
 				},
 				async (_, output) => {
 					await this.videoRateRepository.updateVideoRateById(output.id, { type: oldRateType });
