@@ -33,6 +33,7 @@ async function bootstrap() {
 		})
 		.build();
 
+	await app.startAllMicroservices();
 	await app.listen(appConfig.port);
 
 	logger.debug(`Application is running on: ${await app.getUrl()}`);
