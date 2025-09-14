@@ -30,6 +30,9 @@
 			"path": "./apps/api/video-api"
 		},
 		{
+			"path": "./apps/api/video-rate-api"
+		},
+		{
 			"path": "./apps/workers/subscriber-count-worker"
 		},
 		{

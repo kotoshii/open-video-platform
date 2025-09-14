@@ -1,0 +1,10 @@
+{
+	"camelCase": true,
+	"dialect": "postgres",
+	"excludePattern": "schema_migrations",
+	"includePattern": "video_rates",
+	"outFile": "./db/schema.ts",
+	"singularize": true,
+	"numericParser": "number",
+	"runtimeEnums": "pascal-case"
+}
