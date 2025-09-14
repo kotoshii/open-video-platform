@@ -8,6 +8,7 @@ import { ProtoPaths } from "@ovp-proto/types/utils/paths";
 
 import { GrpcConfig } from "~src/config/providers/grpc.config";
 import { VideoController } from "~src/videos/controllers/video.controller";
+import { VideoGrpcController } from "~src/videos/controllers/video-grpc.controller";
 import { VideoKafkaController } from "~src/videos/controllers/video-kafka.controller";
 import { VideoRepository } from "~src/videos/repositories/video.repository";
 import { VideoService } from "~src/videos/services/video.service";
@@ -19,7 +20,7 @@ import { VideoService } from "~src/videos/services/video.service";
 			.addClient(CHANNELS_PACKAGE_NAME, "grpcChannelServiceUrl", ProtoPaths.Channels)
 			.build(),
 	],
-	controllers: [VideoController, VideoKafkaController],
+	controllers: [VideoController, VideoGrpcController, VideoKafkaController],
 	providers: [VideoRepository, VideoService, KafkaProducerService, KafkaConsumerService],
 	exports: [VideoService],
 })
