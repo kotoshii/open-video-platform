@@ -5,7 +5,8 @@ package videos;
 import "google/protobuf/timestamp.proto";
 
 service VideoService {
-	rpc CreateVideo (CreateVideoRequest) returns (CreateVideoResponse);
+	rpc CreateVideo (CreateVideoRequest) returns (Video);
+	rpc GetVideo (GetVideoRequest) returns (Video);
 }
 
 message CreateVideoRequest {
@@ -13,7 +14,13 @@ message CreateVideoRequest {
 	string channel_id = 2;
 }
 
-message CreateVideoResponse {
+message GetVideoRequest {
+	string video_id = 1;
+	string user_id = 2;
+	string channel_id = 3;
+}
+
+message Video {
 	string id = 1;
 	string channel_id = 2;
 	string channel_name = 3;
