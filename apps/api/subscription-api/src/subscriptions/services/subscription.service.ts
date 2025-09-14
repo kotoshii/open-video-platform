@@ -96,7 +96,7 @@ export class SubscriptionService implements OnModuleInit {
 		if (deleted) {
 			await this.kafkaProducerService.emit(
 				KafkaTopic.SubscriptionEvents,
-				SubscriptionDeletedKafkaEventPayloadDto.createPayload(subscriberId, channelId),
+				new SubscriptionDeletedKafkaEventPayloadDto(subscriberId, channelId),
 				channelId,
 			);
 		}
@@ -142,7 +142,7 @@ export class SubscriptionService implements OnModuleInit {
 				async (input) => {
 					await this.kafkaProducerService.emit(
 						KafkaTopic.SubscriptionEvents,
-						SubscriptionCreatedKafkaEventPayloadDto.createPayload(input.subscriberId, input.channelId),
+						new SubscriptionCreatedKafkaEventPayloadDto(input.subscriberId, input.channelId),
 						input.channelId,
 					);
 				},

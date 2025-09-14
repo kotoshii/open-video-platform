@@ -144,7 +144,7 @@ export class ChannelService implements OnModuleInit {
 				async (input) => {
 					await this.kafkaProducerService.emit(
 						KafkaTopic.ChannelEvents,
-						ChannelCreatedKafkaEventPayloadDto.createPayload(
+						new ChannelCreatedKafkaEventPayloadDto(
 							input.id,
 							input.userId,
 							input.name,
@@ -179,7 +179,7 @@ export class ChannelService implements OnModuleInit {
 				async (input) => {
 					await this.kafkaProducerService.emit(
 						KafkaTopic.ChannelEvents,
-						ChannelUpdatedKafkaEventPayloadDto.createPayload(input.id, input.name, input.description),
+						new ChannelUpdatedKafkaEventPayloadDto(input.id, input.name, input.description),
 					);
 				},
 				async () => {},

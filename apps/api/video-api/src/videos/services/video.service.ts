@@ -139,7 +139,7 @@ export class VideoService implements OnModuleInit {
 
 		void this.kafkaProducerService.emit(
 			KafkaTopic.VideoEvents,
-			VideoViewedKafkaEventPayloadDto.createPayload(videoId, channelId, userAgent || null, ipAddress || null),
+			new VideoViewedKafkaEventPayloadDto(videoId, channelId, userAgent || null, ipAddress || null),
 			videoId,
 		);
 
