@@ -10,4 +10,9 @@ export const KafkaEventTypes = {
 	Videos: {
 		VideoViewed: "VIDEO_VIEWED",
 	},
+	VideoRates: {
+		VideoRateCreated: "VIDEO_RATE_CREATED",
+		VideoRateDeleted: "VIDEO_RATE_DELETED",
+		VideoRateUpdated: "VIDEO_RATE_UPDATED",
+	},
 } as const;
