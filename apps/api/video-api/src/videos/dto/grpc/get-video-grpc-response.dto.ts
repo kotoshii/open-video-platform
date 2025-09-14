@@ -3,7 +3,7 @@ import { Selectable } from "kysely";
 
 import { Video as VideoDbEntity, VideoSelectedThumbnail, VideoVisibility } from "~db/schema";
 
-export class CreateVideoGrpcResponseDto implements VideoGrpcResponse {
+export class GetVideoGrpcResponseDto implements VideoGrpcResponse {
 	constructor(video: Selectable<VideoDbEntity>) {
 		const {
 			id,

@@ -4,6 +4,8 @@ import { VideoServiceController, VideoServiceControllerMethods } from "@ovp-prot
 
 import { CreateVideoGrpcRequestDto } from "~src/videos/dto/grpc/create-video-grpc-request.dto";
 import { CreateVideoGrpcResponseDto } from "~src/videos/dto/grpc/create-video-grpc-response.dto";
+import { GetVideoGrpcRequestDto } from "~src/videos/dto/grpc/get-video-grpc-request.dto";
+import { GetVideoGrpcResponseDto } from "~src/videos/dto/grpc/get-video-grpc-response.dto";
 import { VideoService } from "~src/videos/services/video.service";
 
 @GrpcController()
@@ -16,5 +18,12 @@ export class VideoGrpcController implements VideoServiceController {
 
 		const video = await this.videoService.createVideoOrThrow(title, channelId);
 		return new CreateVideoGrpcResponseDto(video.toPlain());
+	}
+
+	async getVideo(@Payload() body: GetVideoGrpcRequestDto): Promise<GetVideoGrpcResponseDto> {
+		const { videoId, userId, channelId } = body;
+
+		const video = await this.videoService.getVideoByIdOrThrow(videoId, userId, channelId);
+		return new GetVideoGrpcResponseDto(video.toPlain());
 	}
 }
