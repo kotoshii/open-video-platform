@@ -12,6 +12,7 @@ export class UserRepository {
 		return this.userQuery.where("id", "=", userId).executeTakeFirst();
 	}
 
+	// TODO: Rework to just insert the can_access_nsfw into query result and then in GetUserDto
 	async getUserByIdAndAge(userId: string, years: string | number) {
 		return this.userQuery
 			.where("id", "=", userId)

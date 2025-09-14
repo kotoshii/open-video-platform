@@ -51,6 +51,7 @@ export class ChannelService implements OnModuleInit {
 			throw new NotFoundException("Channel not found");
 		}
 
+		// TODO: Rework to just use subscription-api directly from UI
 		const isSubscribed = subscriberId ? await this.isSubscribed(channelId, subscriberId) : undefined;
 
 		return new GetChannelDto(channel, isSubscribed);
