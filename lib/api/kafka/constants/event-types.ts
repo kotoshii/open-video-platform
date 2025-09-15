@@ -15,4 +15,8 @@ export const KafkaEventTypes = {
 		VideoRateDeleted: "VIDEO_RATE_DELETED",
 		VideoRateUpdated: "VIDEO_RATE_UPDATED",
 	},
+	Comments: {
+		CommentCreated: "COMMENT_CREATED",
+		CommentDeleted: "COMMENT_DELETED",
+	},
 } as const;

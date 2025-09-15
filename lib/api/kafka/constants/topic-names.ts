@@ -3,4 +3,5 @@ export enum KafkaTopic {
 	ChannelEvents = "channel-events",
 	VideoEvents = "video-events",
 	VideoRateEvents = "video-rate-events",
+	CommentEvents = "comment-events",
 }
