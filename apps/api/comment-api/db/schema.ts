@@ -9,6 +9,8 @@ export type Generated<T> = T extends ColumnType<infer S, infer I, infer U>
   ? ColumnType<S, I | undefined, U>
   : ColumnType<T, T | undefined, T>;
 
+export type Int8 = ColumnType<string, bigint | number | string, bigint | number | string>;
+
 export type Timestamp = ColumnType<Date, Date | string, Date | string>;
 
 export interface Comment {
@@ -16,8 +18,11 @@ export interface Comment {
   channelName: string;
   content: string;
   createdDate: Generated<Timestamp>;
+  dislikes: Generated<Int8>;
   id: Generated<string>;
-  parentId: string;
+  likes: Generated<Int8>;
+  parentId: string | null;
+  replyCount: Generated<Int8>;
   updatedDate: Generated<Timestamp>;
   videoId: string;
 }
