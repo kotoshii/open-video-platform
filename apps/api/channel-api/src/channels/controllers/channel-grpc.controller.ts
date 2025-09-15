@@ -28,7 +28,7 @@ export class ChannelGrpcController implements ChannelServiceController {
 		dto.name = body.name;
 
 		const channel = await this.channelService.createChannelOrThrow(body.userId, dto);
-		return new CreateChannelGrpcResponseDto(channel);
+		return new CreateChannelGrpcResponseDto(channel.toPlain());
 	}
 
 	async deleteChannel(@Payload() body: DeleteChannelGrpcRequestDto) {
@@ -40,9 +40,9 @@ export class ChannelGrpcController implements ChannelServiceController {
 
 	async getChannel(@Payload() body: GetChannelGrpcRequestDto) {
 		const { channelId } = body;
-		const channel = await this.channelService.getChannelByIdOrThrow(channelId);
+		const channel = await this.channelService.getChannelBy(channelId);
 
-		return new GetChannelGrpcResponseDto(channel);
+		return new GetChannelGrpcResponseDto(channel?.toPlain() || null);
 	}
 
 	async validateAuthenticationDetails(

@@ -1,9 +1,10 @@
-import { Channel } from "@ovp-proto/types/channels";
+import { Channel as ChannelGrpcResponse } from "@ovp-proto/types/channels";
+import { Selectable } from "kysely";
 
-import { GetChannelDto } from "~src/channels/dto/get-channel.dto";
+import { Channel } from "~db/schema";
 
-export class ChannelGrpcResponseDto implements Channel {
-	constructor(channel: GetChannelDto) {
+export class ChannelGrpcResponseDto implements ChannelGrpcResponse {
+	constructor(channel: Selectable<Channel>) {
 		const { id, userId, name, description, subscriberCount, createdDate, updatedDate } = channel;
 
 		this.id = id;

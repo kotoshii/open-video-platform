@@ -44,6 +44,11 @@ export class ChannelService implements OnModuleInit {
 		return deletedChannelId;
 	}
 
+	async getChannelBy(channelId: string) {
+		const channel = await this.channelRepository.getChannelById(channelId);
+		return channel ? new GetChannelDto(channel) : null;
+	}
+
 	async getChannelByIdOrThrow(channelId: string, subscriberId?: string) {
 		const channel = await this.channelRepository.getChannelById(channelId);
 

@@ -42,4 +42,16 @@ export class GetChannelDto {
 
 	@ApiPropertyOptional()
 	isSubscribed?: boolean;
+
+	toPlain(): Selectable<Channel> {
+		return {
+			id: this.id,
+			userId: this.userId,
+			name: this.name,
+			description: this.description,
+			subscriberCount: this.subscriberCount,
+			createdDate: this.createdDate,
+			updatedDate: this.updatedDate,
+		};
+	}
 }
