@@ -123,7 +123,7 @@ export class SubscriptionService implements OnModuleInit {
 	}
 
 	private async createSubscriptionSaga(subscriberId: string, channelId: string, channelName: string) {
-		return SagaBuilder.create(`create-subscription-${subscriberId}-to-${channelId}`)
+		return SagaBuilder.create(`create-subscription-subscriber-${subscriberId}-channel-${channelId}`)
 			.addStep(
 				"createSubscription",
 				async () => {
