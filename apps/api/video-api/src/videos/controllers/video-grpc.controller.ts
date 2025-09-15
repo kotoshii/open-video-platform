@@ -23,7 +23,7 @@ export class VideoGrpcController implements VideoServiceController {
 	async getVideo(@Payload() body: GetVideoGrpcRequestDto): Promise<GetVideoGrpcResponseDto> {
 		const { videoId, userId, channelId } = body;
 
-		const video = await this.videoService.getVideoByIdOrThrow(videoId, userId, channelId);
-		return new GetVideoGrpcResponseDto(video.toPlain());
+		const video = await this.videoService.getVideoByIdForUser(videoId, userId, channelId);
+		return new GetVideoGrpcResponseDto(video?.toPlain() || null);
 	}
 }

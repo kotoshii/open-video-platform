@@ -84,6 +84,34 @@ export class VideoService implements OnModuleInit {
 		return new GetVideoDto(video);
 	}
 
+	async getVideoByIdForUser(videoId: string, userId: string, channelId: string) {
+		const video = await this.videoRepository.getVideoById(videoId);
+
+		if (!video) {
+			return null;
+		}
+
+		const isAuthor = video.channelId === channelId;
+
+		if (!isAuthor && !video.isPublished) {
+			return null;
+		}
+
+		if (!isAuthor && video.visibility === VideoVisibility.Private) {
+			return null;
+		}
+
+		if (!isAuthor && video.isNsfw) {
+			const canAccessNsfw = await this.canAccessNsfw(userId);
+
+			if (!canAccessNsfw) {
+				return null;
+			}
+		}
+
+		return new GetVideoDto(video);
+	}
+
 	async getVideoByIdOrThrow(videoId: string, userId: string, channelId: string) {
 		const video = await this.videoRepository.getVideoById(videoId);
 
