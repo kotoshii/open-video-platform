@@ -21,6 +21,9 @@
 			"path": "./apps/api/channel-api"
 		},
 		{
+			"path": "./apps/api/comment-api"
+		},
+		{
 			"path": "./apps/api/subscription-api"
 		},
 		{
