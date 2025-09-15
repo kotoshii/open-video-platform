@@ -1,4 +1,4 @@
-import { Inject, Injectable, NotFoundException, OnModuleInit } from "@nestjs/common";
+import { ForbiddenException, Inject, Injectable, NotFoundException, OnModuleInit } from "@nestjs/common";
 import type { ClientGrpc } from "@nestjs/microservices";
 import { KafkaTopic } from "@ovp-lib/api/kafka/constants/topic-names";
 import { VideoRateCreatedKafkaEventPayloadDto } from "@ovp-lib/api/kafka/dto/video-rate-created-kafka-event-payload.dto";
@@ -29,10 +29,14 @@ export class VideoRateService implements OnModuleInit {
 	}
 
 	async upsertVideoRateOrThrow(videoId: string, userId: string, channelId: string, dto: UpsertVideoRateDto) {
-		const videoExists = await this.getVideo(videoId, userId, channelId);
+		const video = await this.getVideo(videoId, userId, channelId);
 
-		if (!videoExists) {
+		if (!video) {
 			throw new NotFoundException("Video not found");
+		}
+
+		if (!video.allowRates) {
+			throw new ForbiddenException("Rates are disabled for the requested video");
 		}
 
 		const { type } = dto;
@@ -153,6 +157,6 @@ export class VideoRateService implements OnModuleInit {
 
 	private async getVideo(videoId: string, userId: string, channelId: string) {
 		const videoResponse = await this.videoGrpcService.getVideo({ videoId, userId, channelId }).toPromise();
-		return videoResponse || null;
+		return videoResponse?.video || null;
 	}
 }

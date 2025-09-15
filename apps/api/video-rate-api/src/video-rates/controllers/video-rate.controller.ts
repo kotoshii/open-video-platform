@@ -15,9 +15,9 @@ export class VideoRateController {
 	@ApiOkResponse({ type: GetVideoRateDto })
 	@ApiForbiddenResponse({
 		type: NestErrorResponseDto,
-		description: "Video is private or video is NSFW and user cannot access it",
+		description: "Rates are disabled for the requested video",
 	})
-	@ApiNotFoundResponse({ type: NestErrorResponseDto, description: "Video not found" })
+	@ApiNotFoundResponse({ type: NestErrorResponseDto, description: "Video not found or user cannot access it" })
 	@Post(":videoId")
 	async upsertVideoRate(
 		@Param("videoId") videoId: string,
