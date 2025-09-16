@@ -31,6 +31,9 @@ export class GetVideoForViewerDto extends GetVideoDto {
 	declare viewCount: string;
 
 	@Expose()
+	declare commentCount: string;
+
+	@Expose()
 	declare likes: string;
 
 	@Expose()

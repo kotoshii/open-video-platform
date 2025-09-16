@@ -19,6 +19,7 @@ export class VideoGrpcResponseDto implements VideoGrpcResponse {
 			isPublished,
 			isNsfw,
 			viewCount,
+			commentCount,
 			likes,
 			dislikes,
 			createdDate,
@@ -38,6 +39,7 @@ export class VideoGrpcResponseDto implements VideoGrpcResponse {
 		this.isPublished = isPublished;
 		this.isNsfw = isNsfw;
 		this.viewCount = viewCount;
+		this.commentCount = commentCount;
 		this.likes = likes;
 		this.dislikes = dislikes;
 		this.createdDate = createdDate;
@@ -69,6 +71,8 @@ export class VideoGrpcResponseDto implements VideoGrpcResponse {
 	isNsfw: boolean;
 
 	viewCount: string;
+
+	commentCount: string;
 
 	likes: string;
 

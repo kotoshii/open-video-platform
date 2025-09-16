@@ -31,6 +31,7 @@ export interface Video {
   allowRates: Generated<boolean>;
   channelId: string;
   channelName: string;
+  commentCount: Generated<Int8>;
   createdDate: Generated<Timestamp>;
   description: Generated<string | null>;
   dislikes: Generated<Int8>;

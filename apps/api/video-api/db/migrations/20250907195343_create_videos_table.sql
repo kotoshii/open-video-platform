@@ -18,6 +18,7 @@ create table if not exists videos
     is_published       boolean                  not null default false,
     is_nsfw            boolean                  not null default true,
     view_count         bigint                   not null default 0,
+    comment_count      bigint                   not null default 0,
     likes              bigint                   not null default 0,
     dislikes           bigint                   not null default 0,
     created_date       timestamp with time zone not null default now(),

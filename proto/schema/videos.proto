@@ -43,6 +43,7 @@ message Video {
 	bool is_published = 11;
 	bool is_nsfw = 12;
 	string view_count = 13;
+	string comment_count = 18;
 	string likes = 14;
 	string dislikes = 15;
 	google.protobuf.Timestamp created_date = 16;

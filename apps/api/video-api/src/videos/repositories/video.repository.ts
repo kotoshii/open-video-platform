@@ -70,6 +70,7 @@ export class VideoRepository {
 			.select("isPublished")
 			.select("isNsfw")
 			.select("viewCount")
+			.select("commentCount")
 			.select("likes")
 			.select("dislikes")
 			.select("createdDate")

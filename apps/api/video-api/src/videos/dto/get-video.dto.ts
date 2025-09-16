@@ -21,6 +21,7 @@ export class GetVideoDto {
 			isPublished,
 			isNsfw,
 			viewCount,
+			commentCount,
 			likes,
 			dislikes,
 			createdDate,
@@ -40,6 +41,7 @@ export class GetVideoDto {
 		this.isPublished = isPublished;
 		this.isNsfw = isNsfw;
 		this.viewCount = viewCount;
+		this.commentCount = commentCount;
 		this.likes = likes;
 		this.dislikes = dislikes;
 		this.createdDate = createdDate;
@@ -86,6 +88,9 @@ export class GetVideoDto {
 	viewCount: string;
 
 	@ApiProperty()
+	commentCount: string;
+
+	@ApiProperty()
 	likes: string;
 
 	@ApiProperty()
@@ -112,6 +117,7 @@ export class GetVideoDto {
 			isPublished: this.isPublished,
 			isNsfw: this.isNsfw,
 			viewCount: this.viewCount,
+			commentCount: this.commentCount,
 			likes: this.likes,
 			dislikes: this.dislikes,
 			createdDate: this.createdDate,
