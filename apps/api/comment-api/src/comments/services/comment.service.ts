@@ -36,7 +36,7 @@ export class CommentService implements OnModuleInit {
 		this.channelGrpcService = this.channelClientGrpc.getService<ChannelServiceClient>(CHANNEL_SERVICE_NAME);
 	}
 
-	async createComment(userId: string, channelId: string, videoId: string, dto: CreateCommentDto) {
+	async createCommentOrThrow(userId: string, channelId: string, videoId: string, dto: CreateCommentDto) {
 		const { parentId, content } = dto;
 
 		if (parentId) {

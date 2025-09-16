@@ -26,6 +26,6 @@ export class CommentController {
 		@Param("videoId") videoId: string,
 		@Body() body: CreateCommentDto,
 	) {
-		return this.commentService.createComment(userId, channelId, videoId, body);
+		return this.commentService.createCommentOrThrow(userId, channelId, videoId, body);
 	}
 }
