@@ -1,8 +1,9 @@
-import { Body, Controller, Param, Post, Put } from "@nestjs/common";
+import { Body, Controller, Delete, HttpCode, HttpStatus, Param, Post, Put } from "@nestjs/common";
 import {
 	ApiBadRequestResponse,
 	ApiCreatedResponse,
 	ApiForbiddenResponse,
+	ApiNoContentResponse,
 	ApiNotFoundResponse,
 	ApiOkResponse,
 } from "@nestjs/swagger";
@@ -46,5 +47,14 @@ export class CommentController {
 		@Body() body: UpdateCommentDto,
 	) {
 		return this.commentService.updateCommentByIdOrThrow(channelId, commentId, body);
+	}
+
+	@HttpCode(HttpStatus.NO_CONTENT)
+	@ApiNoContentResponse({ description: "Successfully deleted" })
+	@ApiForbiddenResponse({ type: NestErrorResponseDto, description: "User tries to delete someone else's comment" })
+	@ApiNotFoundResponse({ type: NestErrorResponseDto, description: "Comment not found" })
+	@Delete(":commentId")
+	async deleteCommentById(@ChannelId() channelId: string, @Param("commentId") commentId: string) {
+		return this.commentService.deleteCommentByIdOrThrow(channelId, commentId);
 	}
 }

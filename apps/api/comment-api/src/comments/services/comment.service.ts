@@ -9,6 +9,7 @@ import {
 import type { ClientGrpc } from "@nestjs/microservices";
 import { KafkaTopic } from "@ovp-lib/api/kafka/constants/topic-names";
 import { CommentCreatedKafkaEventPayloadDto } from "@ovp-lib/api/kafka/dto/comment-created-kafka-event-payload.dto";
+import { CommentDeletedKafkaEventPayloadDto } from "@ovp-lib/api/kafka/dto/comment-deleted-kafka-event-payload.dto";
 import { KafkaProducerService } from "@ovp-lib/api/kafka/services/kafka-producer.service";
 import { SagaBuilder } from "@ovp-lib/common/utils/saga-pattern/saga-builder";
 import { CHANNEL_SERVICE_NAME, CHANNELS_PACKAGE_NAME, ChannelServiceClient } from "@ovp-proto/types/channels";
@@ -102,6 +103,19 @@ export class CommentService implements OnModuleInit {
 		const updatedComment = await this.commentRepository.updateCommentById(comment.id, dto.toPlain());
 
 		return new GetCommentDto(updatedComment);
+	}
+
+	async deleteCommentByIdOrThrow(channelId: string, commentId: string) {
+		const comment = await this.getCommentByIdForAuthorOrThrow(commentId, channelId);
+		const deleted = await this.commentRepository.deleteCommentById(comment.id);
+
+		if (deleted) {
+			await this.kafkaProducerService.emit(
+				KafkaTopic.CommentEvents,
+				new CommentDeletedKafkaEventPayloadDto(comment.videoId),
+				comment.videoId,
+			);
+		}
 	}
 
 	private async createCommentSaga(
