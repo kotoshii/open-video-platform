@@ -1,0 +1,15 @@
+syntax = "proto3";
+
+package comments;
+
+service CommentService {
+	rpc CommentExists (CommentExistsRequest) returns (CommentExistsResponse);
+}
+
+message CommentExistsRequest {
+	string comment_id = 1;
+}
+
+message CommentExistsResponse {
+	bool exists = 1;
+}

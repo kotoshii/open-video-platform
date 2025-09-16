@@ -9,4 +9,5 @@ export const ProtoPaths = {
 	Channels: getProtoPath("channels.proto"),
 	Subscriptions: getProtoPath("subscriptions.proto"),
 	Videos: getProtoPath("videos.proto"),
+	Comments: getProtoPath("comments.proto"),
 } as const;
