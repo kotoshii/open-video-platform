@@ -54,6 +54,7 @@ export class CommentRepository {
 			.select("parentId")
 			.select("likes")
 			.select("dislikes")
+			.select("replyCount")
 			.select("createdDate")
 			.select("updatedDate");
 	}
