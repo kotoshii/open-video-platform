@@ -117,6 +117,11 @@ export class CommentService implements OnModuleInit {
 		return new GetCommentDto(comment);
 	}
 
+	async getCommentById(commentId: string) {
+		const comment = await this.commentRepository.getCommentById(commentId);
+		return comment ? new GetCommentDto(comment) : null;
+	}
+
 	async getCommentByIdForAuthorOrThrow(commentId: string, authorId: string) {
 		const comment = await this.commentRepository.getCommentById(commentId);
 
