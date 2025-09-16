@@ -39,6 +39,10 @@ export class CommentRepository {
 			.executeTakeFirstOrThrow();
 	}
 
+	updateCommentsByChannelId(channelId: string, data: Updateable<Comment>) {
+		return this.db.updateTable("comments").set(data).where("channelId", "=", channelId).execute();
+	}
+
 	async deleteCommentById(commentId: string) {
 		return this.db.deleteFrom("comments").where("id", "=", commentId).returningAll().executeTakeFirst();
 	}

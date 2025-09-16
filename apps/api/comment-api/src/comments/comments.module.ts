@@ -1,11 +1,13 @@
 import { Global, Module } from "@nestjs/common";
 import { GrpcClientsModuleConfigBuilderFactory } from "@ovp-lib/api/config/builders/grpc-clients-module-config-builder";
+import { KafkaConsumerService } from "@ovp-lib/api/kafka/services/kafka-consumer.service";
 import { KafkaProducerService } from "@ovp-lib/api/kafka/services/kafka-producer.service";
 import { CHANNELS_PACKAGE_NAME } from "@ovp-proto/types/channels";
 import { ProtoPaths } from "@ovp-proto/types/utils/paths";
 import { VIDEOS_PACKAGE_NAME } from "@ovp-proto/types/videos";
 
 import { CommentController } from "~src/comments/controllers/comment.controller";
+import { CommentKafkaController } from "~src/comments/controllers/comment-kafka.controller";
 import { CommentRepository } from "~src/comments/repositories/comment.repository";
 import { CommentService } from "~src/comments/services/comment.service";
 import { GrpcConfig } from "~src/config/providers/grpc.config";
@@ -18,8 +20,8 @@ import { GrpcConfig } from "~src/config/providers/grpc.config";
 			.addClient(CHANNELS_PACKAGE_NAME, "grpcChannelServiceUrl", ProtoPaths.Channels)
 			.build(),
 	],
-	controllers: [CommentController],
-	providers: [CommentRepository, CommentService, KafkaProducerService],
+	controllers: [CommentController, CommentKafkaController],
+	providers: [CommentRepository, CommentService, KafkaProducerService, KafkaConsumerService],
 	exports: [CommentService],
 })
 export class CommentsModule {}

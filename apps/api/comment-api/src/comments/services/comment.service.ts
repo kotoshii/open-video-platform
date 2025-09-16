@@ -3,17 +3,22 @@ import {
 	ForbiddenException,
 	Inject,
 	Injectable,
+	Logger,
 	NotFoundException,
 	OnModuleInit,
 } from "@nestjs/common";
 import type { ClientGrpc } from "@nestjs/microservices";
+import { KafkaEventTypes } from "@ovp-lib/api/kafka/constants/event-types";
 import { KafkaTopic } from "@ovp-lib/api/kafka/constants/topic-names";
 import { CommentCreatedKafkaEventPayloadDto } from "@ovp-lib/api/kafka/dto/comment-created-kafka-event-payload.dto";
 import { CommentDeletedKafkaEventPayloadDto } from "@ovp-lib/api/kafka/dto/comment-deleted-kafka-event-payload.dto";
 import { KafkaProducerService } from "@ovp-lib/api/kafka/services/kafka-producer.service";
+import { ChannelKafkaEventPayload } from "@ovp-lib/api/kafka/types/events/channels";
+import { jsonParseOrNull } from "@ovp-lib/common/utils/json";
 import { SagaBuilder } from "@ovp-lib/common/utils/saga-pattern/saga-builder";
 import { CHANNEL_SERVICE_NAME, CHANNELS_PACKAGE_NAME, ChannelServiceClient } from "@ovp-proto/types/channels";
 import { VIDEO_SERVICE_NAME, VIDEOS_PACKAGE_NAME, VideoServiceClient } from "@ovp-proto/types/videos";
+import { EachMessagePayload } from "kafkajs";
 
 import { CreateCommentDto } from "~src/comments/dto/create-comment.dto";
 import { GetCommentDto } from "~src/comments/dto/get-comment.dto";
@@ -22,6 +27,8 @@ import { CommentRepository } from "~src/comments/repositories/comment.repository
 
 @Injectable()
 export class CommentService implements OnModuleInit {
+	private readonly logger = new Logger(CommentService.name);
+
 	private videoGrpcService: VideoServiceClient;
 	private channelGrpcService: ChannelServiceClient;
 
@@ -36,6 +43,32 @@ export class CommentService implements OnModuleInit {
 	onModuleInit() {
 		this.videoGrpcService = this.videoClientGrpc.getService<VideoServiceClient>(VIDEO_SERVICE_NAME);
 		this.channelGrpcService = this.channelClientGrpc.getService<ChannelServiceClient>(CHANNEL_SERVICE_NAME);
+	}
+
+	async handleChannelEvents(payload: EachMessagePayload) {
+		try {
+			const message = payload.message.value
+				? jsonParseOrNull<ChannelKafkaEventPayload>(payload.message.value.toString())
+				: null;
+
+			if (!message) {
+				this.logger.error(
+					`Kafka event skipped: Invalid message schema for "${KafkaTopic.ChannelEvents}" topic: ${payload.message.value}`,
+				);
+				return;
+			}
+
+			if (message.type === KafkaEventTypes.Channels.ChannelUpdated) {
+				await this.commentRepository.updateCommentsByChannelId(message.channelId, {
+					channelName: message.name,
+				});
+			}
+
+			await payload.heartbeat();
+		} catch (e) {
+			this.logger.error(`Error in "${KafkaTopic.ChannelEvents}" topic handler: ${e}`);
+			throw e;
+		}
 	}
 
 	async createCommentOrThrow(userId: string, channelId: string, videoId: string, dto: CreateCommentDto) {
