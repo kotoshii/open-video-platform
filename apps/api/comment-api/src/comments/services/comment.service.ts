@@ -16,6 +16,7 @@ import { VIDEO_SERVICE_NAME, VIDEOS_PACKAGE_NAME, VideoServiceClient } from "@ov
 
 import { CreateCommentDto } from "~src/comments/dto/create-comment.dto";
 import { GetCommentDto } from "~src/comments/dto/get-comment.dto";
+import { UpdateCommentDto } from "~src/comments/dto/update-comment.dto";
 import { CommentRepository } from "~src/comments/repositories/comment.repository";
 
 @Injectable()
@@ -80,6 +81,27 @@ export class CommentService implements OnModuleInit {
 		}
 
 		return new GetCommentDto(comment);
+	}
+
+	async getCommentByIdForAuthorOrThrow(commentId: string, authorId: string) {
+		const comment = await this.commentRepository.getCommentById(commentId);
+
+		if (!comment) {
+			throw new NotFoundException("Comment not found");
+		}
+
+		if (comment.channelId !== authorId) {
+			throw new ForbiddenException("You do not have permissions to view this content");
+		}
+
+		return new GetCommentDto(comment);
+	}
+
+	async updateCommentByIdOrThrow(channelId: string, commentId: string, dto: UpdateCommentDto) {
+		const comment = await this.getCommentByIdForAuthorOrThrow(commentId, channelId);
+		const updatedComment = await this.commentRepository.updateCommentById(comment.id, dto.toPlain());
+
+		return new GetCommentDto(updatedComment);
 	}
 
 	private async createCommentSaga(

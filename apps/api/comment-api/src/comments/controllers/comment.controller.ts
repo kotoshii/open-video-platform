@@ -1,11 +1,18 @@
-import { Body, Controller, Param, Post } from "@nestjs/common";
-import { ApiBadRequestResponse, ApiCreatedResponse, ApiForbiddenResponse, ApiNotFoundResponse } from "@nestjs/swagger";
+import { Body, Controller, Param, Post, Put } from "@nestjs/common";
+import {
+	ApiBadRequestResponse,
+	ApiCreatedResponse,
+	ApiForbiddenResponse,
+	ApiNotFoundResponse,
+	ApiOkResponse,
+} from "@nestjs/swagger";
 import { ChannelId } from "@ovp-lib/api/auth/decorators/channel-id.decorator";
 import { UserId } from "@ovp-lib/api/auth/decorators/user-id.decorator";
 import { NestErrorResponseDto } from "@ovp-lib/api/common/dto/nest-error-response.dto";
 
 import { CreateCommentDto } from "~src/comments/dto/create-comment.dto";
 import { GetCommentDto } from "~src/comments/dto/get-comment.dto";
+import { UpdateCommentDto } from "~src/comments/dto/update-comment.dto";
 import { CommentService } from "~src/comments/services/comment.service";
 
 @Controller("comments")
@@ -27,5 +34,17 @@ export class CommentController {
 		@Body() body: CreateCommentDto,
 	) {
 		return this.commentService.createCommentOrThrow(userId, channelId, videoId, body);
+	}
+
+	@ApiOkResponse({ type: GetCommentDto })
+	@ApiForbiddenResponse({ type: NestErrorResponseDto, description: "User tries to update someone else's comment" })
+	@ApiNotFoundResponse({ type: NestErrorResponseDto, description: "Comment not found" })
+	@Put(":commentId")
+	async updateCommentById(
+		@ChannelId() channelId: string,
+		@Param("commentId") commentId: string,
+		@Body() body: UpdateCommentDto,
+	) {
+		return this.commentService.updateCommentByIdOrThrow(channelId, commentId, body);
 	}
 }
