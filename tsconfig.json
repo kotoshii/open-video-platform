@@ -39,6 +39,12 @@
 			"path": "./apps/workers/subscriber-count-worker"
 		},
 		{
+			"path": "./apps/workers/video-comment-count-worker"
+		},
+		{
+			"path": "./apps/workers/video-rate-count-worker"
+		},
+		{
 			"path": "./apps/workers/video-view-count-worker"
 		}
 	]
