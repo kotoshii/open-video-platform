@@ -9,8 +9,12 @@ export class GrpcConfig extends CommonGrpcConfig {
 		super(config);
 	}
 
+	override get grpcUrl() {
+		return this.config.get<string>("GRPC_URL", "localhost:5007");
+	}
+
 	get grpcVideoServiceUrl() {
-		return this.config.get<string>("GRPC_VIDEO_SERVICE_URL", "0.0.0.0:5005");
+		return this.config.get<string>("GRPC_VIDEO_SERVICE_URL", "localhost:5005");
 	}
 
 	get grpcChannelServiceUrl() {
