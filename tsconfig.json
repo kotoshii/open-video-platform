@@ -24,6 +24,9 @@
 			"path": "./apps/api/comment-api"
 		},
 		{
+			"path": "./apps/api/comment-rate-api"
+		},
+		{
 			"path": "./apps/api/subscription-api"
 		},
 		{
