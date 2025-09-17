@@ -74,7 +74,6 @@ export class VideoController {
 		return this.videoService.deleteVideoByIdOrThrow(videoId, channelId);
 	}
 
-	@ApiNotFoundResponse({ type: NestErrorResponseDto, description: "Channel not found" })
 	@ApiPaginatedResponse(GetVideoForChannelDto, GetVideosForChannelPaginationOptionsDto)
 	@Get("for-channel/:channelId")
 	async getVideosForChannel(

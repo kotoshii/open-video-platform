@@ -188,12 +188,6 @@ export class VideoService implements OnModuleInit {
 		pagination: GetVideosForChannelPaginationOptionsDto,
 		currentChannelId: string,
 	): Promise<PaginatedResponseDto<GetVideoForChannelDto>> {
-		const channel = await this.getChannelById(channelId);
-
-		if (!channel) {
-			throw new NotFoundException("Channel not found");
-		}
-
 		const videos = await this.videoRepository.getVideosByChannelId(channelId, filter, pagination);
 		const count = await this.videoRepository.getVideosByChannelIdCount(channelId, filter);
 
