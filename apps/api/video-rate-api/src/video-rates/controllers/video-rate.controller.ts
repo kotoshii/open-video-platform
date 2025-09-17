@@ -28,6 +28,7 @@ export class VideoRateController {
 		return this.videoRateService.upsertVideoRateOrThrow(videoId, userId, channelId, body);
 	}
 
+	// TODO: Rework - most requests will return 404, so better to just return null and `200 OK`.
 	@ApiOkResponse({ type: GetVideoRateDto })
 	@ApiNotFoundResponse({ type: NestErrorResponseDto, description: "Video rate not found" })
 	@Get(":videoId")
