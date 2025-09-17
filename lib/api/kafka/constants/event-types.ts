@@ -19,4 +19,9 @@ export const KafkaEventTypes = {
 		CommentCreated: "COMMENT_CREATED",
 		CommentDeleted: "COMMENT_DELETED",
 	},
+	CommentRates: {
+		CommentRateCreated: "COMMENT_RATE_CREATED",
+		CommentRateDeleted: "COMMENT_RATE_DELETED",
+		CommentRateUpdated: "COMMENT_RATE_UPDATED",
+	},
 } as const;
