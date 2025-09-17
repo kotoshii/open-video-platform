@@ -10,4 +10,5 @@ export const ProtoPaths = {
 	Subscriptions: getProtoPath("subscriptions.proto"),
 	Videos: getProtoPath("videos.proto"),
 	Comments: getProtoPath("comments.proto"),
+	CommentRates: getProtoPath("comment-rates.proto"),
 } as const;

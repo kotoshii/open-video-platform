@@ -1,0 +1,22 @@
+syntax = "proto3";
+
+package comment_rates;
+
+service CommentRateService {
+	rpc GetRatesForComment (GetRatesForCommentsRequest) returns (GetRatesForCommentsResponse);
+}
+
+enum CommentRateType {
+	COMMENT_RATE_TYPE_NONE = 0;
+	COMMENT_RATE_TYPE_LIKE = 1;
+	COMMENT_RATE_TYPE_DISLIKE = 2;
+}
+
+message GetRatesForCommentsRequest {
+	repeated string comment_ids = 1;
+	string channel_id = 2;
+}
+
+message GetRatesForCommentsResponse {
+	map<string, CommentRateType> rates = 1;
+}
