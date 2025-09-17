@@ -131,7 +131,7 @@ export class VideoRateService implements OnModuleInit {
 	}
 
 	private async updateVideoRateSaga(rateId: string, oldRateType: VideoRateType, newRateType: VideoRateType) {
-		return SagaBuilder.create(`update-video-rate-rate-${rateId}-oldType-${oldRateType}-newType-${newRateType}`)
+		return SagaBuilder.create(`update-video-rate-${rateId}-oldType-${oldRateType}-newType-${newRateType}`)
 			.addStep(
 				"updateVideoRate",
 				async () => {
