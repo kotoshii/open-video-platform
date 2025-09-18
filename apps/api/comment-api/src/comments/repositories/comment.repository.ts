@@ -3,6 +3,7 @@ import { Insertable, Kysely, Updateable } from "kysely";
 import { InjectKysely } from "nestjs-kysely";
 
 import { Comment, DB } from "~db/schema";
+import { GetCommentsPaginationOptionsDto } from "~src/comments/dto/get-comments-pagination-options.dto";
 
 @Injectable()
 export class CommentRepository {
@@ -28,6 +29,26 @@ export class CommentRepository {
 
 	async getCommentById(commentId: string) {
 		return this.commentQuery.where("id", "=", commentId).executeTakeFirst();
+	}
+
+	async getCommentsByVideoId(videoId: string, pagination: GetCommentsPaginationOptionsDto) {
+		const { offset, limit, orderBy, order } = pagination;
+
+		return this.commentQuery
+			.where("videoId", "=", videoId)
+			.offset(offset)
+			.limit(limit)
+			.orderBy(orderBy, order)
+			.execute();
+	}
+
+	async getCommentsByVideoIdCount(videoId: string) {
+		return this.db
+			.selectFrom("comments")
+			.select((eb) => eb.fn.countAll<string>().as("count"))
+			.where("videoId", "=", videoId)
+			.executeTakeFirstOrThrow()
+			.then((result) => Number(result.count) || 0);
 	}
 
 	async updateCommentById(commentId: string, data: Updateable<Comment>) {

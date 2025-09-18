@@ -65,4 +65,8 @@ export class GetCommentDto {
 
 	@Exclude()
 	updatedDate: Date;
+
+	static fromArray(comments: Selectable<Comment>[]) {
+		return comments.map((comment) => new GetCommentDto(comment));
+	}
 }

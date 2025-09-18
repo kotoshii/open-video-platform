@@ -1,4 +1,4 @@
-import { Body, Controller, Delete, HttpCode, HttpStatus, Param, Post, Put } from "@nestjs/common";
+import { Body, Controller, Delete, Get, HttpCode, HttpStatus, Param, Post, Put, Query } from "@nestjs/common";
 import {
 	ApiBadRequestResponse,
 	ApiCreatedResponse,
@@ -10,9 +10,14 @@ import {
 import { ChannelId } from "@ovp-lib/api/auth/decorators/channel-id.decorator";
 import { UserId } from "@ovp-lib/api/auth/decorators/user-id.decorator";
 import { NestErrorResponseDto } from "@ovp-lib/api/common/dto/nest-error-response.dto";
+import { ApiPaginatedResponse } from "@ovp-lib/api/pagination/decorators/api-paginated-response.decorator";
+import { Pagination } from "@ovp-lib/api/pagination/decorators/pagination.decorator";
 
 import { CreateCommentDto } from "~src/comments/dto/create-comment.dto";
 import { GetCommentDto } from "~src/comments/dto/get-comment.dto";
+import { GetCommentForChannelDto } from "~src/comments/dto/get-comment-for-channel.dto";
+import { GetCommentsPaginationOptionsDto } from "~src/comments/dto/get-comments-pagination-options.dto";
+import { GetCommentsQuery } from "~src/comments/dto/get-comments-query.dto";
 import { UpdateCommentDto } from "~src/comments/dto/update-comment.dto";
 import { CommentService } from "~src/comments/services/comment.service";
 
@@ -56,5 +61,15 @@ export class CommentController {
 	@Delete(":commentId")
 	async deleteCommentById(@ChannelId() channelId: string, @Param("commentId") commentId: string) {
 		return this.commentService.deleteCommentByIdOrThrow(channelId, commentId);
+	}
+
+	@ApiPaginatedResponse(GetCommentForChannelDto, GetCommentsPaginationOptionsDto)
+	@Get()
+	async getCommentsByVideoId(
+		@ChannelId() channelId: string,
+		@Query() query: GetCommentsQuery,
+		@Pagination(GetCommentsPaginationOptionsDto) pagination: GetCommentsPaginationOptionsDto,
+	) {
+		return this.commentService.getPaginatedCommentsByVideoId(channelId, query, pagination);
 	}
 }

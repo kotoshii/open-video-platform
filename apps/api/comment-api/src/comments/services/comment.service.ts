@@ -14,14 +14,23 @@ import { CommentCreatedKafkaEventPayloadDto } from "@ovp-lib/api/kafka/dto/comme
 import { CommentDeletedKafkaEventPayloadDto } from "@ovp-lib/api/kafka/dto/comment-deleted-kafka-event-payload.dto";
 import { KafkaProducerService } from "@ovp-lib/api/kafka/services/kafka-producer.service";
 import { ChannelKafkaEventPayload } from "@ovp-lib/api/kafka/types/events/channels";
+import { PaginatedResponseDto } from "@ovp-lib/api/pagination/dto/paginated-response.dto";
 import { jsonParseOrNull } from "@ovp-lib/common/utils/json";
 import { SagaBuilder } from "@ovp-lib/common/utils/saga-pattern/saga-builder";
 import { CHANNEL_SERVICE_NAME, CHANNELS_PACKAGE_NAME, ChannelServiceClient } from "@ovp-proto/types/channels";
+import {
+	COMMENT_RATE_SERVICE_NAME,
+	COMMENT_RATES_PACKAGE_NAME,
+	CommentRateServiceClient,
+} from "@ovp-proto/types/comment-rates";
 import { VIDEO_SERVICE_NAME, VIDEOS_PACKAGE_NAME, VideoServiceClient } from "@ovp-proto/types/videos";
 import { EachMessagePayload } from "kafkajs";
 
 import { CreateCommentDto } from "~src/comments/dto/create-comment.dto";
 import { GetCommentDto } from "~src/comments/dto/get-comment.dto";
+import { GetCommentForChannelDto } from "~src/comments/dto/get-comment-for-channel.dto";
+import { GetCommentsPaginationOptionsDto } from "~src/comments/dto/get-comments-pagination-options.dto";
+import { GetCommentsQuery } from "~src/comments/dto/get-comments-query.dto";
 import { UpdateCommentDto } from "~src/comments/dto/update-comment.dto";
 import { CommentRepository } from "~src/comments/repositories/comment.repository";
 
@@ -31,10 +40,12 @@ export class CommentService implements OnModuleInit {
 
 	private videoGrpcService: VideoServiceClient;
 	private channelGrpcService: ChannelServiceClient;
+	private commentRateGrpcService: CommentRateServiceClient;
 
 	constructor(
 		@Inject(VIDEOS_PACKAGE_NAME) private videoClientGrpc: ClientGrpc,
 		@Inject(CHANNELS_PACKAGE_NAME) private channelClientGrpc: ClientGrpc,
+		@Inject(COMMENT_RATES_PACKAGE_NAME) private commentRateClientGrpc: ClientGrpc,
 
 		private readonly kafkaProducerService: KafkaProducerService,
 		private readonly commentRepository: CommentRepository,
@@ -43,6 +54,8 @@ export class CommentService implements OnModuleInit {
 	onModuleInit() {
 		this.videoGrpcService = this.videoClientGrpc.getService<VideoServiceClient>(VIDEO_SERVICE_NAME);
 		this.channelGrpcService = this.channelClientGrpc.getService<ChannelServiceClient>(CHANNEL_SERVICE_NAME);
+		this.commentRateGrpcService =
+			this.commentRateClientGrpc.getService<CommentRateServiceClient>(COMMENT_RATE_SERVICE_NAME);
 	}
 
 	async handleChannelEvents(payload: EachMessagePayload) {
@@ -136,6 +149,22 @@ export class CommentService implements OnModuleInit {
 		return new GetCommentDto(comment);
 	}
 
+	async getPaginatedCommentsByVideoId(
+		channelId: string,
+		query: GetCommentsQuery,
+		pagination: GetCommentsPaginationOptionsDto,
+	): Promise<PaginatedResponseDto<GetCommentForChannelDto>> {
+		const { videoId } = query;
+
+		const comments = await this.commentRepository.getCommentsByVideoId(videoId, pagination);
+		const count = await this.commentRepository.getCommentsByVideoIdCount(videoId);
+
+		const commentIds = comments.map((comment) => comment.id);
+		const commentRatesMap = await this.getCommentRatesByIdsForChannel(commentIds, channelId);
+
+		return new PaginatedResponseDto(GetCommentForChannelDto.fromArray(comments, commentRatesMap), pagination, count);
+	}
+
 	async updateCommentByIdOrThrow(channelId: string, commentId: string, dto: UpdateCommentDto) {
 		const comment = await this.getCommentByIdForAuthorOrThrow(commentId, channelId);
 		const updatedComment = await this.commentRepository.updateCommentById(comment.id, dto.toPlain());
@@ -201,5 +230,10 @@ export class CommentService implements OnModuleInit {
 	private async getChannel(channelId: string) {
 		const channelResponse = await this.channelGrpcService.getChannel({ channelId }).toPromise();
 		return channelResponse?.channel || null;
+	}
+
+	private async getCommentRatesByIdsForChannel(commentIds: string[], channelId: string) {
+		const response = await this.commentRateGrpcService.getRatesByIdsForChannel({ commentIds, channelId }).toPromise();
+		return response?.rates || {};
 	}
 }
