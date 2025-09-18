@@ -74,6 +74,7 @@ export class VideoController {
 		return this.videoService.deleteVideoByIdOrThrow(videoId, channelId);
 	}
 
+	// TODO: Rework to use query params - channelId=123, instead of for-channel/:channelId
 	@ApiPaginatedResponse(GetVideoForChannelDto, GetVideosForChannelPaginationOptionsDto)
 	@Get("for-channel/:channelId")
 	async getVideosForChannel(
