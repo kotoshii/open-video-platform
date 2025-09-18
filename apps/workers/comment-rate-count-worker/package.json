@@ -1,5 +1,5 @@
 {
-	"name": "@ovp-workers/video-rate-count-worker",
+	"name": "@ovp-workers/comment-rate-count-worker",
 	"version": "0.1.0",
 	"private": true,
 	"license": "UNLICENSED",
