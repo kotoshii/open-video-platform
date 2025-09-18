@@ -5,8 +5,8 @@ import type { Selectable } from "kysely";
 import { CommentRate, CommentRateType } from "~db/schema";
 
 export class GetCommentRateDto {
-	constructor(videoRate: Selectable<CommentRate>) {
-		const { id, commentId, channelId, type, createdDate, updatedDate } = videoRate;
+	constructor(commentRate: Selectable<CommentRate>) {
+		const { id, commentId, channelId, type, createdDate, updatedDate } = commentRate;
 
 		this.id = id;
 		this.commentId = commentId;
@@ -33,4 +33,8 @@ export class GetCommentRateDto {
 
 	@Exclude()
 	updatedDate: Date;
+
+	static fromArray(commentRates: Selectable<CommentRate>[]) {
+		return commentRates.map((commentRate) => new GetCommentRateDto(commentRate));
+	}
 }

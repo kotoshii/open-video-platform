@@ -75,6 +75,11 @@ export class CommentRateService implements OnModuleInit {
 		return new GetCommentRateDto(commentRate);
 	}
 
+	async getCommentRatesByIdsForChannel(commentIds: string[], channelId: string) {
+		const commentRates = await this.commentRateRepository.getCommentRatesByIdsForChannel(commentIds, channelId);
+		return GetCommentRateDto.fromArray(commentRates);
+	}
+
 	async deleteCommentRate(commentId: string, channelId: string) {
 		const deleted = await this.commentRateRepository.deleteCommentRate(commentId, channelId);
 		if (deleted) {

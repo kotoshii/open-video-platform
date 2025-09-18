@@ -19,6 +19,10 @@ export class CommentRateRepository {
 			.executeTakeFirst();
 	}
 
+	async getCommentRatesByIdsForChannel(commentIds: string[], channelId: string) {
+		return this.commentRateQuery.where("commentId", "in", commentIds).where("channelId", "=", channelId).execute();
+	}
+
 	async updateCommentRateById(id: string, data: Updateable<CommentRate>) {
 		return this.db.updateTable("commentRates").set(data).where("id", "=", id).returningAll().executeTakeFirstOrThrow();
 	}
