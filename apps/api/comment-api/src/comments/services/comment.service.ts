@@ -29,6 +29,7 @@ import { EachMessagePayload } from "kafkajs";
 import { CreateCommentDto } from "~src/comments/dto/create-comment.dto";
 import { GetCommentDto } from "~src/comments/dto/get-comment.dto";
 import { GetCommentForChannelDto } from "~src/comments/dto/get-comment-for-channel.dto";
+import { GetCommentRepliesPaginationOptionsDto } from "~src/comments/dto/get-comment-replies-pagination-options.dto";
 import { GetCommentsPaginationOptionsDto } from "~src/comments/dto/get-comments-pagination-options.dto";
 import { GetCommentsQuery } from "~src/comments/dto/get-comments-query.dto";
 import { UpdateCommentDto } from "~src/comments/dto/update-comment.dto";
@@ -158,6 +159,20 @@ export class CommentService implements OnModuleInit {
 
 		const comments = await this.commentRepository.getCommentsByVideoId(videoId, pagination);
 		const count = await this.commentRepository.getCommentsByVideoIdCount(videoId);
+
+		const commentIds = comments.map((comment) => comment.id);
+		const commentRatesMap = await this.getCommentRatesByIdsForChannel(commentIds, channelId);
+
+		return new PaginatedResponseDto(GetCommentForChannelDto.fromArray(comments, commentRatesMap), pagination, count);
+	}
+
+	async getPaginatedCommentRepliesByCommentId(
+		channelId: string,
+		commentId: string,
+		pagination: GetCommentRepliesPaginationOptionsDto,
+	): Promise<PaginatedResponseDto<GetCommentForChannelDto>> {
+		const comments = await this.commentRepository.getCommentRepliesByCommentId(commentId, pagination);
+		const count = await this.commentRepository.getCommentRepliesByCommentIdCount(commentId);
 
 		const commentIds = comments.map((comment) => comment.id);
 		const commentRatesMap = await this.getCommentRatesByIdsForChannel(commentIds, channelId);

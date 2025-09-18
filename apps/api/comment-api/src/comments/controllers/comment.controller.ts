@@ -16,6 +16,7 @@ import { Pagination } from "@ovp-lib/api/pagination/decorators/pagination.decora
 import { CreateCommentDto } from "~src/comments/dto/create-comment.dto";
 import { GetCommentDto } from "~src/comments/dto/get-comment.dto";
 import { GetCommentForChannelDto } from "~src/comments/dto/get-comment-for-channel.dto";
+import { GetCommentRepliesPaginationOptionsDto } from "~src/comments/dto/get-comment-replies-pagination-options.dto";
 import { GetCommentsPaginationOptionsDto } from "~src/comments/dto/get-comments-pagination-options.dto";
 import { GetCommentsQuery } from "~src/comments/dto/get-comments-query.dto";
 import { UpdateCommentDto } from "~src/comments/dto/update-comment.dto";
@@ -71,5 +72,15 @@ export class CommentController {
 		@Pagination(GetCommentsPaginationOptionsDto) pagination: GetCommentsPaginationOptionsDto,
 	) {
 		return this.commentService.getPaginatedCommentsByVideoId(channelId, query, pagination);
+	}
+
+	@ApiPaginatedResponse(GetCommentForChannelDto, GetCommentRepliesPaginationOptionsDto)
+	@Get(":commentId/replies")
+	async getCommentRepliesByCommentId(
+		@ChannelId() channelId: string,
+		@Param("commentId") commentId: string,
+		@Pagination(GetCommentRepliesPaginationOptionsDto) pagination: GetCommentRepliesPaginationOptionsDto,
+	) {
+		return this.commentService.getPaginatedCommentRepliesByCommentId(channelId, commentId, pagination);
 	}
 }
