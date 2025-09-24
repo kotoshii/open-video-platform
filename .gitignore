@@ -133,3 +133,5 @@ dist
 .idea
 
 generated
+
+docker_data
