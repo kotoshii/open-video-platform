@@ -81,3 +81,32 @@ services:
       - ../docker_data/minio:/data
       - ../infra/minio/init-minio.local.sh:/init-minio.sh
     entrypoint: [ "/bin/sh", "/init-minio.sh" ]
+
+  # TODO: Add -hooks-http http://localhost:<port>/<webhook-endpoint> once webhooks are implemented in video-uploading-api
+  tusd:
+    image: tusproject/tusd:latest
+    container_name: tusd-local
+    ports:
+      - "1080:1080"
+    command: >
+      -base-path=/upload
+      -port 1080
+      -cors-allow-origin=.* 
+      -cors-allow-headers=Authorization,Tus-Webhook-Secret
+      -cors-allow-methods=POST,HEAD,PATCH,OPTIONS
+      -max-size 10737418240
+      -disable-download
+      -disable-termination
+      -hooks-enabled-events=pre-create,post-receive,pre-finish,post-finish
+      -hooks-http-retry 5
+      -hooks-http-backoff 2s
+      -s3-bucket videos
+      -s3-endpoint http://minio:9000
+      -hooks-http-forward-headers Authorization,Tus-Webhook-Secret
+      -s3-log-api-calls
+      -behind-proxy
+      -verbose
+    environment:
+      - AWS_ACCESS_KEY_ID=admin
+      - AWS_SECRET_ACCESS_KEY=admin_pass
+      - AWS_REGION=eu-west-1
