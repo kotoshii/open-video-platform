@@ -67,6 +67,8 @@ services:
     ports:
       - "80:80"
     restart: unless-stopped
+      - "8888:8888"
+
 
   minio:
     image: minio/minio:latest
