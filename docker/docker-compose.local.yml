@@ -74,8 +74,10 @@ services:
       - ../infra/api-gateway/nginx.local.conf:/etc/nginx/templates/default.conf.template
     ports:
       - "4444:4444"
-    environment:
-      - TUS_WEBHOOK_SECRET=tus-webhook-secret
+    env_file:
+      - ".env.api-gateway.local"
+    depends_on:
+      - tusd
 
   minio:
     image: minio/minio:latest
