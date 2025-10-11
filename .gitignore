@@ -135,3 +135,9 @@ dist
 generated
 
 docker_data
+
+.yarn/*
+!.yarn/releases
+!.yarn/plugins
+!.yarn/sdks
+!.yarn/versions
