@@ -1,5 +1,6 @@
 name: open-video-platform-local-dev
 
+# TODO: Make containers reproducible - use specific version numbers instead of just putting "latest" everywhere.
 services:
   pgdb:
     image: postgres:latest
