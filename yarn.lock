@@ -1386,6 +1386,49 @@ __metadata:
   languageName: unknown
   linkType: soft
 
+"@ovp-apis/video-upload-api@workspace:apps/api/video-upload-api":
+  version: 0.0.0-use.local
+  resolution: "@ovp-apis/video-upload-api@workspace:apps/api/video-upload-api"
+  dependencies:
+    "@biomejs/biome": "npm:2.1.4"
+    "@grpc/grpc-js": "npm:^1.13.4"
+    "@grpc/proto-loader": "npm:^0.8.0"
+    "@grpc/reflection": "npm:^1.0.4"
+    "@nestjs/cli": "npm:^11.0.0"
+    "@nestjs/common": "npm:^11.0.1"
+    "@nestjs/config": "npm:^4.0.2"
+    "@nestjs/core": "npm:^11.0.1"
+    "@nestjs/jwt": "npm:^11.0.0"
+    "@nestjs/microservices": "npm:^11.1.6"
+    "@nestjs/platform-express": "npm:^11.0.1"
+    "@nestjs/schematics": "npm:^11.0.0"
+    "@nestjs/swagger": "npm:^11.2.0"
+    "@ovp-lib/api": "npm:^0.1.0"
+    "@ovp-lib/common": "npm:^0.1.0"
+    "@ovp-proto/types": "npm:^0.1.0"
+    "@types/express": "npm:^5.0.0"
+    "@types/lodash": "npm:^4.17.20"
+    "@types/ms": "npm:^2.1.0"
+    "@types/node": "npm:^22.10.7"
+    "@types/pg": "npm:^8.15.5"
+    class-transformer: "npm:^0.5.1"
+    class-validator: "npm:^0.14.2"
+    dbmate: "npm:^2.28.0"
+    kysely: "npm:^0.28.5"
+    kysely-codegen: "npm:^0.18.5"
+    lodash: "npm:^4.17.21"
+    ms: "npm:^2.1.3"
+    nestjs-kysely: "npm:^3.0.0"
+    nestjs-real-ip: "npm:^3.0.1"
+    pg: "npm:^8.16.3"
+    reflect-metadata: "npm:^0.2.2"
+    rxjs: "npm:^7.8.1"
+    ts-node: "npm:^10.9.2"
+    tsconfig-paths: "npm:^4.2.0"
+    typescript: "npm:^5.7.3"
+  languageName: unknown
+  linkType: soft
+
 "@ovp-lib/api@npm:^0.1.0, @ovp-lib/api@workspace:lib/api":
   version: 0.0.0-use.local
   resolution: "@ovp-lib/api@workspace:lib/api"

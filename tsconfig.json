@@ -36,6 +36,9 @@
 			"path": "./apps/api/video-api"
 		},
 		{
+			"path": "./apps/api/video-upload-api"
+		},
+		{
 			"path": "./apps/api/video-rate-api"
 		},
 		{
