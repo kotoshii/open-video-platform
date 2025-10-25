@@ -9,6 +9,7 @@ create table if not exists video_uploads
     status            video_upload_status      not null default 'uploading',
     original_filename varchar(255)             not null,
     original_size     bigint                   not null, -- size in bytes
+    original_mimetype varchar                  not null,
     created_date      timestamp with time zone not null default now(),
     updated_date      timestamp with time zone not null default now()
 );

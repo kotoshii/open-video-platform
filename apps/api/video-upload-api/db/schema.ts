@@ -27,6 +27,7 @@ export interface VideoUpload {
   createdDate: Generated<Timestamp>;
   id: Generated<string>;
   originalFilename: string;
+  originalMimetype: string;
   originalSize: Int8;
   status: Generated<VideoUploadStatus>;
   updatedDate: Generated<Timestamp>;
