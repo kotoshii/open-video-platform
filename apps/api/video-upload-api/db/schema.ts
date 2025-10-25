@@ -6,6 +6,7 @@
 import type { ColumnType } from "kysely";
 
 export enum VideoUploadStatus {
+  Initialized = "initialized",
   Processing = "processing",
   ProcessingCompleted = "processing_completed",
   ProcessingFailed = "processing_failed",

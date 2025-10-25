@@ -1,12 +1,12 @@
 -- migrate:up
-create type video_upload_status as enum ('uploading', 'uploading_failed', 'uploading_completed', 'processing', 'processing_failed', 'processing_completed');
+create type video_upload_status as enum ('initialized', 'uploading', 'uploading_failed', 'uploading_completed', 'processing', 'processing_failed', 'processing_completed');
 
 create table if not exists video_uploads
 (
     id                uuid primary key         not null default gen_random_uuid(),
     channel_id        uuid                     not null,
     video_id          uuid                     not null,
-    status            video_upload_status      not null default 'uploading',
+    status            video_upload_status      not null default 'initialized',
     original_filename varchar(255)             not null,
     original_size     bigint                   not null, -- size in bytes
     original_mimetype varchar                  not null,
