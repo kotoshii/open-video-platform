@@ -27,6 +27,11 @@ JWT_EXPIRES_IN=1h
 KAFKA_BROKERS=localhost:9092
 KAFKA_CLIENT_ID=video-upload-api
 KAFKA_GROUP_ID=video-upload-api
+
+# Upload
+# default: 10 GB (10737418240 bytes)
+MAX_VIDEO_FILE_SIZE_BYTES=10737418240
+ALLOWED_VIDEO_FILE_FORMATS=mp4,mov,mkv,webm,avi,flv,wmv,mpeg,3gp,m4v
 ```
 
 ## Compile and run the project

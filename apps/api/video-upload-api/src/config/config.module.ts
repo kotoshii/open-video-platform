@@ -12,6 +12,7 @@ import { DatabaseConfig } from "~src/config/providers/database.config";
 import { GrpcConfig } from "~src/config/providers/grpc.config";
 import { JwtConfig } from "~src/config/providers/jwt.config";
 import { KafkaConfig } from "~src/config/providers/kafka.config";
+import { VideoUploadConfig } from "~src/config/providers/video-upload.config";
 
 @Global()
 @Module({
@@ -23,6 +24,7 @@ import { KafkaConfig } from "~src/config/providers/kafka.config";
 		{ provide: JWT_CONFIG_INJECTION_TOKEN, useClass: JwtConfig },
 		GrpcConfig,
 		{ provide: KAFKA_CONFIG_INJECTION_TOKEN, useClass: KafkaConfig },
+		VideoUploadConfig,
 	],
 	exports: [
 		AppConfig,
@@ -31,6 +33,7 @@ import { KafkaConfig } from "~src/config/providers/kafka.config";
 		JWT_CONFIG_INJECTION_TOKEN,
 		GrpcConfig,
 		KAFKA_CONFIG_INJECTION_TOKEN,
+		VideoUploadConfig,
 	],
 })
 export class ConfigModule {}
