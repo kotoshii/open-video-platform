@@ -1,6 +1,6 @@
 import * as path from "node:path";
 
-import { BadRequestException, Inject, Injectable, Logger, OnModuleInit } from "@nestjs/common";
+import { BadRequestException, Inject, Injectable, Logger, NotFoundException, OnModuleInit } from "@nestjs/common";
 import type { ClientGrpc } from "@nestjs/microservices";
 import { VIDEO_SERVICE_NAME, VIDEOS_PACKAGE_NAME, VideoServiceClient } from "@ovp-proto/types/videos";
 import mimeTypes from "mime-types";
@@ -68,6 +68,16 @@ export class VideoUploadService implements OnModuleInit {
 			originalSize: size,
 			originalMimetype: mimeTypeFromClient,
 		});
+
+		return new GetVideoUploadDto(videoUpload);
+	}
+
+	async getUploadByVideoIdOrThrow(channelId: string, videoId: string) {
+		const videoUpload = await this.videoUploadRepository.getVideoUploadByVideoId(videoId);
+
+		if (!videoUpload || videoUpload.channelId !== channelId) {
+			throw new NotFoundException("Video upload not found");
+		}
 
 		return new GetVideoUploadDto(videoUpload);
 	}

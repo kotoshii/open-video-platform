@@ -11,4 +11,22 @@ export class VideoUploadRepository {
 	async createVideoUpload(data: Insertable<VideoUpload>) {
 		return this.db.insertInto("videoUploads").values(data).returningAll().executeTakeFirstOrThrow();
 	}
+
+	async getVideoUploadByVideoId(videoId: string) {
+		return this.videoUploadQuery.where("videoId", "=", videoId).executeTakeFirst();
+	}
+
+	private get videoUploadQuery() {
+		return this.db
+			.selectFrom("videoUploads")
+			.select("id")
+			.select("channelId")
+			.select("videoId")
+			.select("status")
+			.select("originalFilename")
+			.select("originalSize")
+			.select("originalMimetype")
+			.select("createdDate")
+			.select("updatedDate");
+	}
 }

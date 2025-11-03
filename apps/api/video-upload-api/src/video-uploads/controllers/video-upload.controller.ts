@@ -1,5 +1,5 @@
-import { Body, Controller, Post } from "@nestjs/common";
-import { ApiBadRequestResponse, ApiCreatedResponse } from "@nestjs/swagger";
+import { Body, Controller, Get, Param, Post } from "@nestjs/common";
+import { ApiBadRequestResponse, ApiCreatedResponse, ApiNotFoundResponse, ApiOkResponse } from "@nestjs/swagger";
 import { ChannelId } from "@ovp-lib/api/auth/decorators/channel-id.decorator";
 import { NestErrorResponseDto } from "@ovp-lib/api/common/dto/nest-error-response.dto";
 
@@ -16,5 +16,15 @@ export class VideoUploadController {
 	@Post("initialize")
 	async initializeUpload(@ChannelId() channelId: string, @Body() body: CreateVideoUploadDto) {
 		return this.videoUploadService.initializeUploadOrThrow(channelId, body);
+	}
+
+	@ApiOkResponse({ type: GetVideoUploadDto })
+	@ApiNotFoundResponse({
+		description: "Upload session does not exist or does not belong to the requesting user",
+		type: NestErrorResponseDto,
+	})
+	@Get(":videoId")
+	async getUploadByVideoId(@ChannelId() channelId: string, @Param("videoId") videoId: string) {
+		return this.videoUploadService.getUploadByVideoIdOrThrow(channelId, videoId);
 	}
 }
