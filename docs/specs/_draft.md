@@ -133,3 +133,4 @@ Logs & Monitoring (stack below - subject to change)
 * Post pics/gifs in comments
 * "Translate comment" / "translate description" / "translate title" - you got the idea, buttons to translate different
   types of content EVERYWHERE
+* Ability to use the app anonymously (i.e. without logging in into account)
