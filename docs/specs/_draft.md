@@ -29,16 +29,19 @@ Specs Draft (Google docs): https://docs.google.com/document/d/1w3OGQFO0zOfoknIgT
 
 General UI & UX
 
-* Dark theme support
+* [Dark theme support](../user-stories/general-ui-ux/US-UI-UX-1-Dark-theme-support.md)
+* [User-friendly readable error messages](/docs/user-stories/general-ui-ux/US-UI-UX-2-User-friendly-errors.md)
+  (notifications/toasts)
 
 Auth
 
-* Account creation and authentication (via email and password)
-* Account confirmation (via email)
-* Ability to reset password (via email)
-* Session persistence (JWT rotation/refresh)
-* Session management
-* Ability to log out
+* [Account creation and authentication](../user-stories/auth/US-Auth-1-Account-creation-and-login.md) (via email and
+  password)
+* [Account confirmation](/docs/user-stories/auth/US-Auth-2-Account-confirmation.md) (via email)
+* [Ability to reset password](/docs/user-stories/auth/US-Auth-3-Password-reset.md) (via email)
+* [Session persistence](/docs/user-stories/auth/US-Auth-4-Session-persistence.md) (JWT rotation/refresh)
+* [Session management](/docs/user-stories/auth/US-Auth-5-Session-management.md)
+* [Ability to log out](/docs/user-stories/auth/US-Auth-6-Logging-out.md)
 
 Channels
 
