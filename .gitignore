@@ -141,3 +141,5 @@ docker_data
 !.yarn/plugins
 !.yarn/sdks
 !.yarn/versions
+
+.mcp.json
