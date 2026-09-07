@@ -67,6 +67,8 @@ Search
 
 * Search videos (query + optional filters + sorting)
 * Search channels (query + sorting: relevancy or subscriber count)
+* Search videos on a specific channel (similar to global videos search, but requires channel ID and possibly returns
+  smaller response - not all fields may be necessary)
 
 Videos
 
