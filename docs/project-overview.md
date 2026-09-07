@@ -27,10 +27,10 @@ Specs Draft (Google docs): https://docs.google.com/document/d/1w3OGQFO0zOfoknIgT
 
 ### Epics:
 
-General UI & UX
+UI/UX
 
-* [Dark theme support](user-stories/general-ui-ux/US-UI-UX-1-Dark-theme-support.md)
-* [User-friendly readable error messages](user-stories/general-ui-ux/US-UI-UX-2-User-friendly-errors.md)
+* [Dark theme support](user-stories/ui-ux/US-UI-UX-1-Dark-theme-support.md)
+* [User-friendly readable error messages](user-stories/ui-ux/US-UI-UX-2-User-friendly-errors.md)
   (notifications/toasts)
 
 Auth
