@@ -57,7 +57,7 @@ Branches:
 * An ended session can no longer refresh its tokens — the next request from that device leads to the login page.
 * The current session cannot be ended from this page; it is ended only by logging out.
 * Failures while loading or ending sessions are shown as readable errors (see
-  [US-UI-UX-2](../general-ui-ux/US-UI-UX-2-User-friendly-errors.md)).
+  [US-UI-UX-2](../ui-ux/US-UI-UX-2-User-friendly-errors.md)).
 
 **Tech notes**
 
