@@ -1,4 +1,4 @@
-## US-Auth-6 — Logging out
+## US-Auth-06 — Logging out
 
 **Description**
 
@@ -21,7 +21,7 @@ Logging out — branches:
 * **Logout request fails** (step 4) — the app still clears the local session and redirects to the login page; the user
   is never left in a half-logged-out state.
 * **Session already ended elsewhere** (step 4) — e.g. it was ended from another device
-  ([US-Auth-5](./US-Auth-5-Session-management.md)); logout is treated as successful and the user is redirected to the
+  ([US-Auth-5](US-Auth-05-Session-management.md)); logout is treated as successful and the user is redirected to the
   login page.
 
 **Acceptance criteria**
@@ -33,7 +33,7 @@ Logging out — branches:
 * On confirmation, the current session is ended on the server and both tokens are cleared on the client.
 * The user is redirected to the login page and cannot return to authenticated pages with the browser's "back" button.
 * After logging out, the refresh token no longer works — the session cannot be restored without logging in again.
-* The ended session disappears from the session list ([US-Auth-5](./US-Auth-5-Session-management.md)).
+* The ended session disappears from the session list ([US-Auth-5](US-Auth-05-Session-management.md)).
 * A failed logout request still logs the user out locally and redirects to the login page.
 * Logging out affects only the current session; other sessions of the account stay active.
 
@@ -53,8 +53,8 @@ Logging out — branches:
 **Links**
 
 * [Keycloak](https://www.keycloak.org/)
-* [US-Auth-4 — Session persistence](./US-Auth-4-Session-persistence.md)
-* [US-Auth-5 — Session management](./US-Auth-5-Session-management.md)
+* [US-Auth-4 — Session persistence](US-Auth-04-Session-persistence.md)
+* [US-Auth-5 — Session management](US-Auth-05-Session-management.md)
 
 **Tasks**
 

@@ -39,7 +39,7 @@ Switch the current channel — branches:
 * The current channel id is kept in localStorage and sent in a header; the gateway validates it against the
   `channelIds` claim of the verified token and rejects the request if it doesn't match.
 * Keeping the channel outside the token is what makes switching cheap — no token refresh, no session change, and the
-  session list ([US-Auth-5](../auth/US-Auth-5-Session-management.md)) stays about devices, not identities.
+  session list ([US-Auth-5](../auth/US-Auth-05-Session-management.md)) stays about devices, not identities.
 * localStorage is per browser, so the current channel is per device: the same account can act as different channels on
   different devices at the same time.
 * localStorage is not readable during server-side rendering — decide how server-rendered pages get the current channel
@@ -47,7 +47,7 @@ Switch the current channel — branches:
 
 **Links**
 
-* [US-Auth-1 — Account creation and login](../auth/US-Auth-1-Account-creation-and-login.md)
+* [US-Auth-1 — Account creation and login](../auth/US-Auth-01-Account-creation-and-login.md)
 * [US-Channels-01 — Create multiple channels](./US-Channels-01-create-multiple-channels.md)
 * [US-Channels-06 — Delete own channel](./US-Channels-06-delete-own-channel.md)
 

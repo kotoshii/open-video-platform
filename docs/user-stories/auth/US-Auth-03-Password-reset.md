@@ -1,4 +1,4 @@
-## US-Auth-3 — Password reset
+## US-Auth-03 — Password reset
 
 **Description**
 
@@ -45,7 +45,7 @@ Password reset — branches:
 
 * Keycloak covers password reset out of the box, including link generation and the password update form — do not use
   it, build the flow on the custom email module instead (same decision as in
-  [US-Auth-2](./US-Auth-2-Account-confirmation.md)).
+  [US-Auth-2](US-Auth-02-Account-confirmation.md)).
 * The API issues its own single-use, short-lived reset token, and applies the new password to Keycloak through the admin
   API once the form is submitted.
 * Keep the reset token and the cooldown server-side (Redis fits — both are short-lived and TTL-based).
@@ -60,8 +60,8 @@ Password reset — branches:
 **Links**
 
 * [Keycloak](https://www.keycloak.org/)
-* [US-Auth-1 — Account creation and login](./US-Auth-1-Account-creation-and-login.md)
-* [US-Auth-2 — Account confirmation](./US-Auth-2-Account-confirmation.md)
+* [US-Auth-1 — Account creation and login](US-Auth-01-Account-creation-and-login.md)
+* [US-Auth-2 — Account confirmation](US-Auth-02-Account-confirmation.md)
 
 **Tasks**
 

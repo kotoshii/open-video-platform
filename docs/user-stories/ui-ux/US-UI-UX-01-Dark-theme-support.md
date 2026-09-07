@@ -1,4 +1,4 @@
-## US-UI-UX-1 — Dark theme support
+## US-UI-UX-01 — Dark theme support
 
 **Description**
 

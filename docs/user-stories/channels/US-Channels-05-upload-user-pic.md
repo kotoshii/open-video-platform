@@ -21,7 +21,7 @@ Upload a user pic — branches:
 
 * **File too large or of an unsupported format** (step 3) — the user sees a readable error and nothing is uploaded.
 * **Upload fails** (step 5) — the default error flow applies
-  ([US-UI-UX-2](../ui-ux/US-UI-UX-2-User-friendly-errors.md)); the previous picture stays in place.
+  ([US-UI-UX-2](../ui-ux/US-UI-UX-02-User-friendly-errors.md)); the previous picture stays in place.
 
 **Acceptance criteria**
 

@@ -1,4 +1,4 @@
-## US-Auth-1 — Account creation and login
+## US-Auth-01 — Account creation and login
 
 **Description**
 
@@ -20,7 +20,7 @@ Account creation — main flow:
 4. The app validates the entered details.
 5. The app calls the API to create the account.
 6. User sees a notification that the account has been created.
-7. User is redirected to the account verification screen (see [US-Auth-2](./US-Auth-2-Account-confirmation.md)).
+7. User is redirected to the account verification screen (see [US-Auth-2](US-Auth-02-Account-confirmation.md)).
 
 Account creation — branches:
 
@@ -40,12 +40,12 @@ Login — branches:
 
 * **Invalid credentials** (step 4) — the user sees an error message and stays on the form.
 * **Account not verified** (step 4) — the user is taken to the account verification screen and goes through the
-  verification flow ([US-Auth-2](./US-Auth-2-Account-confirmation.md)); they can continue only once the account is
+  verification flow ([US-Auth-2](US-Auth-02-Account-confirmation.md)); they can continue only once the account is
   verified.
 * **Multiple channels on the account** (step 5) — the user is prompted to select a channel before being redirected to
   the homepage.
 * **Forgot password** (step 2) — the user follows the "Forgot password?" link and continues with the password reset flow
-  ([US-Auth-3](./US-Auth-3-Password-reset.md)).
+  ([US-Auth-3](US-Auth-03-Password-reset.md)).
 
 **Acceptance criteria**
 
@@ -83,8 +83,8 @@ Navigation between forms:
 
 * [Figma mockups](https://www.figma.com/design/VGVNL768fIPaiAKDH5bYNU/Open-Video-Platform-Mockups?node-id=0-1&p=f&t=9Z8ONFvfqc16RRvP-0)
 * [Keycloak](https://www.keycloak.org/)
-* [US-Auth-2 — Account confirmation](./US-Auth-2-Account-confirmation.md)
-* [US-Auth-3 — Password reset](./US-Auth-3-Password-reset.md)
+* [US-Auth-2 — Account confirmation](US-Auth-02-Account-confirmation.md)
+* [US-Auth-3 — Password reset](US-Auth-03-Password-reset.md)
 
 **Tasks**
 

@@ -1,4 +1,4 @@
-## US-UI-UX-2 — User-friendly error messages
+## US-UI-UX-02 — User-friendly error messages
 
 **Description**
 

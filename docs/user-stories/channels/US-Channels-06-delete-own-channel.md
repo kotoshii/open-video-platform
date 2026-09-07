@@ -67,7 +67,7 @@ Delete a channel — branches:
   retried.
 * The purge is triggered a week after the soft delete by a scheduled job, not by the deletion request itself.
 * Both emails go through the custom email module, the same one used for account confirmation
-  ([US-Auth-2](../auth/US-Auth-2-Account-confirmation.md)).
+  ([US-Auth-2](../auth/US-Auth-02-Account-confirmation.md)).
 * The confirmation token is single-use with a 5-minute lifetime, the restore token lives for a week; both are kept
   server-side (Redis fits the short-lived one).
 * Deleting the channel the user is currently acting as also has to reset the stored current channel
@@ -76,7 +76,7 @@ Delete a channel — branches:
 
 **Links**
 
-* [US-Auth-2 — Account confirmation](../auth/US-Auth-2-Account-confirmation.md)
+* [US-Auth-2 — Account confirmation](../auth/US-Auth-02-Account-confirmation.md)
 * [US-Channels-02 — Switch between channels](./US-Channels-02-freely-switch-between-channels.md)
 * [US-Channels-03 — Current channel settings](./US-Channels-03-current-channel-settings.md)
 
