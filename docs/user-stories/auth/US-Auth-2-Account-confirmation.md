@@ -12,7 +12,7 @@ Confirmation right after account creation — main flow:
 1. User is redirected to the confirmation page.
 2. User sees a message saying a confirmation link has been sent to their email, along with a "Resend link" button.
 3. The resend button is disabled and shows a timer counting down to the next allowed attempt.
-4. User opens the link from the email, which leads to the Keycloak verification page.
+4. User opens the link from the email, which leads to the custom-built verification page (not Keycloak's pre-built).
 5. The account is confirmed.
 6. User is redirected to the homepage and sees a success notification.
 
@@ -51,8 +51,15 @@ Returning to the confirmation page:
 
 **Tech notes**
 
-* Keycloak provides email verification out of the box, including the verification page and link handling — use it
-  instead of building a custom flow.
+* Keycloak provides email verification out of the box, including mail sending, link handling and the verification page
+  — do not use it, build a custom email module instead. It is relatively simple, gives full control over the emailing
+  flow and the email template design, and the module is needed anyway for the other confirmation emails (e.g. channel or
+  account deletion).
+* The API issues its own single-use, short-lived confirmation token, and marks the account as verified in Keycloak
+  through the admin API once the token is consumed.
+* Keep the confirmation token and the resend cooldown server-side (Redis fits — both are short-lived and TTL-based).
+* Sending is handled by the email module and triggered by an event, not by an inline call inside the sign-up request —
+  account creation must not fail or block on mail delivery.
 * Resend cooldown and link lifetime need a decided value (the original draft used 5 minutes for both).
 
 **Links**

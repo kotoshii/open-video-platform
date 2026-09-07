@@ -14,7 +14,7 @@ Password reset — main flow:
 3. User enters their email and clicks the button.
 4. The app shows a message saying the reset link has been sent; the button is disabled and shows a countdown to the next
    allowed attempt.
-5. User opens the link from the email and lands on the Keycloak-hosted password update form.
+5. User opens the link from the email and lands on the custom-built (not Keycloak's) password update form.
 6. User enters a new password and its confirmation, then submits the form.
 7. User is redirected to the login page and sees a "Password changed successfully" notification.
 
@@ -30,7 +30,7 @@ Password reset — branches:
 **Acceptance criteria**
 
 * The login form has a "Forgot password?" link leading to the password reset page.
-* Requesting a reset sends an email with a Keycloak-generated reset link.
+* Requesting a reset sends an email with a reset link.
 * After a request, the button is disabled and shows a countdown until the next attempt is allowed.
 * The cooldown is enforced on the server: reloading the page does not reset it, and a repeated request before it expires
   returns the actual remaining time, which the UI shows.
@@ -43,8 +43,16 @@ Password reset — branches:
 
 **Tech notes**
 
-* Keycloak covers password reset out of the box, including link generation and the password update form.
-* The Keycloak-hosted pages are customizable — they must follow the app's styling and support the app's languages.
+* Keycloak covers password reset out of the box, including link generation and the password update form — do not use
+  it, build the flow on the custom email module instead (same decision as in
+  [US-Auth-2](./US-Auth-2-Account-confirmation.md)).
+* The API issues its own single-use, short-lived reset token, and applies the new password to Keycloak through the admin
+  API once the form is submitted.
+* Keep the reset token and the cooldown server-side (Redis fits — both are short-lived and TTL-based).
+* Sending is handled by the email module and triggered by an event, not by an inline call inside the reset request; the
+  response must not depend on mail delivery, and must not reveal whether the email is registered either way.
+* The password update form is a normal app page, so it inherits the app's styling, error handling and languages — no
+  separate theming of the identity provider's pages is needed.
 * Reset request state is not persisted on the client between page reloads; the server is the source of truth for the
   remaining cooldown.
 * Cooldown and link lifetime need a decided value (the story suggests ~10 minutes for the cooldown).
@@ -53,6 +61,7 @@ Password reset — branches:
 
 * [Keycloak](https://www.keycloak.org/)
 * [US-Auth-1 — Account creation and login](./US-Auth-1-Account-creation-and-login.md)
+* [US-Auth-2 — Account confirmation](./US-Auth-2-Account-confirmation.md)
 
 **Tasks**
 
