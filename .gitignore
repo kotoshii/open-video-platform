@@ -143,3 +143,5 @@ docker_data
 !.yarn/versions
 
 .mcp.json
+
+docs/_internal
