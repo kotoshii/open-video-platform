@@ -45,10 +45,12 @@ Auth
 
 Channels
 
-* Ability to create multiple channels on one account and switch between them freely
-* Manage own channel info/content preferences
-* Upload user pic (avatar)
-* Delete own channel
+* [Ability to create multiple channels on one account](/docs/user-stories/channels/US-Channels-01-create-multiple-channels.md)
+* [Ability to switch between channels freely](/docs/user-stories/channels/US-Channels-02-freely-switch-between-channels.md)
+* [Manage own channel info/content preferences](/docs/user-stories/channels/US-Channels-03-current-channel-settings.md)
+* [Ability to see own channel and other users' channels](/docs/user-stories/channels/US-Channels-04-see-own-and-other-channels.md)
+* [Upload user pic](/docs/user-stories/channels/US-Channels-05-upload-user-pic.md) (avatar)
+* [Delete own channel](/docs/user-stories/channels/US-Channels-06-delete-own-channel.md)
 
 Account settings
 
