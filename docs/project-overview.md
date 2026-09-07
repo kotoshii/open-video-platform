@@ -138,3 +138,6 @@ Logs & Monitoring (stack below - subject to change)
 * "Translate comment" / "translate description" / "translate title" - you got the idea, buttons to translate different
   types of content EVERYWHERE
 * Ability to use the app anonymously (i.e. without logging in into account)
+* List of your subscribers (opens when clicked on subcriber amount link on channel page; paginated + ability to search
+  by channel name + sort by subscription date ("recently subscribed" - default) or their own sub amount (
+  "most popular"))
