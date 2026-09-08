@@ -2,8 +2,8 @@
 
 **Description**
 
-As a registered user with a verified account, I want to change my password from the settings page, so that I can keep my
-account secure without going through the password reset flow.
+As a registered user with a verified account, I want to change my password from the settings page by confirming my
+current one, so that I can rotate my password without going through the password reset flow.
 
 **User flows**
 
@@ -12,79 +12,62 @@ Change password — main flow:
 1. User opens the settings page on the Account tab
    ([US-Channels-03](../channels/US-Channels-03-current-channel-settings.md)).
 2. User sees the "Current password", "New password" and "Confirm password" inputs.
-3. Under them there is a hint saying that changing the password ends every active session, so the user will have to sign
-   in again.
-4. User enters the current password, the new password and its confirmation.
-5. The fields are validated — if the new password and its confirmation do not match, or the password requirements are
-   not met, the corresponding errors are shown under the fields.
-6. User clicks "Save".
-7. The "Save" button becomes disabled and shows a countdown to the next allowed attempt (5 minutes).
-8. User receives a confirmation email with a link.
-9. User opens the link, which lives for 5 minutes.
-10. If the link is valid, the password is changed and every session of the account is ended.
-11. A dedicated page opens saying the password has been changed, with a password input, since the user is no longer
-    signed in anywhere.
-12. User re-enters the new password, gets a new token pair, and is redirected to the homepage.
-13. From this point the new password works for logging in and the old one stops working.
+3. Under them there is a hint saying that changing the password signs out every other device.
+4. User enters the current password, the new password and its confirmation, then clicks "Save".
+5. The app validates the fields.
+6. The server verifies the current password and applies the new one.
+7. Every other session of the account is ended; the current session gets a new token pair and stays signed in.
+8. User sees a success toast and stays on the settings page, with the password fields cleared.
+9. From this point the new password works for logging in and the old one stops working.
 
 Change password — branches:
 
 * **Passwords do not match or the requirements are not met** (step 5) — the corresponding errors are shown under the
   fields and the request is not sent.
-* **Wrong current password** (step 6) — the server rejects the request, the field shows an error, and no confirmation
-  email is sent.
-* **Page reload while the cooldown is running** (step 7) — the state is loaded from the server, so the "Save" button
-  comes back disabled with the actual remaining time instead of a reset timer.
-* **Expired or invalid link** (step 9) — the page explains what happened. There is no resend button; the user starts
-  over from the settings page.
-* **Wrong password on the confirmation page** (step 12) — the page shows an error and the user tries again; the change
-  itself has already been applied, so only the new password works.
+* **Wrong current password** (step 6) — the field shows an error; nothing is changed and no session is ended.
+* **Request fails** (step 6) — the default error flow applies
+  ([US-UI-UX-02](../ui-ux/US-UI-UX-02-User-friendly-errors.md)) and the password stays as it was.
 
 **Acceptance criteria**
 
 * The Account tab has "Current password", "New password" and "Confirm password" inputs.
-* The hint under them explains that the change ends every active session.
+* The hint under them explains that the change signs out every other device.
 * The new password and its confirmation must match, and the password must meet the same rules as on sign-up
   ([US-Auth-01](../auth/US-Auth-01-Account-creation-and-login.md)) and password reset
   ([US-Auth-03](../auth/US-Auth-03-Password-reset.md)); errors are shown under the corresponding fields.
-* A wrong current password is rejected with a field-level error, and no confirmation email is sent.
-* Saving sends a confirmation email and changes nothing yet.
-* After a request, "Save" is disabled and shows a countdown until the next attempt is allowed.
-* The cooldown is enforced on the server — reloading the page does not reset it, and the UI shows the actual remaining
-  time returned by the server.
-* The confirmation link is valid for 5 minutes and works once.
-* Opening a valid link applies the new password and ends every session of the account.
-* The confirmation page states that the password has been changed and asks for the new password; entering it signs the
-  user in again with a new token pair and redirects to the homepage.
-* The confirmation page has no "Open homepage" button — the user continues by signing in.
-* An expired or invalid link shows a clear message and offers no resend.
-* After the change, the user can log in with the new password and the old password no longer works.
-* Every other device is signed out and has to log in again, with the new password.
+* The current password is what authorises the change — no email confirmation is involved anywhere in this story.
+* A wrong current password is rejected with a field-level error and changes nothing.
+* On success the user sees a success toast, stays on the settings page, and the password fields are cleared.
+* The user is not signed out on this device — the current session continues with a new token pair.
+* Every other session of the account is ended, so every other device has to log in again with the new password.
+* The user can log in with the new password, and the old password no longer works.
+* Failures follow the default error flow ([US-UI-UX-02](../ui-ux/US-UI-UX-02-User-friendly-errors.md)).
 
 **Tech notes**
 
-* The current password is verified on the server when "Save" is pressed, before anything else happens — an open session
-  alone must not be enough to trigger a password change.
-* The new password is applied only when the token from the confirmation email is consumed.
-* Where the pending new password is held until then needs a decision: stored hashed and short-lived next to the token,
-  or not stored at all, since the confirmation page asks the user to type it again anyway and could apply it from there.
-* The password lives in Keycloak, so the change is applied there through the admin API, the same way as in
+* No email confirmation here, deliberately. Password reset ([US-Auth-03](../auth/US-Auth-03-Password-reset.md)) needs an
+  emailed link because the user cannot prove who they are — they forgot the password. Here the current password is that
+  proof, so an email round-trip would only repeat the reset flow with extra steps.
+* Because nothing is deferred to a link, there is no confirmation token, no cooldown and no pending password to hold
+  anywhere — the change is applied within the request that submits the form.
+* The current password is verified on the server against Keycloak, not merely against the presence of a valid session:
+  an open session alone must not be enough to change credentials.
+* The password lives in Keycloak, so the new one is set through the admin API, the same way as in
   [US-Auth-03](../auth/US-Auth-03-Password-reset.md).
-* Changing the password ends every session of the account, the current one included; sessions are ended through
-  Keycloak, the same mechanism as in [US-Auth-05](../auth/US-Auth-05-Session-management.md).
-* No Kafka event is needed here: no service other than Keycloak stores the password.
-* The confirmation token is single-use with a 5-minute lifetime, and the cooldown is enforced server-side; keep both
-  there (Redis fits — short-lived and TTL-based), following the same pattern as
-  [US-Auth-02](../auth/US-Auth-02-Account-confirmation.md) and [US-Auth-03](../auth/US-Auth-03-Password-reset.md).
-* The email goes through the custom email module.
+* Ending the other sessions goes through Keycloak, the same mechanism as in
+  [US-Auth-05](../auth/US-Auth-05-Session-management.md). The current session is kept and re-issued instead of ended, so
+  the user is not thrown out of the page they are working on.
+* Failed attempts against the "Current password" field need throttling — this form is the only credential check standing
+  between an open session and a new password.
+* No Kafka event is needed: no service other than Keycloak stores the password.
 
 **Links**
 
 * [US-Auth-01 — Account creation and login](../auth/US-Auth-01-Account-creation-and-login.md)
-* [US-Auth-02 — Account confirmation](../auth/US-Auth-02-Account-confirmation.md)
 * [US-Auth-03 — Password reset](../auth/US-Auth-03-Password-reset.md)
 * [US-Auth-05 — Session management](../auth/US-Auth-05-Session-management.md)
 * [US-Channels-03 — Current channel settings](../channels/US-Channels-03-current-channel-settings.md)
+* [US-UI-UX-02 — User-friendly error messages](../ui-ux/US-UI-UX-02-User-friendly-errors.md)
 
 **Tasks**
 

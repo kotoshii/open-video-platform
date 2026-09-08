@@ -52,8 +52,9 @@ Password reset — branches:
   API once the form is submitted.
 * The reset also ends every session of the account through Keycloak, the same mechanism as in
   [US-Auth-05](US-Auth-05-Session-management.md) — a forgotten password is exactly the case where an existing session
-  may not belong to the owner. This matches changing the password from the settings page
-  ([US-Account-03](../account/US-Account-03-Change-password.md)).
+  may not belong to the owner. Changing the password from the settings page
+  ([US-Account-03](../account/US-Account-03-Change-password.md)) ends every other session but keeps the current one,
+  since the user has just proven who they are with the old password.
 * Keep the reset token and the cooldown server-side (Redis fits — both are short-lived and TTL-based).
 * Sending is handled by the email module and triggered by an event, not by an inline call inside the reset request; the
   response must not depend on mail delivery, and must not reveal whether the email is registered either way.
