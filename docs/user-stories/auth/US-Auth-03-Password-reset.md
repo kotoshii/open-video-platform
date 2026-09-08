@@ -16,7 +16,8 @@ Password reset — main flow:
    allowed attempt.
 5. User opens the link from the email and lands on the custom-built (not Keycloak's) password update form.
 6. User enters a new password and its confirmation, then submits the form.
-7. User is redirected to the login page and sees a "Password changed successfully" notification.
+7. The password is updated and every session of the account is ended.
+8. User is redirected to the login page and sees a "Password changed successfully" notification.
 
 Password reset — branches:
 
@@ -40,6 +41,7 @@ Password reset — branches:
 * After a successful update, the user is redirected to the login page and sees a success notification once (it does not
   reappear on reload).
 * The user can log in with the new password, and the old password no longer works.
+* Resetting the password ends every session of the account — every device has to log in again with the new password.
 
 **Tech notes**
 
@@ -48,6 +50,10 @@ Password reset — branches:
   [US-Auth-02](US-Auth-02-Account-confirmation.md)).
 * The API issues its own single-use, short-lived reset token, and applies the new password to Keycloak through the admin
   API once the form is submitted.
+* The reset also ends every session of the account through Keycloak, the same mechanism as in
+  [US-Auth-05](US-Auth-05-Session-management.md) — a forgotten password is exactly the case where an existing session
+  may not belong to the owner. This matches changing the password from the settings page
+  ([US-Account-03](../account/US-Account-03-Change-password.md)).
 * Keep the reset token and the cooldown server-side (Redis fits — both are short-lived and TTL-based).
 * Sending is handled by the email module and triggered by an event, not by an inline call inside the reset request; the
   response must not depend on mail delivery, and must not reveal whether the email is registered either way.
