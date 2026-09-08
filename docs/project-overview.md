@@ -103,15 +103,6 @@ Subscriptions
 * Manage own subscriptions
 * See content from subscriptions in one place
 
-Emails
-// TODO: Remove items from here as they get described in their related stories in other epics.
-// This epic is not actually an epic - all its items will get resolved during the development of other epics.
-
-* Receive email confirmation to change email
-* Receive email confirmation to change password
-* Receive email confirmation to delete account
-* Receive email to restore a deleted account
-
 Notifications
 
 * In-App notifications about new content, comment replies/mentions, interactions with my videos etc
