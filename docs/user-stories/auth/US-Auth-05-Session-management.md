@@ -7,7 +7,7 @@ so that I can check where my account is logged in and cut off access from device
 
 A session entry contains: OS, device name, user agent, IP address, location (country, city), creation time and last
 usage time. Ending a session means the account has to log in again on that device or browser. The current session is not
-ended from this page — for that the user logs out (see [US-Auth-6](US-Auth-06-Logging-out.md)).
+ended from this page — for that the user logs out (see [US-Auth-06](US-Auth-06-Logging-out.md)).
 
 **User flows**
 
@@ -57,7 +57,7 @@ Branches:
 * An ended session can no longer refresh its tokens — the next request from that device leads to the login page.
 * The current session cannot be ended from this page; it is ended only by logging out.
 * Failures while loading or ending sessions are shown as readable errors (see
-  [US-UI-UX-2](../ui-ux/US-UI-UX-02-User-friendly-errors.md)).
+  [US-UI-UX-02](../ui-ux/US-UI-UX-02-User-friendly-errors.md)).
 
 **Tech notes**
 
@@ -74,8 +74,8 @@ Branches:
 **Links**
 
 * [Keycloak](https://www.keycloak.org/)
-* [US-Auth-4 — Session persistence](US-Auth-04-Session-persistence.md)
-* [US-Auth-6 — Logging out](US-Auth-06-Logging-out.md)
+* [US-Auth-04 — Session persistence](US-Auth-04-Session-persistence.md)
+* [US-Auth-06 — Logging out](US-Auth-06-Logging-out.md)
 
 **Tasks**
 

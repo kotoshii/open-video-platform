@@ -20,7 +20,7 @@ Edit the current channel — main flow:
 5. User changes the channel name or description, or uploads a new user pic (see
    [US-Channels-05](./US-Channels-05-upload-user-pic.md)), and clicks "Save".
 6. The request is sent; on success the user sees a success toast, on failure the default error flow applies
-   ([US-UI-UX-2](../ui-ux/US-UI-UX-02-User-friendly-errors.md)).
+   ([US-UI-UX-02](../ui-ux/US-UI-UX-02-User-friendly-errors.md)).
 7. Every element on the page showing the changed values updates immediately (e.g. the channel name and avatar in the
    sidebar).
 8. Elements owned by other microservices (e.g. videos, comments) may keep showing the old channel name or avatar for a
@@ -60,7 +60,7 @@ Edit the current channel — branches:
 * [US-Channels-01 — Create multiple channels](./US-Channels-01-create-multiple-channels.md)
 * [US-Channels-05 — Upload user pic](./US-Channels-05-upload-user-pic.md)
 * [US-Channels-06 — Delete own channel](./US-Channels-06-delete-own-channel.md)
-* [US-UI-UX-2 — User-friendly error messages](../ui-ux/US-UI-UX-02-User-friendly-errors.md)
+* [US-UI-UX-02 — User-friendly error messages](../ui-ux/US-UI-UX-02-User-friendly-errors.md)
 
 **Tasks**
 

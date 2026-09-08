@@ -65,7 +65,7 @@ Returning to the confirmation page:
 **Links**
 
 * [Keycloak](https://www.keycloak.org/)
-* [US-Auth-1 — Account creation and login](US-Auth-01-Account-creation-and-login.md)
+* [US-Auth-01 — Account creation and login](US-Auth-01-Account-creation-and-login.md)
 
 **Tasks**
 

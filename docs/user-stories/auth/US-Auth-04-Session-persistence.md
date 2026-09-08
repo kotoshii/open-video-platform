@@ -68,8 +68,8 @@ Invalid token supplied:
 **Links**
 
 * [Keycloak](https://www.keycloak.org/)
-* [US-Auth-5 — Session management](US-Auth-05-Session-management.md)
-* [US-Auth-6 — Logging out](US-Auth-06-Logging-out.md)
+* [US-Auth-05 — Session management](US-Auth-05-Session-management.md)
+* [US-Auth-06 — Logging out](US-Auth-06-Logging-out.md)
 
 **Tasks**
 

@@ -26,7 +26,7 @@ Create a channel — branches:
 
 * **Empty channel name** (step 7) — the field shows a validation error and the request is not sent.
 * **Request fails** (step 8) — the default error flow applies: a toast notification
-  ([US-UI-UX-2](../ui-ux/US-UI-UX-02-User-friendly-errors.md)); the modal stays open with the entered data.
+  ([US-UI-UX-02](../ui-ux/US-UI-UX-02-User-friendly-errors.md)); the modal stays open with the entered data.
 
 **Acceptance criteria**
 
@@ -35,9 +35,9 @@ Create a channel — branches:
 * The creation form has channel name (required), description (optional) and avatar (optional).
 * The channel name cannot be empty.
 * On success the user sees a success toast and the app reloads with the new channel as the current identity.
-* Failures follow the default error flow ([US-UI-UX-2](../ui-ux/US-UI-UX-02-User-friendly-errors.md)).
+* Failures follow the default error flow ([US-UI-UX-02](../ui-ux/US-UI-UX-02-User-friendly-errors.md)).
 * The account's first channel is created together with the account, not through this flow
-  ([US-Auth-1](../auth/US-Auth-01-Account-creation-and-login.md)).
+  ([US-Auth-01](../auth/US-Auth-01-Account-creation-and-login.md)).
 
 **Tech notes**
 
@@ -55,7 +55,7 @@ Create a channel — branches:
 
 **Links**
 
-* [US-Auth-1 — Account creation and login](../auth/US-Auth-01-Account-creation-and-login.md)
+* [US-Auth-01 — Account creation and login](../auth/US-Auth-01-Account-creation-and-login.md)
 * [US-Channels-02 — Switch between channels](./US-Channels-02-freely-switch-between-channels.md)
 * [US-Channels-05 — Upload user pic](./US-Channels-05-upload-user-pic.md)
 
