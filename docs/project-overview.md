@@ -58,10 +58,12 @@ Account settings
 * [Change email](/docs/user-stories/account/US-Account-02-Change-email.md)
 * [Change password](/docs/user-stories/account/US-Account-03-Change-password.md)
 
-Feed (Recommendations)
+Recommendations
 
-* Feed (video recommendations on homepage - both for authenticated and anonymous)
-* Similar videos on the video page
+* [Feed (V1)](/docs/user-stories/recommendations/US-Recommendations-01-Feed-V1.md)
+* [Similar videos on the video page (V1)](/docs/user-stories/recommendations/US-Recommendations-02-Similar-videos-V1.md)
+* [Feed (V2)](/docs/user-stories/recommendations/US-Recommendations-03-Feed-V2.md)
+* [Similar videos on the video page (V2)](/docs/user-stories/recommendations/US-Recommendations-04-Similar-videos-V2.md)
 
 Search
 
