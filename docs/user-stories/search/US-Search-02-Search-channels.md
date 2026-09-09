@@ -51,8 +51,8 @@ Search channels — branches:
   on the channel-updated event ([US-Channels-03](../channels/US-Channels-03-current-channel-settings.md)) and dropped
   when the channel or its account is deleted.
 * Ordering by "Most popular" needs the subscriber count inside the channel document. The count is kept up to date in
-  the channels database by a periodic worker rather than written on every subscribe and unsubscribe, and the index picks
-  it up from there. The ordering is therefore slightly stale by design.
+  the channels database by the `subscriber-count-worker`, which applies subscription events in Kafka batches rather
+  than writing on every subscribe and unsubscribe, and the index picks it up from there. The ordering is therefore slightly stale by design.
 * Visibility is still enforced when serving, not only at index time, so a channel deleted a moment ago cannot surface.
 * The query and the order belong in the URL of the search page, so reloading or sharing the link reproduces the results.
 * Results are paginated the same way as in [US-Search-01](./US-Search-01-Search-videos.md): page controls at the
