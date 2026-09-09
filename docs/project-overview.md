@@ -65,9 +65,11 @@ Recommendations
 
 Search
 
-* Search videos (query + optional filters + sorting)
-* Search channels (query + sorting: relevancy or subscriber count)
-* Search videos on a specific channel (similar to global videos search, but requires channel ID and possibly returns
+* [Search videos](/docs/user-stories/search/US-Search-01-Search-videos.md) (query + optional filters + sorting)
+* [Search channels](/docs/user-stories/search/US-Search-02-Search-channels.md) (query + sorting: relevancy or subscriber
+  count)
+* [Search videos on a specific channel](/docs/user-stories/search/US-Search-03-Search-videos-on-channel-page.md)
+  (similar to global videos search, but requires channel ID and possibly returns
   smaller response - not all fields may be necessary)
 
 Videos

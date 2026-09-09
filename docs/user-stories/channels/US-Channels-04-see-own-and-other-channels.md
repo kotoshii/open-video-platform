@@ -29,8 +29,8 @@ Header:
 
 * The header shows the avatar, channel name, subscriber count, video count and the "Show description" button.
 * Sorting offers newest, most viewed and oldest.
-* The search input is part of the page but its behaviour is out of scope here — see the Search epic in
-  [project-overview.md](../../project-overview.md).
+* The search input is part of the page but its behaviour belongs to
+  [US-Search-03](../search/US-Search-03-Search-videos-on-channel-page.md), not to this story.
 
 Avatar (own channel only):
 
@@ -63,6 +63,7 @@ Videos:
 * On desktop, hovering a video shows a 3-dot button on the video component; on mobile it is always rendered.
 * The 3-dot button is shown only on the user's own channel.
 * The contents of the 3-dot menu are video management actions — out of scope here, mentioned for context.
+* The video list is paginated, with page controls at the bottom; it does not load more on scroll.
 
 **Tech notes**
 
