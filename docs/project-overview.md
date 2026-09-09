@@ -58,15 +58,10 @@ Account settings
 * [Change email](/docs/user-stories/account/US-Account-02-Change-email.md)
 * [Change password](/docs/user-stories/account/US-Account-03-Change-password.md)
 
-Recommendations (MVP - V1)
+Recommendations
 
-* [Feed (V1)](/docs/user-stories/recommendations/US-Recommendations-01-Feed-V1.md)
-* [Similar videos on the video page (V1)](/docs/user-stories/recommendations/US-Recommendations-02-Similar-videos-V1.md)
-
-Recommendations (V2)
-
-* [Feed (V2)](/docs/user-stories/recommendations/US-Recommendations-03-Feed-V2.md)
-* [Similar videos on the video page (V2)](/docs/user-stories/recommendations/US-Recommendations-04-Similar-videos-V2.md)
+* [Feed](/docs/user-stories/recommendations/US-Recommendations-01-Feed.md)
+* [Similar videos on the video page](/docs/user-stories/recommendations/US-Recommendations-02-Similar-videos.md)
 
 Search
 
