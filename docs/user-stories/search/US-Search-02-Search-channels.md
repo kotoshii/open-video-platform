@@ -1,31 +1,3 @@
-registered verified user...
-
-1. user opens any page that has the navbar on top.
-2. sees search input in it.
-3. near search input on the right - toggle "videos/channels"; default - videos.
-4. user changes the toggle tp channels and enters the search query
-5. to change default sorting - user clicks the corresponding button near the search bar
-6. when sorting button clicked a pop up appears
-7. pop up has the following options:
-
-Order:
-
-* (default) Relevancy
-* Most popular
-
-8. default order is Relevancy; Most popular means most subscribers
-9. once search query is entered and order selected, user presses enter or clicks the search button
-10. app redirects to the dedicated search page which loads the results .
-11. error hadnling falls into the Failed page data loading section in UI-UX-02
-12. on success the list of the searched channels appears, sorted as user set and relevant to the search query
-13. clicking channel item opens the corresponding channel page
-
-- use elasticsearch in docker for search implementation; access it via the API
-
-https://www.figma.com/design/VGVNL768fIPaiAKDH5bYNU/Open-Video-Platform-Mockups?node-id=96-476&p=f&t=hZh5ti3bRSHbCDEe-0
-
-=== GENERATED ===
-
 ## US-Search-02 — Search channels
 
 **Description**

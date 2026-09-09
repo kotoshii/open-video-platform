@@ -1,21 +1,3 @@
-registered verified user...
-
-1. user opens any channel page
-2. sees on top of the video list: sort buttons (Newest, Most viewed, Oldest) and search input - all on one line
-3. user enters the search query and presses enter or clicks the serach button
-4. sorting option is added to the search request (Newest - default)
-5. no filters are avaialble in this case
-6. error hadnling - deafult toast approach
-7. on success the list of the channel videos shows only the videos relevant to the user's query
-8. clicking video item opens the corresponding video page (default behavior on channel page, nothing changed)
-
-- re-use the elastic search requests for the global video search, but expose a separate endpoint specifically for the
-  channel page search
-
-https://www.figma.com/design/VGVNL768fIPaiAKDH5bYNU/Open-Video-Platform-Mockups?node-id=96-476&p=f&t=hZh5ti3bRSHbCDEe-0
-
-=== GENERATED ===
-
 ## US-Search-03 — Search videos on the channel page
 
 **Description**
@@ -55,14 +37,13 @@ Search within a channel — branches:
 
 **Tech notes**
 
-* Reuse the Elasticsearch queries built for the global video search
-  ([US-Search-01](./US-Search-01-Search-videos.md)), with the channel id as an additional constraint — but expose a
+* Reuse the Elasticsearch queries built for the global video search ([US-Search-01](./US-Search-01-Search-videos.md)),
+  with the channel id as an additional constraint — but expose a
   separate endpoint for the channel page rather than overloading the global one.
 * The response can be smaller than the global one: the channel is already known, so the channel name and avatar do not
   need to be repeated per hit. Decide the exact shape when the endpoint is written.
 * The visibility rules still apply — a soft-deleted channel has no page to search on, and age-restricted videos are
-  excluded for users too young by date of birth
-  ([US-Auth-01](../auth/US-Auth-01-Account-creation-and-login.md)).
+  excluded for users too young by date of birth ([US-Auth-01](../auth/US-Auth-01-Account-creation-and-login.md)).
 * Results are paged the same way the channel's own video list is
   ([US-Channels-04](../channels/US-Channels-04-see-own-and-other-channels.md)), so searching does not change how the
   list behaves — only what it contains.
