@@ -83,15 +83,17 @@ Video uploading
 
 * Upload videos
 
-Comments (needs refinement + decision on nested replies)
+Comments (nested replies - 1 level: root comment and its flat replies, replying to a reply goes to the same parent
+comment)
 
-* See other users' comments (incl. likes/dislikes; support sorting)
-* Load replies
-* Post comments
-* Reply to comments
-* Manage own comments/replies (edit, delete)
-* Like/dislike comments/replies
-* Mention other users in comments/replies
+* [See other users' comments](/docs/user-stories/comments/US-Comments-01-See-comments.md) (incl. likes/dislikes; support
+  sorting)
+* [Load replies](/docs/user-stories/comments/US-Comments-02-Load-replies.md)
+* [Post comments](/docs/user-stories/comments/US-Comments-03-Post-comment.md)
+* [Reply to comments/replies](/docs/user-stories/comments/US-Comments-04-Reply-to-comments.md) (replying to a reply
+  prefills an @mention of its author)
+* [Manage own comments/replies](/docs/user-stories/comments/US-Comments-05-Manage-own-comments.md) (edit, delete)
+* [Like/dislike comments/replies](/docs/user-stories/comments/US-Comments-06-Like-dislike-comments.md)
 
 My activity
 
