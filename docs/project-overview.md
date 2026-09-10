@@ -74,10 +74,10 @@ Search
 
 Videos
 
-* Watch videos
-* Download videos
-* Manage own videos
-* Like/dislike videos
+* [Watch videos](/docs/user-stories/videos/US-Videos-01-Watch-videos.md)
+* [Download videos](/docs/user-stories/videos/US-Videos-02-Download-videos.md)
+* [Manage own videos](/docs/user-stories/videos/US-Videos-03-Manage-own-videos.md)
+* [Like/dislike videos](/docs/user-stories/videos/US-Videos-04-Like-dislike-videos.md)
 
 Video uploading
 
