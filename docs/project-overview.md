@@ -78,10 +78,7 @@ Videos
 * [Download videos](/docs/user-stories/videos/US-Videos-02-Download-videos.md)
 * [Manage own videos](/docs/user-stories/videos/US-Videos-03-Manage-own-videos.md)
 * [Like/dislike videos](/docs/user-stories/videos/US-Videos-04-Like-dislike-videos.md)
-
-Video uploading
-
-* Upload videos
+* [Upload videos](/docs/user-stories/videos/US-Videos-05-Upload-videos.md)
 
 Comments (nested replies - 1 level: root comment and its flat replies, replying to a reply goes to the same parent
 comment)
