@@ -28,8 +28,8 @@ Read the comments — branches:
 * **User's own comments** — the user's own top-level comments are shown at the top of the list, whatever the sorting is.
 * **Long comment** — text longer than 400 characters is truncated, with a control to expand it in place.
 * **No comments yet** — the section shows an empty state inviting the user to be the first to comment.
-* **Request fails** — the comments section shows its own error state with a retry action, and the rest of the video page
-  keeps working ([US-UI-UX-02](../ui-ux/US-UI-UX-02-User-friendly-errors.md)).
+* **Request fails** — the whole comments section is replaced by an error state with a retry action, not a toast. The
+  rest of the video page keeps working ([US-UI-UX-02](../ui-ux/US-UI-UX-02-User-friendly-errors.md)).
 
 **Acceptance criteria**
 
@@ -48,7 +48,10 @@ Read the comments — branches:
   [US-Channels-06](../channels/US-Channels-06-delete-own-channel.md) and
   [US-Account-01](../account/US-Account-01-Delete-own-account.md)) are not shown.
 * An empty section shows an empty state, not an error.
-* A failure loading the comments does not break the video page.
+* A failure loading the comments replaces the section content with a full error state and a retry action — a toast is
+  not enough here, since there would be nothing to look at behind it.
+* A failure loading the comments does not break the video page: the player, the description and everything else keep
+  working.
 
 **Tech notes**
 
