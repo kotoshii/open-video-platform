@@ -10,7 +10,6 @@ before or while the corresponding story is built.
 | What | Where |
 |---|---|
 | The watch endpoint does not return the HLS playlist URL (`// TODO` in `watchVideoByIdOrThrow`). Nothing can play until it does. | [US-Videos-01](./user-stories/videos/US-Videos-01-Watch-videos.md) |
-| How HLS segments are protected once Nginx serves them straight from the bucket. Private and age-restricted videos are otherwise guarded only by an unguessable URL. Options: a signed token or cookie validated by Nginx (`auth_request` back to the API), or accepting the unguessable path. | [US-Videos-01](./user-stories/videos/US-Videos-01-Watch-videos.md) |
 | Whether Keycloak can end a single session or only all of them. Six stories assume one or the other; the answer changes them. | [US-Auth-06](./user-stories/auth/US-Auth-06-Logging-out.md) |
 | `comment-reply-count-worker` does not exist and has to be built, following the same pattern as the other counters. | [US-Comments-02](./user-stories/comments/US-Comments-02-Load-replies.md) |
 
@@ -44,14 +43,13 @@ before or while the corresponding story is built.
 | Where avatar downscaling to 160x160 happens: in the browser before upload, in the Channels service, or in an async worker. GIFs must keep their animation. | [US-Channels-05](./user-stories/channels/US-Channels-05-upload-user-pic.md) |
 | How server-rendered pages get the current channel, given localStorage is not readable during SSR (e.g. mirror it into a cookie). | [US-Channels-02](./user-stories/channels/US-Channels-02-freely-switch-between-channels.md) |
 | Which embedding model produces the vectors for content-based similar videos — an external API or a local one. | [US-Recommendations-02](./user-stories/recommendations/US-Recommendations-02-Similar-videos.md) |
+| How SSE progress updates reach the right instance. A connection is held by one video-upload instance while the Kafka events feeding it may be consumed by another — needs sticky routing or a shared pub/sub. | [US-Videos-05](./user-stories/videos/US-Videos-05-Upload-videos.md) |
 
 ## Gaps — something is missing rather than undecided
 
 | What | Where |
 |---|---|
-| Nothing sets the NSFW / age-restriction flag. The schema has it and the watch path enforces it, but neither the edit dialog nor any other story sets it. If upload does not, there is no way to set it at all. | [US-Videos-03](./user-stories/videos/US-Videos-03-Manage-own-videos.md) |
 | Similar videos depend on videos carrying tags, category and language. The edit dialog supplies tags; the upload story has to capture them from the start. | [US-Recommendations-02](./user-stories/recommendations/US-Recommendations-02-Similar-videos.md) |
-| "What processing produces" (HLS playlists and segments plus an MP4 per quality, all in one bucket) is currently written down only in the Videos stories. It belongs to the Video uploading epic once that exists. | [US-Videos-02](./user-stories/videos/US-Videos-02-Download-videos.md) |
 
 ## Traps — decided, but easy to get wrong while building
 
@@ -61,3 +59,7 @@ before or while the corresponding story is built.
 | Pinned own comments must be excluded from the paginated list, or they appear twice once infinite scroll reaches their real position. | [US-Comments-01](./user-stories/comments/US-Comments-01-See-comments.md) |
 | Elasticsearch caps how deep `from`/`size` paging can go (`index.max_result_window`); past it the query errors instead of returning an empty page. Cap the reachable pages or use `search_after`. | [US-Search-01](./user-stories/search/US-Search-01-Search-videos.md) |
 | Recommendations plus infinite scroll need a result set fixed on the first request and paged over, not re-asked per batch — otherwise duplicates appear as the user scrolls. | [US-Recommendations-01](./user-stories/recommendations/US-Recommendations-01-Feed.md) |
+| The original file and the private thumbnails share a prefix with the publicly served `hls/`. The Nginx routes must be an explicit allowlist (`hls/` and the public `thumbnail.jpg` only) — a wildcard under the prefix exposes the full-quality source. | [US-Videos-05](./user-stories/videos/US-Videos-05-Upload-videos.md) |
+| The public thumbnail path stays the same when the author changes the thumbnail, so it needs a version or content hash in the URL — otherwise caches keep serving the old image. | [US-Videos-05](./user-stories/videos/US-Videos-05-Upload-videos.md) |
+| Quality-ready events do not arrive in order — 1080p can finish before 480p. State has to be per quality, never a sequence. | [US-Videos-05](./user-stories/videos/US-Videos-05-Upload-videos.md) |
+| A video can be published once one quality exists, so a published video may still be gaining qualities. The player has to work with whatever the HLS master playlist currently offers. | [US-Videos-05](./user-stories/videos/US-Videos-05-Upload-videos.md) |
