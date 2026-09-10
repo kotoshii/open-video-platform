@@ -36,3 +36,24 @@ one malformed message blocks the partition permanently. Both are covered in the 
 
 **Related:** the same file already carries a TODO about several worker instances consuming one topic — the same class of
 problem.
+
+## View deduplication key is missing the video id
+
+**Where:** `apps/workers/video-view-count-worker/src/video-view-counts/services/views-deduplication.service.ts`.
+
+**What happens:** `buildRedisKey` builds the reservation key from the viewer alone — `video-view:<viewerId>`, or
+`video-view:<ip_userAgent>` when there is no viewer. The video id is never part of the key, even though the event
+payload carries it.
+
+The intent is "count one view per viewer per video within the TTL". What it actually does is "count one view per
+viewer, full stop": once someone watches any video, views of every *other* video by that same viewer are discarded
+until the key expires.
+
+**Why it matters:** view counts across the platform are silently far too low, and the more a person watches, the fewer
+of their views are counted.
+
+**Fix:** include the video id in the key, e.g. `video-view:<videoId>:<viewerId>`. The payload already has `videoId`,
+so it is a one-line change in `buildRedisKeyForViewerId` and `buildRedisKeyForIpAndUA`, which need the id passed in.
+
+**While in there:** the `btoa` around the ids only obfuscates them and is not needed — ids are already safe as key
+segments. Anonymous viewing is also not planned any more, so the IP and user agent branch is currently unreachable.
