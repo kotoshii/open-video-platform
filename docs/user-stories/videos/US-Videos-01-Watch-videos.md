@@ -76,10 +76,16 @@ Watch a video — branches:
   file, one presigned URL ([US-Videos-02](./US-Videos-02-Download-videos.md)).
 * Nginx is already the API gateway, so this is a route rather than a new component, and segment responses can be cached
   there.
-* That moves access control for segments out of the API. The watch endpoint decides whether to hand over the playlist
-  URL, but the segments behind it are then reachable through the gateway. How private and age-restricted videos are
-  protected at that layer needs a decision — a signed token or cookie checked by Nginx (`auth_request` back to the
-  API), or accepting that an unguessable path is the only barrier.
+* That moves access control for segments out of the API, so private and age-restricted videos are protected by a
+  **signed token in the path prefix**: the watch endpoint, having already authorized the viewer, returns a playlist URL
+  of the form `/hls/{expiry}/{token}/{videoId}/master.m3u8`, and Nginx validates the token by recomputing a hash with a
+  shared secret. HLS playlists reference their segments relatively, so every segment request inherits the prefix and
+  carries the token without any playlist being rewritten. No database lookup and no subrequest per segment — see
+  [hls-segment-protection.md](../../hls-segment-protection.md).
+* Only private and age-restricted videos are tokenized. Public ones keep plain URLs, because a tokenized URL is unique
+  per viewer and cannot be shared by any cache.
+* The expiry has to cover the video plus pauses. If it lapses mid-playback the segments start returning 403, which
+  looks like a broken player rather than a permission check.
 * The watch endpoint still carries a TODO to put the HLS playlist URL into its response. Nothing can play until that is
   done, so it is the first thing this story needs.
 * Visibility is decided on the server, in the same call that returns the video: a video that is not published does not
@@ -102,6 +108,7 @@ Watch a video — branches:
 
 * [Figma mockups](https://www.figma.com/design/VGVNL768fIPaiAKDH5bYNU/Open-Video-Platform-Mockups?node-id=18-722&p=f&t=0uaBWT7mgjLi4HBf-0)
 * [Plyr](https://github.com/sampotts/plyr)
+* [hls-segment-protection.md](../../hls-segment-protection.md)
 * [US-Comments-01 — See comments](../comments/US-Comments-01-See-comments.md)
 * [US-Recommendations-02 — Similar videos](../recommendations/US-Recommendations-02-Similar-videos.md)
 * [US-Videos-02 — Download videos](./US-Videos-02-Download-videos.md)

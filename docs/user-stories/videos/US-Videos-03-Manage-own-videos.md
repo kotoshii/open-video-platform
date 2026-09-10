@@ -17,9 +17,9 @@ Open the menu:
 Edit — main flow:
 
 1. A modal opens with the video's current title, description, tags, the "Allow comments" and "Allow rates (likes /
-   dislikes)" toggles, and the thumbnail.
+   dislikes)" toggles, the thumbnail and the audience setting.
 2. User changes what they want: the title, the description, adding or removing tags, turning comments or rates on or
-   off, picking a different thumbnail or uploading their own.
+   off, picking a different thumbnail or uploading their own, and whether the video is restricted to viewers over 18.
 3. User clicks "Save".
 4. The details are saved and the modal closes.
 5. The video item in the list reflects the change immediately.
@@ -68,7 +68,9 @@ Menu:
 Edit:
 
 * The modal has the title, the description, the tags, an "Allow comments" toggle, an "Allow rates (likes / dislikes)"
-  toggle and the thumbnail.
+  toggle, the thumbnail and the audience setting.
+* The audience setting can be changed here, using the same yes-or-no question as on upload
+  ([US-Videos-05](./US-Videos-05-Upload-videos.md)).
 * Tags are shown as chips and can be removed individually.
 * The thumbnail can be picked from the options generated for the video, or uploaded by the user.
 * The title cannot be empty.
@@ -126,9 +128,10 @@ All three:
   by a background job than inside the request.
 * Turning comments or rates off raises a question the mockups do not answer: whether the existing comments and rates are
   hidden or simply frozen. Both are defensible; it needs a decision.
-* Nothing here sets the age restriction, although the schema has an NSFW flag and the watch path enforces it
-  ([US-Videos-01](./US-Videos-01-Watch-videos.md)). If it is not set during upload, there is currently no way to set it
-  at all.
+* The audience setting is first chosen on upload ([US-Videos-05](./US-Videos-05-Upload-videos.md)) and can be changed
+  here. It is enforced on the watch path ([US-Videos-01](./US-Videos-01-Watch-videos.md)), so restricting a video takes
+  effect for viewers straight away — but the search index stores the flag too, so the change has to be re-indexed like
+  any other edit.
 
 **Links**
 
