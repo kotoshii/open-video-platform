@@ -100,9 +100,9 @@ My activity
 
 Subscriptions
 
-* Subscribe to other channels
-* Manage own subscriptions
-* See content from subscriptions in one place
+* [Subscribe to other channels](/docs/user-stories/subscriptions/US-Subscriptions-01-Subscribe-to-other-channels.md)
+* [Manage own subscriptions](/docs/user-stories/subscriptions/US-Subscriptions-02-Manage-own-subscriptions.md)
+* [See content from subscriptions in one place](/docs/user-stories/subscriptions/US-Subscriptions-03-Subscription-content-page.md)
 
 Notifications
 
