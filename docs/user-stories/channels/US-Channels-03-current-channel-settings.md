@@ -12,8 +12,9 @@ Edit the current channel — main flow:
 1. User clicks the settings button in the sidebar.
 2. The settings page opens.
 3. The page has two tabs:
-    * **Channel** — user pic, channel name, channel description, and the "Delete channel" button (see
-      [US-Channels-06](./US-Channels-06-delete-own-channel.md));
+    * **Channel** — user pic, channel name, channel description, the notification preferences (see
+      [US-Notifications-01](../notifications/US-Notifications-01-Notifications-config.md)), and the "Delete channel"
+      button (see [US-Channels-06](./US-Channels-06-delete-own-channel.md));
     * **Account** — email, password, and the "Delete account" button (not related to channels — see the Account
       settings epic in [project-overview.md](../../project-overview.md)).
 4. The Channel tab is open by default.
@@ -34,7 +35,8 @@ Edit the current channel — branches:
 
 * The sidebar has a settings button that opens the settings page.
 * The settings page has a "Channel" and an "Account" tab, with "Channel" open by default.
-* The Channel tab contains the user pic, channel name, channel description and the "Delete channel" button.
+* The Channel tab contains the user pic, channel name, channel description, the notification preferences and the
+  "Delete channel" button.
 * The Account tab contains email, password and the "Delete account" button; its content belongs to the Account settings
   epic, not to this story.
 * Changes are applied only after an explicit "Save".

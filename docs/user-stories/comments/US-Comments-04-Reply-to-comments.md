@@ -34,7 +34,7 @@ Reply — branches:
 * **Request fails** (step 4) — a toast explains what went wrong
   ([US-UI-UX-02](../ui-ux/US-UI-UX-02-User-friendly-errors.md)) and the box stays open with the text in it.
 * **Mention removed** — the user may edit or delete the prefilled mention; the reply is still posted into the same
-  thread, since the mention is only text.
+  thread, but no channel is recorded as mentioned, so nobody gets a mention notification.
 
 **Acceptance criteria**
 
@@ -44,6 +44,8 @@ Reply — branches:
 * Replying to a reply posts into the same thread, never under the reply — a third level cannot be created.
 * Replying to a reply prefills the box with an `@mention` of that reply's author.
 * The mention is ordinary text: the user can edit or remove it, and the reply is posted either way.
+* When the prefilled mention is kept, the reply also records which channel it mentions; when it is removed, no channel
+  is recorded ([US-Notifications-01](../notifications/US-Notifications-01-Notifications-config.md)).
 * A reply cannot be empty, and is subject to the same 5000-character limit as a comment
   ([US-Comments-03](./US-Comments-03-Post-comment.md)) — the mention counts towards it.
 * After posting, the thread shows the new reply and the number of replies on the comment goes up.
@@ -55,12 +57,17 @@ Reply — branches:
 **Tech notes**
 
 * The parent of a reply is always a top-level comment. When the user replies to a reply, the client sends the top-level
-  comment as the parent; the reply's own id is used only to build the mention.
+  comment as the parent, and separately the id of the reply being answered, which is used only to work out the mention.
 * The single level is enforced in the schema rather than in application code, so a reply can never point at another
   reply — for example by constraining a reply's parent to rows that are themselves top-level.
-* Mentions are stored as plain text in this story. There is no autocomplete, no mention index and no notification; if
-  mentioning someone should later notify them, that belongs to the Notifications epic
-  (see [project-overview.md](../../project-overview.md)).
+* The mention is shown as text in the reply, but the reply also stores the mentioned channel as structured data. That
+  stored channel — not the text — is what mention notifications use
+  ([US-Notifications-01](../notifications/US-Notifications-01-Notifications-config.md)): channel names are not guaranteed
+  to be unique and the prefilled text can be edited, so a name is never parsed back out of a comment.
+* The server works out the mentioned channel from the reply being answered instead of accepting a channel id from the
+  client. The client sends which reply it answers and whether the prefilled mention was kept; accepting a channel id
+  directly would let anyone notify any channel they like.
+* There is still no autocomplete and no free-form mentioning.
 * A reply is a comment: it is authored by the current channel and emits the same event as a top-level comment, so the
   `video-comment-count-worker` counts it ([US-Comments-03](./US-Comments-03-Post-comment.md)).
 * Posting a reply emits an event for the `comment-reply-count-worker` — which still has to be built — to increment the

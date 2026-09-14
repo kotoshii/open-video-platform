@@ -22,6 +22,7 @@ before or while the corresponding story is built.
 | Access and refresh token lifetimes, and what "remember me" does. | [US-Auth-04](./user-stories/auth/US-Auth-04-Session-persistence.md) |
 | Maximum number of channels per account. | [US-Channels-01](./user-stories/channels/US-Channels-01-create-multiple-channels.md) |
 | View deduplication TTL — this is what "one view per viewer" actually means. | [US-Videos-01](./user-stories/videos/US-Videos-01-Watch-videos.md) |
+| How long read notifications are kept. Without a value the table only ever grows. | [US-Notifications-02](./user-stories/notifications/US-Notifications-02-In-app-channel.md) |
 
 ## Behaviour to decide
 
@@ -35,6 +36,7 @@ before or while the corresponding story is built.
 | The random top-up for similar videos — same-channel or trending would read better next to a video the user chose deliberately. | [US-Recommendations-02](./user-stories/recommendations/US-Recommendations-02-Similar-videos.md) |
 | Channel page counts (subscribers, videos): read live, or denormalized counters updated by events? | [US-Channels-04](./user-stories/channels/US-Channels-04-see-own-and-other-channels.md) |
 | Is a Kafka event fired when an email changes? Depends on whether any service other than Keycloak stores the address. | [US-Account-02](./user-stories/account/US-Account-02-Change-email.md) |
+| Which language notification emails are written in, once the I18n epic is written. | [US-Notifications-03](./user-stories/notifications/US-Notifications-03-Email-channel.md) |
 
 ## Technical approach to pick
 
@@ -50,6 +52,7 @@ before or while the corresponding story is built.
 | What | Where |
 |---|---|
 | Similar videos depend on videos carrying tags, category and language. The edit dialog supplies tags; the upload story has to capture them from the start. | [US-Recommendations-02](./user-stories/recommendations/US-Recommendations-02-Similar-videos.md) |
+| The video page cannot open one specific comment thread directly. Reply and mention notifications need it, and the thread may be far down an infinitely scrolled comment list, so it has to load on its own (e.g. a comment id in the URL). | [US-Notifications-02](./user-stories/notifications/US-Notifications-02-In-app-channel.md) |
 
 ## Traps — decided, but easy to get wrong while building
 
@@ -63,3 +66,7 @@ before or while the corresponding story is built.
 | The public thumbnail path stays the same when the author changes the thumbnail, so it needs a version or content hash in the URL — otherwise caches keep serving the old image. | [US-Videos-05](./user-stories/videos/US-Videos-05-Upload-videos.md) |
 | Quality-ready events do not arrive in order — 1080p can finish before 480p. State has to be per quality, never a sequence. | [US-Videos-05](./user-stories/videos/US-Videos-05-Upload-videos.md) |
 | A video can be published once one quality exists, so a published video may still be gaining qualities. The player has to work with whatever the HLS master playlist currently offers. | [US-Videos-05](./user-stories/videos/US-Videos-05-Upload-videos.md) |
+| A notification's `activity_at` must change only on new activity — never on read, hide or decrement — or reading an old notification moves it to the top. A generic last-modified column maintained by the ORM or a trigger is the wrong one. | [US-Notifications-02](./user-stories/notifications/US-Notifications-02-In-app-channel.md) |
+| Counting a notification down only applies if the removed subscription or comment was created at or after the notification's first event. Compare event times, never the worker's processing time. | [US-Notifications-01](./user-stories/notifications/US-Notifications-01-Notifications-config.md) |
+| The partial unique index on open notifications needs `NULLS NOT DISTINCT`: subscriber notifications have no subject, and a plain unique index never treats two NULLs as equal. | [notification-aggregation.md](./notification-aggregation.md) |
+| The mentioned channel is worked out on the server from the reply being answered, never accepted from the client — otherwise anyone can notify any channel. | [US-Comments-04](./user-stories/comments/US-Comments-04-Reply-to-comments.md) |

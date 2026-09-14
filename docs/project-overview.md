@@ -106,9 +106,11 @@ Subscriptions
 
 Notifications
 
-* In-App notifications about new content, comment replies/mentions, interactions with my videos etc
-* Email notifications about new content, comment replies/mentions, interactions with my videos etc
-* Ability to configure notifications: types (i.e. notifs about what I want to receive), channels (email/in-app)
+* [Configure notifications](/docs/user-stories/notifications/US-Notifications-01-Notifications-config.md): types (new
+  subscribers, new comments on my videos, replies to my comments, mentions) and channels (in-app, email)
+* [In-app notifications](/docs/user-stories/notifications/US-Notifications-02-In-app-channel.md)
+* [Email notifications](/docs/user-stories/notifications/US-Notifications-03-Email-channel.md) (replies and mentions
+  only)
 
 I18n
 
@@ -130,6 +132,7 @@ Logs & Monitoring (stack below - subject to change)
 * "Translate comment" / "translate description" / "translate title" - you got the idea, buttons to translate different
   types of content EVERYWHERE
 * Ability to use the app anonymously (i.e. without logging in into account)
+* Notifications about new videos from subscriptions and about likes on my videos
 * List of your subscribers (opens when clicked on subcriber amount link on channel page; paginated + ability to search
   by channel name + sort by subscription date ("recently subscribed" - default) or their own sub amount (
   "most popular"))
