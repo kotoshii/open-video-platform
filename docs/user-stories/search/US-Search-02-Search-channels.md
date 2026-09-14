@@ -41,6 +41,7 @@ Search channels — branches:
 * A query with no matches shows an empty state, not an error.
 * Results are paginated, with page controls at the bottom of the page; the list does not load more on scroll.
 * Clicking a result opens the corresponding channel page.
+* A channel with no subscribers shows no subscriber count in the results, rather than "0 subscribers".
 * Failures follow the error flow for page data ([US-UI-UX-02](../ui-ux/US-UI-UX-02-User-friendly-errors.md)).
 
 **Tech notes**

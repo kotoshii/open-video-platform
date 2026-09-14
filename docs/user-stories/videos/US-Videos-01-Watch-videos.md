@@ -17,8 +17,8 @@ Watch a video — main flow:
     * the title, which wraps onto several lines when it is long;
     * the view count and the upload date;
     * the like and dislike counts with their buttons ([US-Videos-04](./US-Videos-04-Like-dislike-videos.md));
-    * the author's avatar, channel name and subscriber count, with a subscribe button (Subscriptions epic in
-      [project-overview.md](../../project-overview.md));
+    * the author's avatar, channel name and subscriber count, with a subscribe button
+      ([US-Subscriptions-01](../subscriptions/US-Subscriptions-01-Subscribe-to-other-channels.md));
     * the video description, collapsed, with a control to expand it;
     * the download button ([US-Videos-02](./US-Videos-02-Download-videos.md));
     * the similar videos on the right
@@ -49,6 +49,8 @@ Watch a video — branches:
 * The page shows the player, the title, the view count, the upload date, the like and dislike counts with their
   buttons, the author's channel with its subscriber count and a subscribe button, a collapsed description with an
   expand control, a download button, the similar videos and the comments section.
+* A channel with no subscribers shows no subscriber count, and a like or dislike count of zero is not shown
+  ([US-Videos-04](./US-Videos-04-Like-dislike-videos.md)).
 * A long title wraps onto several lines instead of being cut off.
 * The description is collapsed by default and expands in place.
 * Dates are shown relative to now ("5 months ago"), the same way as everywhere else in the app.

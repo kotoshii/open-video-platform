@@ -28,6 +28,7 @@ Someone else's channel — the same page, with the following differences:
 Header:
 
 * The header shows the avatar, channel name, subscriber count, video count and the "Show description" button.
+* A channel with no subscribers shows no subscriber count, rather than "0 subscribers".
 * Sorting offers newest, most viewed and oldest.
 * The search input is part of the page but its behaviour belongs to
   [US-Search-03](../search/US-Search-03-Search-videos-on-channel-page.md), not to this story.
