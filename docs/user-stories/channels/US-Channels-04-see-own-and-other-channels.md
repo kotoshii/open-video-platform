@@ -66,6 +66,16 @@ Videos:
 * The contents of the 3-dot menu are video management actions — out of scope here, mentioned for context.
 * The video list is paginated, with page controls at the bottom; it does not load more on scroll.
 
+Mobile:
+
+* The header shows the avatar, the channel name, the subscriber and video counts and the "Show description" button, with
+  a full-width subscribe button under them on other users' channels.
+* The videos are a single column of cards, each with the thumbnail on the left and the title, views and date on the
+  right.
+* The search input is hidden by default to save space; a search icon next to the sort buttons reveals it below them
+  ([US-Search-03](../search/US-Search-03-Search-videos-on-channel-page.md)).
+* The 3-dot button is always visible on the user's own videos, and never shown on other channels.
+
 **Tech notes**
 
 * Own and other users' channels are the same page; ownership is a flag that toggles the edit affordances, the subscribe

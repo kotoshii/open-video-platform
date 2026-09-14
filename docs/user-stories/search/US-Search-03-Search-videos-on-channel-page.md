@@ -11,6 +11,7 @@ Search within a channel — main flow:
 
 1. User opens any channel page ([US-Channels-04](../channels/US-Channels-04-see-own-and-other-channels.md)).
 2. Above the video list, on one line, user sees the sort buttons — Newest, Most viewed, Oldest — and the search input.
+   On mobile only a search icon sits next to the sort buttons, and pressing it reveals the input below them.
 3. User enters the search query and presses Enter or clicks the search button.
 4. The current sorting option is sent along with the query; Newest is the default.
 5. The video list is replaced by the videos of this channel matching the query, in the selected order.
@@ -26,6 +27,8 @@ Search within a channel — branches:
 **Acceptance criteria**
 
 * The channel page has a search input on the same line as the Newest, Most viewed and Oldest sort buttons.
+* On mobile the search input is hidden by default to save space, and a search icon next to the sort buttons reveals it
+  below them.
 * Searching returns only videos belonging to that channel.
 * The selected sorting is applied to the search results, with Newest as the default.
 * No filters are offered here — the Upload date and Duration filters belong to the global video search
