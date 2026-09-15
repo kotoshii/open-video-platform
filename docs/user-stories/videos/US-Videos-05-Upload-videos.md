@@ -174,6 +174,21 @@ Progress updates:
 * The client subscribes to the video-upload service over SSE and receives every status change: upload finished,
   thumbnails ready, each quality ready, processing complete.
 * SSE needs response buffering turned off in Nginx, otherwise updates arrive in clumps or not at all.
+* The pub/sub decision below is explained step by step in
+  [sse-progress-and-redis-pubsub.md](../../sse-progress-and-redis-pubsub.md).
+* **Decision: progress reaches the right instance through Redis pub/sub.** With several video-upload instances, a
+  client's SSE connection lives on one of them while the Kafka event about its video may be consumed by another. The
+  instance that consumes the event publishes a small update to a Redis channel named after the video; every instance
+  subscribes to the channels of the videos it currently holds connections for, and forwards what arrives.
+* Sticky routing does not solve this and is not an alternative. It only makes a client reconnect to the same instance —
+  it does nothing to bring the Kafka event to that instance.
+* Redis pub/sub delivers at most once: a message published while nobody is subscribed is simply gone. That is acceptable
+  because **pub/sub carries notifications, never state.** The upload status is stored in the video-upload database, and
+  a client that connects or reconnects first receives the current status, then live updates. A lost message costs
+  nothing but a slightly later refresh.
+* A connection in subscribe mode cannot run other commands, so pub/sub uses its own Redis connection, separate from the
+  one BullMQ uses.
+
 
 Storage layout:
 
@@ -275,9 +290,9 @@ Traps to avoid:
   unique constraint on the active session and let the database decide.
 * **Expiry must clear the session, never the video.** The item stays on the channel after the day passes; it simply can
   no longer be resumed.
-* **SSE breaks silently with more than one instance.** A connection is held by one video-upload instance while the
-  Kafka events feeding it may be consumed by another. It needs sticky routing or a shared pub/sub the instances publish
-  into. With a single instance this works and hides the problem.
+* **SSE only looks fine with a single instance.** With one video-upload instance every event and every connection are
+  in the same process, so progress works even without the pub/sub step — and silently stops for some uploads the moment
+  a second instance starts. Test with at least two.
 
 Still open:
 
@@ -295,6 +310,7 @@ Still open:
 * [known-issues.md](../../known-issues.md)
 * [tus resumable upload protocol](https://tus.io/)
 * [hls-segment-protection.md](../../hls-segment-protection.md)
+* [sse-progress-and-redis-pubsub.md](../../sse-progress-and-redis-pubsub.md)
 * [nginx-s3-gateway](https://github.com/nginxinc/nginx-s3-gateway)
 
 **Tasks**
