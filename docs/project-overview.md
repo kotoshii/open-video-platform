@@ -16,16 +16,31 @@ Specs Draft (Google docs): https://docs.google.com/document/d/1w3OGQFO0zOfoknIgT
 * Kafka
 * Tus (resumable file uploading)
 
-### Monitoring stack (subject to change)
+### Monitoring stack
 
-* Prometheus (metrics monitoring)
-* Grafana (metrics visualization)
+* Grafana (dashboards, log and trace search, alerts)
+* Alloy (collector: receives, collects and forwards all telemetry)
 * Loki (logs)
-* OpenTelemetry (traces)
+* Prometheus (metrics)
+* Tempo (traces)
+* OpenTelemetry (instrumentation library inside the services, not a separate service)
+
+See [observability-explained.md](observability-explained.md) and [observability-plan.md](observability-plan.md).
 
 ---
 
 ### Epics:
+
+Logs & Monitoring
+
+* Grafana
+* Alloy
+* Loki
+* Prometheus
+* Tempo
+* OpenTelemetry
+
+Setup plan: [observability-plan.md](observability-plan.md)
 
 UI/UX
 
@@ -119,13 +134,6 @@ I18n
   and error/success messages)
 * [Localized error messages](/docs/user-stories/i18n/US-I18n-02-Localized-error-messages.md)
 * [Localized emails](/docs/user-stories/i18n/US-I18n-03-Localized-emails.md)
-
-Logs & Monitoring (stack below - subject to change)
-
-* Grafana
-* Loki
-* OpenTelemetry
-* Prometheus
 
 === IDEAS FOR LATER ===
 
