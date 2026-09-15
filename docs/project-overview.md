@@ -25,6 +25,7 @@ Explainers:
 * [Protecting HLS segments without a database lookup](hls-segment-protection.md)
 * [Keeping notifications from turning into a stream](notification-aggregation.md)
 * [Upload progress across several instances: SSE and Redis pub/sub](sse-progress-and-redis-pubsub.md)
+* [Kubernetes, explained](kubernetes-explained.md)
 
 Trackers:
 
