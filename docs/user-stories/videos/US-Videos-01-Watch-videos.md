@@ -95,8 +95,9 @@ Watch a video — branches:
   shared secret. HLS playlists reference their segments relatively, so every segment request inherits the prefix and
   carries the token without any playlist being rewritten. No database lookup and no subrequest per segment — see
   [hls-segment-protection.md](../../hls-segment-protection.md).
-* Only private and age-restricted videos are tokenized. Public ones keep plain URLs, because a tokenized URL is unique
-  per viewer and cannot be shared by any cache.
+* Every video is tokenized, public ones included: a plain route cannot tell public from private, so any untokenized
+  path would expose private videos too. Nginx leaves the token out of its cache key, so viewers still share one cached
+  copy.
 * The expiry has to cover the video plus pauses. If it lapses mid-playback the segments start returning 403, which
   looks like a broken player rather than a permission check.
 * The watch endpoint still carries a TODO to put the HLS playlist URL into its response. Nothing can play until that is

@@ -16,6 +16,8 @@ Specs Draft (Google docs): https://docs.google.com/document/d/1w3OGQFO0zOfoknIgT
 * Kafka
 * Tus (resumable file uploading)
 
+Setup requirements for the local stack: [infrastructure.md](infrastructure.md)
+
 ### Monitoring stack
 
 * Grafana (dashboards, log and trace search, alerts)

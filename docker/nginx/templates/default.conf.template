@@ -1,0 +1,300 @@
+# Open Video Platform — edge gateway (local development, plain HTTP)
+#
+# Rendered by the official nginx image: every /etc/nginx/templates/*.template is run through envsubst on start-up and
+# written to /etc/nginx/conf.d/. Only variables that exist in the environment are substituted, so nginx's own
+# $variables below are left untouched.
+#
+# Required environment: HLS_SECURE_LINK_SECRET (shared with video-api), TUS_WEBHOOK_SECRET (shared with video-upload-api)
+# Setup this config depends on (tusd flags, MinIO presign host, auth-api endpoint): docs/infrastructure.md
+#
+# Upstream hosts and ports are placeholders — match them to the docker-compose service names.
+
+server_tokens off;
+
+# ---------------------------------------------------------------------------------------------------------------------
+# Logging: JSON lines for Loki (docs/observability-plan.md). No cookies, no Authorization header, no query strings,
+# and HLS tokens are cut out of the path.
+# ---------------------------------------------------------------------------------------------------------------------
+
+map $uri $log_uri {
+    "~^/hls/[0-9]+/[^/]+/(.*)$"  "/hls/<token>/$1";
+    default                       $uri;
+}
+
+log_format json_gateway escape=json
+    '{"time":"$time_iso8601","request_id":"$request_id","method":"$request_method","uri":"$log_uri",'
+    '"status":$status,"bytes":$body_bytes_sent,"request_time":$request_time,'
+    '"upstream_time":"$upstream_response_time","cache":"$upstream_cache_status",'
+    '"traceparent":"$http_traceparent","user_agent":"$http_user_agent"}';
+
+# ---------------------------------------------------------------------------------------------------------------------
+# Helpers
+# ---------------------------------------------------------------------------------------------------------------------
+
+# WebSocket upgrade for the Next.js dev server (hot reload)
+map $http_upgrade $connection_upgrade {
+    default  upgrade;
+    ""       close;
+}
+
+# tus: only the creating POST has to carry Upload-Metadata; PATCH requests are identified by their URL (US-Videos-05)
+map "$request_method:$http_upload_metadata" $tus_missing_metadata {
+    "~^POST:$"  1;
+    default     0;
+}
+
+# ---------------------------------------------------------------------------------------------------------------------
+# Caches
+# ---------------------------------------------------------------------------------------------------------------------
+
+proxy_cache_path /var/cache/nginx/hls    levels=1:2 keys_zone=hls:50m    max_size=5g inactive=7d use_temp_path=off;
+proxy_cache_path /var/cache/nginx/images levels=1:2 keys_zone=images:10m max_size=1g inactive=7d use_temp_path=off;
+
+# ---------------------------------------------------------------------------------------------------------------------
+# Upstreams
+# ---------------------------------------------------------------------------------------------------------------------
+
+upstream ui                { server ui:3000; }
+
+upstream api-auth          { server auth-api:3000; }
+upstream api-user          { server user-api:3000; }
+upstream api-channel       { server channel-api:3000; }
+upstream api-video         { server video-api:3000; }
+upstream api-video-rate    { server video-rate-api:3000; }
+upstream api-video-upload  { server video-upload-api:3000; }
+upstream api-comment       { server comment-api:3000; }
+upstream api-comment-rate  { server comment-rate-api:3000; }
+upstream api-subscription  { server subscription-api:3000; }
+
+upstream tusd              { server tusd:8080; }
+
+# nginx-s3-gateway instances in front of the private MinIO buckets (SigV4 happens inside them)
+upstream s3-videos         { server s3-gateway-videos:80; }
+upstream s3-avatars        { server s3-gateway-avatars:80; }
+
+upstream minio             { server minio:9000; }
+
+# =====================================================================================================================
+# Main site: UI, API, uploads, HLS, public images
+# =====================================================================================================================
+
+server {
+    listen 80;
+    server_name localhost;
+
+    access_log /var/log/nginx/access.log json_gateway;
+    client_max_body_size 10m;
+
+    # -----------------------------------------------------------------------------------------------------------------
+    # Authentication subrequest (US-Auth-04, US-Channels-02)
+    #
+    # auth-api verifies the access token from the httpOnly cookie against Keycloak's cached public keys, checks the
+    # client's X-Channel-Id against the token's channelIds claim, and answers 200 with User-ID and Channel-ID headers,
+    # 401 for a missing or invalid token, or 403 for a channel that does not belong to the account.
+    # Open-source nginx cannot verify RS256 JWTs itself, hence the subrequest.
+    # -----------------------------------------------------------------------------------------------------------------
+
+    location = /_auth {
+        internal;
+        proxy_pass              http://api-auth/auth/verify;
+        proxy_pass_request_body off;
+        proxy_set_header        Content-Length "";
+        proxy_set_header        X-Original-URI $request_uri;
+    }
+
+    # -----------------------------------------------------------------------------------------------------------------
+    # Public API — sign-up, login, refresh, logout, confirmation and reset links
+    # Identity headers are always emptied, so a client can never send its own User-ID or Channel-ID.
+    # -----------------------------------------------------------------------------------------------------------------
+
+    location /api/auth/ {
+        proxy_set_header Host         $host;
+        proxy_set_header X-Request-Id $request_id;
+        proxy_set_header User-ID      "";
+        proxy_set_header Channel-ID   "";
+        proxy_pass http://api-auth;
+    }
+
+    # -----------------------------------------------------------------------------------------------------------------
+    # Upload progress over SSE (US-Videos-05, docs/sse-progress-and-redis-pubsub.md)
+    # Must stay above the generic API location: regex locations are matched in order.
+    # -----------------------------------------------------------------------------------------------------------------
+
+    location ~ ^/api/video-upload/.+/events$ {
+        auth_request     /_auth;
+        auth_request_set $auth_user_id    $upstream_http_user_id;
+        auth_request_set $auth_channel_id $upstream_http_channel_id;
+
+        proxy_http_version 1.1;
+        proxy_set_header   Connection   "";
+        proxy_set_header   Host         $host;
+        proxy_set_header   X-Request-Id $request_id;
+        proxy_set_header   User-ID      $auth_user_id;
+        proxy_set_header   Channel-ID   $auth_channel_id;
+
+        proxy_buffering    off;   # without this, events arrive in clumps or not at all
+        proxy_cache        off;
+        proxy_read_timeout 1h;
+
+        proxy_pass http://api-video-upload;
+    }
+
+    # -----------------------------------------------------------------------------------------------------------------
+    # Protected API — the service name in the path picks the upstream
+    # -----------------------------------------------------------------------------------------------------------------
+
+    location ~ ^/api/(?<svc>user|channel|video|video-rate|video-upload|comment|comment-rate|subscription)/ {
+        auth_request     /_auth;
+        auth_request_set $auth_user_id    $upstream_http_user_id;
+        auth_request_set $auth_channel_id $upstream_http_channel_id;
+
+        proxy_set_header Host         $host;
+        proxy_set_header X-Request-Id $request_id;
+        proxy_set_header User-ID      $auth_user_id;
+        proxy_set_header Channel-ID   $auth_channel_id;
+
+        proxy_pass http://api-$svc;
+    }
+
+    # -----------------------------------------------------------------------------------------------------------------
+    # Resumable uploads (US-Videos-05)
+    # tusd has to run with -behind-proxy so it builds upload URLs from the X-Forwarded-* headers.
+    # The 10 GB limit is enforced by the pre-create hook, not here.
+    # -----------------------------------------------------------------------------------------------------------------
+
+    location /tus/ {
+        if ($tus_missing_metadata) { return 400; }
+
+        auth_request     /_auth;
+        auth_request_set $auth_user_id    $upstream_http_user_id;
+        auth_request_set $auth_channel_id $upstream_http_channel_id;
+
+        client_max_body_size    0;
+        proxy_request_buffering off;   # stream chunks straight to tusd instead of spooling them to disk first
+        proxy_buffering         off;
+        proxy_read_timeout      1h;
+        proxy_send_timeout      1h;
+
+        proxy_http_version 1.1;
+        proxy_set_header   Host               $host;
+        proxy_set_header   X-Forwarded-Host   $host;
+        proxy_set_header   X-Forwarded-Proto  $scheme;
+        proxy_set_header   X-Request-Id       $request_id;
+        proxy_set_header   User-ID            $auth_user_id;
+        proxy_set_header   Channel-ID         $auth_channel_id;
+        proxy_set_header   Tus-Webhook-Secret "${TUS_WEBHOOK_SECRET}";
+
+        proxy_pass http://tusd;
+    }
+
+    # -----------------------------------------------------------------------------------------------------------------
+    # HLS playlists and segments (US-Videos-01, docs/hls-segment-protection.md)
+    #
+    # URL:   /hls/{expiry}/{token}/{videoId}/{path inside the video's hls/ folder}
+    # Token: base64url(md5("{videoId}{expiry} {secret}")), issued by the watch endpoint for every video.
+    #
+    # No auth subrequest and no database: the token alone proves the watch endpoint already allowed this viewer.
+    # The cache key leaves the token out, so every viewer shares one cached copy — the token is checked before the
+    # cache is consulted.
+    # Only .m3u8 and .ts under hls/ are reachable: original.*, master/ and thumbnails/ never are (allowlist, not prefix).
+    # -----------------------------------------------------------------------------------------------------------------
+
+    # Playlists — the master playlist gains qualities while a published video is still processing, so keep it short
+    location ~ "^/hls/(?<expires>[0-9]+)/(?<token>[A-Za-z0-9_-]+)/(?<video_id>[0-9a-fA-F-]{36})/(?<rest>[A-Za-z0-9_/-]+\.m3u8)$" {
+        secure_link     $token,$expires;
+        secure_link_md5 "$video_id$expires ${HLS_SECURE_LINK_SECRET}";
+        if ($secure_link = "")  { return 403; }   # token does not match
+        if ($secure_link = "0") { return 410; }   # token valid but expired
+
+        proxy_cache       hls;
+        proxy_cache_key   "$video_id/$rest";
+        proxy_cache_valid 200 5s;
+        proxy_cache_lock  on;
+        add_header        X-Cache-Status $upstream_cache_status;
+
+        proxy_pass http://s3-videos/$video_id/hls/$rest;
+    }
+
+    # Segments — never change once written, so cache them hard
+    location ~ "^/hls/(?<expires>[0-9]+)/(?<token>[A-Za-z0-9_-]+)/(?<video_id>[0-9a-fA-F-]{36})/(?<rest>[A-Za-z0-9_/-]+\.ts)$" {
+        secure_link     $token,$expires;
+        secure_link_md5 "$video_id$expires ${HLS_SECURE_LINK_SECRET}";
+        if ($secure_link = "")  { return 403; }
+        if ($secure_link = "0") { return 410; }
+
+        proxy_cache       hls;
+        proxy_cache_key   "$video_id/$rest";
+        proxy_cache_valid 200 7d;
+        proxy_cache_lock  on;
+        add_header        X-Cache-Status $upstream_cache_status;
+
+        proxy_pass http://s3-videos/$video_id/hls/$rest;
+    }
+
+    location /hls/ {
+        return 404;   # anything under /hls/ that is not a validly shaped playlist or segment URL
+    }
+
+    # -----------------------------------------------------------------------------------------------------------------
+    # Public images — only the selected thumbnail and avatars
+    # The thumbnail URL carries a version (?v=...), so it is part of the cache key (US-Videos-05).
+    # -----------------------------------------------------------------------------------------------------------------
+
+    location ~ "^/thumbnails/(?<video_id>[0-9a-fA-F-]{36})\.jpg$" {
+        proxy_cache       images;
+        proxy_cache_key   "$uri$is_args$args";
+        proxy_cache_valid 200 7d;
+        add_header        X-Cache-Status $upstream_cache_status;
+
+        proxy_pass http://s3-videos/$video_id/thumbnail.jpg;
+    }
+
+    location ~ "^/avatars/(?<avatar>[0-9a-fA-F-]{36}\.(jpg|png|webp|gif))$" {
+        proxy_cache       images;
+        proxy_cache_key   "$uri$is_args$args";
+        proxy_cache_valid 200 7d;
+        add_header        X-Cache-Status $upstream_cache_status;
+
+        proxy_pass http://s3-avatars/$avatar;
+    }
+
+    # -----------------------------------------------------------------------------------------------------------------
+    # Everything else is the Next.js app
+    # -----------------------------------------------------------------------------------------------------------------
+
+    location / {
+        proxy_http_version 1.1;
+        proxy_set_header   Host       $host;
+        proxy_set_header   Upgrade    $http_upgrade;
+        proxy_set_header   Connection $connection_upgrade;
+        proxy_set_header   User-ID    "";
+        proxy_set_header   Channel-ID "";
+
+        proxy_pass http://ui;
+    }
+}
+
+# =====================================================================================================================
+# Downloads — presigned MinIO URLs (US-Videos-02)
+#
+# A presigned signature covers the host and the path, so both must reach MinIO exactly as signed: no prefix stripping,
+# and the Host header passed through unchanged. MinIO has to presign for this host (MINIO_SERVER_URL).
+# *.localhost resolves to 127.0.0.1 in browsers, so no hosts-file entry is needed.
+# =====================================================================================================================
+
+server {
+    listen 80;
+    server_name storage.localhost;
+
+    access_log /var/log/nginx/access.log json_gateway;
+
+    location / {
+        limit_except GET HEAD { deny all; }   # downloads only — nothing is written through presigned URLs here
+
+        proxy_set_header Host $http_host;
+        proxy_buffering  off;                 # stream large MP4 files instead of buffering them
+        proxy_read_timeout 1h;
+
+        proxy_pass http://minio;
+    }
+}

@@ -253,7 +253,8 @@ Access control and routing:
   routes: everything else.
 * Private and age-restricted videos are served under a signed token in the path prefix, validated by Nginx without any
   database lookup ([hls-segment-protection.md](../../hls-segment-protection.md),
-  [US-Videos-01](./US-Videos-01-Watch-videos.md)). Public videos keep plain, cacheable URLs.
+  [US-Videos-01](./US-Videos-01-Watch-videos.md)). Public videos are tokenized as well, and the
+  gateway's cache key leaves the token out.
 * Downloads are the exception to route-based serving: they go through a short-lived presigned MinIO URL rather than the
   gateway, because a download is one large file rather than many small requests
   ([US-Videos-02](./US-Videos-02-Download-videos.md)).

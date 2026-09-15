@@ -159,9 +159,10 @@ answer, not a compromise unique to this project. It turns "leaked forever" into 
 
 ## Part 10 — Two things to get right
 
-**Only tokenize private and age-restricted videos.** Public videos keep plain URLs. A tokenized URL is unique per
-viewer and per expiry, so caches cannot share it — tokenizing everything would throw away caching for the traffic that
-does not need protecting in the first place.
+**Tokenize every video, public ones included.** A plain route cannot tell a public video from a private one, so any
+video reachable without a token is reachable by anyone who guesses its id. Caching does not suffer: leave the token out
+of `proxy_cache_key`, and every viewer shares one cached copy, while the token is still checked before the cache is
+consulted.
 
 **Make the expiry generous** — the video's length plus slack, or simply a few hours. If it lapses mid-playback the
 segments start returning 403 and it looks like a broken player, not like a security feature.
