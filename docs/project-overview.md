@@ -32,6 +32,7 @@ UI/UX
 * [Dark theme support](user-stories/ui-ux/US-UI-UX-01-Dark-theme-support.md)
 * [User-friendly readable error messages](user-stories/ui-ux/US-UI-UX-02-User-friendly-errors.md)
   (notifications/toasts)
+* [Global layout](user-stories/ui-ux/US-UI-UX-03-Global-layout.md) (navbar and sidebar)
 
 Auth
 
