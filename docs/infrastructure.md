@@ -21,3 +21,48 @@ it can run.
       single instance can serve several buckets before running two.
 * [ ] **Shared secrets are set in the environment**: `HLS_SECURE_LINK_SECRET` for the gateway and video-api, and
       `TUS_WEBHOOK_SECRET` for the gateway and video-upload-api.
+
+## Environments
+
+One `docker compose up` per environment. The reasoning behind every item is explained in
+[environments-explained.md](./environments-explained.md).
+
+| Environment | Compose file | Postgres | Apps |
+|---|---|---|---|
+| Preview | `compose.yaml` (the default) | one shared server, a database and user per service | built images, in Docker |
+| Production | `compose.prod.yaml` | one server per service that needs one | built images, in Docker |
+| Development | `compose.dev.yaml` | one shared server, a database and user per service | on the host, with hot reload |
+
+Structure:
+
+* [ ] Compose pieces under `docker/compose/` — `infra.yaml`, `postgres.shared.yaml`, `postgres.isolated.yaml`,
+      `apps.yaml`, `observability.yaml` — assembled by the top-level files with `include:`.
+* [ ] Observability behind a Compose profile (`--profile observability`).
+* [ ] One `docker/Dockerfile.nest` for every Nest app, selected with `ARG APP`, and a `docker/Dockerfile.ui` using the
+      Next.js standalone output.
+* [ ] `COMPOSE_FILE` in a machine's `.env` selects the environment, so a bare `docker compose up` works everywhere.
+
+Rules:
+
+* [ ] Every service has its own database, user and credentials in every environment, and a user can access only its own
+      database — even on a shared server.
+* [ ] The same environment variable names everywhere, with different values. No service decides where its database is
+      from `NODE_ENV`.
+* [ ] Kafka topics owned per service, Redis keys prefixed per service, a MinIO bucket per purpose.
+
+Startup order:
+
+* [ ] Healthchecks on Postgres, Kafka, Keycloak, MinIO and Redis; apps depend on them with `service_healthy`.
+* [ ] One-off init containers for dbmate migrations per database, Kafka topic creation, and MinIO buckets with their
+      lifecycle rules; apps depend on them with `service_completed_successfully`.
+* [ ] Keycloak imports `docker/keycloak/realm.json` on start.
+
+Development mode:
+
+* [ ] Kafka has two listeners: an internal one for containers and an external one, on another port, for host apps.
+* [ ] Keycloak has one pinned hostname (`KC_HOSTNAME`) that containers and host apps both use, so token issuers match.
+* [ ] Containers reach host apps through `host.docker.internal` — on Linux also
+      `extra_hosts: ["host.docker.internal:host-gateway"]` — and the nginx upstream hosts come from environment
+      variables.
+* [ ] MinIO's presign host is an environment variable per environment.
+* [ ] One root command, such as `yarn dev`, starts every API, worker and the UI in watch mode.
