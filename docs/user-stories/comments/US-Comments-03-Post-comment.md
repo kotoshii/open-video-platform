@@ -35,6 +35,7 @@ Post a comment — branches:
 * The total number of comments in the section header goes up.
 * The box is cleared after a successful post.
 * A failed post keeps the typed text and shows a toast.
+* On mobile the comment box sends with an arrow button instead of the "Comment" text button.
 
 **Tech notes**
 

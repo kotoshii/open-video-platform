@@ -63,6 +63,17 @@ Watch a video — branches:
 * A video the viewer is not allowed to watch shows only the corresponding state, with nothing else loaded.
 * A video that does not exist shows a full-page error state.
 * Failures loading the page are shown as a full-page error.
+* On desktop, the comments section sits in the main column under the description, and the similar videos run down the
+  right column alongside both.
+* On mobile the page is a single column: the player, the title, the views and upload date, then the channel row with
+  the subscribe button, where a long channel name is truncated.
+* Under the channel row on mobile, a horizontally scrollable row of actions holds the like and dislike buttons, "More
+  info" and "Comments".
+* On mobile the description is not shown inline — "More info" opens it in a bottom drawer, with the player and the
+  title still visible above it.
+* On mobile the comments are not shown inline either — "Comments" opens the comments section in a bottom drawer
+  ([US-Comments-01](../comments/US-Comments-01-See-comments.md)).
+* On mobile the similar videos follow the row of actions, as a single column of cards.
 
 **Tech notes**
 

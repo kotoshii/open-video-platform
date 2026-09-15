@@ -41,6 +41,8 @@ Open the feed — branches:
 * Loading more never repeats a video already shown and never skips one.
 * An empty result shows an empty state, not an error.
 * Failures follow the error flow for page data ([US-UI-UX-02](../ui-ux/US-UI-UX-02-User-friendly-errors.md)).
+* On mobile the feed is a single column of cards: a full-width thumbnail, and under it the channel avatar, the title,
+  the channel name, the view count and the upload date.
 
 **Tech notes**
 

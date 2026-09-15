@@ -10,10 +10,10 @@ ordered, so that I can find a channel by name instead of looking for one of its 
 Search channels — main flow:
 
 1. User opens any page that has the top navbar.
-2. User sees the search input, with a "videos / channels" toggle to its right.
-3. User switches the toggle to **channels** and enters the search query.
-4. User clicks the sorting button next to the search bar; a popup opens with the **Order** options: Relevancy and Most
-   popular.
+2. User sees the search input, with the toggle between video and channel search as an icon inside it, on the right.
+3. User switches the toggle to **channels** — its icon changes to show channel mode — and enters the search query.
+4. User clicks the filters and sorting icon inside the search input; a popup opens with the **Order** options:
+   Relevancy and Most popular.
 5. User selects the order. The default is Relevancy; Most popular means the most subscribers.
 6. User presses Enter or clicks the search button.
 7. The app opens the dedicated search page, which loads the results.
@@ -31,7 +31,8 @@ Search channels — branches:
 
 **Acceptance criteria**
 
-* Switching the navbar toggle to channels searches channels instead of videos.
+* Switching the toggle inside the search input to channels searches channels instead of videos, and its icon shows
+  that channel mode is on.
 * The sorting popup offers Relevancy and Most popular; there are no filters for channel search.
 * The default order is Relevancy, and Most popular orders by subscriber count.
 * Submitting the search opens the dedicated search page, which loads and shows the results.
@@ -43,6 +44,7 @@ Search channels — branches:
 * Clicking a result opens the corresponding channel page.
 * A channel with no subscribers shows no subscriber count in the results, rather than "0 subscribers".
 * Failures follow the error flow for page data ([US-UI-UX-02](../ui-ux/US-UI-UX-02-User-friendly-errors.md)).
+* On mobile, the sorting options open as a bottom drawer instead of a popup.
 
 **Tech notes**
 

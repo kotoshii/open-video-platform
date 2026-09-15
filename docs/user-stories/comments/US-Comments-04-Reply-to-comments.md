@@ -53,6 +53,8 @@ Reply — branches:
   ([US-Comments-01](./US-Comments-01-See-comments.md)).
 * Cancelling discards the text and closes the box.
 * A failed reply keeps the text and shows a toast.
+* On mobile the reply box sends with an arrow button and cancels with an × button, instead of the "Reply" and
+  "Cancel" text buttons.
 
 **Tech notes**
 

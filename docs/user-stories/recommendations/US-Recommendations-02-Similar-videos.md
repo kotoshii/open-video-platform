@@ -37,6 +37,8 @@ See similar videos — branches:
   ([US-Auth-01](../auth/US-Auth-01-Account-creation-and-login.md)) says they are too young.
 * The list is not paginated — it is a fixed block of up to 20.
 * A failure in this section does not break the video page.
+* On mobile the similar videos are not beside the player: they follow the video's row of actions as a single column of
+  cards ([US-Videos-01](../videos/US-Videos-01-Watch-videos.md)).
 
 **Tech notes**
 

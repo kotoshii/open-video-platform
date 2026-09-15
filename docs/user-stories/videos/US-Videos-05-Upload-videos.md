@@ -108,6 +108,14 @@ Interruptions:
 * A video that is uploaded but still processing is on the channel too, and opening it shows the processing progress.
 * The uploading page of another user's video is not accessible.
 
+Mobile:
+
+* The page is a single column and the status comes first: the status box with the upload percentage or
+  "Processing...", the video link with its copy control, the file name and size, the "Save" and "Publish" buttons with
+  the note about saving, and the alert.
+* The details form follows below all of that, with every field at full width.
+* The thumbnail options scroll horizontally, starting with "Upload your own".
+
 **Tech notes**
 
 The approach that is no longer used:

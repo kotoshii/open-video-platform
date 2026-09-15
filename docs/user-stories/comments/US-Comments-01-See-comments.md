@@ -52,6 +52,9 @@ Read the comments — branches:
   not enough here, since there would be nothing to look at behind it.
 * A failure loading the comments does not break the video page: the player, the description and everything else keep
   working.
+* On mobile the comments section is not shown inline on the video page: the "Comments" button under the video opens it
+  in a bottom drawer ([US-Videos-01](../videos/US-Videos-01-Watch-videos.md)). The drawer scrolls on its own, and it is
+  the drawer's scrolling — not the page's — that loads more comments.
 
 **Tech notes**
 

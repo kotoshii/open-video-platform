@@ -10,9 +10,11 @@ choose how they are ordered, so that I can find a specific video instead of brow
 Search videos — main flow:
 
 1. User opens any page that has the top navbar.
-2. User sees the search input, with a "videos / channels" toggle to its right, set to **videos** by default.
+2. User sees the search input with two icon buttons inside it, on the right: filters and sorting, and a toggle between
+   video and channel search. The toggle is set to **videos** by default, its icon shows the current mode, and the
+   placeholder reads "Search videos...".
 3. User enters the search query.
-4. User clicks the filters and sorting button next to the search bar; a popup opens with:
+4. User clicks the filters and sorting icon inside the search input; a popup opens with:
     * **Upload date** — Last hour, Today, This week, This month, This year;
     * **Duration** — Shorter than 5 minutes, 5-15 minutes, 16-30 minutes, Longer than 30 minutes;
     * **Order** — Relevancy, Recently uploaded, Most popular.
@@ -27,8 +29,8 @@ Search videos — branches:
 
 * **No filters chosen** (step 4) — the popup is optional; searching without opening it uses no filters and orders by
   Relevancy.
-* **Removing filters** (step 5) — a selected filter is removed by clicking it again, and all of them at once with the
-  "clear all" button in the popup.
+* **Removing filters** (step 5) — a selected option shows an × that removes it, and the "Clear filters" button in the
+  popup removes every filter at once. The order is not a filter and keeps its value.
 * **Empty query** (step 6) — nothing is submitted and the user stays where they are.
 * **No results** (step 8) — the page shows an empty state saying nothing matched, not an error.
 * **Request fails** (step 7) — the results are page data, so the failure is shown as a full-screen error state with a
@@ -36,12 +38,15 @@ Search videos — branches:
 
 **Acceptance criteria**
 
-* The search input and the "videos / channels" toggle are available on every page that has the top navbar, with the
-  toggle on videos by default.
+* The search input is available on every page that has the top navbar, with two icon buttons inside it: filters and
+  sorting, and a toggle between video and channel search.
+* The toggle is on videos by default; its icon shows the current mode, and the placeholder says what is being searched
+  ("Search videos...").
 * The filters and sorting popup offers Upload date and Duration filters, and the three order options, exactly as listed
   above.
 * No filter is selected by default; the default order is Relevancy.
-* Filters can be removed one by one, or all at once from the popup.
+* Each filter group allows one option at a time; the selected option is highlighted and has an × that removes it.
+* "Clear filters" removes every selected filter at once and leaves the order as it is.
 * Submitting the search opens the dedicated search page, which loads and shows the results.
 * Results match the query and respect the selected filters and order.
 * Videos of channels that are not available (soft deleted — see
@@ -53,6 +58,12 @@ Search videos — branches:
 * Results are paginated, with page controls at the bottom of the page; the list does not load more on scroll.
 * Clicking a result opens the corresponding video page.
 * Failures follow the error flow for page data ([US-UI-UX-02](../ui-ux/US-UI-UX-02-User-friendly-errors.md)).
+* On desktop, the popup lays out Upload date, Duration and Order as three columns, and each result is a row with the
+  thumbnail on the left and the title, channel name and view count on the right.
+* On mobile, the filters and sorting open as a bottom drawer instead of a popup, with each group's options laid out as
+  chips; tapping a selected option removes it.
+* On mobile, results are a single column of cards: a full-width thumbnail, and under it the channel avatar, the title,
+  the channel name, the view count and the upload date.
 
 **Tech notes**
 
