@@ -16,7 +16,20 @@ Specs Draft (Google docs): https://docs.google.com/document/d/1w3OGQFO0zOfoknIgT
 * Kafka
 * Tus (resumable file uploading)
 
-Setup requirements for the local stack: [infrastructure.md](infrastructure.md)
+Setup requirements for the local stack: [infrastructure.md](infrastructure.md) — how environments are organised:
+[environments-explained.md](environments-explained.md)
+
+Explainers:
+
+* [Kafka deduplication and the inbox pattern](kafka-dedup-and-inbox-pattern.md)
+* [Protecting HLS segments without a database lookup](hls-segment-protection.md)
+* [Keeping notifications from turning into a stream](notification-aggregation.md)
+* [Upload progress across several instances: SSE and Redis pub/sub](sse-progress-and-redis-pubsub.md)
+
+Trackers:
+
+* [Open decisions](open-decisions.md) — everything the user stories deliberately left unanswered
+* [Known issues](known-issues.md) — problems found in the existing implementation
 
 ### Monitoring stack
 
