@@ -15,8 +15,9 @@ Edit the current channel — main flow:
     * **Channel** — user pic, channel name, channel description, the notification preferences (see
       [US-Notifications-01](../notifications/US-Notifications-01-Notifications-config.md)), and the "Delete channel"
       button (see [US-Channels-06](./US-Channels-06-delete-own-channel.md));
-    * **Account** — email, password, and the "Delete account" button (not related to channels — see the Account
-      settings epic in [project-overview.md](../../project-overview.md)).
+    * **Account** — email, password, the email language
+      ([US-I18n-03](../i18n/US-I18n-03-Localized-emails.md)), and the "Delete account" button (not related to channels —
+      see the Account settings epic in [project-overview.md](../../project-overview.md)).
 4. The Channel tab is open by default.
 5. User changes the channel name or description, or uploads a new user pic (see
    [US-Channels-05](./US-Channels-05-upload-user-pic.md)), and clicks "Save".
@@ -37,8 +38,8 @@ Edit the current channel — branches:
 * The settings page has a "Channel" and an "Account" tab, with "Channel" open by default.
 * The Channel tab contains the user pic, channel name, channel description, the notification preferences and the
   "Delete channel" button.
-* The Account tab contains email, password and the "Delete account" button; its content belongs to the Account settings
-  epic, not to this story.
+* The Account tab contains email, password, the email language and the "Delete account" button; its content belongs to
+  the Account settings and I18n epics, not to this story.
 * Changes are applied only after an explicit "Save".
 * The channel name cannot be empty; validation matches the creation form
   ([US-Channels-01](./US-Channels-01-create-multiple-channels.md)).

@@ -115,8 +115,10 @@ Notifications
 
 I18n
 
-* Language selector in UI (changes only language of the UI)
-* Localized error messages
+* [Language selector](/docs/user-stories/i18n/US-I18n-01-Language-selector.md) (changes only the language of the UI
+  and error/success messages)
+* [Localized error messages](/docs/user-stories/i18n/US-I18n-02-Localized-error-messages.md)
+* [Localized emails](/docs/user-stories/i18n/US-I18n-03-Localized-emails.md)
 
 Logs & Monitoring (stack below - subject to change)
 

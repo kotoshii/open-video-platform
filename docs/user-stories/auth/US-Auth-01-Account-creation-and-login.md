@@ -78,6 +78,8 @@ Navigation between forms:
 * Use Keycloak in Docker as the identity provider.
 * Account creation must also create the user's default channel — the two are part of one flow and must not end up out of
   sync.
+* The sign-up request also sends the currently selected interface language, which becomes the account's initial email
+  language ([US-I18n-03](../i18n/US-I18n-03-Localized-emails.md)).
 
 **Links**
 

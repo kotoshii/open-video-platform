@@ -49,6 +49,7 @@ Where it appears:
 * Every page that requires being signed in shows the navbar at the top and the sidebar on the left.
 * Pages that can be used without being signed in — the auth pages, and email-link pages that ask the user to sign in —
   show neither.
+* Those pages still show the language selector and the theme toggle, in the top right corner.
 
 Navbar:
 
@@ -75,7 +76,7 @@ Sidebar:
     * Settings ([US-Channels-03](../channels/US-Channels-03-current-channel-settings.md));
     * on mobile only, a divider followed by "Upload" ([US-Videos-05](../videos/US-Videos-05-Upload-videos.md)).
 * Pinned to the bottom of the sidebar, in this order:
-    * the language selector (US-I18n-01, not written yet);
+    * the language selector ([US-I18n-01](../i18n/US-I18n-01-Language-selector.md));
     * the theme toggle ([US-UI-UX-01](./US-UI-UX-01-Dark-theme-support.md));
     * a divider;
     * "Log out", styled as destructive (red), which asks for confirmation before logging the user out

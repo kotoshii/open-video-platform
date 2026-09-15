@@ -23,6 +23,7 @@ before or while the corresponding story is built.
 | Maximum number of channels per account. | [US-Channels-01](./user-stories/channels/US-Channels-01-create-multiple-channels.md) |
 | View deduplication TTL — this is what "one view per viewer" actually means. | [US-Videos-01](./user-stories/videos/US-Videos-01-Watch-videos.md) |
 | How long read notifications are kept. Without a value the table only ever grows. | [US-Notifications-02](./user-stories/notifications/US-Notifications-02-In-app-channel.md) |
+| Which languages the app ships with. The language selector and the translation files follow from the list. | [US-I18n-01](./user-stories/i18n/US-I18n-01-Language-selector.md) |
 
 ## Behaviour to decide
 
@@ -36,7 +37,6 @@ before or while the corresponding story is built.
 | The random top-up for similar videos — same-channel or trending would read better next to a video the user chose deliberately. | [US-Recommendations-02](./user-stories/recommendations/US-Recommendations-02-Similar-videos.md) |
 | Channel page counts (subscribers, videos): read live, or denormalized counters updated by events? | [US-Channels-04](./user-stories/channels/US-Channels-04-see-own-and-other-channels.md) |
 | Is a Kafka event fired when an email changes? Depends on whether any service other than Keycloak stores the address. | [US-Account-02](./user-stories/account/US-Account-02-Change-email.md) |
-| Which language notification emails are written in, once the I18n epic is written. | [US-Notifications-03](./user-stories/notifications/US-Notifications-03-Email-channel.md) |
 
 ## Technical approach to pick
 

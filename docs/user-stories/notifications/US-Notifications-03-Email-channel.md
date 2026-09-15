@@ -59,7 +59,8 @@ Receive an email — branches:
 * Preferences are checked again when the flush runs, since the user may turn email off while events are waiting.
 * The link into a specific thread depends on the video page being able to open a single thread directly — see
   [US-Notifications-02](./US-Notifications-02-In-app-channel.md).
-* Which language notification emails are written in needs a decision once the I18n epic is written.
+* Notification emails are written in the recipient account's email language
+  ([US-I18n-03](../i18n/US-I18n-03-Localized-emails.md)).
 
 **Links**
 
