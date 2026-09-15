@@ -13,9 +13,11 @@ and keep the look I prefer.
 
 **Acceptance criteria**
 
-* The theme toggle is available from:
-    1. the top right corner on the auth page;
-    2. the sidebar (left menu) on all other pages.
+* The theme toggle is in the sidebar, directly below the language selector, on every page that has the sidebar
+  ([US-UI-UX-03](./US-UI-UX-03-Global-layout.md)) — in both the expanded and the collapsed sidebar on desktop, and in
+  the sidebar drawer on mobile.
+* Auth pages have no sidebar and therefore no theme toggle; they use the theme chosen earlier, or the system
+  preference.
 * On first visit the app uses the system preferred theme.
 * The chosen theme persists between visits and page reloads.
 * The theme applies consistently across all pages and switches smoothly, on both desktop and mobile.

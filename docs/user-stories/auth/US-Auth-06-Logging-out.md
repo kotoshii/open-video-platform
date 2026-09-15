@@ -26,8 +26,8 @@ Logging out — branches:
 
 **Acceptance criteria**
 
-* The "Log out" action is shown in the sidebar on every page that has the sidebar, as long as the user is logged in —
-  not only on pages that require authentication.
+* The "Log out" action is in the sidebar, on every page that has one
+  ([US-UI-UX-03](../ui-ux/US-UI-UX-03-Global-layout.md)).
 * Logging out requires a confirmation, and the modal explains what will happen.
 * Cancelling the confirmation leaves the session untouched.
 * On confirmation, the current session is ended on the server and both tokens are cleared on the client.
