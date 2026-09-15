@@ -7,7 +7,7 @@ Specs Draft (Google docs): https://docs.google.com/document/d/1w3OGQFO0zOfoknIgT
 * Next.js + shadcn/ui (FE)
 * Nest.js (BE)
 * PostgreSQL (Primary DB)
-* Redis (caching, Kafka events dedup)
+* Redis (BullMQ queues, view deduplication, short-lived tokens and cooldowns, pub/sub for upload progress)
 * Kysely (DB query builder)
 * Dbmate (DB migration tool)
 * Docker
