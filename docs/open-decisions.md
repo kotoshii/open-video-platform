@@ -58,6 +58,7 @@ before or while the corresponding story is built.
 
 | What | Where |
 |---|---|
+| Watch history is written from every watch event, not from the deduplicated view count — a repeat watch must still move the video to the top. And pausing the history must not stop views from being counted. | [US-My-activity-01](./user-stories/my-activity/US-My-activity-01-Watch-history.md) |
 | **Accessible by link** is enforced on the *listing* paths, not the watch path: the video must be kept out of the search index, feed candidates and the channel's video list, while the watch path treats it like a public video. Missing one listing leaks the video. | [US-Videos-03](./user-stories/videos/US-Videos-03-Manage-own-videos.md) |
 | Pinned own comments must be excluded from the paginated list, or they appear twice once infinite scroll reaches their real position. | [US-Comments-01](./user-stories/comments/US-Comments-01-See-comments.md) |
 | Elasticsearch caps how deep `from`/`size` paging can go (`index.max_result_window`); past it the query errors instead of returning an empty page. Cap the reachable pages or use `search_after`. | [US-Search-01](./user-stories/search/US-Search-01-Search-videos.md) |

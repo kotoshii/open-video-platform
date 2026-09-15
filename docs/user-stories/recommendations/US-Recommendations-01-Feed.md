@@ -70,6 +70,10 @@ Open the feed — branches:
 * This story depends on there being interaction data at all — watch history (My activity epic), likes (Videos epic) and
   subscriptions. Until those exist the recommender has nothing to learn from, so this story only becomes meaningful
   after them.
+* Watch feedback respects the watch history settings
+  ([US-My-activity-01](../my-activity/US-My-activity-01-Watch-history.md)): a channel with its history paused sends no
+  watch feedback, and clearing the history — or removing one video from it — removes those watch signals from Gorse
+  again.
 
 **Links**
 

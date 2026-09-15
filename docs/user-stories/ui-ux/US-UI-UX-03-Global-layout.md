@@ -14,8 +14,8 @@ functionality, which is why it goes wherever the layout goes.
 Move around the app — main flow:
 
 1. User opens any page that requires being signed in.
-2. At the top, the navbar holds the search bar ([US-Search-01](../search/US-Search-01-Search-videos.md)) and, on desktop,
-   the "Upload" button ([US-Videos-05](../videos/US-Videos-05-Upload-videos.md)).
+2. At the top, the navbar holds the search bar ([US-Search-01](../search/US-Search-01-Search-videos.md)) and, on
+   desktop, the "Upload" button ([US-Videos-05](../videos/US-Videos-05-Upload-videos.md)).
 3. On the left, the sidebar holds the current channel and the navigation.
 4. User clicks a sidebar item and its page opens; the item for the current page is highlighted.
 
@@ -70,9 +70,9 @@ Sidebar:
     * Subscriptions;
     * Notifications, with its unread badge
       ([US-Notifications-02](../notifications/US-Notifications-02-In-app-channel.md));
-    * Watch history;
-    * Liked videos;
-    * My comments — these three have no stories yet (My activity epic);
+    * Watch history ([US-My-activity-01](../my-activity/US-My-activity-01-Watch-history.md));
+    * Rated videos ([US-My-activity-02](../my-activity/US-My-activity-02-Rated-videos.md));
+    * My comments ([US-My-activity-03](../my-activity/US-My-activity-03-My-comments.md));
     * Settings ([US-Channels-03](../channels/US-Channels-03-current-channel-settings.md));
     * on mobile only, a divider followed by "Upload" ([US-Videos-05](../videos/US-Videos-05-Upload-videos.md)).
 * Pinned to the bottom of the sidebar, in this order:
@@ -109,8 +109,8 @@ Sidebar drawer — mobile:
 * The collapsed state must not make the sidebar jump when the page loads — the same problem as the flash of the wrong
   theme ([US-UI-UX-01](./US-UI-UX-01-Dark-theme-support.md)). localStorage is not readable during server rendering, so
   keeping the state in a cookie lets the server render the sidebar the right way from the start.
-* Some mockups still show "Account Settings" and lack the Notifications and My comments items; the structure above
-  supersedes them.
+* Some mockups still show "Account Settings" and "Liked videos" (now "Rated videos"), and lack the Notifications and My
+  comments items; the structure above supersedes them.
 
 **Links**
 

@@ -95,9 +95,9 @@ comment)
 
 My activity
 
-* See liked videos in one place
-* See own comments in one place
-* See watch history
+* [See watch history](/docs/user-stories/my-activity/US-My-activity-01-Watch-history.md)
+* [See rated videos in one place](/docs/user-stories/my-activity/US-My-activity-02-Rated-videos.md) (likes and dislikes)
+* [See own comments in one place](/docs/user-stories/my-activity/US-My-activity-03-My-comments.md)
 
 Subscriptions
 
