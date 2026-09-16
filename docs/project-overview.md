@@ -15,6 +15,12 @@ Specs Draft (Google docs): https://docs.google.com/document/d/1w3OGQFO0zOfoknIgT
 * Nginx (API Gateway)
 * Kafka
 * Tus (resumable file uploading)
+* gRPC
+* MinIO (S3 file storage)
+* BullMQ (scheduled jobs)
+* FFmpeg (video processing, thumbnail generation)
+* Keycloak (identity provider)
+* nodemailer (emails)
 
 Setup requirements for the local stack: [infrastructure.md](infrastructure.md) — how environments are organised:
 [environments-explained.md](explainers/environments-explained.md)
