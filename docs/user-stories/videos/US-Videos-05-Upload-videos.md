@@ -59,8 +59,7 @@ Upload a video — branches:
   link; the user is sent to the watch page instead.
 * **Opening the uploading page for someone else's video** — the page is not available and the user is sent to the
   homepage.
-* **Request fails** — the default toast behaviour applies
-  ([US-UI-UX-02](../ui-ux/US-UI-UX-02-User-friendly-errors.md)).
+* **Request fails** — the default toast behaviour applies ([US-UI-UX-02](../ui-ux/US-UI-UX-02-User-friendly-errors.md)).
 
 **Acceptance criteria**
 
@@ -175,7 +174,7 @@ Progress updates:
   thumbnails ready, each quality ready, processing complete.
 * SSE needs response buffering turned off in Nginx, otherwise updates arrive in clumps or not at all.
 * The pub/sub decision below is explained step by step in
-  [sse-progress-and-redis-pubsub.md](../../sse-progress-and-redis-pubsub.md).
+  [sse-progress-and-redis-pubsub.md](../../explainers/sse-progress-and-redis-pubsub.md).
 * **Decision: progress reaches the right instance through Redis pub/sub.** With several video-upload instances, a
   client's SSE connection lives on one of them while the Kafka event about its video may be consumed by another. The
   instance that consumes the event publishes a small update to a Redis channel named after the video; every instance
@@ -188,7 +187,6 @@ Progress updates:
   nothing but a slightly later refresh.
 * A connection in subscribe mode cannot run other commands, so pub/sub uses its own Redis connection, separate from the
   one BullMQ uses.
-
 
 Storage layout:
 
@@ -252,7 +250,7 @@ Access control and routing:
 * Access is decided by route in Nginx, not by bucket. Public routes: `hls/` and the selected `thumbnail.jpg`. Gated
   routes: everything else.
 * Private and age-restricted videos are served under a signed token in the path prefix, validated by Nginx without any
-  database lookup ([hls-segment-protection.md](../../hls-segment-protection.md),
+  database lookup ([hls-segment-protection.md](../../explainers/hls-segment-protection.md),
   [US-Videos-01](./US-Videos-01-Watch-videos.md)). Public videos are tokenized as well, and the
   gateway's cache key leaves the token out.
 * Downloads are the exception to route-based serving: they go through a short-lived presigned MinIO URL rather than the
@@ -285,8 +283,8 @@ Traps to avoid:
 * **A video can be published while it is still gaining qualities**, since one quality is enough to publish. The player
   has to work with whatever the HLS master playlist currently offers.
 * **The video link is shown before publishing**, because the record exists from `initialize`. It is not a working share
-  link: an unpublished video is not found for anyone but its author
-  ([US-Videos-01](./US-Videos-01-Watch-videos.md)). Do not build it as a share feature.
+  link: an unpublished video is not found for anyone but its author ([US-Videos-01](./US-Videos-01-Watch-videos.md)). Do
+  not build it as a share feature.
 * **Two tabs can race to create an upload session** for the same video. A check-then-insert loses that race — put a
   unique constraint on the active session and let the database decide.
 * **Expiry must clear the session, never the video.** The item stays on the channel after the day passes; it simply can
@@ -310,8 +308,8 @@ Still open:
 * [open-decisions.md](../../open-decisions.md)
 * [known-issues.md](../../known-issues.md)
 * [tus resumable upload protocol](https://tus.io/)
-* [hls-segment-protection.md](../../hls-segment-protection.md)
-* [sse-progress-and-redis-pubsub.md](../../sse-progress-and-redis-pubsub.md)
+* [hls-segment-protection.md](../../explainers/hls-segment-protection.md)
+* [sse-progress-and-redis-pubsub.md](../../explainers/sse-progress-and-redis-pubsub.md)
 * [nginx-s3-gateway](https://github.com/nginxinc/nginx-s3-gateway)
 
 **Tasks**

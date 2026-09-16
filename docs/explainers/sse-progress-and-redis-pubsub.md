@@ -3,7 +3,7 @@
 Why live upload progress breaks as soon as a second video-upload instance runs, why sticky routing does not fix it, what
 Redis pub/sub is, and how it is used here.
 
-Related: [US-Videos-05](./user-stories/videos/US-Videos-05-Upload-videos.md).
+Related: [US-Videos-05](../user-stories/videos/US-Videos-05-Upload-videos.md).
 
 ---
 

@@ -3,8 +3,8 @@
 How private and age-restricted videos are kept from being fetched by anyone who has the URL, without asking the
 database on every segment.
 
-Related: [US-Videos-01](./user-stories/videos/US-Videos-01-Watch-videos.md),
-[US-Videos-05](./user-stories/videos/US-Videos-05-Upload-videos.md).
+Related: [US-Videos-01](../user-stories/videos/US-Videos-01-Watch-videos.md),
+[US-Videos-05](../user-stories/videos/US-Videos-05-Upload-videos.md).
 
 ---
 
@@ -147,12 +147,12 @@ worth it: a phone moving between wifi and mobile data changes IP mid-video and p
 
 ## Part 9 — What this protects against, and what it does not
 
-| Someone… | Result |
-|---|---|
-| Guesses or scrapes a segment URL | **Blocked** — the token cannot be forged without the secret |
-| Was never allowed to watch | **Blocked** — they never received a token |
-| Saves a link and comes back next week | **Blocked** — expired |
-| Was allowed, and sends the URL to a friend right now | **Works, until the token expires** |
+| Someone…                                             | Result                                                      |
+|------------------------------------------------------|-------------------------------------------------------------|
+| Guesses or scrapes a segment URL                     | **Blocked** — the token cannot be forged without the secret |
+| Was never allowed to watch                           | **Blocked** — they never received a token                   |
+| Saves a link and comes back next week                | **Blocked** — expired                                       |
+| Was allowed, and sends the URL to a friend right now | **Works, until the token expires**                          |
 
 The last row is the honest trade-off. It is the same property as CloudFront or YouTube signed URLs — the standard
 answer, not a compromise unique to this project. It turns "leaked forever" into "leaked for a few hours".

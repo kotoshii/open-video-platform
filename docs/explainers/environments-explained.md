@@ -3,7 +3,7 @@
 How one repository runs as production, as a preview anyone can start on their machine, and as a development setup with
 hot reload — and why each piece of the setup exists.
 
-The checklist version is the Environments section of [infrastructure.md](./infrastructure.md).
+The checklist version is the Environments section of [infrastructure.md](../infrastructure.md).
 
 ---
 
@@ -75,11 +75,11 @@ docker/compose/observability.yaml       Grafana, Alloy, Loki, Prometheus, Tempo
 
 The top-level files pull these in with Compose's `include:`:
 
-| File | Pieces it includes |
-|---|---|
-| `compose.yaml` (preview) | infra, postgres.shared, apps |
-| `compose.prod.yaml` | infra, postgres.isolated, apps |
-| `compose.dev.yaml` | infra, postgres.shared — and no apps at all |
+| File                     | Pieces it includes                          |
+|--------------------------|---------------------------------------------|
+| `compose.yaml` (preview) | infra, postgres.shared, apps                |
+| `compose.prod.yaml`      | infra, postgres.isolated, apps              |
+| `compose.dev.yaml`       | infra, postgres.shared — and no apps at all |
 
 `compose.yaml` is the name Docker Compose looks for by default, which is why preview gets it: a stranger who clones the
 repository types `docker compose up` and gets the preview. On a production machine, one line in its `.env` —
@@ -105,7 +105,8 @@ be *ready*. Three tools do fix it:
 2. **One-off init containers.** Some things have to exist before any app runs: database migrations, Kafka topics, MinIO
    buckets and their lifecycle rules. Each of these is a container that does its job and exits. Apps depend on them with
    `condition: service_completed_successfully`, so they start only after the job has actually succeeded.
-3. **Imported configuration.** Keycloak imports a realm file from the repository on start, so nobody has to click through
+3. **Imported configuration.** Keycloak imports a realm file from the repository on start, so nobody has to click
+   through
    its admin console on a fresh machine.
 
 On a cold start, the order then falls out by itself: infrastructure → healthy → init jobs → finished → apps → gateway.
@@ -117,7 +118,8 @@ far the consumers can scale.
 ## Part 6 — Development mode: the boundary goes both ways
 
 In development, the infrastructure runs inside Docker and the apps run on your machine. Traffic crosses that boundary in
-**both directions** — apps call Kafka and Postgres in Docker, and nginx and tusd in Docker call the apps on your machine.
+**both directions** — apps call Kafka and Postgres in Docker, and nginx and tusd in Docker call the apps on your
+machine.
 Four things break because of it.
 
 ### Kafka's advertised address
@@ -139,7 +141,8 @@ The fix is to pin one hostname for Keycloak (`KC_HOSTNAME`) that both containers
 
 ### Containers calling your machine
 
-Nginx has to forward requests to the APIs, and tusd has to call video-upload-api's hooks — but those apps now run on your
+Nginx has to forward requests to the APIs, and tusd has to call video-upload-api's hooks — but those apps now run on
+your
 machine, not in Docker. Inside a container, the special name `host.docker.internal` means "the machine Docker runs on".
 Docker Desktop provides it automatically; on Linux, add
 `extra_hosts: ["host.docker.internal:host-gateway"]` to the container.

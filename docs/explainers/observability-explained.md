@@ -3,7 +3,7 @@
 What logs, metrics and traces are, what Grafana, Alloy, Loki, Prometheus, Tempo and OpenTelemetry each do, how they
 connect, and the mistakes that are easy to make when setting them up for the first time.
 
-The concrete steps for this project are in [observability-plan.md](./observability-plan.md).
+The concrete steps for this project are in [observability-plan.md](../observability-plan.md).
 
 ---
 
@@ -51,18 +51,18 @@ different containers with nothing linking them.
 
 ## Part 2 — What each tool actually does
 
-| Tool | Its job | Stores data? |
-|---|---|---|
-| **OpenTelemetry** | The standard way code *produces* logs, metrics and traces, plus the protocol (OTLP) used to send them. It is a set of libraries, not a server. | No |
-| **Alloy** | The collector. It receives data from services, collects logs from containers, scrapes metrics from infrastructure, and forwards each kind to the right store. Grafana's distribution of the OpenTelemetry Collector. | No |
-| **Loki** | Stores logs. | Yes |
-| **Prometheus** | Stores metrics. | Yes |
-| **Tempo** | Stores traces. | Yes |
-| **Grafana** | The screen: dashboards, log search, trace views, alerts. It reads from the three stores. | No |
+| Tool              | Its job                                                                                                                                                                                                              | Stores data? |
+|-------------------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|--------------|
+| **OpenTelemetry** | The standard way code *produces* logs, metrics and traces, plus the protocol (OTLP) used to send them. It is a set of libraries, not a server.                                                                       | No           |
+| **Alloy**         | The collector. It receives data from services, collects logs from containers, scrapes metrics from infrastructure, and forwards each kind to the right store. Grafana's distribution of the OpenTelemetry Collector. | No           |
+| **Loki**          | Stores logs.                                                                                                                                                                                                         | Yes          |
+| **Prometheus**    | Stores metrics.                                                                                                                                                                                                      | Yes          |
+| **Tempo**         | Stores traces.                                                                                                                                                                                                       | Yes          |
+| **Grafana**       | The screen: dashboards, log search, trace views, alerts. It reads from the three stores.                                                                                                                             | No           |
 
 Three stores, one for each kind of data. One collector in front of them. One screen on top.
 
-### What "Grafana.log()" really was
+### What "Grafana.log ()" really was
 
 At work it looks as though code sends logs to Grafana. It does not. Grafana never receives a single log line.
 

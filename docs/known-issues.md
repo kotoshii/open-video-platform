@@ -5,7 +5,8 @@ question is reworked.
 
 ## Kafka dedup can permanently drop count updates
 
-**Full write-up:** [kafka-dedup-and-inbox-pattern.md](./kafka-dedup-and-inbox-pattern.md) — how the deduplication
+**Full write-up:** [kafka-dedup-and-inbox-pattern.md](explainers/kafka-dedup-and-inbox-pattern.md) — how the
+deduplication
 works, why it breaks, what the inbox pattern is, and a step-by-step fix.
 
 **Where:** `lib/api/kafka/services/kafka-deduplication.service.ts`, used by every count worker through

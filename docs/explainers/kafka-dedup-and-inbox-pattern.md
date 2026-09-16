@@ -3,7 +3,7 @@
 Why the count workers deduplicate events, what is broken in how they do it today, what the inbox pattern is, and how to
 rebuild the deduplication on top of it.
 
-Related: [known-issues.md](./known-issues.md).
+Related: [known-issues.md](../known-issues.md).
 
 ---
 
@@ -26,7 +26,7 @@ shows up again, it is skipped.
 
 ## Part 2 — How the current deduplication works
 
-The note-keeping is one Redis command, in `lib/api/kafka/services/kafka-deduplication.service.ts`:
+The note-keeping is one Redis command, in `../../lib/api/kafka/services/kafka-deduplication.service.ts`:
 
 ```
 SET kafka-event-id:reserved:<eventId> "" EX <ttl> NX
@@ -42,7 +42,8 @@ Three things are happening there:
 The worker runs this for every event id in the batch (pipelined, so it is one round trip) and keeps only the events
 whose id answered `OK`. Those are the ones it has never seen before.
 
-The order of operations, in `lib/workers/counts/services/base-count-worker.service.ts` and the services built on it:
+The order of operations, in `../../lib/workers/counts/services/base-count-worker.service.ts` and the services built on
+it:
 
 1. **Mark** every event id in the batch as "seen" in Redis.
 2. **Add up** the `+1`s and `-1`s for the batch, in memory.
@@ -110,9 +111,12 @@ A database transaction is all-or-nothing. So if both facts are written inside on
 ```sql
 BEGIN;
   -- fact 1: I have handled this event
-  INSERT INTO processed_events (consumer, event_id) VALUES ('comment-rate-count-worker', '...');
-  -- fact 2: the result of handling it
-  UPDATE comments SET likes = likes + 1 WHERE id = '...';
+INSERT INTO processed_events (consumer, event_id)
+VALUES ('comment-rate-count-worker', '...');
+-- fact 2: the result of handling it
+UPDATE comments
+SET likes = likes + 1
+WHERE id = '...';
 COMMIT;
 ```
 
@@ -162,7 +166,8 @@ to, so the migration goes there.
 
 ```sql
 -- migrate:up
-create table processed_events (
+create table processed_events
+(
     consumer     text        not null,
     event_id     uuid        not null,
     processed_at timestamptz not null default now(),
@@ -191,11 +196,11 @@ In the repository, one statement both records and filters:
 
 ```ts
 const inserted = await trx
-    .insertInto("processed_events")
-    .values(eventIds.map((eventId) => ({ consumer, event_id: eventId })))
-    .onConflict((oc) => oc.columns(["consumer", "event_id"]).doNothing())
-    .returning("event_id")
-    .execute();
+  .insertInto("processed_events")
+  .values(eventIds.map((eventId) => ({consumer, event_id: eventId})))
+  .onConflict((oc) => oc.columns(["consumer", "event_id"]).doNothing())
+  .returning("event_id")
+  .execute();
 ```
 
 `ON CONFLICT DO NOTHING` turns a repeated id into a no-op instead of an error, and `RETURNING` gives back only the rows
@@ -208,13 +213,13 @@ Kysely transaction wraps both:
 
 ```ts
 await this.db.transaction().execute(async (trx) => {
-    const newIds = await this.inboxRepository.recordEvents(trx, this.consumerName, allEventIds);
-    const newEvents = allEvents.filter((e) => newIds.has(e.payload.eventId));
+  const newIds = await this.inboxRepository.recordEvents(trx, this.consumerName, allEventIds);
+  const newEvents = allEvents.filter((e) => newIds.has(e.payload.eventId));
 
-    if (!newEvents.length) return;                    // all duplicates - nothing to apply
+  if (!newEvents.length) return;                    // all duplicates - nothing to apply
 
-    const deltas = this.calculateDeltas(newEvents);   // unchanged from today
-    await this.countRepository.applyDeltas(trx, deltas);
+  const deltas = this.calculateDeltas(newEvents);   // unchanged from today
+  await this.countRepository.applyDeltas(trx, deltas);
 });
 ```
 
@@ -229,7 +234,7 @@ Resolve the offset of **every message in the batch**, not only the ones newly in
 
 ```ts
 for (const message of payload.batch.messages) {
-    payload.resolveOffset(message.offset);
+  payload.resolveOffset(message.offset);
 }
 await payload.commitOffsetsIfNecessary();
 ```
@@ -246,7 +251,9 @@ now safe, because nothing was recorded.
 The table grows forever otherwise. A periodic delete is enough:
 
 ```sql
-delete from processed_events where processed_at < now() - interval '7 days';
+delete
+from processed_events
+where processed_at < now() - interval '7 days';
 ```
 
 The retention window has to be **longer than the longest realistic redelivery gap** — comfortably longer than Kafka's
@@ -266,13 +273,13 @@ Start by removing it, and add it back later with measurements in hand.
 
 ## Part 7 — What happens in each failure case afterwards
 
-| Failure | What happens |
-|---|---|
-| Database write fails | Transaction rolls back, ids not recorded, offsets not resolved. Kafka redelivers, batch applies normally. |
-| Worker crashes mid-transaction | Same as above — Postgres discards an uncommitted transaction. |
+| Failure                            | What happens                                                                                                    |
+|------------------------------------|-----------------------------------------------------------------------------------------------------------------|
+| Database write fails               | Transaction rolls back, ids not recorded, offsets not resolved. Kafka redelivers, batch applies normally.       |
+| Worker crashes mid-transaction     | Same as above — Postgres discards an uncommitted transaction.                                                   |
 | Crash after commit, before offsets | Kafka redelivers. Inserts conflict, no events are new, nothing is applied, offsets resolve. No double counting. |
-| Batch is entirely duplicates | Nothing applied, offsets resolved, stream moves on. |
-| One message is malformed | Logged and skipped, its offset resolved, the rest of the batch processes. |
+| Batch is entirely duplicates       | Nothing applied, offsets resolved, stream moves on.                                                             |
+| One message is malformed           | Logged and skipped, its offset resolved, the rest of the batch processes.                                       |
 
 Every row ends with the stream moving forward. That is the property the current code is missing.
 

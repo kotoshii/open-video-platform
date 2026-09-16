@@ -5,9 +5,9 @@ seconds saying a slightly larger number. Also: how counts go back down, what tim
 works differently.
 
 Written up for the Notifications epic:
-[US-Notifications-01](./user-stories/notifications/US-Notifications-01-Notifications-config.md) (the types and the
-rules), [US-Notifications-02](./user-stories/notifications/US-Notifications-02-In-app-channel.md) (the notification
-center) and [US-Notifications-03](./user-stories/notifications/US-Notifications-03-Email-channel.md) (email).
+[US-Notifications-01](../user-stories/notifications/US-Notifications-01-Notifications-config.md) (the types and the
+rules), [US-Notifications-02](../user-stories/notifications/US-Notifications-02-In-app-channel.md) (the notification
+center) and [US-Notifications-03](../user-stories/notifications/US-Notifications-03-Email-channel.md) (email).
 
 ---
 
@@ -20,7 +20,7 @@ same thing. Obviously bad.
 
 The first instinct is to group events by Kafka batch: the worker already receives events in batches, so it can collapse
 a whole batch into one notification. That helps, but not enough. Batches in this project arrive **every 10 seconds**
-(`KAFKA_MAX_WAIT_TIME_IN_MS`, see `lib/api/config/providers/common-kafka.config.ts`), so the user now gets:
+(`KAFKA_MAX_WAIT_TIME_IN_MS`, see `../../lib/api/config/providers/common-kafka.config.ts`), so the user now gets:
 
 ```text
 12:00:00   "You have 10 new subscribers"
@@ -46,12 +46,12 @@ each is a different conversation. Ten subscribers deserve one row.
 
 This project has four notification types:
 
-| Type | Kind |
-|---|---|
-| New subscribers | aggregatable |
+| Type                      | Kind         |
+|---------------------------|--------------|
+| New subscribers           | aggregatable |
 | New comments on my videos | aggregatable |
-| Replies to my comments | individual |
-| Mentions | individual |
+| Replies to my comments    | individual   |
+| Mentions                  | individual   |
 
 Only the aggregatable kind has the stream problem, and Parts 3 to 9 apply only to them.
 
@@ -74,7 +74,8 @@ it whenever they happen to look. There is no timing problem left to solve.
 The grouping key decides how useful the result is.
 
 * **New subscribers** → one open notification per channel. "23 new subscribers" is a complete thought.
-* **New comments on my videos** → one per video. "23 new comments on *How to cook pasta*" tells the person where to look;
+* **New comments on my videos** → one per video. "23 new comments on *How to cook pasta*" tells the person where to
+  look;
   "23 new comments" does not.
 
 The rule: **the key is whatever the notification is about.** If it concerns a specific video, the video belongs in the
@@ -112,12 +113,13 @@ The write then becomes a single upsert:
 
 ```sql
 INSERT INTO notifications (channel_id, type, subject_id, count, first_event_at, activity_at)
-VALUES (...)
-ON CONFLICT (channel_id, type, subject_id) WHERE read_at IS NULL
-DO UPDATE SET
-    count          = notifications.count + EXCLUDED.count,
+VALUES (...) ON CONFLICT (channel_id, type, subject_id)
+WHERE read_at IS NULL
+    DO
+UPDATE SET
+    count = notifications.count + EXCLUDED.count,
     first_event_at = LEAST(notifications.first_event_at, EXCLUDED.first_event_at),
-    activity_at    = GREATEST(notifications.activity_at, EXCLUDED.activity_at);
+    activity_at = GREATEST(notifications.activity_at, EXCLUDED.activity_at);
 ```
 
 `first_event_at` and `activity_at` are explained in Parts 8 and 9.
@@ -189,14 +191,21 @@ Alice's subscription was created yesterday, before today's notification's first 
 ```sql
 UPDATE notifications
 SET count = count - 1
-WHERE channel_id = $1 AND type = $2 AND subject_id IS NOT DISTINCT FROM $3
-  AND read_at IS NULL
-  AND first_event_at <= $removed_item_created_at;
+WHERE channel_id = $1
+  AND type = $2
+  AND subject_id IS NOT DISTINCT
+FROM $3
+    AND read_at IS NULL
+    AND first_event_at <= $removed_item_created_at;
 
-DELETE FROM notifications
-WHERE channel_id = $1 AND type = $2 AND subject_id IS NOT DISTINCT FROM $3
-  AND read_at IS NULL
-  AND count <= 0;
+DELETE
+FROM notifications
+WHERE channel_id = $1
+  AND type = $2
+  AND subject_id IS NOT DISTINCT
+FROM $3
+    AND read_at IS NULL
+    AND count <= 0;
 ```
 
 In a batch, count how many removed items pass the check and subtract that number at once. Note that decrementing does
@@ -248,12 +257,12 @@ Two details:
 
 ## Part 11 — Which type gets what
 
-| Type | In-app | Email |
-|---|---|---|
-| New subscribers | one open notification per channel | never |
-| New comments on my videos | one open notification per video, top-level comments only | never |
-| Replies to my comments | one notification each | first immediately, then gathered per thread for 15 minutes |
-| Mentions | one notification each | first immediately, then gathered per thread for 15 minutes |
+| Type                      | In-app                                                   | Email                                                      |
+|---------------------------|----------------------------------------------------------|------------------------------------------------------------|
+| New subscribers           | one open notification per channel                        | never                                                      |
+| New comments on my videos | one open notification per video, top-level comments only | never                                                      |
+| Replies to my comments    | one notification each                                    | first immediately, then gathered per thread for 15 minutes |
+| Mentions                  | one notification each                                    | first immediately, then gathered per thread for 15 minutes |
 
 By default every in-app type is on and every email type is off. A channel with no stored preferences simply uses those
 defaults, so creating a channel writes nothing.
@@ -268,10 +277,10 @@ decrement, instead of a plain delta update.
 
 That also means it inherits the same requirement: **every write has to be idempotent.** If a batch is redelivered —
 which Kafka will do — nothing may be counted twice, in either direction. Use the inbox approach from
-[kafka-dedup-and-inbox-pattern.md](./kafka-dedup-and-inbox-pattern.md).
+[kafka-dedup-and-inbox-pattern.md](kafka-dedup-and-inbox-pattern.md).
 
 Do not build this worker on the current `BaseCountWorkerService` deduplication. It reserves event ids before writing,
-which can lose events — see [known-issues.md](./known-issues.md).
+which can lose events — see [known-issues.md](../known-issues.md).
 
 The grouping key starting with the channel id is also why notification preferences are per channel rather than per
 account: the preference lookup, the grouping key and the notification row all share their first column.

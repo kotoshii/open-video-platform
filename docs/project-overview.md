@@ -17,15 +17,15 @@ Specs Draft (Google docs): https://docs.google.com/document/d/1w3OGQFO0zOfoknIgT
 * Tus (resumable file uploading)
 
 Setup requirements for the local stack: [infrastructure.md](infrastructure.md) — how environments are organised:
-[environments-explained.md](environments-explained.md)
+[environments-explained.md](explainers/environments-explained.md)
 
 Explainers:
 
-* [Kafka deduplication and the inbox pattern](kafka-dedup-and-inbox-pattern.md)
-* [Protecting HLS segments without a database lookup](hls-segment-protection.md)
-* [Keeping notifications from turning into a stream](notification-aggregation.md)
-* [Upload progress across several instances: SSE and Redis pub/sub](sse-progress-and-redis-pubsub.md)
-* [Kubernetes, explained](kubernetes-explained.md)
+* [Kafka deduplication and the inbox pattern](explainers/kafka-dedup-and-inbox-pattern.md)
+* [Protecting HLS segments without a database lookup](explainers/hls-segment-protection.md)
+* [Keeping notifications from turning into a stream](explainers/notification-aggregation.md)
+* [Upload progress across several instances: SSE and Redis pub/sub](explainers/sse-progress-and-redis-pubsub.md)
+* [Kubernetes, explained](explainers/kubernetes-explained.md)
 
 Trackers:
 
@@ -41,7 +41,8 @@ Trackers:
 * Tempo (traces)
 * OpenTelemetry (instrumentation library inside the services, not a separate service)
 
-See [observability-explained.md](observability-explained.md) and [observability-plan.md](observability-plan.md).
+See [observability-explained.md](explainers/observability-explained.md)
+and [observability-plan.md](observability-plan.md).
 
 ---
 

@@ -3,7 +3,7 @@
 What Kubernetes is, what it would change compared with the Docker Compose setup, how the pieces of this project map
 onto it, and when it is worth doing.
 
-Related: [environments-explained.md](./environments-explained.md), [infrastructure.md](./infrastructure.md).
+Related: [environments-explained.md](environments-explained.md), [infrastructure.md](../infrastructure.md).
 
 ---
 
@@ -20,22 +20,23 @@ asked for. You describe what should be running ("three copies of `video-api`, ea
 Kubernetes makes it so and keeps it so: it restarts crashed containers, moves them off a machine that died, and replaces
 old versions with new ones gradually.
 
-The key shift is from **commands** to **desired state**. With Compose you say "start this". With Kubernetes you say "this
+The key shift is from **commands** to **desired state**. With Compose you say "start this". With Kubernetes you say
+"this
 is how things should be", and a control loop keeps correcting reality until it matches.
 
 ## Part 2 — The core pieces, mapped to what already exists
 
-| Kubernetes | What it is | Closest Compose equivalent |
-|---|---|---|
-| **Pod** | One or more containers that run together and share a network address. Usually one container. | A single running container |
-| **Deployment** | "Keep N identical pods of this image running", with rolling updates. | A service with `replicas`, plus restart policy |
-| **Service** | A stable name and address in front of a changing set of pods, with load balancing. | The service name on the Compose network |
-| **Ingress** | Routes outside HTTP traffic to Services by host and path. | The nginx gateway |
-| **ConfigMap / Secret** | Configuration and secrets injected into pods. | `environment:` and `.env` |
-| **PersistentVolume** | Storage that outlives a pod. | A named volume |
-| **StatefulSet** | Like a Deployment, but each pod has a stable identity and its own storage. | A database service with its own volume |
-| **Job** | Runs a pod to completion once. | An init container that exits |
-| **Namespace** | A named group of resources inside one cluster. | A separate Compose project |
+| Kubernetes             | What it is                                                                                   | Closest Compose equivalent                     |
+|------------------------|----------------------------------------------------------------------------------------------|------------------------------------------------|
+| **Pod**                | One or more containers that run together and share a network address. Usually one container. | A single running container                     |
+| **Deployment**         | "Keep N identical pods of this image running", with rolling updates.                         | A service with `replicas`, plus restart policy |
+| **Service**            | A stable name and address in front of a changing set of pods, with load balancing.           | The service name on the Compose network        |
+| **Ingress**            | Routes outside HTTP traffic to Services by host and path.                                    | The nginx gateway                              |
+| **ConfigMap / Secret** | Configuration and secrets injected into pods.                                                | `environment:` and `.env`                      |
+| **PersistentVolume**   | Storage that outlives a pod.                                                                 | A named volume                                 |
+| **StatefulSet**        | Like a Deployment, but each pod has a stable identity and its own storage.                   | A database service with its own volume         |
+| **Job**                | Runs a pod to completion once.                                                               | An init container that exits                   |
+| **Namespace**          | A named group of resources inside one cluster.                                               | A separate Compose project                     |
 
 ## Part 3 — What it would give this project
 
@@ -48,7 +49,7 @@ is how things should be", and a control loop keeps correcting reality until it m
 
 Several things built into this project's design become directly useful at that point: the Redis pub/sub for upload
 progress exists precisely because there are several instances
-([sse-progress-and-redis-pubsub.md](./sse-progress-and-redis-pubsub.md)), and Kafka consumer groups spread partitions
+([sse-progress-and-redis-pubsub.md](sse-progress-and-redis-pubsub.md)), and Kafka consumer groups spread partitions
 across however many worker pods are running.
 
 ## Part 4 — What changes compared with Compose
@@ -101,7 +102,7 @@ Treating a production database as "just another container" is the most common mi
 ## Part 7 — When it is worth doing
 
 Not first. Compose covers everything the project needs while it is being built, and the Compose layout
-([environments-explained.md](./environments-explained.md)) is deliberately shaped so that nothing has to be redesigned
+([environments-explained.md](environments-explained.md)) is deliberately shaped so that nothing has to be redesigned
 to move later: services configured only through environment variables, a database per service, health checks, and
 one-off jobs for set-up.
 
