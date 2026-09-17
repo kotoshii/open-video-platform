@@ -48,9 +48,10 @@ Branches:
 
 * **Watching a video that is already in the history** — no second item is created; the existing one moves to the top
   with the new time.
-* **A video in the history is no longer available** — deleted, made private, or its channel purged; it is not shown. A
-  video whose channel is only scheduled for deletion is still watchable and still shown
-  ([US-Channels-06](../channels/US-Channels-06-delete-own-channel.md)).
+* **A video in the history can no longer be watched** — it was deleted, or it was made private, which includes every
+  video of a channel with a deletion scheduled ([US-Channels-06](../channels/US-Channels-06-delete-own-channel.md)).
+  The row stays in the history and shows a placeholder saying the video is no longer available, instead of vanishing
+  from the list.
 * **No history yet** — the page shows an empty state.
 * **Nothing matches the search** — the list shows an empty state until the search is changed.
 * **Cancelling a confirmation** — the modal closes and nothing changes.
@@ -74,7 +75,8 @@ Branches:
 * "Resume watch history" takes effect without a confirmation.
 * Pausing the history does not stop views from being counted ([US-Videos-01](../videos/US-Videos-01-Watch-videos.md)).
 * Removing an item or clearing the history also removes those videos' watch signals from the recommendations.
-* Videos that are no longer available are not shown.
+* A video that can no longer be watched keeps its row in the history, shown as a placeholder saying so rather than
+  removed from the list; the row can still be deleted by the user like any other.
 * Failures to load the list are shown as a full-page error; failures of an action are shown as a toast.
 
 **Tech notes**
@@ -101,8 +103,12 @@ Branches:
   as the history rows, so store it on the row and refresh it from the video-updated event — the same denormalisation
   already used for channel names. Filtering by channel first keeps the scan small; a `pg_trgm` index is the next step if
   it ever is not.
-* Visibility is enforced when the list is served. When a video is deleted, its history rows go with it through the video
-  deletion fan-out ([US-Videos-03](../videos/US-Videos-03-Manage-own-videos.md)).
+* **History rows outlive the videos they point at.** A video deletion does not remove them
+  ([US-Videos-03](../videos/US-Videos-03-Manage-own-videos.md)); the row stays and is rendered as a placeholder, so a
+  history keeps its shape instead of quietly losing entries. The title already stored on the row is what the
+  placeholder shows, and it is also why searching the history still works over entries whose video is gone.
+* Whether a row is still watchable is decided when the list is served, so a video made private — including one whose
+  channel has a deletion scheduled — becomes a placeholder without anything being written.
 * The paused state comes with the list response, so the button and the notice render correctly on the first paint.
 
 **Links**

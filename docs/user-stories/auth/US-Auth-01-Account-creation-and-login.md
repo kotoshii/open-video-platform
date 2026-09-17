@@ -42,8 +42,9 @@ Login — branches:
 * **Account not verified** (step 4) — the user is taken to the account verification screen and goes through the
   verification flow ([US-Auth-02](US-Auth-02-Account-confirmation.md)); they can continue only once the account is
   verified.
-* **Multiple channels on the account** (step 5) — the user is prompted to select a channel before being redirected to
-  the homepage.
+* **Multiple channels on the account** (step 5) — the user is taken to the channel selection page
+  ([US-Channels-07](../channels/US-Channels-07-channel-selection-page.md)) to pick a channel before being redirected
+  to the homepage. An account with one channel goes straight to the homepage.
 * **Forgot password** (step 2) — the user follows the "Forgot password?" link and continues with the password reset flow
   ([US-Auth-03](US-Auth-03-Password-reset.md)).
 
@@ -64,7 +65,8 @@ Login:
 
 * A user can log in to an existing account with email and password.
 * Logging in to an unverified account leads to the verification flow instead of the homepage.
-* If the account has more than one channel, the user can pick which channel to log in as.
+* If the account has more than one channel, the user picks which channel to act as on the channel selection page
+  ([US-Channels-07](../channels/US-Channels-07-channel-selection-page.md)); with one channel the page is skipped.
 * After successful login, the user lands on the homepage.
 
 Navigation between forms:

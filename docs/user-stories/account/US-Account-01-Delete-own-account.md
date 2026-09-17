@@ -6,8 +6,9 @@ As a registered user with a verified account, I want to schedule my account and 
 a week to change my mind, so that I and everything I published disappear from the platform without a single click
 making that irreversible.
 
-Nothing is hidden or locked during that week: the account stays signed in and fully usable, exactly as in
-[US-Channels-06](../channels/US-Channels-06-delete-own-channel.md). Deletion happens once, at the end of the window.
+Nothing is deleted or locked during that week: the account stays signed in and fully usable, and the videos of every
+channel become private exactly as in [US-Channels-06](../channels/US-Channels-06-delete-own-channel.md). Deletion
+happens once, at the end of the window, and it is final.
 
 **User flows**
 
@@ -29,9 +30,11 @@ Request the deletion — main flow:
 
 During the week:
 
-1. The account stays signed in and can be used exactly as before: every channel is visible and usable, and logging in
-   with the account's credentials keeps working.
-2. The Account tab states that the deletion is scheduled, for when, and offers "Cancel deletion".
+1. The videos of every channel of the account become private, exactly as in
+   [US-Channels-06](../channels/US-Channels-06-delete-own-channel.md). Nothing is deleted.
+2. The account stays signed in and can be used exactly as before: every channel is usable, its comments and
+   subscriptions stay live, and logging in with the account's credentials keeps working.
+3. The Account tab states that the deletion is scheduled, for when, and offers "Cancel deletion".
 
 Cancel the deletion:
 
@@ -66,11 +69,16 @@ Requesting:
 
 During the window:
 
-* The account and every one of its channels stay fully usable, with nothing hidden and nothing restricted.
+* **Nothing is deleted before the window ends** — not a database row, not a file in storage.
+* The videos of every channel of the account become private as soon as the deletion is scheduled; everything else
+  about those channels stays live ([US-Channels-06](../channels/US-Channels-06-delete-own-channel.md)).
+* The account and every one of its channels stay usable, with nothing restricted.
 * Logging in with the account's credentials keeps working, as does everything else the account can normally do.
 * The Account tab states that a deletion is scheduled, when it will happen, and offers "Cancel deletion".
-* Cancelling from the settings page or from the email link clears the schedule and leaves the account exactly as it
-  was.
+* A banner at the top of every page states the same, whichever channel the user is acting as, and can be dismissed for
+  24 hours at a time ([US-UI-UX-03](../ui-ux/US-UI-UX-03-Global-layout.md)).
+* Cancelling from the settings page or from the email link clears the schedule, returns every video to the visibility
+  it had before, and leaves the account exactly as it was.
 * After cancelling, the account can be scheduled for deletion again in the same way.
 
 The deletion itself:
@@ -90,8 +98,12 @@ The deletion itself:
   purge removes is in [US-Channels-06](../channels/US-Channels-06-delete-own-channel.md) and is not repeated here.
 * Every service deletes the data it owns and reports back, so the purge is a saga across services, not a single
   transaction, and every step has to be idempotent since it may be retried.
-* Nothing is hidden during the window, so no service needs a "scheduled for deletion" notion — the reasoning is the
-  same as for channels, and it is what keeps counters and listings in agreement throughout the week.
+* Only the videos are hidden, through the existing `private` visibility, so no service needs a "scheduled for
+  deletion" notion — the reasoning is the same as for channels, and it is what keeps counters and listings in
+  agreement throughout the week.
+* The purge also removes the account's stored data export archive
+  ([US-Account-04](./US-Account-04-Download-own-user-data.md)), which is an account-level object and so belongs to
+  this story rather than to the per-channel list.
 * The identity lives in Keycloak, so the purge deletes the Keycloak user as well, not only the platform's own records.
   That is also what ends every session: the tokens have no user left to belong to.
 * The email address needs no reservation of its own: the account is live until the purge, so nothing else can register

@@ -54,7 +54,9 @@ Search videos — branches:
   ([US-Channels-06](../channels/US-Channels-06-delete-own-channel.md),
   [US-Account-01](../account/US-Account-01-Delete-own-account.md)).
 * Age-restricted videos are excluded for users whose date of birth
-  ([US-Auth-01](../auth/US-Auth-01-Account-creation-and-login.md)) says they are too young.
+  ([US-Auth-01](../auth/US-Auth-01-Account-creation-and-login.md)) says they are too young, and for channels whose
+  "Show age-restricted content" setting is off
+  ([US-Channels-03](../channels/US-Channels-03-current-channel-settings.md)).
 * A query with no matches shows an empty state, not an error.
 * Results are paginated, with page controls at the bottom of the page; the list does not load more on scroll.
 * Clicking a result opens the corresponding video page.

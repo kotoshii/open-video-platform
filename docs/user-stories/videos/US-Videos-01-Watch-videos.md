@@ -38,6 +38,9 @@ Watch a video — branches:
 * **Viewer is not allowed to watch** (step 2) — the video is private, or it is age-restricted and the viewer is too
   young for it ([US-Auth-01](../auth/US-Auth-01-Account-creation-and-login.md)). The page shows only the corresponding
   state, again with nothing else loaded.
+* **Age-restricted video with the setting turned off** (step 2) — the viewer is old enough but their channel has
+  "Show age-restricted content" off ([US-Channels-03](../channels/US-Channels-03-current-channel-settings.md)); the
+  page says so and points at the setting, since this one is the viewer's own choice rather than a refusal.
 * **Video does not exist** (step 2) — the page shows a full-page error state.
 * **Loading fails** (step 2) — a full-page error state ([US-UI-UX-02](../ui-ux/US-UI-UX-02-User-friendly-errors.md)).
   Failures inside the comments or the similar videos are
@@ -52,6 +55,9 @@ Watch a video — branches:
 * A channel with no subscribers shows no subscriber count, and a like or dislike count of zero is not shown
   ([US-Videos-04](./US-Videos-04-Like-dislike-videos.md)).
 * A long title wraps onto several lines instead of being cut off.
+* On the author's own video the page shows an edit button under the player, opening the same management menu as the
+  3-dot button on the channel page ([US-Videos-03](./US-Videos-03-Manage-own-videos.md)). It is not rendered for
+  anyone else.
 * The description is collapsed by default and expands in place.
 * Dates are shown relative to now ("5 months ago"), the same way as everywhere else in the app.
 * Autoplay is disabled — the video starts only when the user presses play.

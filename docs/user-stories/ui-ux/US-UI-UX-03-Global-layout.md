@@ -39,6 +39,8 @@ Branches:
 * **Auth pages** — log in, sign up ([US-Auth-01](../auth/US-Auth-01-Account-creation-and-login.md)), account
   confirmation ([US-Auth-02](../auth/US-Auth-02-Account-confirmation.md)) and password reset
   ([US-Auth-03](../auth/US-Auth-03-Password-reset.md)) show neither the navbar nor the sidebar.
+* **Channel selection** ([US-Channels-07](../channels/US-Channels-07-channel-selection-page.md)) — the user is
+  authenticated but has no channel to act as yet, so the layout has nothing to render and is not shown.
 * **Pages opened from an email link** — the same rule applies: a page that has to work without the user being signed
   in, such as the confirmation page after changing the email or the password, has no layout.
 
@@ -48,7 +50,9 @@ Where it appears:
 
 * Every page that requires being signed in shows the navbar at the top and the sidebar on the left.
 * Pages that can be used without being signed in — the auth pages, and email-link pages that ask the user to sign in —
-  show neither.
+  show neither, and neither does the channel selection page
+  ([US-Channels-07](../channels/US-Channels-07-channel-selection-page.md)), where the user is signed in but has no
+  channel to act as yet.
 * Those pages still show the language selector and the theme toggle, in the top right corner.
 
 Navbar:
@@ -56,6 +60,18 @@ Navbar:
 * The navbar holds the search bar on every page it appears on.
 * On desktop the navbar also holds the menu button, on its left, and the "Upload" button.
 * On mobile the navbar holds the menu button and the search bar only.
+
+Scheduled deletion banner:
+
+* When the current channel or the account has a deletion scheduled
+  ([US-Channels-06](../channels/US-Channels-06-delete-own-channel.md),
+  [US-Account-01](../account/US-Account-01-Delete-own-account.md)), a banner sits at the top of every page inside the
+  layout, stating what will be deleted and when, and linking to the settings page where it can be cancelled.
+* The banner can be closed. Closing it hides the banner for 24 hours, after which it appears again, so a scheduled
+  deletion cannot be forgotten for a whole week.
+* The dismissal is remembered on the client and per browser; it is not a server-side setting.
+* When both the account and the current channel have deletions scheduled, the account's banner is the one shown, since
+  it supersedes the other.
 
 Sidebar:
 

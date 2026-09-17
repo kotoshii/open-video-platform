@@ -6,8 +6,8 @@ As a registered user with a verified account and more than one channel, I want t
 for deletion and keep a week to change my mind, so that it and everything it published disappear from the platform
 without a single click making that irreversible.
 
-Nothing is hidden during that week: the channel works exactly as it did before, and the user can keep acting as it.
-Deletion happens once, at the end of the window.
+Nothing is deleted during that week. The channel's videos become private, but every record and every file stays where
+it is, and the user can keep acting as the channel. Deletion happens once, at the end of the window, and it is final.
 
 **User flows**
 
@@ -23,21 +23,25 @@ Request the deletion — main flow:
 6. The email warns about the consequences once again.
 7. Opening the link takes the user to a dedicated page in the app.
 8. The link is validated (it lives for 5 minutes).
-9. If valid, the deletion is scheduled for a week later, and the page states the date and time it will happen.
+9. If valid, the deletion is scheduled for a week later, and the page states the date and time it will happen. The
+   channel remains the one the user is acting as until it is deleted.
 10. The user receives a second email confirming the date and carrying a link to cancel the deletion.
 
 During the week:
 
-1. The channel behaves exactly like any other channel: it is visible, its videos are watchable, findable in search and
-   present in feeds and in other users' subscriptions, and its comments stay where they are.
-2. The user can keep acting as it — uploading, commenting, subscribing, rating — with nothing restricted.
-3. The Channel tab of the settings page states that the deletion is scheduled, for when, and offers "Cancel deletion".
+1. Every video of the channel becomes private: nobody but the author can watch it, and it is gone from search, from
+   feeds and from the channel page for visitors. The rows and the files are untouched.
+2. Everything else about the channel stays live — the channel page itself, its comments and replies, its subscriptions
+   in both directions and its subscriber count.
+3. The user can keep acting as it — uploading, commenting, subscribing, rating — with nothing restricted. A video
+   published during the window is private like the rest.
+4. The Channel tab of the settings page states that the deletion is scheduled, for when, and offers "Cancel deletion".
 
 Cancel the deletion:
 
 1. User clicks "Cancel deletion" in the settings page, or opens the cancel link from the second email.
 2. The schedule is cleared and a notification confirms it.
-3. Nothing else changes, because nothing had been removed.
+3. Every video returns to the visibility it had before, and nothing else changes, because nothing had been deleted.
 
 Branches:
 
@@ -49,8 +53,9 @@ Branches:
   ([US-Account-01](../account/US-Account-01-Delete-own-account.md)).
 * **The window passes** (after step 10) — the channel and all its data are deleted permanently, with no way to
   restore.
-* **The user is acting as that channel when the window passes** — the channel is gone, so the app asks them to pick
-  another one ([US-Channels-02](./US-Channels-02-freely-switch-between-channels.md)).
+* **The user is acting as that channel when the window passes** — the channel is gone, so the app sends them to the
+  channel selection page to pick another one
+  ([US-Channels-07](./US-Channels-07-channel-selection-page.md)).
 
 **Acceptance criteria**
 
@@ -71,15 +76,22 @@ Requesting:
 
 During the window:
 
-* The channel is not hidden in any way: it is visible on the platform, its videos are watchable, searchable, and
-  present in feeds and subscriptions, and its comments and replies stay visible.
-* Every count that includes the channel — its subscriber count, the comment totals it contributes to, the rates it has
-  given — keeps its value, because nothing has been removed.
+* **Nothing is deleted before the window ends** — not a database row, not a file in storage.
+* Every video of the channel becomes private as soon as the deletion is scheduled, so no one but the author can watch
+  it, and it is absent from search, feeds and the channel page for visitors.
+* A video published while the deletion is scheduled is private as well.
+* Everything else about the channel stays live and visible: its page, its comments and replies, its subscriptions in
+  both directions and its subscriber count.
+* Counts still agree with what they count: the channel's video count follows what the viewer can see
+  ([US-Channels-04](./US-Channels-04-see-own-and-other-channels.md)), while comment totals and subscriber counts are
+  untouched, since none of that content was hidden.
 * The user can keep acting as the channel with no restrictions: uploading, publishing, commenting, subscribing and
   rating all work as usual.
 * The Channel tab states that a deletion is scheduled, when it will happen, and offers "Cancel deletion".
-* Cancelling from the settings page or from the email link clears the schedule and leaves the channel exactly as it
-  was.
+* A banner at the top of every page states the same while the user acts as that channel, and can be dismissed for 24
+  hours at a time ([US-UI-UX-03](../ui-ux/US-UI-UX-03-Global-layout.md)).
+* Cancelling from the settings page or from the email link clears the schedule and returns every video to the
+  visibility it had before, leaving the channel exactly as it was.
 * After cancelling, the channel can be scheduled for deletion again in the same way.
 
 The deletion itself:
@@ -87,7 +99,8 @@ The deletion itself:
 * Once the week has passed, the channel and all its data are removed permanently, with no way to restore.
 * Everything the channel published disappears at that point — its videos, its comments and its subscriptions — and the
   counts on other channels' content adjust accordingly.
-* If the user is acting as the channel when it is deleted, the app asks them to pick another channel.
+* If the user is acting as the channel when it is deleted, the app sends them to the channel selection page
+  ([US-Channels-07](./US-Channels-07-channel-selection-page.md)).
 
 **Tech notes**
 
@@ -104,12 +117,17 @@ The schedule:
 * The "more than one channel" rule counts channels without a deletion scheduled, so an account can never end up with
   none.
 
-Why nothing is hidden:
+Why the videos go private and nothing else changes:
 
-* **No other service needs a "scheduled for deletion" notion at all.** The channel is live until it is purged, so no
-  read path has to filter it, no counter disagrees with a listing, and no service needs a restore path — only the purge
-  events. This is the reason for the design: hiding content immediately would mean every service that stores a
-  denormalized copy has to hide it too, keep it retrievable, and put it back on a restore.
+* Hiding the videos uses `private`, a visibility value that already exists and that every read path already handles
+  ([US-Videos-03](../videos/US-Videos-03-Manage-own-videos.md)). So **no service needs a "scheduled for deletion"
+  notion of its own**, and no counter ends up disagreeing with a listing — the channel's video count is computed from
+  what the viewer can see ([US-Channels-04](./US-Channels-04-see-own-and-other-channels.md)) and follows by itself.
+* Store the visibility each video had before, so cancelling puts it back instead of leaving everything private.
+* The comments, the subscriptions and the counts are deliberately left alone. Hiding them would mean every service
+  holding a denormalized copy has to hide it too and then restore it on a cancel — which is the cost this design
+  exists to avoid.
+* Nothing is deleted before the purge, so a cancel has nothing to put back beyond the visibility flags.
 
 The purge:
 

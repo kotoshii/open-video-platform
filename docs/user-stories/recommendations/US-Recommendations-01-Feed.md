@@ -38,7 +38,9 @@ Open the feed — branches:
   ([US-Channels-06](../channels/US-Channels-06-delete-own-channel.md),
   [US-Account-01](../account/US-Account-01-Delete-own-account.md)).
 * Age-restricted videos are excluded for users whose date of birth
-  ([US-Auth-01](../auth/US-Auth-01-Account-creation-and-login.md)) says they are too young.
+  ([US-Auth-01](../auth/US-Auth-01-Account-creation-and-login.md)) says they are too young, and for channels whose
+  "Show age-restricted content" setting is off
+  ([US-Channels-03](../channels/US-Channels-03-current-channel-settings.md)).
 * Loading more never repeats a video already shown and never skips one.
 * An empty result shows an empty state, not an error.
 * Failures follow the error flow for page data ([US-UI-UX-02](../ui-ux/US-UI-UX-02-User-friendly-errors.md)).

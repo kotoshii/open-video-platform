@@ -30,6 +30,11 @@ Search within a channel — branches:
 * On mobile the search input is hidden by default to save space, and a search icon next to the sort buttons reveals it
   below them.
 * Searching returns only videos belonging to that channel.
+* A video matches when the query appears in its title or in its description; tags are not searched here.
+* The search covers exactly what the video list on that page covers: on the author's own channel it reaches their
+  unpublished, private and still-processing videos too
+  ([US-Channels-04](../channels/US-Channels-04-see-own-and-other-channels.md)), and on someone else's it reaches only
+  what a visitor can see.
 * The selected sorting is applied to the search results, with Newest as the default.
 * No filters are offered here — the Upload date and Duration filters belong to the global video search
   ([US-Search-01](./US-Search-01-Search-videos.md)).
@@ -40,9 +45,21 @@ Search within a channel — branches:
 
 **Tech notes**
 
-* Reuse the Elasticsearch queries built for the global video search ([US-Search-01](./US-Search-01-Search-videos.md)),
-  with the channel id as an additional constraint — but expose a
-  separate endpoint for the channel page rather than overloading the global one.
+* **This search runs against the Videos service database, not Elasticsearch.** The index only ever holds published
+  videos ([US-Search-01](./US-Search-01-Search-videos.md)), while the author's own channel page lists everything they
+  have — private, accessible by link, still uploading or processing, failed
+  ([US-Channels-04](../channels/US-Channels-04-see-own-and-other-channels.md)). An Elasticsearch-backed search would
+  quietly fail to find videos the author can see in the list directly above the search box.
+* A substring match over the video's **title and description**, scoped by channel id, is enough here: the scope is a
+  single channel, and this is the same kind of match the watch history and my comments searches already use
+  ([US-My-activity-01](../my-activity/US-My-activity-01-Watch-history.md)). `pg_trgm` is the step after it if it ever
+  becomes slow, and the description is the field that will ask for that index first, being far longer than a title.
+* Nothing has to be denormalized for it, unlike those two: this runs in the service that owns the videos, so the title
+  and the description are already on the row. Watch history and my comments keep their own copy of the title precisely
+  because they do not own it.
+* Searching therefore returns exactly the rows the list would, filtered by the same rules — which is what keeps "what
+  I can find" equal to "what I can see" for author and visitor alike.
+* Expose a separate endpoint for the channel page rather than overloading the global one.
 * The response can be smaller than the global one: the channel is already known, so the channel name and avatar do not
   need to be repeated per hit. Decide the exact shape when the endpoint is written.
 * The visibility rules still apply — a purged channel has no page to search on, and age-restricted videos are

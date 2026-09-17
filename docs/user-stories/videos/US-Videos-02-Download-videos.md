@@ -31,6 +31,8 @@ Download a video — branches:
 * The video page has a download button under the player.
 * Clicking it opens a dialog listing the qualities available for that video, each with its format (MP4), file size and
   duration.
+* Only the qualities that have finished processing are listed, so an author downloading their own video that is still
+  gaining renditions ([US-Videos-05](./US-Videos-05-Upload-videos.md)) sees exactly what exists at that moment.
 * Choosing a quality starts the download of that rendition.
 * The downloaded file is a playable MP4.
 * The file is named after the video and the chosen quality, not after an internal id.

@@ -12,7 +12,8 @@ Edit the current channel — main flow:
 1. User clicks the settings button in the sidebar.
 2. The settings page opens.
 3. The page has two tabs:
-    * **Channel** — user pic, channel name, channel description, the notification preferences (see
+    * **Channel** — user pic, channel name, channel description, the "Show age-restricted content" toggle, the
+      notification preferences (see
       [US-Notifications-01](../notifications/US-Notifications-01-Notifications-config.md)), and the "Delete channel"
       button (see [US-Channels-06](./US-Channels-06-delete-own-channel.md));
     * **Account** — email, password, the email language
@@ -36,8 +37,16 @@ Edit the current channel — branches:
 
 * The sidebar has a settings button that opens the settings page.
 * The settings page has a "Channel" and an "Account" tab, with "Channel" open by default.
-* The Channel tab contains the user pic, channel name, channel description, the notification preferences and the
-  "Delete channel" button.
+* The Channel tab contains the user pic, channel name, channel description, the "Show age-restricted content" toggle,
+  the notification preferences and the "Delete channel" button.
+* "Show age-restricted content" is **off by default**. While it is off, videos marked as unsuitable for younger
+  viewers ([US-Videos-05](../videos/US-Videos-05-Upload-videos.md)) are left out of everything this channel browses —
+  search results, the feed, similar videos and channel pages — and opening one directly shows the same blocked state
+  an under-age viewer gets ([US-Videos-01](../videos/US-Videos-01-Watch-videos.md)).
+* The toggle is only available to an account old enough for that content by its date of birth
+  ([US-Auth-01](../auth/US-Auth-01-Account-creation-and-login.md)); for anyone younger it is not shown, and the
+  content stays hidden regardless.
+* The setting belongs to the channel, so each channel of an account has its own.
 * The Account tab contains email, password, the email language and the "Delete account" button; its content belongs to
   the Account settings and I18n epics, not to this story.
 * When a deletion is already scheduled for the channel or the account, the corresponding tab states that, gives the
@@ -61,6 +70,14 @@ Edit the current channel — branches:
 * Consumers must tolerate duplicate and out-of-order events — dedup via Redis, and ignore events older than the copy
   already stored.
 * The settings page needs no service or endpoints of its own; it composes the existing per-service endpoints.
+* **"Show age-restricted content" is a preference over the flag that already exists**, not a second classification.
+  A video is marked once, on upload or in the edit dialog
+  ([US-Videos-03](../videos/US-Videos-03-Manage-own-videos.md)); the date of birth decides whether a viewer *may* see
+  that content, and this toggle decides whether they *want* to. Age is a permission and the toggle is a filter, which
+  is why a user too young never sees the toggle at all.
+* The setting is per channel like the notification preferences, so the services that filter listings — Search, the
+  feed, similar videos, the channel page — read it for the acting channel alongside the age check they already do.
+  Both filters are applied when a listing is served, never at index time, since either can change at any moment.
 
 **Links**
 

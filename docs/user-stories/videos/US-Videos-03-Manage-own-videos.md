@@ -47,7 +47,9 @@ Change visibility — branches:
 
 Delete — main flow:
 
-1. A confirmation modal appears. Buttons: "Cancel" (primary, left) and "Delete" (secondary, right).
+1. A confirmation modal appears, stating in plain words that the video, its files, its comments and all rates are
+   **deleted permanently and immediately**, with no way to get them back. Buttons: "Cancel" (primary, left) and
+   "Delete" (secondary, right).
 2. The "Delete" button stays disabled for 10 seconds to prevent accidental clicks.
 3. User clicks "Delete".
 4. The video is deleted and the modal closes.
@@ -64,6 +66,9 @@ Menu:
 
 * The 3-dot button is shown only on the user's own videos — on hover on desktop, always on mobile.
 * The menu has exactly three items: Edit, Change visibility, Delete.
+* The same menu opens from an edit button under the player on the author's own video page
+  ([US-Videos-01](./US-Videos-01-Watch-videos.md)), so managing a video does not require going back to the channel
+  page.
 
 Edit:
 
@@ -94,7 +99,8 @@ Change visibility:
 Delete:
 
 * Deleting requires a confirmation, with the confirm button disabled for 10 seconds.
-* The confirmation states that the video and everything attached to it are removed.
+* The confirmation states plainly that the deletion is permanent and immediate: the video, its files, its comments and
+  all rates are destroyed and cannot be recovered. There is no window and no undo.
 * After a deletion the video is gone from the channel, from search and from the feed.
 
 All three:
@@ -119,15 +125,26 @@ All three:
   API refuses the video to anyone but the author. **Accessible by link** is enforced on the *listing* paths instead: the
   video must be excluded from the search index, from feed candidates and from the channel's video list, while the watch
   path treats it like a public video. Getting this wrong in one listing leaks the video.
-* Deleting a video has to remove more than the row: the HLS playlist and segments, the MP4 renditions, the thumbnails,
-  the comments and the rates, plus its entries in the search index and the recommender. That is a fan-out over Kafka
-  with each service deleting what it owns, the same shape as channel deletion
+* The purge has to remove more than the row: the whole S3 prefix (the original, the HLS playlist and segments, the MP4
+  renditions and the thumbnails), the comments and replies on the video together with the rates on those comments, the
+  rates on the video itself, and its entries in the search index and the recommender. That is a fan-out over Kafka with
+  each service deleting what it owns, the same shape as channel deletion
   ([US-Channels-06](../channels/US-Channels-06-delete-own-channel.md)), and every step has to be idempotent.
-* Whether a deleted video is soft or hard deleted needs a decision. Nothing on the platform is deleted to a hidden
-  state — channel and account deletion is scheduled a week ahead and the content stays fully live until it runs
-  ([US-Channels-06](../channels/US-Channels-06-delete-own-channel.md)) — so a hidden video would be the only case of
-  its kind. Whether a video deletion should get a window of its own is the question worth answering first; the files
-  are large either way, so the actual removal from S3 may be better done by a background job than inside the request.
+* Inside the comments service, deleting the comments and the rates on them is one local transaction — same database,
+  so nothing has to be coordinated. The saga is the part that crosses services: the video service tells the comments,
+  search, recommendation and my-activity services to remove what they own, and each reports back.
+* **Watch history rows are not deleted with the video.** The row stays and renders as a placeholder saying the video is
+  no longer available, so a viewer's history keeps its shape instead of silently losing entries
+  ([US-My-activity-01](../my-activity/US-My-activity-01-Watch-history.md)). Rates are different: they are destroyed
+  with the video, so the entry simply leaves the rated videos list
+  ([US-My-activity-02](../my-activity/US-My-activity-02-Rated-videos.md)).
+* **Deleting one video is a hard delete, applied immediately.** There is no soft-deleted state and no window: the
+  10-second confirmation is the whole guard, which is why the modal has to say outright that this is permanent. A
+  window belongs to deleting a channel, where a single action takes everything at once
+  ([US-Channels-06](../channels/US-Channels-06-delete-own-channel.md)); one video the author chose deliberately does
+  not need one.
+* The files are large, so the removal from S3 may be better done by a background job than inside the request — the row
+  and the listings can go immediately while the bytes follow.
 * Turning comments or rates off raises a question the mockups do not answer: whether the existing comments and rates are
   hidden or simply frozen. Both are defensible; it needs a decision.
 * The audience setting is first chosen on upload ([US-Videos-05](./US-Videos-05-Upload-videos.md)) and can be changed

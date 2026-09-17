@@ -35,7 +35,9 @@ See similar videos — branches:
   ([US-Channels-06](../channels/US-Channels-06-delete-own-channel.md),
   [US-Account-01](../account/US-Account-01-Delete-own-account.md)).
 * Age-restricted videos are excluded for users whose date of birth
-  ([US-Auth-01](../auth/US-Auth-01-Account-creation-and-login.md)) says they are too young.
+  ([US-Auth-01](../auth/US-Auth-01-Account-creation-and-login.md)) says they are too young, and for channels whose
+  "Show age-restricted content" setting is off
+  ([US-Channels-03](../channels/US-Channels-03-current-channel-settings.md)).
 * The list is not paginated — it is a fixed block of up to 20.
 * A failure in this section does not break the video page.
 * On mobile the similar videos are not beside the player: they follow the video's row of actions as a single column of

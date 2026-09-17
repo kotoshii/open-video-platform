@@ -29,6 +29,8 @@ Header:
 
 * The header shows the avatar, channel name, subscriber count, video count and the "Show description" button.
 * A channel with no subscribers shows no subscriber count, rather than "0 subscribers".
+* The video count always matches the list below it for the viewer looking at the page: a visitor's count covers the
+  published, public videos they can actually see, while the author's own count covers everything in their list.
 * Sorting offers newest, most viewed and oldest.
 * The search input is part of the page but its behaviour belongs to
   [US-Search-03](../search/US-Search-03-Search-videos-on-channel-page.md), not to this story.
@@ -61,6 +63,15 @@ Subscribe button:
 
 Videos:
 
+* On the user's own channel the list shows **every** video the channel has: published ones, private ones, ones only
+  accessible by link, ones still uploading or processing, and ones whose upload failed or expired
+  ([US-Videos-05](../videos/US-Videos-05-Upload-videos.md)).
+* Each of those carries its state, so the author can tell at a glance what is published and what is not, and clicking
+  one that is not yet published opens its uploading page rather than the watch page.
+* On someone else's channel the list shows only published, public videos — private and accessible-by-link videos are
+  absent ([US-Videos-03](../videos/US-Videos-03-Manage-own-videos.md)), and so are age-restricted ones for a viewer
+  too young for them or browsing with "Show age-restricted content" off
+  ([US-Channels-03](./US-Channels-03-current-channel-settings.md)).
 * On desktop, hovering a video shows a 3-dot button on the video component; on mobile it is always rendered.
 * The 3-dot button is shown only on the user's own channel.
 * The contents of the 3-dot menu are video management actions — out of scope here, mentioned for context.
@@ -84,8 +95,15 @@ Mobile:
   ([US-Channels-02](./US-Channels-02-freely-switch-between-channels.md)), so switching channels changes which channel
   page is "own" without any re-authentication.
 * The page pulls from several services — channel info from Channels, the video list from Videos, the subscription state
-  and subscriber count from Subscriptions. Whether the counts are read live or kept as denormalized counters updated by
-  events needs a decision.
+  and subscriber count from Subscriptions.
+* **The video count is read live over gRPC, not kept as a denormalized counter.** It has to apply the same filter as
+  the list it sits above — visibility, and the viewer's age — so a stored number would need one counter per audience
+  to stay honest. A `COUNT(*)` over an index on the channel id, with the same `WHERE` clause the listing uses, is
+  more than enough at this scale, and it is what makes the count and the list agree by construction rather than by
+  a worker keeping up.
+* The subscriber count stays a denormalized counter maintained by `subscriber-count-worker`
+  ([US-Subscriptions-01](../subscriptions/US-Subscriptions-01-Subscribe-to-other-channels.md)) — it has no per-viewer
+  filter, so none of the above applies to it.
 
 **Links**
 

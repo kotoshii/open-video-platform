@@ -89,38 +89,39 @@ I18n
 
 6. [Channels] [Ability to create multiple channels on one account](/docs/user-stories/channels/US-Channels-01-create-multiple-channels.md)
 7. [Channels] [Ability to switch between channels freely](/docs/user-stories/channels/US-Channels-02-freely-switch-between-channels.md)
+8. [Channels] [Channel selection page](/docs/user-stories/channels/US-Channels-07-channel-selection-page.md)
 
-8. [Settings] [Manage own channel info/content preferences](/docs/user-stories/channels/US-Channels-03-current-channel-settings.md)
-9. [Settings] [Upload user pic](/docs/user-stories/channels/US-Channels-05-upload-user-pic.md)
-10. [Settings] [Change email](/docs/user-stories/account/US-Account-02-Change-email.md)
-11. [Settings] [Change password](/docs/user-stories/account/US-Account-03-Change-password.md)
+9. [Settings] [Manage own channel info/content preferences](/docs/user-stories/channels/US-Channels-03-current-channel-settings.md)
+10. [Settings] [Upload user pic](/docs/user-stories/channels/US-Channels-05-upload-user-pic.md)
+11. [Settings] [Change email](/docs/user-stories/account/US-Account-02-Change-email.md)
+12. [Settings] [Change password](/docs/user-stories/account/US-Account-03-Change-password.md)
 
-12. [Videos] [Upload videos](/docs/user-stories/videos/US-Videos-05-Upload-videos.md)
+13. [Videos] [Upload videos](/docs/user-stories/videos/US-Videos-05-Upload-videos.md)
 
-13. [Channels] [Ability to see own channel and other users' channels](/docs/user-stories/channels/US-Channels-04-see-own-and-other-channels.md)
+14. [Channels] [Ability to see own channel and other users' channels](/docs/user-stories/channels/US-Channels-04-see-own-and-other-channels.md)
 
-14. [Videos] [Manage own videos](/docs/user-stories/videos/US-Videos-03-Manage-own-videos.md)
-15. [Videos] [Watch videos](/docs/user-stories/videos/US-Videos-01-Watch-videos.md)
-16. [Videos] [Like/dislike videos](/docs/user-stories/videos/US-Videos-04-Like-dislike-videos.md)
-17. [Videos] [Download videos](/docs/user-stories/videos/US-Videos-02-Download-videos.md)
+15. [Videos] [Manage own videos](/docs/user-stories/videos/US-Videos-03-Manage-own-videos.md)
+16. [Videos] [Watch videos](/docs/user-stories/videos/US-Videos-01-Watch-videos.md)
+17. [Videos] [Like/dislike videos](/docs/user-stories/videos/US-Videos-04-Like-dislike-videos.md)
+18. [Videos] [Download videos](/docs/user-stories/videos/US-Videos-02-Download-videos.md)
 
-18. [Comments] [See other users' comments](/docs/user-stories/comments/US-Comments-01-See-comments.md)
-19. [Comments] [Post comments](/docs/user-stories/comments/US-Comments-03-Post-comment.md)
-20. [Comments] [Load replies](/docs/user-stories/comments/US-Comments-02-Load-replies.md)
-21. [Comments] [Reply to comments/replies](/docs/user-stories/comments/US-Comments-04-Reply-to-comments.md)
-22. [Comments] [Manage own comments/replies](/docs/user-stories/comments/US-Comments-05-Manage-own-comments.md)
-23. [Comments] [Like/dislike comments/replies](/docs/user-stories/comments/US-Comments-06-Like-dislike-comments.md)
+19. [Comments] [See other users' comments](/docs/user-stories/comments/US-Comments-01-See-comments.md)
+20. [Comments] [Post comments](/docs/user-stories/comments/US-Comments-03-Post-comment.md)
+21. [Comments] [Load replies](/docs/user-stories/comments/US-Comments-02-Load-replies.md)
+22. [Comments] [Reply to comments/replies](/docs/user-stories/comments/US-Comments-04-Reply-to-comments.md)
+23. [Comments] [Manage own comments/replies](/docs/user-stories/comments/US-Comments-05-Manage-own-comments.md)
+24. [Comments] [Like/dislike comments/replies](/docs/user-stories/comments/US-Comments-06-Like-dislike-comments.md)
 
-24. [Search] [Search videos](/docs/user-stories/search/US-Search-01-Search-videos.md)
-25. [Search] [Search channels](/docs/user-stories/search/US-Search-02-Search-channels.md)
-26. [Search] [Search videos on a specific channel](/docs/user-stories/search/US-Search-03-Search-videos-on-channel-page.md)
+25. [Search] [Search videos](/docs/user-stories/search/US-Search-01-Search-videos.md)
+26. [Search] [Search channels](/docs/user-stories/search/US-Search-02-Search-channels.md)
+27. [Search] [Search videos on a specific channel](/docs/user-stories/search/US-Search-03-Search-videos-on-channel-page.md)
 
-27. [Subscriptions] [Subscribe to other channels](/docs/user-stories/subscriptions/US-Subscriptions-01-Subscribe-to-other-channels.md)
-28. [Subscriptions] [See content from subscriptions in one place](/docs/user-stories/subscriptions/US-Subscriptions-03-Subscription-content-page.md)
-29. [Subscriptions] [Manage own subscriptions](/docs/user-stories/subscriptions/US-Subscriptions-02-Manage-own-subscriptions.md)
+28. [Subscriptions] [Subscribe to other channels](/docs/user-stories/subscriptions/US-Subscriptions-01-Subscribe-to-other-channels.md)
+29. [Subscriptions] [See content from subscriptions in one place](/docs/user-stories/subscriptions/US-Subscriptions-03-Subscription-content-page.md)
+30. [Subscriptions] [Manage own subscriptions](/docs/user-stories/subscriptions/US-Subscriptions-02-Manage-own-subscriptions.md)
 
-30. [Recommendations] [Similar videos on the video page](/docs/user-stories/recommendations/US-Recommendations-02-Similar-videos.md)
-31. [Recommendations] [Feed](/docs/user-stories/recommendations/US-Recommendations-01-Feed.md)
+31. [Recommendations] [Similar videos on the video page](/docs/user-stories/recommendations/US-Recommendations-02-Similar-videos.md)
+32. [Recommendations] [Feed](/docs/user-stories/recommendations/US-Recommendations-01-Feed.md)
 
 #### 2. V1 (after MVP) - TODO: need to decide the exact order
 
