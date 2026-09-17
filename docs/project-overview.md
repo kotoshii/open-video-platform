@@ -136,7 +136,7 @@ I18n
 
 8. [Settings] [Delete own channel](/docs/user-stories/channels/US-Channels-06-delete-own-channel.md) (GDPR)
 9. [Settings] [Delete account](/docs/user-stories/account/US-Account-01-Delete-own-account.md) (GDPR)
-10. [Settings] (TODO) Download own user data (GDPR)
+10. [Settings] [Download own user data](/docs/user-stories/account/US-Account-04-Download-own-user-data.md) (GDPR)
 
 ### Ideas for later
 
