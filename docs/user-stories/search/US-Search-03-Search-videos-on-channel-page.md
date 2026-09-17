@@ -45,7 +45,7 @@ Search within a channel — branches:
   separate endpoint for the channel page rather than overloading the global one.
 * The response can be smaller than the global one: the channel is already known, so the channel name and avatar do not
   need to be repeated per hit. Decide the exact shape when the endpoint is written.
-* The visibility rules still apply — a soft-deleted channel has no page to search on, and age-restricted videos are
+* The visibility rules still apply — a purged channel has no page to search on, and age-restricted videos are
   excluded for users too young by date of birth ([US-Auth-01](../auth/US-Auth-01-Account-creation-and-login.md)).
 * Results are paged the same way the channel's own video list is
   ([US-Channels-04](../channels/US-Channels-04-see-own-and-other-channels.md)), so searching does not change how the

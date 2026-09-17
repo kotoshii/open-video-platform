@@ -82,7 +82,8 @@ Branches:
 * One request for everything is right at this scale. For a channel with thousands of subscriptions, the rendered list
   becomes the limit before the payload does — the fix at that point is a virtualised list, not pagination, since the
   search needs every row.
-* Soft-deleted channels are left out ([US-Channels-06](../channels/US-Channels-06-delete-own-channel.md)).
+* A channel scheduled for deletion is still live, so it stays in the list until its purge removes the subscription
+  ([US-Channels-06](../channels/US-Channels-06-delete-own-channel.md)).
 * Unsubscribing and subscribing again here emit the same events as
   [US-Subscriptions-01](./US-Subscriptions-01-Subscribe-to-other-channels.md), including the subscription's creation
   time.

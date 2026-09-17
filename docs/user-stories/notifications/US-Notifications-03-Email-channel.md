@@ -40,7 +40,8 @@ Receive an email — branches:
 * The first reply or mention in a thread is emailed straight away; further ones in the same thread within 15 minutes
   arrive together in a single follow-up email.
 * A channel is never emailed about its own action.
-* Nothing from a soft-deleted channel is emailed.
+* A channel scheduled for deletion still sends and receives notification emails, since it is still live
+  ([US-Channels-06](../channels/US-Channels-06-delete-own-channel.md)); its purge is what stops them.
 
 **Tech notes**
 

@@ -82,7 +82,8 @@ Branches:
   itself.
 * The avatar row and the list in US-Subscriptions-02 are the same data — the current channel's subscriptions, most
   recent first — and can come from the same request.
-* Soft-deleted channels are left out of the row ([US-Channels-06](../channels/US-Channels-06-delete-own-channel.md)).
+* A channel scheduled for deletion is still live, so it stays in the row until its purge removes the subscription
+  ([US-Channels-06](../channels/US-Channels-06-delete-own-channel.md)).
 * The page shows one channel at a time rather than a merged timeline of everything the user follows. That keeps it a
   set of existing per-channel queries. A merged, date-sorted feed across every subscription would be a separate problem
   — fan-out — and a separate design.

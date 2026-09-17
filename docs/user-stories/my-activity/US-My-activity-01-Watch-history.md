@@ -48,8 +48,9 @@ Branches:
 
 * **Watching a video that is already in the history** — no second item is created; the existing one moves to the top
   with the new time.
-* **A video in the history is no longer available** — deleted, made private, or its channel soft-deleted; it is not
-  shown.
+* **A video in the history is no longer available** — deleted, made private, or its channel purged; it is not shown. A
+  video whose channel is only scheduled for deletion is still watchable and still shown
+  ([US-Channels-06](../channels/US-Channels-06-delete-own-channel.md)).
 * **No history yet** — the page shows an empty state.
 * **Nothing matches the search** — the list shows an empty state until the search is changed.
 * **Cancelling a confirmation** — the modal closes and nothing changes.

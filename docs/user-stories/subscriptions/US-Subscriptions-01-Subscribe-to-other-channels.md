@@ -66,8 +66,11 @@ Branches:
 * **The unsubscribe event must carry when the subscription was originally created.** US-Notifications-01 lowers the open
   new subscribers notification only if the removed subscription was counted in it, and that creation time is what it
   compares against. Without it, an unsubscribe can lower a count it was never part of.
-* Subscriptions to a soft-deleted channel are hidden, not deleted, so restoring the channel brings them back
-  ([US-Channels-06](../channels/US-Channels-06-delete-own-channel.md)).
+* Subscriptions to a channel scheduled for deletion are untouched and keep working, because the channel is still live
+  ([US-Channels-06](../channels/US-Channels-06-delete-own-channel.md)). They are removed by the purge, which also
+  emits the unsubscribe events that bring the subscriber counts down — including, for the channel's own outgoing
+  subscriptions, the original creation time the aggregated notifications compare against
+  ([US-Notifications-01](../notifications/US-Notifications-01-Notifications-config.md)).
 
 **Links**
 

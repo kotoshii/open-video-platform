@@ -62,9 +62,11 @@ Branches:
   ([US-Comments-06](./US-Comments-06-Like-dislike-comments.md)).
 * Deleting a top-level comment takes its replies with it, so the parent's reply-count row disappears rather than being
   decremented — only the video's comment count has to move, by one plus the number of replies.
-* Comments are hard deleted — the rows are removed, not flagged. Channels and accounts are soft deleted because they
-  can be restored; a comment has no restore flow, so there is nothing a tombstone would serve. A deleted comment simply
-  disappears, with no "[deleted]" placeholder left behind in the list.
+* Comments are hard deleted — the rows are removed, not flagged. Nothing on the platform is deleted to a hidden state:
+  a channel or account deletion is scheduled rather than soft applied
+  ([US-Channels-06](../channels/US-Channels-06-delete-own-channel.md)), and a comment has no window at all, so there is
+  nothing a tombstone would serve. A deleted comment simply disappears, with no "[deleted]" placeholder left behind in
+  the list.
 
 **Links**
 

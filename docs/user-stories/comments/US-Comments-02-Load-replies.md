@@ -40,7 +40,9 @@ Open a thread — branches:
 * Each page is appended to the replies already shown, not substituted for them.
 * Replies are ordered oldest first, so the conversation reads from top to bottom.
 * Replies are shown indented under their parent comment, and there is no further nesting — a thread is one flat list.
-* Replies of channels that are no longer available (soft deleted) are not shown.
+* Replies of channels that no longer exist are not shown; a channel scheduled for deletion is still live, so its
+  replies stay visible until the purge runs
+  ([US-Channels-06](../channels/US-Channels-06-delete-own-channel.md)).
 * Collapsing a thread hides the replies; expanding it again shows the ones already loaded, without fetching them a
   second time, for as long as the page stays open.
 * A failure inside one thread does not break the comment list around it.

@@ -44,9 +44,12 @@ Read the comments — branches:
 * Comment text longer than 400 characters is truncated and can be expanded in place.
 * The list loads more comments as the user scrolls — infinite scroll, not page controls.
 * Loading more never repeats a comment already shown and never skips one.
-* Comments of channels that are no longer available (soft deleted — see
-  [US-Channels-06](../channels/US-Channels-06-delete-own-channel.md) and
-  [US-Account-01](../account/US-Account-01-Delete-own-account.md)) are not shown.
+* Comments of channels that no longer exist are not shown. A channel scheduled for deletion is still a live channel,
+  so its comments stay visible until the purge runs
+  ([US-Channels-06](../channels/US-Channels-06-delete-own-channel.md),
+  [US-Account-01](../account/US-Account-01-Delete-own-account.md)).
+* The total in the header therefore always agrees with the list: comments are removed and the counter decremented by
+  the same purge, so there is no state in which the header counts comments the list hides.
 * An empty section shows an empty state, not an error.
 * A failure loading the comments replaces the section content with a full error state and a retry action — a toast is
   not enough here, since there would be nothing to look at behind it.
@@ -66,8 +69,10 @@ Read the comments — branches:
 * The author's channel name and avatar are denormalized into the comment rows and refreshed by the channel-updated event
   ([US-Channels-03](../channels/US-Channels-03-current-channel-settings.md)), so the list renders without calling the
   Channels service per row.
-* Comments of soft-deleted channels are filtered at serve time against current visibility, the same rule the feed and
-  search follow.
+* A channel is never hidden while it exists ([US-Channels-06](../channels/US-Channels-06-delete-own-channel.md)), so
+  the comment list needs no visibility filter on the author beyond the rows being gone after a purge. This is what
+  keeps the header total honest: the counter and the rows move together, instead of the counter including comments the
+  list filters out.
 * Like and dislike counts come from the `comment-rate-count-worker` and are eventually consistent
   ([US-Comments-06](./US-Comments-06-Like-dislike-comments.md)), which is also why sorting by Most likes or Most
   dislikes can be slightly behind.

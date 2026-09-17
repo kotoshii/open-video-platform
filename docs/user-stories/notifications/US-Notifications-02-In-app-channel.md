@@ -109,8 +109,9 @@ Actions:
   the partial unique index in the aggregation doc and needs no handling of its own.
 * The list, the badge and "Mark all as read" all key on the channel the user is acting as
   ([US-Channels-02](../channels/US-Channels-02-freely-switch-between-channels.md)).
-* Notifications about content from soft-deleted channels are filtered out when the list is served, so no preview of a
-  hidden comment ever appears ([US-Channels-06](../channels/US-Channels-06-delete-own-channel.md)).
+* No filtering by author availability is needed when the list is served: a channel is never hidden while it exists, so
+  a comment preview is either a live comment or a comment whose notification the purge has already taken with it
+  ([US-Channels-06](../channels/US-Channels-06-delete-own-channel.md)).
 * Opening a reply or a mention needs the video page to open one specific comment thread directly. That thread may sit
   far down an infinitely scrolled comment list ([US-Comments-01](../comments/US-Comments-01-See-comments.md)), so it has
   to be loaded on its own — through a comment id in the URL, for example — rather than by scrolling until it appears.

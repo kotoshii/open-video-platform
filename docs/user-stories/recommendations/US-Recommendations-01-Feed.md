@@ -33,9 +33,10 @@ Open the feed — branches:
 * The feed reflects the current channel's watch, like and dislike history.
 * A channel with no history gets the most popular videos first.
 * If the recommender cannot answer, the feed still returns results, using the same popularity fallback.
-* Videos of channels that are not available (soft deleted — see
-  [US-Channels-06](../channels/US-Channels-06-delete-own-channel.md) and
-  [US-Account-01](../account/US-Account-01-Delete-own-account.md)) are never returned.
+* Videos of channels that no longer exist are never returned. A channel scheduled for deletion is still a live
+  channel, so its videos appear as usual until the purge runs
+  ([US-Channels-06](../channels/US-Channels-06-delete-own-channel.md),
+  [US-Account-01](../account/US-Account-01-Delete-own-account.md)).
 * Age-restricted videos are excluded for users whose date of birth
   ([US-Auth-01](../auth/US-Auth-01-Account-creation-and-login.md)) says they are too young.
 * Loading more never repeats a video already shown and never skips one.
@@ -49,8 +50,8 @@ Open the feed — branches:
 * Use Gorse as the candidate source. It runs as its own service with its own storage, alongside the existing Postgres
   and Redis.
 * The pipeline is **candidates → filter → limit → paginate**. Gorse returns ids; this service owns the filtering, the
-  popularity fallback and the ordering — which is also why a soft-deleted channel disappears from the feed immediately,
-  without waiting for the recommender to catch up.
+  popularity fallback and the ordering — which is also why a purged channel's videos disappear from the feed
+  immediately, without waiting for the recommender to catch up.
 * Filtering by visibility happens at serve time against the current state, never by trusting what the recommender has
   indexed.
 * The recommender's "user" is the **channel**, not the account — an account can act as several channels

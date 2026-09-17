@@ -57,8 +57,8 @@ Download the data — branches:
 * The archive contains one JSON file per kind of data: the account, its channels, its videos, its comments and
   replies, its video and comment rates, its subscriptions, its watch history and its notification preferences.
 * Every channel of the account is included, whichever channel the user is currently acting as.
-* A channel that is soft deleted but still inside its restore window is part of the export, marked as deleted together
-  with the date it was deleted; everything it owns is exported like any other channel's data.
+* A channel with a deletion scheduled is part of the export like any other, and its entry carries the date that
+  deletion is due to run ([US-Channels-06](../channels/US-Channels-06-delete-own-channel.md)).
 * Videos are exported as metadata with a link to each video's page; the files themselves are not in the archive and
   are downloaded per video instead ([US-Videos-02](../videos/US-Videos-02-Download-videos.md)).
 * The last export date shown is the moment the stored archive was built, so the user can tell how current the
@@ -109,13 +109,11 @@ Download the data — branches:
 * Building the archive inside the request is right at this scale, since it is per-account metadata. If one account's
   history ever grows enough for that request to run long, the fix is to build it in a background job and let the user
   come back for the stored archive — which already exists, because a repeat export serves exactly that object.
-* **A soft-deleted channel inside its restore window is exported, carrying a flag that says so.** Until the purge runs
-  it is still the account's data ([US-Channels-06](../channels/US-Channels-06-delete-own-channel.md)), and the whole
-  point of the restore window is that it may come back. Leaving it out would make the export disagree with what the
-  platform actually holds; exporting it silently would misrepresent a deleted channel as a live one.
-* That flag is on the channel entry, and everything else is tied to a channel by id, so the services returning videos,
-  comments or subscriptions need no deleted-or-not notion of their own — they answer for every channel of the account
-  and the channel list says which of them is deleted.
+* A channel with a deletion scheduled needs no special handling: it is a live channel
+  ([US-Channels-06](../channels/US-Channels-06-delete-own-channel.md)), so every service answers for it exactly as for
+  any other. Only the date is worth carrying, on the channel entry, so the file says when that data is due to go.
+* That makes the export the natural way to take your data out before a scheduled deletion runs, which is worth
+  remembering when the window's length is revisited.
 
 **Links**
 

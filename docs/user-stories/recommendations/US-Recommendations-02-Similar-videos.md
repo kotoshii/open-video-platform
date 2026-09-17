@@ -30,9 +30,10 @@ See similar videos — branches:
 * Related videos are found without depending on other users' behaviour, so the list is useful from the first uploads.
 * When fewer than 20 usable related videos exist, the rest of the block is filled with random videos.
 * The video currently being watched is never in the list.
-* Videos of channels that are not available (soft deleted — see
-  [US-Channels-06](../channels/US-Channels-06-delete-own-channel.md) and
-  [US-Account-01](../account/US-Account-01-Delete-own-account.md)) are never returned.
+* Videos of channels that no longer exist are never returned. A channel scheduled for deletion is still a live
+  channel, so its videos appear as usual until the purge runs
+  ([US-Channels-06](../channels/US-Channels-06-delete-own-channel.md),
+  [US-Account-01](../account/US-Account-01-Delete-own-account.md)).
 * Age-restricted videos are excluded for users whose date of birth
   ([US-Auth-01](../auth/US-Auth-01-Account-creation-and-login.md)) says they are too young.
 * The list is not paginated — it is a fixed block of up to 20.

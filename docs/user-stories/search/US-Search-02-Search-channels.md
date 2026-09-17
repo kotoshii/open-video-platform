@@ -36,9 +36,10 @@ Search channels — branches:
 * The sorting popup offers Relevancy and Most popular; there are no filters for channel search.
 * The default order is Relevancy, and Most popular orders by subscriber count.
 * Submitting the search opens the dedicated search page, which loads and shows the results.
-* Channels that are not available (soft deleted — see
-  [US-Channels-06](../channels/US-Channels-06-delete-own-channel.md) and
-  [US-Account-01](../account/US-Account-01-Delete-own-account.md)) never appear in results.
+* Channels that no longer exist never appear in results. A channel scheduled for deletion is still a live channel, so
+  it is found as usual until the purge runs
+  ([US-Channels-06](../channels/US-Channels-06-delete-own-channel.md),
+  [US-Account-01](../account/US-Account-01-Delete-own-account.md)).
 * A query with no matches shows an empty state, not an error.
 * Results are paginated, with page controls at the bottom of the page; the list does not load more on scroll.
 * Clicking a result opens the corresponding channel page.

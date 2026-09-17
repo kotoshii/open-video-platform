@@ -123,9 +123,11 @@ All three:
   the comments and the rates, plus its entries in the search index and the recommender. That is a fan-out over Kafka
   with each service deleting what it owns, the same shape as channel deletion
   ([US-Channels-06](../channels/US-Channels-06-delete-own-channel.md)), and every step has to be idempotent.
-* Whether a deleted video is soft or hard deleted needs a decision. There is no restore flow here, unlike channels and
-  accounts, which points at a hard delete — but the files are large, so the actual removal from S3 may be better done
-  by a background job than inside the request.
+* Whether a deleted video is soft or hard deleted needs a decision. Nothing on the platform is deleted to a hidden
+  state — channel and account deletion is scheduled a week ahead and the content stays fully live until it runs
+  ([US-Channels-06](../channels/US-Channels-06-delete-own-channel.md)) — so a hidden video would be the only case of
+  its kind. Whether a video deletion should get a window of its own is the question worth answering first; the files
+  are large either way, so the actual removal from S3 may be better done by a background job than inside the request.
 * Turning comments or rates off raises a question the mockups do not answer: whether the existing comments and rates are
   hidden or simply frozen. Both are defensible; it needs a decision.
 * The audience setting is first chosen on upload ([US-Videos-05](./US-Videos-05-Upload-videos.md)) and can be changed

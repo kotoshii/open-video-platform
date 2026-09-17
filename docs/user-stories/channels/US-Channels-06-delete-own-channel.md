@@ -2,83 +2,162 @@
 
 **Description**
 
-As an authenticated user with a verified account and more than one channel, I want to delete a channel I no longer need,
-so that it and everything it published disappear from the platform — with a window to change my mind before that becomes
-permanent.
+As a registered user with a verified account and more than one channel, I want to schedule a channel I no longer need
+for deletion and keep a week to change my mind, so that it and everything it published disappear from the platform
+without a single click making that irreversible.
+
+Nothing is hidden during that week: the channel works exactly as it did before, and the user can keep acting as it.
+Deletion happens once, at the end of the window.
 
 **User flows**
 
-Delete a channel — main flow:
+Request the deletion — main flow:
 
 1. User opens the settings page on the Channel tab ([US-Channels-03](./US-Channels-03-current-channel-settings.md)).
 2. User sees the "Delete channel" button, styled as destructive (red).
-3. On click, a confirmation modal appears with text spelling out the consequences. Buttons: "Cancel" (primary, left) and
-   "Yes" (secondary, right).
+3. On click, a confirmation modal appears with text spelling out the consequences. Buttons: "Cancel" (primary, left)
+   and "Yes" (secondary, right).
 4. The "Yes" button stays disabled for 10 seconds to prevent accidental clicks, with the countdown shown in the button
    itself.
 5. After pressing "Yes", the user receives an email with a confirmation link.
 6. The email warns about the consequences once again.
 7. Opening the link takes the user to a dedicated page in the app.
 8. The link is validated (it lives for 5 minutes).
-9. If valid, the channel is deleted and the user is taken to the channel selection page (the same one as after logging
-   in).
-10. If only one channel is left, the selection page is skipped and the user lands on the homepage with a success
-    notification shown once.
-11. After the deletion, the user receives a second email saying the channel and its data are no longer accessible, and
-    that they can restore the channel within a week using the link in that email. After the week, the deletion is
-    permanent.
+9. If valid, the deletion is scheduled for a week later, and the page states the date and time it will happen.
+10. The user receives a second email confirming the date and carrying a link to cancel the deletion.
 
-Delete a channel — branches:
+During the week:
+
+1. The channel behaves exactly like any other channel: it is visible, its videos are watchable, findable in search and
+   present in feeds and in other users' subscriptions, and its comments stay where they are.
+2. The user can keep acting as it — uploading, commenting, subscribing, rating — with nothing restricted.
+3. The Channel tab of the settings page states that the deletion is scheduled, for when, and offers "Cancel deletion".
+
+Cancel the deletion:
+
+1. User clicks "Cancel deletion" in the settings page, or opens the cancel link from the second email.
+2. The schedule is cleared and a notification confirms it.
+3. Nothing else changes, because nothing had been removed.
+
+Branches:
 
 * **User cancels the confirmation** (step 3) — the modal closes and nothing happens.
 * **Expired or invalid link** (step 8) — the page explains what happened. There is deliberately no "resend" button, so
   channel deletion is not encouraged.
-* **Restore within the week** (step 11) — the user opens the restore link from the second email and the channel and its
-  content become visible again.
-* **Restore window passes** (step 11) — the channel and all its related data are deleted permanently, with no way to
+* **This is the last channel that is not already scheduled for deletion** (step 2) — the action is unavailable, and
+  the tab explains that the last channel goes with the account instead
+  ([US-Account-01](../account/US-Account-01-Delete-own-account.md)).
+* **The window passes** (after step 10) — the channel and all its data are deleted permanently, with no way to
   restore.
+* **The user is acting as that channel when the window passes** — the channel is gone, so the app asks them to pick
+  another one ([US-Channels-02](./US-Channels-02-freely-switch-between-channels.md)).
 
 **Acceptance criteria**
 
-* Only an account with more than one channel can delete a channel; the last remaining one goes away with the account
-  itself (Account settings epic in [project-overview.md](../../project-overview.md)).
+Requesting:
+
+* Only an account with more than one channel that is not already scheduled for deletion can schedule one; the last
+  remaining channel goes with the account itself
+  ([US-Account-01](../account/US-Account-01-Delete-own-account.md)).
 * The "Delete channel" button is in the Channel tab of the settings page and is styled as destructive.
 * Deleting requires a confirmation modal that states the consequences, with the confirm button disabled for 10 seconds
   and a visible countdown.
-* Confirming in the modal deletes nothing yet — it only sends the confirmation email.
+* Confirming in the modal schedules nothing yet — it only sends the confirmation email.
 * The confirmation link is valid for 5 minutes and works once.
 * An expired or invalid link shows a clear message and offers no way to resend it.
-* After a successful deletion the user continues to the channel selection page, or straight to the homepage with a
-  one-time success notification when only one channel is left.
-* Deleting a channel never logs the user out of the account.
-* A second email confirms the deletion and carries a restore link valid for one week.
-* Restoring within the week brings the channel and its content back as they were.
-* Once the week has passed, the channel and all its data are gone for good.
+* Opening a valid link schedules the deletion for one week later and states the date and time.
+* A second email confirms that date and carries a link to cancel the deletion, valid until the deletion happens.
+* Requesting a deletion never logs the user out of the account.
+
+During the window:
+
+* The channel is not hidden in any way: it is visible on the platform, its videos are watchable, searchable, and
+  present in feeds and subscriptions, and its comments and replies stay visible.
+* Every count that includes the channel — its subscriber count, the comment totals it contributes to, the rates it has
+  given — keeps its value, because nothing has been removed.
+* The user can keep acting as the channel with no restrictions: uploading, publishing, commenting, subscribing and
+  rating all work as usual.
+* The Channel tab states that a deletion is scheduled, when it will happen, and offers "Cancel deletion".
+* Cancelling from the settings page or from the email link clears the schedule and leaves the channel exactly as it
+  was.
+* After cancelling, the channel can be scheduled for deletion again in the same way.
+
+The deletion itself:
+
+* Once the week has passed, the channel and all its data are removed permanently, with no way to restore.
+* Everything the channel published disappears at that point — its videos, its comments and its subscriptions — and the
+  counts on other channels' content adjust accordingly.
+* If the user is acting as the channel when it is deleted, the app asks them to pick another channel.
 
 **Tech notes**
 
-* The channel is soft deleted first: all its content stays in the databases — videos, comments, subscriptions — but
-  nothing of it is visible. Comments are hidden, videos stop being indexed for search, the channel is not shown in other
-  users' subscriptions, and so on.
-* Full deletion means removing ALL related data: videos (database records and the physical files), subscriptions,
-  comments — everything, as if the channel never existed (logs aside, obviously).
-* Both the soft delete and the final purge fan out over Kafka; every service deletes the data it owns and reports back,
-  so this is a saga across services, not a single transaction. Each step has to be idempotent, since a purge may be
-  retried.
-* The purge is triggered a week after the soft delete by a scheduled job, not by the deletion request itself.
+The schedule:
+
+* `deletion_scheduled_at` on the channel row is the source of truth. A BullMQ delayed job triggers the purge when the
+  week is up, and a periodic sweep picks up rows whose job was lost — the same shape as the upload session expiry in
+  [US-Videos-05](../videos/US-Videos-05-Upload-videos.md).
+* The column exists rather than the job alone for three reasons: a week is a long time for the only record of a
+  deletion to live in Redis, the settings page has to read the date on every load, and BullMQ's jobs already depend on
+  that Redis running with `noeviction`.
+* Cancelling removes the delayed job and clears the column. Nothing has to be put back, which is the whole point of
+  the design.
+* The "more than one channel" rule counts channels without a deletion scheduled, so an account can never end up with
+  none.
+
+Why nothing is hidden:
+
+* **No other service needs a "scheduled for deletion" notion at all.** The channel is live until it is purged, so no
+  read path has to filter it, no counter disagrees with a listing, and no service needs a restore path — only the purge
+  events. This is the reason for the design: hiding content immediately would mean every service that stores a
+  denormalized copy has to hide it too, keep it retrievable, and put it back on a restore.
+
+The purge:
+
+* The purge fans out over Kafka; every service deletes the data it owns and reports back, so this is a saga across
+  services rather than a single transaction. Every step has to be idempotent, since a purge may be retried.
+* What has to go, in full — this list is the contract between the services, and the one in
+  [US-Account-01](../account/US-Account-01-Delete-own-account.md) is the same list applied to every channel of an
+  account:
+    * the channel's **videos** — rows, the whole S3 prefix (original, HLS, MP4 renditions, thumbnails), their search
+      index documents and their Gorse items ([US-Videos-03](../videos/US-Videos-03-Manage-own-videos.md));
+    * the **comments and replies** it wrote, and the rates other channels gave those comments;
+    * the **rates it gave** — on videos ([US-Videos-04](../videos/US-Videos-04-Like-dislike-videos.md)) and on comments
+      ([US-Comments-06](../comments/US-Comments-06-Like-dislike-comments.md)) — each emitting a decrement so the counts
+      on other channels' content come down instead of keeping a deleted channel's votes forever;
+    * its **subscriptions in both directions**: the channels it followed and the channels that followed it. The
+      outgoing ones emit unsubscribe events carrying the subscription's original creation time, which is what lets
+      aggregated new-subscriber notifications count down correctly
+      ([US-Subscriptions-01](../subscriptions/US-Subscriptions-01-Subscribe-to-other-channels.md),
+      [US-Notifications-01](../notifications/US-Notifications-01-Notifications-config.md));
+    * its **watch history** rows ([US-My-activity-01](../my-activity/US-My-activity-01-Watch-history.md));
+    * the **notifications it received** and its **notification preferences**
+      ([US-Notifications-01](../notifications/US-Notifications-01-Notifications-config.md));
+    * its **Gorse user** and the feedback recorded against it
+      ([US-Recommendations-01](../recommendations/US-Recommendations-01-Feed.md));
+    * its **avatar object** in MinIO ([US-Channels-05](./US-Channels-05-upload-user-pic.md));
+    * its **channel document** in the search index ([US-Search-02](../search/US-Search-02-Search-channels.md)).
+* Logs aside, nothing of the channel is left afterwards.
+
+Tokens and sessions:
+
 * Both emails go through the custom email module, the same one used for account confirmation
   ([US-Auth-02](../auth/US-Auth-02-Account-confirmation.md)).
-* The confirmation token is single-use with a 5-minute lifetime, the restore token lives for a week; both are kept
-  server-side (Redis fits the short-lived one).
-* Deleting the channel the user is currently acting as also has to reset the stored current channel
-  ([US-Channels-02](./US-Channels-02-freely-switch-between-channels.md)) and re-issue tokens, since the `channelIds`
-  claim changes.
+* The confirmation token is single-use with a 5-minute lifetime and belongs server-side (Redis fits). The cancel token
+  has to survive until the deletion happens, so it lives with the scheduled deletion rather than in a short-lived
+  store.
+* The `channelIds` claim goes stale when the purge runs, not when the deletion is requested — a week later, possibly
+  while the user is signed in and acting as that channel. The gateway rejects the stale channel id and the app asks for
+  a channel again, which [US-Channels-02](./US-Channels-02-freely-switch-between-channels.md) already covers.
 
 **Links**
 
+* [US-Account-01 — Delete own account](../account/US-Account-01-Delete-own-account.md)
 * [US-Auth-02 — Account confirmation](../auth/US-Auth-02-Account-confirmation.md)
 * [US-Channels-02 — Switch between channels](./US-Channels-02-freely-switch-between-channels.md)
 * [US-Channels-03 — Current channel settings](./US-Channels-03-current-channel-settings.md)
+* [US-Notifications-01 — Configure notifications](../notifications/US-Notifications-01-Notifications-config.md)
+* [US-Subscriptions-01 — Subscribe to other channels](../subscriptions/US-Subscriptions-01-Subscribe-to-other-channels.md)
+* [US-Videos-03 — Manage own videos](../videos/US-Videos-03-Manage-own-videos.md)
 
 **Tasks**
 

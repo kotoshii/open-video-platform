@@ -40,6 +40,10 @@ Edit the current channel — branches:
   "Delete channel" button.
 * The Account tab contains email, password, the email language and the "Delete account" button; its content belongs to
   the Account settings and I18n epics, not to this story.
+* When a deletion is already scheduled for the channel or the account, the corresponding tab states that, gives the
+  date it will run, and offers "Cancel deletion" in place of the delete button
+  ([US-Channels-06](./US-Channels-06-delete-own-channel.md),
+  [US-Account-01](../account/US-Account-01-Delete-own-account.md)).
 * Changes are applied only after an explicit "Save".
 * The channel name cannot be empty; validation matches the creation form
   ([US-Channels-01](./US-Channels-01-create-multiple-channels.md)).

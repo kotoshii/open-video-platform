@@ -49,9 +49,10 @@ Search videos — branches:
 * "Clear filters" removes every selected filter at once and leaves the order as it is.
 * Submitting the search opens the dedicated search page, which loads and shows the results.
 * Results match the query and respect the selected filters and order.
-* Videos of channels that are not available (soft deleted — see
-  [US-Channels-06](../channels/US-Channels-06-delete-own-channel.md) and
-  [US-Account-01](../account/US-Account-01-Delete-own-account.md)) never appear in results.
+* Videos of channels that no longer exist never appear in results. A channel scheduled for deletion is still a live
+  channel, so its videos are found as usual until the purge runs
+  ([US-Channels-06](../channels/US-Channels-06-delete-own-channel.md),
+  [US-Account-01](../account/US-Account-01-Delete-own-account.md)).
 * Age-restricted videos are excluded for users whose date of birth
   ([US-Auth-01](../auth/US-Auth-01-Account-creation-and-login.md)) says they are too young.
 * A query with no matches shows an empty state, not an error.
@@ -73,8 +74,9 @@ Search videos — branches:
   when changed and dropped when their channel or account is deleted. This is the same fan-out the channel-updated event
   already uses ([US-Channels-03](../channels/US-Channels-03-current-channel-settings.md)), so consumers must be
   idempotent and deduplicate.
-* Visibility still has to be enforced when serving: the index lags behind the database, and a soft-deleted channel has
-  to disappear from results immediately rather than at the next re-index.
+* Visibility still has to be enforced when serving: the index lags behind the database, so a video just made private,
+  or one whose channel has just been purged, has to disappear from results immediately rather than at the next
+  re-index.
 * The uploader's channel name and avatar are denormalized into the video document so results render without calling the
   Channels service per hit; they are refreshed by the same channel-updated event.
 * The query, the filters and the order belong in the URL of the search page, so that reloading it or sharing the link
