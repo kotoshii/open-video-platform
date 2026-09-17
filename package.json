@@ -2,7 +2,7 @@
 	"version": "0.1.0",
 	"repository": "https://github.com/kotoshii/open-video-platform.git",
 	"author": "pusuwa <40234487+kotoshii@users.noreply.github.com>",
-	"license": "LGPL-3.0-only",
+	"license": "MIT",
 	"private": true,
 	"scripts": {
 		"api:migrate": "yarn workspaces foreach -A --include \"./apps/api/*\" run db:migrate"

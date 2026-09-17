@@ -1,7 +1,7 @@
 {
 	"name": "@ovp-proto/types",
 	"version": "0.1.0",
-	"license": "LGPL-3.0-only",
+	"license": "MIT",
 	"exports": {
 		"./*": "./dist/generated/*.js",
 		"./utils/*": "./dist/src/utils/*.js"
