@@ -71,6 +71,11 @@ Rules:
   database — even on a shared server.
 * [ ] The same environment variable names everywhere, with different values. No service decides where its database is
   from `NODE_ENV`.
+* [ ] **Every connection pool has an explicit `max`.** `node-postgres` defaults to 10 per pool and each process has its
+  own, so the total is services × instances × 10 — which passes Postgres's default `max_connections` of 100 well before
+  the instance count looks interesting. Size it per service, raise `max_connections` deliberately rather than by
+  accident, and add pgBouncer in transaction mode if instances ever grow past a handful
+  ([scaling-to-multiple-instances.md](explainers/scaling-to-multiple-instances.md)).
 * [ ] Kafka topics owned per service, Redis keys prefixed per service, a MinIO bucket per purpose.
 
 Startup order:

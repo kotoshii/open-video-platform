@@ -31,6 +31,8 @@ Explainers:
 * [Protecting HLS segments without a database lookup](explainers/hls-segment-protection.md)
 * [Keeping notifications from turning into a stream](explainers/notification-aggregation.md)
 * [Upload progress across several instances: SSE and Redis pub/sub](explainers/sse-progress-and-redis-pubsub.md)
+* [FFmpeg parameters for video processing](explainers/ffmpeg-processing-parameters.md)
+* [Running more than one instance of everything](explainers/scaling-to-multiple-instances.md)
 * [Kubernetes, explained](explainers/kubernetes-explained.md)
 
 Trackers:

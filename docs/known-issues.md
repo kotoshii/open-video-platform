@@ -38,6 +38,22 @@ one malformed message blocks the partition permanently. Both are covered in the 
 **Related:** the same file already carries a TODO about several worker instances consuming one topic — the same class of
 problem.
 
+## The `infra/` folder is dead and contradicts the current design
+
+**Where:** `infra/` — `api-gateway/nginx.local.conf`, `file-server/`, `minio/`.
+
+**What happens:** all three predate the current architecture and have been superseded.
+[US-Videos-05](./user-stories/videos/US-Videos-05-Upload-videos.md) deprecates the file-server outright — MinIO behind
+`nginx-s3-gateway` replaces it, and the story says in as many words not to rebuild it. The gateway config there is
+superseded by `docker/nginx/templates/default.conf.template`, and the MinIO setup by the Compose init containers
+described in [infrastructure.md](./infrastructure.md).
+
+**Why it matters:** there are two nginx configurations for one gateway and nothing marks which is current. Anyone
+reading `infra/api-gateway/nginx.local.conf` — or any future session asked to work from "the nginx config" — will
+design against a layout that no longer exists. That has already happened once.
+
+**Fix:** delete the folder. Nothing references it, and the replacements are all under `docker/`.
+
 ## View deduplication key is missing the video id
 
 **Where:** `apps/workers/video-view-count-worker/src/video-view-counts/services/views-deduplication.service.ts`.

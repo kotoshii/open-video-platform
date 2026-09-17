@@ -156,6 +156,9 @@ Processing:
 * `video-processing-worker` consumes `VideoUploadCompleted` and schedules BullMQ tasks: one for the thumbnails, and one
   per resolution to produce the master MP4s. Each finished master file schedules a follow-up task that produces the HLS
   playlist and segments for it.
+* The encoding ladder and the exact ffmpeg parameters are in
+  [ffmpeg-processing-parameters.md](../../explainers/ffmpeg-processing-parameters.md). The HLS step is a remux
+  (`-c copy`) rather than a second encode, which is what makes the follow-up task cheap.
 * Events flow back as they happen: `VideoThumbnailsGenerated`, then a `VideoQualityReady` per quality, and finally
   `VideoProcessingCompleted` once every task for that video is done. The worker tracks per-video task state to know
   when that is.
