@@ -1,46 +1,97 @@
+# Open Video Platform
+
+A video hosting platform: upload, watch, comment, rate, subscribe, search and recommendations. It was first built a
+year ago as a set of microservices, and is now being reworked from scratch — the services move to a DDD architecture,
+and the features postponed the first time round get built.
+
+It is a side project, and its purpose is **learning backend architecture**: microservices, DDD, event-driven
+communication, and the scaling problems that come with them. The architectural ambition is the point rather than an
+accident, so designs here are chosen to practise a pattern, not to serve production traffic that does not exist.
+
 [Figma](https://www.figma.com/design/VGVNL768fIPaiAKDH5bYNU/Open-Video-Platform-Mockups) \
 [Specs Draft](https://docs.google.com/document/d/1w3OGQFO0zOfoknIgTX-Ki5ODx26wtgLixMBieLUYlbw/edit) (Google docs)
 
-### Tech Stack:
+---
+
+## Where everything is
+
+| Document                                       | What it holds                                                    |
+|------------------------------------------------|------------------------------------------------------------------|
+| [User stories](user-stories)                   | 48 stories across 12 epics — the specification the build follows |
+| [open-decisions.md](open-decisions.md)         | Everything the stories deliberately left unanswered              |
+| [known-issues.md](known-issues.md)             | Problems found in the existing implementation                    |
+| [infrastructure.md](infrastructure.md)         | Setup requirements that belong to no story                       |
+| [observability-plan.md](observability-plan.md) | Logs, metrics and traces, in the order they get built            |
+| [explainers/](explainers)                      | Why a given design was chosen, at length — see below             |
+
+### Epics
+
+| Epic     | Stories | Epic            | Stories |
+|----------|---------|-----------------|---------|
+| Auth     | 6       | Search          | 3       |
+| Channels | 7       | Subscriptions   | 3       |
+| Comments | 6       | My activity     | 3       |
+| Videos   | 5       | Notifications   | 3       |
+| Account  | 4       | I18n            | 3       |
+| UI/UX    | 3       | Recommendations | 2       |
+
+### Explainers
+
+* [Kafka deduplication and the inbox pattern](explainers/kafka-dedup-and-inbox-pattern.md) — why events are
+  deduplicated, what is broken today, and the outbox on the publishing side
+* [Protecting HLS segments without a database lookup](explainers/hls-segment-protection.md)
+* [Keeping notifications from turning into a stream](explainers/notification-aggregation.md)
+* [Upload progress across several instances: SSE and Redis pub/sub](explainers/sse-progress-and-redis-pubsub.md)
+* [FFmpeg parameters for video processing](explainers/ffmpeg-processing-parameters.md) — the encoding ladder and every
+  parameter behind it
+* [Running more than one instance of everything](explainers/scaling-to-multiple-instances.md)
+* [Environments, explained](explainers/environments-explained.md) — how the Compose setups fit together
+* [Observability, explained](explainers/observability-explained.md)
+* [Kubernetes, explained](explainers/kubernetes-explained.md)
+
+---
+
+## Tech stack
+
+**Language and apps**
 
 * TypeScript
 * Next.js + shadcn/ui (FE)
 * Nest.js (BE)
-* PostgreSQL (Primary DB)
-* Redis (BullMQ queues, view deduplication, short-lived tokens and cooldowns, pub/sub for upload progress)
+
+**Data**
+
+* PostgreSQL (primary DB)
 * Kysely (DB query builder)
 * Dbmate (DB migration tool)
-* Docker
-* Docker compose
-* Nginx (API Gateway)
-* Kafka
-* Tus (resumable file uploading)
-* gRPC
+* Redis (BullMQ queues, view deduplication, short-lived tokens and cooldowns, pub/sub for upload progress)
+* Elasticsearch (video and channel search)
+
+**Communication**
+
+* Kafka (events between services)
+* gRPC (synchronous calls between services)
+
+**Media**
+
 * MinIO (S3 file storage)
-* BullMQ (scheduled jobs)
 * FFmpeg (video processing, thumbnail generation)
+* Tus (resumable file uploading)
+* Plyr + hls.js (player)
+* Gorse (recommendations and similar videos)
+
+**Platform**
+
+* Nginx (API gateway), with nginx-s3-gateway in front of the buckets
 * Keycloak (identity provider)
-* nodemailer (emails)
+* BullMQ (scheduled and background jobs)
+* nodemailer + Handlebars (the platform's own email module)
+* Docker, Docker Compose
 
 Setup requirements for the local stack: [infrastructure.md](infrastructure.md) — how environments are organised:
 [environments-explained.md](explainers/environments-explained.md)
 
-Explainers:
-
-* [Kafka deduplication and the inbox pattern](explainers/kafka-dedup-and-inbox-pattern.md)
-* [Protecting HLS segments without a database lookup](explainers/hls-segment-protection.md)
-* [Keeping notifications from turning into a stream](explainers/notification-aggregation.md)
-* [Upload progress across several instances: SSE and Redis pub/sub](explainers/sse-progress-and-redis-pubsub.md)
-* [FFmpeg parameters for video processing](explainers/ffmpeg-processing-parameters.md)
-* [Running more than one instance of everything](explainers/scaling-to-multiple-instances.md)
-* [Kubernetes, explained](explainers/kubernetes-explained.md)
-
-Trackers:
-
-* [Open decisions](open-decisions.md) — everything the user stories deliberately left unanswered
-* [Known issues](known-issues.md) — problems found in the existing implementation
-
-### Monitoring stack
+## Monitoring stack
 
 * Grafana (dashboards, log and trace search, alerts)
 * Alloy (collector: receives, collects and forwards all telemetry)
@@ -54,9 +105,12 @@ and [observability-plan.md](observability-plan.md).
 
 ---
 
-### Work plan:
+## Work plan
 
-#### 0. Preparation
+Three stages: everything in **Preparation** is groundwork the rest leans on, **MVP** is the platform being usable end
+to end, and **V1** is what follows once it is.
+
+### 0. Preparation
 
 Logs & Monitoring
 
@@ -77,11 +131,11 @@ UI/UX (mostly related to FE work, but worth keeping in mind during BE developmen
 
 I18n
 
-* [Language selector](/docs/user-stories/i18n/US-I18n-01-Language-selector.md)
-* [Localized error messages](/docs/user-stories/i18n/US-I18n-02-Localized-error-messages.md)
-* [Localized emails](/docs/user-stories/i18n/US-I18n-03-Localized-emails.md)
+* [Language selector](user-stories/i18n/US-I18n-01-Language-selector.md)
+* [Localized error messages](user-stories/i18n/US-I18n-02-Localized-error-messages.md)
+* [Localized emails](user-stories/i18n/US-I18n-03-Localized-emails.md)
 
-#### 1. MVP
+### 1. MVP
 
 1. [Auth] [Account creation and authentication](user-stories/auth/US-Auth-01-Account-creation-and-login.md)
 2. [Auth] [Account confirmation](user-stories/auth/US-Auth-02-Account-confirmation.md)
@@ -89,59 +143,59 @@ I18n
 4. [Auth] [Ability to reset password](user-stories/auth/US-Auth-03-Password-reset.md)
 5. [Auth] [Ability to log out](user-stories/auth/US-Auth-06-Logging-out.md)
 
-6. [Channels] [Ability to create multiple channels on one account](/docs/user-stories/channels/US-Channels-01-create-multiple-channels.md)
-7. [Channels] [Ability to switch between channels freely](/docs/user-stories/channels/US-Channels-02-freely-switch-between-channels.md)
-8. [Channels] [Channel selection page](/docs/user-stories/channels/US-Channels-07-channel-selection-page.md)
+6. [Channels] [Ability to create multiple channels on one account](user-stories/channels/US-Channels-01-create-multiple-channels.md)
+7. [Channels] [Ability to switch between channels freely](user-stories/channels/US-Channels-02-freely-switch-between-channels.md)
+8. [Channels] [Channel selection page](user-stories/channels/US-Channels-07-channel-selection-page.md)
 
-9. [Settings] [Manage own channel info/content preferences](/docs/user-stories/channels/US-Channels-03-current-channel-settings.md)
-10. [Settings] [Upload user pic](/docs/user-stories/channels/US-Channels-05-upload-user-pic.md)
-11. [Settings] [Change email](/docs/user-stories/account/US-Account-02-Change-email.md)
-12. [Settings] [Change password](/docs/user-stories/account/US-Account-03-Change-password.md)
+9. [Settings] [Manage own channel info/content preferences](user-stories/channels/US-Channels-03-current-channel-settings.md)
+10. [Settings] [Upload user pic](user-stories/channels/US-Channels-05-upload-user-pic.md)
+11. [Settings] [Change email](user-stories/account/US-Account-02-Change-email.md)
+12. [Settings] [Change password](user-stories/account/US-Account-03-Change-password.md)
 
-13. [Videos] [Upload videos](/docs/user-stories/videos/US-Videos-05-Upload-videos.md)
+13. [Videos] [Upload videos](user-stories/videos/US-Videos-05-Upload-videos.md)
 
-14. [Channels] [Ability to see own channel and other users' channels](/docs/user-stories/channels/US-Channels-04-see-own-and-other-channels.md)
+14. [Channels] [Ability to see own channel and other users' channels](user-stories/channels/US-Channels-04-see-own-and-other-channels.md)
 
-15. [Videos] [Manage own videos](/docs/user-stories/videos/US-Videos-03-Manage-own-videos.md)
-16. [Videos] [Watch videos](/docs/user-stories/videos/US-Videos-01-Watch-videos.md)
-17. [Videos] [Like/dislike videos](/docs/user-stories/videos/US-Videos-04-Like-dislike-videos.md)
-18. [Videos] [Download videos](/docs/user-stories/videos/US-Videos-02-Download-videos.md)
+15. [Videos] [Manage own videos](user-stories/videos/US-Videos-03-Manage-own-videos.md)
+16. [Videos] [Watch videos](user-stories/videos/US-Videos-01-Watch-videos.md)
+17. [Videos] [Like/dislike videos](user-stories/videos/US-Videos-04-Like-dislike-videos.md)
+18. [Videos] [Download videos](user-stories/videos/US-Videos-02-Download-videos.md)
 
-19. [Comments] [See other users' comments](/docs/user-stories/comments/US-Comments-01-See-comments.md)
-20. [Comments] [Post comments](/docs/user-stories/comments/US-Comments-03-Post-comment.md)
-21. [Comments] [Load replies](/docs/user-stories/comments/US-Comments-02-Load-replies.md)
-22. [Comments] [Reply to comments/replies](/docs/user-stories/comments/US-Comments-04-Reply-to-comments.md)
-23. [Comments] [Manage own comments/replies](/docs/user-stories/comments/US-Comments-05-Manage-own-comments.md)
-24. [Comments] [Like/dislike comments/replies](/docs/user-stories/comments/US-Comments-06-Like-dislike-comments.md)
+19. [Comments] [See other users' comments](user-stories/comments/US-Comments-01-See-comments.md)
+20. [Comments] [Post comments](user-stories/comments/US-Comments-03-Post-comment.md)
+21. [Comments] [Load replies](user-stories/comments/US-Comments-02-Load-replies.md)
+22. [Comments] [Reply to comments/replies](user-stories/comments/US-Comments-04-Reply-to-comments.md)
+23. [Comments] [Manage own comments/replies](user-stories/comments/US-Comments-05-Manage-own-comments.md)
+24. [Comments] [Like/dislike comments/replies](user-stories/comments/US-Comments-06-Like-dislike-comments.md)
 
-25. [Search] [Search videos](/docs/user-stories/search/US-Search-01-Search-videos.md)
-26. [Search] [Search channels](/docs/user-stories/search/US-Search-02-Search-channels.md)
-27. [Search] [Search videos on a specific channel](/docs/user-stories/search/US-Search-03-Search-videos-on-channel-page.md)
+25. [Search] [Search videos](user-stories/search/US-Search-01-Search-videos.md)
+26. [Search] [Search channels](user-stories/search/US-Search-02-Search-channels.md)
+27. [Search] [Search videos on a specific channel](user-stories/search/US-Search-03-Search-videos-on-channel-page.md)
 
-28. [Subscriptions] [Subscribe to other channels](/docs/user-stories/subscriptions/US-Subscriptions-01-Subscribe-to-other-channels.md)
-29. [Subscriptions] [See content from subscriptions in one place](/docs/user-stories/subscriptions/US-Subscriptions-03-Subscription-content-page.md)
-30. [Subscriptions] [Manage own subscriptions](/docs/user-stories/subscriptions/US-Subscriptions-02-Manage-own-subscriptions.md)
+28. [Subscriptions] [Subscribe to other channels](user-stories/subscriptions/US-Subscriptions-01-Subscribe-to-other-channels.md)
+29. [Subscriptions] [See content from subscriptions in one place](user-stories/subscriptions/US-Subscriptions-03-Subscription-content-page.md)
+30. [Subscriptions] [Manage own subscriptions](user-stories/subscriptions/US-Subscriptions-02-Manage-own-subscriptions.md)
 
-31. [Recommendations] [Similar videos on the video page](/docs/user-stories/recommendations/US-Recommendations-02-Similar-videos.md)
-32. [Recommendations] [Feed](/docs/user-stories/recommendations/US-Recommendations-01-Feed.md)
+31. [Recommendations] [Similar videos on the video page](user-stories/recommendations/US-Recommendations-02-Similar-videos.md)
+32. [Recommendations] [Feed](user-stories/recommendations/US-Recommendations-01-Feed.md)
 
-#### 2. V1 (after MVP)
+### 2. V1 (after MVP)
 
 1. [Auth] [Session management](user-stories/auth/US-Auth-05-Session-management.md)
 
-2. [My activity] [See watch history](/docs/user-stories/my-activity/US-My-activity-01-Watch-history.md)
-3. [My activity] [See rated videos in one place](/docs/user-stories/my-activity/US-My-activity-02-Rated-videos.md)
-4. [My activity] [See own comments in one place](/docs/user-stories/my-activity/US-My-activity-03-My-comments.md)
+2. [My activity] [See watch history](user-stories/my-activity/US-My-activity-01-Watch-history.md)
+3. [My activity] [See rated videos in one place](user-stories/my-activity/US-My-activity-02-Rated-videos.md)
+4. [My activity] [See own comments in one place](user-stories/my-activity/US-My-activity-03-My-comments.md)
 
-5. [Notifications] [Configure notifications](/docs/user-stories/notifications/US-Notifications-01-Notifications-config.md)
-6. [Notifications] [In-app notifications](/docs/user-stories/notifications/US-Notifications-02-In-app-channel.md)
-7. [Notifications] [Email notifications](/docs/user-stories/notifications/US-Notifications-03-Email-channel.md)
+5. [Notifications] [Configure notifications](user-stories/notifications/US-Notifications-01-Notifications-config.md)
+6. [Notifications] [In-app notifications](user-stories/notifications/US-Notifications-02-In-app-channel.md)
+7. [Notifications] [Email notifications](user-stories/notifications/US-Notifications-03-Email-channel.md)
 
-8. [Settings] [Delete own channel](/docs/user-stories/channels/US-Channels-06-delete-own-channel.md) (GDPR)
-9. [Settings] [Delete account](/docs/user-stories/account/US-Account-01-Delete-own-account.md) (GDPR)
-10. [Settings] [Download own user data](/docs/user-stories/account/US-Account-04-Download-own-user-data.md) (GDPR)
+8. [Settings] [Delete own channel](user-stories/channels/US-Channels-06-delete-own-channel.md) (GDPR)
+9. [Settings] [Delete account](user-stories/account/US-Account-01-Delete-own-account.md) (GDPR)
+10. [Settings] [Download own user data](user-stories/account/US-Account-04-Download-own-user-data.md) (GDPR)
 
-### Ideas for later
+## Ideas for later
 
 * Playlists
 * Save videos (like "Watch later")
