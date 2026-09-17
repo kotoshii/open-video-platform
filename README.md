@@ -38,6 +38,9 @@ The specification lives in [`docs/`](docs) and is the source of truth for everyt
 The explainers are where the interesting parts are: HLS segment protection without a database lookup, the Kafka inbox
 and outbox patterns, notification aggregation, SSE progress across several instances, the FFmpeg encoding ladder.
 
+**On AI use:** the written material — the user stories, the explainers and this README — was produced with the help of
+AI. The technical work is not: the architecture, the decisions behind it and the code are done by hand.
+
 ## Architecture
 
 Each service owns its data and its database. They talk to each other in two ways: **Kafka** for events that others
