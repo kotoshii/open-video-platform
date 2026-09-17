@@ -52,6 +52,28 @@ Walk through what that means for `video-api`:
 4. If someone writes a query in `video-api` that reaches into the `comments` database, it fails — in preview, in
    development, and in production alike.
 
+Step 2 is the one that does not happen by itself. **Postgres grants `CONNECT` on every new database to `PUBLIC`**, so
+by default every user can open a connection to every database on the server, and the isolation above does not exist.
+It has to be revoked explicitly:
+
+```sql
+CREATE DATABASE video;
+CREATE USER video_api WITH PASSWORD '...';
+
+-- without this, any user on the server can connect to this database
+REVOKE CONNECT ON DATABASE video FROM PUBLIC;
+GRANT CONNECT ON DATABASE video TO video_api;
+
+-- from Postgres 15, PUBLIC can no longer create in the public schema,
+-- so the owning user needs it granted
+\connect video
+GRANT ALL ON SCHEMA public TO video_api;
+```
+
+Run one of those blocks per service from an init container, which is what
+[infrastructure.md](../infrastructure.md) means by a database, user and credentials per service. The `REVOKE` line is
+easy to leave out and impossible to notice: everything works, and nothing is isolated.
+
 That last point is why this matters for an architecture built around separate services. If preview simply let every
 service use one shared database, nothing would stop a quick cross-service join from sneaking in. It would work perfectly
 on every developer's machine and break only in production, where the databases really are separate. With a database and

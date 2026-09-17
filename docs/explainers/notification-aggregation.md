@@ -113,13 +113,12 @@ The write then becomes a single upsert:
 
 ```sql
 INSERT INTO notifications (channel_id, type, subject_id, count, first_event_at, activity_at)
-VALUES (...) ON CONFLICT (channel_id, type, subject_id)
-WHERE read_at IS NULL
-    DO
-UPDATE SET
-    count = notifications.count + EXCLUDED.count,
+VALUES (...)
+ON CONFLICT (channel_id, type, subject_id) WHERE read_at IS NULL
+DO UPDATE SET
+    count          = notifications.count + EXCLUDED.count,
     first_event_at = LEAST(notifications.first_event_at, EXCLUDED.first_event_at),
-    activity_at = GREATEST(notifications.activity_at, EXCLUDED.activity_at);
+    activity_at    = GREATEST(notifications.activity_at, EXCLUDED.activity_at);
 ```
 
 `first_event_at` and `activity_at` are explained in Parts 8 and 9.
@@ -193,19 +192,16 @@ UPDATE notifications
 SET count = count - 1
 WHERE channel_id = $1
   AND type = $2
-  AND subject_id IS NOT DISTINCT
-FROM $3
-    AND read_at IS NULL
-    AND first_event_at <= $removed_item_created_at;
+  AND subject_id IS NOT DISTINCT FROM $3
+  AND read_at IS NULL
+  AND first_event_at <= $removed_item_created_at;
 
-DELETE
-FROM notifications
+DELETE FROM notifications
 WHERE channel_id = $1
   AND type = $2
-  AND subject_id IS NOT DISTINCT
-FROM $3
-    AND read_at IS NULL
-    AND count <= 0;
+  AND subject_id IS NOT DISTINCT FROM $3
+  AND read_at IS NULL
+  AND count <= 0;
 ```
 
 In a batch, count how many removed items pass the check and subtract that number at once. Note that decrementing does

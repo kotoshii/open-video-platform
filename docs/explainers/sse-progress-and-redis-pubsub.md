@@ -25,6 +25,18 @@ data: {"quality":"720p","ready":true}
 The browser's `EventSource` reads each message as it arrives. If the connection drops, `EventSource` reconnects by
 itself.
 
+Two things have to be right before any of this is visible, and both are outside the application code:
+
+* **The response needs SSE headers** — `Content-Type: text/event-stream`, `Cache-Control: no-cache`,
+  `Connection: keep-alive` — and each message must end with a **blank line**, which is what marks it complete. A
+  message without its terminating newline sits in the browser's buffer until the next one arrives.
+* **Nginx must not buffer the response.** By default it collects proxied output before passing it on, which means
+  updates arrive in clumps, minutes late, or only when the connection closes. The gateway needs
+  `proxy_buffering off;` and `proxy_read_timeout` raised well above the default 60 seconds on the SSE route, or an idle
+  upload connection is cut while it waits.
+
+Both fail in the same direction — the code looks correct, the events are emitted, and the browser shows nothing.
+
 The important detail for everything below: **an open SSE connection is an object in the memory of one specific
 process.** Only that process can write to it. Another instance of the same service has no way to reach it.
 
@@ -152,7 +164,7 @@ remembers this part.
 So **test with at least two instances from the start.** With Docker Compose that is:
 
 ```text
-docker compose up --scale video-upload=2
+docker compose up --scale video-upload-api=2
 ```
 
 Then start several uploads at once. With pub/sub working, every one of them shows progress. If only some of them do, the

@@ -135,8 +135,72 @@ location ~ ^/hls/(?<expires>\d+)/(?<token>[^/]+)/(?<video_id>[^/]+)/(?<rest>.*)$
 `$secure_link` comes out as `""` when the token does not match, `"0"` when it matched but the time has passed, and
 `"1"` when it is good.
 
-On the API side it is roughly ten lines: compute the same hash, base64url-encode it, and build the URL that the watch
-endpoint returns.
+### Getting the secret into the config
+
+Nginx configuration files cannot read environment variables — there is no syntax for it. The official nginx image
+solves this at start-up: it runs `envsubst` over every `*.template` file in `/etc/nginx/templates/` and writes the
+result into `/etc/nginx/conf.d/`. That is exactly why the gateway config in this repository lives under
+`docker/nginx/templates/`.
+
+So the secret is written as a placeholder in the template:
+
+```nginx
+secure_link_md5 "$video_id$expires ${HLS_SECURE_LINK_SECRET}";
+```
+
+and supplied as an environment variable on the container. The same value goes to video-api, which is the other half of
+the pair ([infrastructure.md](../infrastructure.md)).
+
+One detail that confuses people the first time: the image's script only substitutes variables that actually exist in
+the environment, so nginx's own `$video_id` and `$expires` are left untouched. Running plain `envsubst` by hand without
+that restriction blanks every nginx variable in the file.
+
+### Computing the same token in the API
+
+Both sides must produce **byte-identical input** to MD5, and nginx's format is specific: MD5 of the string, then
+standard base64, then made URL-safe by replacing `+` with `-` and `/` with `_`, and stripping the `=` padding.
+
+```ts
+import crypto from "node:crypto";
+
+const expires = Math.floor(Date.now() / 1000) + 4 * 60 * 60;
+
+// must match secure_link_md5 exactly — including the space before the secret
+const payload = `${videoId}${expires} ${process.env.HLS_SECURE_LINK_SECRET}`;
+
+const token = crypto
+	.createHash("md5")
+	.update(payload)
+	.digest("base64")
+	.replaceAll("+", "-")
+	.replaceAll("/", "_")
+	.replaceAll("=", "");
+
+const playlistUrl = `/hls/${expires}/${token}/${videoId}/master.m3u8`;
+```
+
+**That space before the secret is part of the hashed string.** It is in the nginx directive above, so it must be in the
+payload here too. A mismatch of one character produces a completely different hash, and every request returns 403 with
+nothing explaining why — this is the single most likely thing to go wrong in the whole mechanism.
+
+`expires` is a Unix timestamp in **seconds**, not milliseconds. Sending milliseconds makes every link valid for
+approximately fifty thousand years, which is a quiet failure rather than a loud one.
+
+### Checking it works
+
+```bash
+# the real URL the API returned — expect 200
+curl -sI "http://localhost/hls/1789999999/ABC123/video-42/master.m3u8" | head -1
+
+# same URL with one character of the token changed — expect 403
+curl -sI "http://localhost/hls/1789999999/XBC123/video-42/master.m3u8" | head -1
+
+# valid token, expiry in the past — expect 410
+curl -sI "http://localhost/hls/1000000000/<token-for-that-expiry>/video-42/master.m3u8" | head -1
+```
+
+If the first line returns 403, the two payload strings disagree. Log both sides once while debugging, compare them
+character by character, then remove the logging — the string contains the secret.
 
 Two notes on the hash: the built-in module uses MD5 over a string containing the secret. What matters here is that the
 token cannot be forged without the secret, not collision resistance, so this is adequate. If SHA-256 is wanted instead,
