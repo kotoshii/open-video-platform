@@ -1,7 +1,8 @@
-# Kafka deduplication and the inbox pattern
+# Kafka deduplication, the inbox and the outbox
 
 Why the count workers deduplicate events, what is broken in how they do it today, what the inbox pattern is, and how to
-rebuild the deduplication on top of it.
+rebuild the deduplication on top of it. Part 9 covers the publishing side — why rolling a saga back when Kafka is
+unavailable is the wrong answer, and what the outbox does instead.
 
 Related: [known-issues.md](../known-issues.md).
 
@@ -291,3 +292,136 @@ Every row ends with the stream moving forward. That is the property the current 
   considered dead and dropped from the group mid-batch. If batches grow, heartbeat during processing as well.
 * `greatest(0, ...)` in the count update silently absorbs decrements that arrive when a count is already `0`. It
   prevents negative numbers, but it also hides drift — worth remembering when a count looks wrong.
+
+## Part 9 — The other half: the outbox
+
+Everything above is the consuming side. The publishing side has the mirror-image problem, and the code currently solves
+it with a saga, which does not work.
+
+### What the producer does today
+
+`apps/api/comment-rate-api/src/comment-rates/services/comment-rate.service.ts` rates a comment in two steps:
+
+1. `createCommentRate` — insert the row. Compensator: delete it.
+2. `sendCommentRateCreatedKafkaEvent` — publish to Kafka. Compensator: `async () => {}`.
+
+If the publish throws, `Saga.execute` runs the compensators in reverse, **the rate row is deleted**, and the caller
+rethrows, so the user gets an error and their like disappears.
+
+### Why that is the wrong answer
+
+**It contradicts what the stories promise.** [US-Comments-06](../user-stories/comments/US-Comments-06-Like-dislike-comments.md)
+and [US-Videos-04](../user-stories/videos/US-Videos-04-Like-dislike-videos.md) both state that counts are eventually
+consistent and that the *button state*, not the number, confirms the action. A late count is the designed behaviour.
+Rolling the rate back turns a few seconds of lag into "nobody can like anything while Kafka is down".
+
+**It does not actually protect anything.** Three holes the rollback cannot close:
+
+* **A crash between the two steps leaves no trace.** The `Saga` object lives in memory only; nothing about it is
+  persisted. Kill the process after the insert commits and no compensator ever runs. The row exists, the event was
+  never sent, and the count is wrong forever. Kafka being down is the benign case — the process dying is the one that
+  silently corrupts.
+* **The compensator is itself a call that can fail.** When the delete fails, `compensate()` logs it, collects it into
+  `compensationErrors`, and returns normally. The caller receives the original error and never learns the rollback did
+  not happen.
+* **`producer.send` does not fail fast.** kafkajs retries internally, so an unreachable broker holds the request open
+  for tens of seconds before throwing. Under load that is a queue of hung requests waiting to be told they failed.
+
+**And it is not what a saga is for.** A saga coordinates local transactions *across services*, where each step can be
+semantically undone — cancel the booking, refund the payment. Publishing an event is not a business operation in
+another service; it is an announcement that step 1 happened. The empty compensator is the honest admission that there
+is nothing to undo.
+
+### The outbox
+
+Write both facts in **one transaction in one database**:
+
+```sql
+BEGIN;
+INSERT INTO comment_rates (comment_id, channel_id, type) VALUES (...);
+INSERT INTO outbox (topic, key, payload) VALUES ('comment-rate-events', '<commentId>', '{...}');
+COMMIT;
+```
+
+A separate relay reads the outbox and publishes to Kafka, retrying until the broker accepts. The row and the intent to
+publish are now atomic: both land or neither does.
+
+```sql
+-- migrate:up
+create table outbox
+(
+    id           bigserial primary key,
+    topic        text        not null,
+    key          text,
+    payload      jsonb       not null,
+    created_at   timestamptz not null default now(),
+    published_at timestamptz
+);
+
+create index outbox_unpublished_idx on outbox (id) where published_at is null;
+
+-- migrate:down
+drop table outbox;
+```
+
+* The table lives in the **same database as the data being changed**, for the same reason the inbox does — otherwise
+  there is no shared transaction and nothing is gained.
+* `id` is a `bigserial` because publishing order matters: a create, an update and a delete for one comment must reach
+  the topic in that order, or the worker's deltas come out wrong.
+* The partial index keeps the relay's query cheap once most rows are published.
+
+### The relay
+
+A loop that runs every second or so — an interval in the service, or a BullMQ repeatable job:
+
+1. `select * from outbox where published_at is null order by id limit n`
+2. Publish each one, in that order.
+3. Mark them published once the broker acks.
+4. Delete published rows periodically, exactly like the inbox cleanup in Step 5.
+
+Two things to get right:
+
+* **Publish in `id` order and do not parallelise across a key.** One relay per service is the simple answer. If one is
+  ever too slow, shard by key so a given comment is always handled by the same worker — never round-robin the rows.
+* **Mark as published only after the broker acks.** A crash before that means the row is still unpublished and gets
+  sent again, which is at-least-once — precisely what the inbox on the other side is built to absorb.
+
+`BaseKafkaEventPayloadDto` mints a ULID `eventId` when it is constructed, so serialising the payload into the outbox
+row fixes that id once. Every republish carries the same id, the consumer's inbox recognises it, and the duplicate is
+skipped. **The outbox guarantees the event is published at least once; the inbox guarantees it takes effect exactly
+once. Neither is much use without the other.**
+
+### What the service code becomes
+
+The saga disappears:
+
+```ts
+await this.db.transaction().execute(async (trx) => {
+  const rate = await this.commentRateRepository.createCommentRate(trx, {commentId, channelId, type});
+  await this.outboxRepository.add(trx, KafkaTopic.CommentRateEvents, commentId,
+    new CommentRateCreatedKafkaEventPayloadDto(commentId, type));
+  return rate;
+});
+```
+
+No compensator, no rollback path, and the request no longer waits on Kafka at all. The same applies to
+`updateCommentRateSaga`, and to `deleteCommentRate`, which today deletes and emits with no error handling whatsoever —
+the same failure handled two different ways in one file.
+
+### What happens in each failure case afterwards
+
+| Failure                              | What happens                                                                                   |
+|--------------------------------------|------------------------------------------------------------------------------------------------|
+| Kafka is down                        | The rate is saved and the request succeeds. The relay retries until the broker returns.        |
+| Crash between the row and the event  | Impossible — one transaction, so both landed or neither did.                                   |
+| Crash after commit, before publish   | The row is still unpublished; the relay picks it up on the next pass.                          |
+| Crash after publish, before marking  | Republished, same `eventId`, the consumer's inbox skips it.                                    |
+| Database write fails                 | Nothing is written and nothing is published. The user gets an error, correctly this time.      |
+
+### Where sagas do belong
+
+Dropping the saga here is not an argument against the pattern — it is an argument for using it where there is genuinely
+something to compensate. In this project that is the channel and account purge
+([US-Channels-06](../user-stories/channels/US-Channels-06-delete-own-channel.md)) and the video deletion fan-out
+([US-Videos-03](../user-stories/videos/US-Videos-03-Manage-own-videos.md)): several services, each doing real work,
+each able to fail in a way the others have to react to. Rating a comment touches one database and one topic.
