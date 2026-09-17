@@ -123,7 +123,7 @@ I18n
 31. [Recommendations] [Similar videos on the video page](/docs/user-stories/recommendations/US-Recommendations-02-Similar-videos.md)
 32. [Recommendations] [Feed](/docs/user-stories/recommendations/US-Recommendations-01-Feed.md)
 
-#### 2. V1 (after MVP) - TODO: need to decide the exact order
+#### 2. V1 (after MVP)
 
 1. [Auth] [Session management](user-stories/auth/US-Auth-05-Session-management.md)
 
