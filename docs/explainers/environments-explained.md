@@ -3,7 +3,7 @@
 How one repository runs as production, as a preview anyone can start on their machine, and as a development setup with
 hot reload — and why each piece of the setup exists.
 
-The checklist version is the Environments section of [infrastructure.md](../infrastructure.md).
+The checklist version is the Environments section of [infrastructure.md](../specs/infrastructure.md).
 
 ---
 
@@ -71,7 +71,8 @@ GRANT ALL ON SCHEMA public TO video_api;
 ```
 
 Run one of those blocks per service from an init container, which is what
-[infrastructure.md](../infrastructure.md) means by a database, user and credentials per service. The `REVOKE` line is
+[infrastructure.md](../specs/infrastructure.md) means by a database, user and credentials per service. The `REVOKE` line
+is
 easy to leave out and impossible to notice: everything works, and nothing is isolated.
 
 That last point is why this matters for an architecture built around separate services. If preview simply let every

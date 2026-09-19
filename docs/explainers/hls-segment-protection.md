@@ -149,7 +149,7 @@ secure_link_md5 "$video_id$expires ${HLS_SECURE_LINK_SECRET}";
 ```
 
 and supplied as an environment variable on the container. The same value goes to video-api, which is the other half of
-the pair ([infrastructure.md](../infrastructure.md)).
+the pair ([infrastructure.md](../specs/infrastructure.md)).
 
 One detail that confuses people the first time: the image's script only substitutes variables that actually exist in
 the environment, so nginx's own `$video_id` and `$expires` are left untouched. Running plain `envsubst` by hand without

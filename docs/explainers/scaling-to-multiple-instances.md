@@ -26,7 +26,8 @@ Worth knowing what not to worry about:
 * **Authentication is stateless.** The access token is validated against Keycloak's JWKS
   ([US-Auth-04](../user-stories/auth/US-Auth-04-Session-persistence.md)), so any instance can verify any request. No
   server-side session, so **no sticky sessions are needed** — which is what makes everything else here tractable.
-* **The acting channel travels in a header** ([US-Channels-02](../user-stories/channels/US-Channels-02-freely-switch-between-channels.md)),
+* **The acting channel travels in a header**
+  ([US-Channels-02](../user-stories/channels/US-Channels-02-freely-switch-between-channels.md)),
   validated against the token's `channelIds` claim. Nothing about the current channel lives on a server.
 * **Short-lived tokens, cooldowns and view deduplication are already in Redis**, shared by every instance. A resend
   cooldown ([US-Auth-02](../user-stories/auth/US-Auth-02-Account-confirmation.md)) enforced in process memory would
@@ -37,7 +38,8 @@ Worth knowing what not to worry about:
   as within one, because Postgres is the thing deciding. A check-then-insert in application code would not.
 * **Kafka events are keyed by entity id** — `videoId`, `commentId`. This matters more than it looks: see Part 3.
 
-The JWKS cache and the paused-history flag cache ([US-My-activity-01](../user-stories/my-activity/US-My-activity-01-Watch-history.md))
+The JWKS cache and the paused-history flag cache
+([US-My-activity-01](../user-stories/my-activity/US-My-activity-01-Watch-history.md))
 are per-instance, which is fine. They are caches of external truth, not state — the worst case is one instance being a
 few seconds stale.
 
@@ -95,8 +97,8 @@ Two details worth knowing before doing this:
 
 * A variable in `proxy_pass` changes how nginx handles the URI, so the rewrite rules have to be written with that in
   mind rather than added on afterwards.
-* The `auth_request` subrequest that validates the token
-  ([infrastructure.md](../infrastructure.md)) has the same problem and needs the same treatment, otherwise every
+* The `auth_request` subrequest that validates the token ([infrastructure.md](../specs/infrastructure.md)) has the same
+  problem and needs the same treatment, otherwise every
   request in the system is validated by one instance no matter how many are running.
 
 ## Part 5 — A client's connection lives on one instance
@@ -195,31 +197,31 @@ apart from its SSE connections, which Part 5 already covers.
 
 Not every box is a Nest process, and the stateful ones each have their own answer:
 
-| Component         | How it scales                                                                                        |
-|-------------------|------------------------------------------------------------------------------------------------------|
+| Component         | How it scales                                                                                          |
+|-------------------|--------------------------------------------------------------------------------------------------------|
 | **Postgres**      | One writer. Read replicas are the next step, and only for read-heavy paths; nothing here needs it yet. |
-| **Keycloak**      | Clusterable, but needs its distributed cache configured — verify before running two.                  |
+| **Keycloak**      | Clusterable, but needs its distributed cache configured — verify before running two.                   |
 | **Redis**         | Must stay `noeviction` because BullMQ keeps jobs in it ([open-decisions.md](../open-decisions.md)).    |
-| **Kafka**         | Scales by partitions and brokers, not by consumers alone — see Part 3.                                |
-| **MinIO**         | Scales on its own; the services only hold credentials.                                                |
-| **Elasticsearch** | Its own cluster concern, unrelated to how many API instances query it.                                |
-| **Gorse**         | External service with its own storage; the feed service only calls it.                                |
+| **Kafka**         | Scales by partitions and brokers, not by consumers alone — see Part 3.                                 |
+| **MinIO**         | Scales on its own; the services only hold credentials.                                                 |
+| **Elasticsearch** | Its own cluster concern, unrelated to how many API instances query it.                                 |
+| **Gorse**         | External service with its own storage; the feed service only calls it.                                 |
 | **tusd**          | See Part 9.                                                                                            |
 
 ## Part 11 — The checklist
 
-| What                                      | State today                    | Needs                                                        |
-|-------------------------------------------|--------------------------------|--------------------------------------------------------------|
-| Stateless auth, channel in a header       | Works                          | —                                                            |
-| Cooldowns, tokens, view dedup in Redis    | Works                          | —                                                            |
-| Races settled by unique constraints       | Works                          | Keep it that way; no check-then-insert                       |
-| Kafka consumer groups                     | Works                          | Enough partitions; the inbox fix first                       |
-| Gateway upstream resolution               | **Resolves once at startup**   | `resolver` + variable `proxy_pass`, including `auth_request` |
-| SSE progress                              | Decided, not built             | Redis pub/sub as specified                                   |
-| Scheduled jobs                            | None yet                       | BullMQ repeatable jobs, or an advisory lock                  |
-| Outbox relay                              | Not built                      | One publisher per key: advisory lock or shard by key         |
-| Postgres connection pools                 | **Unbounded default**          | Explicit `max`, then pgBouncer                               |
-| tusd locking                              | Unknown                        | Verify before running several                                |
+| What                                   | State today                  | Needs                                                        |
+|----------------------------------------|------------------------------|--------------------------------------------------------------|
+| Stateless auth, channel in a header    | Works                        | —                                                            |
+| Cooldowns, tokens, view dedup in Redis | Works                        | —                                                            |
+| Races settled by unique constraints    | Works                        | Keep it that way; no check-then-insert                       |
+| Kafka consumer groups                  | Works                        | Enough partitions; the inbox fix first                       |
+| Gateway upstream resolution            | **Resolves once at startup** | `resolver` + variable `proxy_pass`, including `auth_request` |
+| SSE progress                           | Decided, not built           | Redis pub/sub as specified                                   |
+| Scheduled jobs                         | None yet                     | BullMQ repeatable jobs, or an advisory lock                  |
+| Outbox relay                           | Not built                    | One publisher per key: advisory lock or shard by key         |
+| Postgres connection pools              | **Unbounded default**        | Explicit `max`, then pgBouncer                               |
+| tusd locking                           | Unknown                      | Verify before running several                                |
 
 ## Part 12 — How to actually find these
 

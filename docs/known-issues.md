@@ -46,7 +46,7 @@ problem.
 [US-Videos-05](./user-stories/videos/US-Videos-05-Upload-videos.md) deprecates the file-server outright — MinIO behind
 `nginx-s3-gateway` replaces it, and the story says in as many words not to rebuild it. The gateway config there is
 superseded by `docker/nginx/templates/default.conf.template`, and the MinIO setup by the Compose init containers
-described in [infrastructure.md](./infrastructure.md).
+described in [infrastructure.md](specs/infrastructure.md).
 
 **Why it matters:** there are two nginx configurations for one gateway and nothing marks which is current. Anyone
 reading `infra/api-gateway/nginx.local.conf` — or any future session asked to work from "the nginx config" — will

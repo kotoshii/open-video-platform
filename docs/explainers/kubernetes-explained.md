@@ -3,7 +3,7 @@
 What Kubernetes is, what it would change compared with the Docker Compose setup, how the pieces of this project map
 onto it, and when it is worth doing.
 
-Related: [environments-explained.md](environments-explained.md), [infrastructure.md](../infrastructure.md).
+Related: [environments-explained.md](environments-explained.md), [infrastructure.md](../specs/infrastructure.md).
 
 ---
 

@@ -1,13 +1,14 @@
 # Infrastructure
 
 Setup requirements for the local stack that do not belong to any user story. Observability has its own plan in
-[observability-plan.md](./observability-plan.md).
+[observability-plan.md](observability-plan.md).
 
 ---
 
 ## Gateway prerequisites
 
-What the gateway configuration (`docker/nginx/templates/default.conf.template`) needs from the rest of the stack before
+What the gateway configuration (`../../docker/nginx/templates/default.conf.template`) needs from the rest of the stack
+before
 it can run.
 
 * [ ] **tusd runs with `-behind-proxy`**, so it builds upload URLs from the `X-Forwarded-Host` and `X-Forwarded-Proto`
@@ -25,7 +26,7 @@ it can run.
 ## Email module
 
 Keycloak's built-in verification and reset emails are deliberately not used
-([US-Auth-02](./user-stories/auth/US-Auth-02-Account-confirmation.md)), so the platform sends its own. Seven stories
+([US-Auth-02](../user-stories/auth/US-Auth-02-Account-confirmation.md)), so the platform sends its own. Seven stories
 depend on this module — account confirmation, password reset, email change, channel and account deletion, notification
 emails and localized emails — but none of them owns it, which is why it is described here.
 
@@ -34,13 +35,13 @@ What is decided:
 * [ ] A Nest module using **nodemailer**, sending on an event rather than inline in the request that triggered it. No
   user-facing request ever waits on mail delivery, and a failed send never fails the action that caused it.
 * [ ] **Handlebars** templates, living inside the module. User-supplied content is rendered with the escaping `{{ }}`
-  and never with `{{{ }}}` ([US-Notifications-03](./user-stories/notifications/US-Notifications-03-Email-channel.md)).
+  and never with `{{{ }}}` ([US-Notifications-03](../user-stories/notifications/US-Notifications-03-Email-channel.md)).
 * [ ] Every email is written in the account's email language, read together with the recipient's address
-  ([US-I18n-03](./user-stories/i18n/US-I18n-03-Localized-emails.md)), with English as the fallback for a template that
+  ([US-I18n-03](../user-stories/i18n/US-I18n-03-Localized-emails.md)), with English as the fallback for a template that
   has no translation.
 * [ ] A local mail catcher in the Compose stack, so development mail is visible rather than sent or silently dropped.
   This is separate from the mail catcher the observability stack may use for alerts, which deliberately bypasses the
-  platform ([observability-plan.md](./observability-plan.md)).
+  platform ([observability-plan.md](observability-plan.md)).
 
 Transport configuration, retry behaviour and template layout are settled while the module is built — they need no
 decision in advance.
@@ -48,7 +49,7 @@ decision in advance.
 ## Environments
 
 One `docker compose up` per environment. The reasoning behind every item is explained in
-[environments-explained.md](explainers/environments-explained.md).
+[environments-explained.md](../explainers/environments-explained.md).
 
 | Environment | Compose file                 | Postgres                                           | Apps                         |
 |-------------|------------------------------|----------------------------------------------------|------------------------------|
@@ -75,7 +76,7 @@ Rules:
   own, so the total is services × instances × 10 — which passes Postgres's default `max_connections` of 100 well before
   the instance count looks interesting. Size it per service, raise `max_connections` deliberately rather than by
   accident, and add pgBouncer in transaction mode if instances ever grow past a handful
-  ([scaling-to-multiple-instances.md](explainers/scaling-to-multiple-instances.md)).
+  ([scaling-to-multiple-instances.md](../explainers/scaling-to-multiple-instances.md)).
 * [ ] Kafka topics owned per service, Redis keys prefixed per service, a MinIO bucket per purpose.
 
 Startup order:

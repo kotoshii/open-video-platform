@@ -15,14 +15,14 @@ accident, so designs here are chosen to practise a pattern, not to serve product
 
 ## Where everything is
 
-| Document                                       | What it holds                                                    |
-|------------------------------------------------|------------------------------------------------------------------|
-| [User stories](user-stories)                   | 48 stories across 12 epics — the specification the build follows |
-| [open-decisions.md](open-decisions.md)         | Everything the stories deliberately left unanswered              |
-| [known-issues.md](known-issues.md)             | Problems found in the existing implementation                    |
-| [infrastructure.md](infrastructure.md)         | Setup requirements that belong to no story                       |
-| [observability-plan.md](observability-plan.md) | Logs, metrics and traces, in the order they get built            |
-| [explainers/](explainers)                      | Why a given design was chosen, at length — see below             |
+| Document                                             | What it holds                                                    |
+|------------------------------------------------------|------------------------------------------------------------------|
+| [User stories](user-stories)                         | 48 stories across 12 epics — the specification the build follows |
+| [open-decisions.md](open-decisions.md)               | Everything the stories deliberately left unanswered              |
+| [known-issues.md](known-issues.md)                   | Problems found in the existing implementation                    |
+| [infrastructure.md](specs/infrastructure.md)         | Setup requirements that belong to no story                       |
+| [observability-plan.md](specs/observability-plan.md) | Logs, metrics and traces, in the order they get built            |
+| [explainers/](explainers)                            | Why a given design was chosen, at length — see below             |
 
 ### Epics
 
@@ -88,7 +88,7 @@ accident, so designs here are chosen to practise a pattern, not to serve product
 * nodemailer + Handlebars (the platform's own email module)
 * Docker, Docker Compose
 
-Setup requirements for the local stack: [infrastructure.md](infrastructure.md) — how environments are organised:
+Setup requirements for the local stack: [infrastructure.md](specs/infrastructure.md) — how environments are organised:
 [environments-explained.md](explainers/environments-explained.md)
 
 ## Monitoring stack
@@ -101,7 +101,7 @@ Setup requirements for the local stack: [infrastructure.md](infrastructure.md) �
 * OpenTelemetry (instrumentation library inside the services, not a separate service)
 
 See [observability-explained.md](explainers/observability-explained.md)
-and [observability-plan.md](observability-plan.md).
+and [observability-plan.md](specs/observability-plan.md).
 
 ---
 
@@ -121,7 +121,7 @@ Logs & Monitoring
 * Tempo
 * OpenTelemetry
 
-Setup plan: [observability-plan.md](observability-plan.md)
+Setup plan: [observability-plan.md](specs/observability-plan.md)
 
 UI/UX (mostly related to FE work, but worth keeping in mind during BE development too)
 

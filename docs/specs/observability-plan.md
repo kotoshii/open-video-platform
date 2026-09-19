@@ -1,7 +1,7 @@
 # Observability plan
 
 How logs, metrics and traces get set up in this project, in the order they should be built. What the pieces are and
-why they exist is explained in [observability-explained.md](explainers/observability-explained.md) — read that first.
+why they exist is explained in [observability-explained.md](../explainers/observability-explained.md) — read that first.
 
 This is an infrastructure plan rather than an epic: no user ever sees it. Each phase ends with a check that proves the
 phase works before moving on.
@@ -10,16 +10,17 @@ phase works before moving on.
 
 ## Components
 
-| Component         | Role                                                                                             | Runs as                                          |
-|-------------------|--------------------------------------------------------------------------------------------------|--------------------------------------------------|
-| OpenTelemetry SDK | Produces traces and metrics inside every Nest service and worker                                 | Library, bootstrapped from shared code in `lib/` |
-| Alloy             | Receives OTLP data, collects container logs, scrapes infrastructure metrics, forwards everything | Container                                        |
-| Loki              | Log storage                                                                                      | Container                                        |
-| Prometheus        | Metric storage                                                                                   | Container                                        |
-| Tempo             | Trace storage                                                                                    | Container                                        |
-| Grafana           | Dashboards, log and trace search, alerts                                                         | Container                                        |
+| Component         | Role                                                                                             | Runs as                                               |
+|-------------------|--------------------------------------------------------------------------------------------------|-------------------------------------------------------|
+| OpenTelemetry SDK | Produces traces and metrics inside every Nest service and worker                                 | Library, bootstrapped from shared code in `../../lib` |
+| Alloy             | Receives OTLP data, collects container logs, scrapes infrastructure metrics, forwards everything | Container                                             |
+| Loki              | Log storage                                                                                      | Container                                             |
+| Prometheus        | Metric storage                                                                                   | Container                                             |
+| Tempo             | Trace storage                                                                                    | Container                                             |
+| Grafana           | Dashboards, log and trace search, alerts                                                         | Container                                             |
 
-Configuration lives under `docker/observability/`, and persistent data under `docker_data/`, next to the rest of the
+Configuration lives under `docker/observability/`, and persistent data under `../../docker_data`, next to the rest of
+the
 Compose setup.
 
 ---
@@ -51,7 +52,8 @@ The fastest way to see the whole picture working, before understanding every par
 
 ## Phase 2 — Logs
 
-* [ ] Add a JSON logger to every Nest service and worker, configured once in `lib/` — pino through `nestjs-pino` is the
+* [ ] Add a JSON logger to every Nest service and worker, configured once in `../../lib` — pino through `nestjs-pino` is
+  the
   usual choice; confirm its current state first.
 * [ ] Inject `trace_id` and `span_id` into every log line from the active OpenTelemetry context.
 * [ ] Services log to **standard output**. Alloy discovers the Docker containers and ships their output to Loki.
@@ -67,7 +69,8 @@ trace id.
 
 The most valuable phase for this architecture.
 
-* [ ] Create a shared tracing bootstrap in `lib/` using the OpenTelemetry Node SDK and its auto-instrumentations for
+* [ ] Create a shared tracing bootstrap in `../../lib` using the OpenTelemetry Node SDK and its auto-instrumentations
+  for
   HTTP, NestJS, `pg`, `ioredis` and `kafkajs`.
 * [ ] Load it **before** the application code — for example through Node's `--require` or `--import` — so the libraries
   are instrumented as they are imported.
@@ -143,7 +146,7 @@ Delivery:
 Alerts:
 
 * [ ] **Consumer lag growing for several minutes in a row.** This catches the stuck-partition problem described in
-  [known-issues.md](./known-issues.md) — the kind of failure that produces no error log at all.
+  [known-issues.md](../known-issues.md) — the kind of failure that produces no error log at all.
 * [ ] Error rate above a threshold for a service.
 * [ ] Failed batches in any count worker.
 * [ ] Failed BullMQ jobs.
@@ -155,7 +158,7 @@ Once everything works in the single container, replace it with Alloy, Loki, Prom
 services. This is where the configuration of each piece becomes something understood rather than something inherited.
 
 * [ ] One container per component, each with its configuration file under `docker/observability/`.
-* [ ] Persistent volumes under `docker_data/`.
+* [ ] Persistent volumes under `../../docker_data`.
 * [ ] Retention: traces 3 days, logs 7 days, metrics 15 days with a size cap of a few GB — roughly 10–20 GB for all
   observability data together.
 * [ ] Enable retention in Loki's compactor. Loki deletes nothing unless the compactor runs with retention enabled; a

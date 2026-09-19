@@ -3,7 +3,7 @@
 What logs, metrics and traces are, what Grafana, Alloy, Loki, Prometheus, Tempo and OpenTelemetry each do, how they
 connect, and the mistakes that are easy to make when setting them up for the first time.
 
-The concrete steps for this project are in [observability-plan.md](../observability-plan.md).
+The concrete steps for this project are in [observability-plan.md](../specs/observability-plan.md).
 
 ---
 
