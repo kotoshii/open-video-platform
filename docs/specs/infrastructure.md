@@ -26,7 +26,7 @@ it can run.
 ## Email module
 
 Keycloak's built-in verification and reset emails are deliberately not used
-([US-Auth-02](../user-stories/auth/US-Auth-02-Account-confirmation.md)), so the platform sends its own. Seven stories
+([US-Auth-02](user-stories/auth/US-Auth-02-Account-confirmation.md)), so the platform sends its own. Seven stories
 depend on this module — account confirmation, password reset, email change, channel and account deletion, notification
 emails and localized emails — but none of them owns it, which is why it is described here.
 
@@ -35,9 +35,9 @@ What is decided:
 * [ ] A Nest module using **nodemailer**, sending on an event rather than inline in the request that triggered it. No
   user-facing request ever waits on mail delivery, and a failed send never fails the action that caused it.
 * [ ] **Handlebars** templates, living inside the module. User-supplied content is rendered with the escaping `{{ }}`
-  and never with `{{{ }}}` ([US-Notifications-03](../user-stories/notifications/US-Notifications-03-Email-channel.md)).
+  and never with `{{{ }}}` ([US-Notifications-03](user-stories/notifications/US-Notifications-03-Email-channel.md)).
 * [ ] Every email is written in the account's email language, read together with the recipient's address
-  ([US-I18n-03](../user-stories/i18n/US-I18n-03-Localized-emails.md)), with English as the fallback for a template that
+  ([US-I18n-03](user-stories/i18n/US-I18n-03-Localized-emails.md)), with English as the fallback for a template that
   has no translation.
 * [ ] A local mail catcher in the Compose stack, so development mail is visible rather than sent or silently dropped.
   This is separate from the mail catcher the observability stack may use for alerts, which deliberately bypasses the

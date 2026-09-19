@@ -95,7 +95,7 @@ Actions:
 
 * How notifications are produced, aggregated and counted down belongs to
   [US-Notifications-01](./US-Notifications-01-Notifications-config.md) and
-  [notification-aggregation.md](../../explainers/notification-aggregation.md). This story is where they are shown.
+  [notification-aggregation.md](../../../explainers/notification-aggregation.md). This story is where they are shown.
 * The time shown and the order of the list come from **one field computed on the server** — the activity time: when the
   notification was created for a reply or a mention, and when it was last increased for an aggregated one. The client
   displays and sorts by that single field and never decides which timestamp applies.
@@ -124,7 +124,7 @@ Actions:
 * [US-Notifications-01 — Configure notifications](./US-Notifications-01-Notifications-config.md)
 * [US-Notifications-03 — Email notifications](./US-Notifications-03-Email-channel.md)
 * [US-UI-UX-02 — User-friendly error messages](../ui-ux/US-UI-UX-02-User-friendly-errors.md)
-* [notification-aggregation.md](../../explainers/notification-aggregation.md)
+* [notification-aggregation.md](../../../explainers/notification-aggregation.md)
 
 **Tasks**
 

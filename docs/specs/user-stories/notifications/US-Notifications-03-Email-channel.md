@@ -53,7 +53,7 @@ Receive an email — branches:
   ([US-Comments-01](../comments/US-Comments-01-See-comments.md)) — a different limit for a different place, not to be
   reused here.
 * Gathering follow-ups is the delayed-flush mechanism from
-  [notification-aggregation.md](../../explainers/notification-aggregation.md), keyed by recipient channel and thread
+  [notification-aggregation.md](../../../explainers/notification-aggregation.md), keyed by recipient channel and thread
   instead of by
   type, with one difference: the first event is sent immediately. It also opens a 15-minute window and schedules a flush
   for the end of it; events inside the window only accumulate; the flush sends one email if anything accumulated, then
@@ -70,7 +70,7 @@ Receive an email — branches:
 * [US-Comments-01 — See comments](../comments/US-Comments-01-See-comments.md)
 * [US-Notifications-01 — Configure notifications](./US-Notifications-01-Notifications-config.md)
 * [US-Notifications-02 — In-app notifications](./US-Notifications-02-In-app-channel.md)
-* [notification-aggregation.md](../../explainers/notification-aggregation.md)
+* [notification-aggregation.md](../../../explainers/notification-aggregation.md)
 
 **Tasks**
 

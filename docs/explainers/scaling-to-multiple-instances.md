@@ -24,22 +24,22 @@ something breaks it — a cached hostname, a timer, a connection that belongs to
 Worth knowing what not to worry about:
 
 * **Authentication is stateless.** The access token is validated against Keycloak's JWKS
-  ([US-Auth-04](../user-stories/auth/US-Auth-04-Session-persistence.md)), so any instance can verify any request. No
+  ([US-Auth-04](../specs/user-stories/auth/US-Auth-04-Session-persistence.md)), so any instance can verify any request. No
   server-side session, so **no sticky sessions are needed** — which is what makes everything else here tractable.
 * **The acting channel travels in a header**
-  ([US-Channels-02](../user-stories/channels/US-Channels-02-freely-switch-between-channels.md)),
+  ([US-Channels-02](../specs/user-stories/channels/US-Channels-02-freely-switch-between-channels.md)),
   validated against the token's `channelIds` claim. Nothing about the current channel lives on a server.
 * **Short-lived tokens, cooldowns and view deduplication are already in Redis**, shared by every instance. A resend
-  cooldown ([US-Auth-02](../user-stories/auth/US-Auth-02-Account-confirmation.md)) enforced in process memory would
+  cooldown ([US-Auth-02](../specs/user-stories/auth/US-Auth-02-Account-confirmation.md)) enforced in process memory would
   reset itself depending on which instance answered.
 * **Races are settled by the database, not by application checks.** The unique constraint on an active upload session
-  ([US-Videos-05](../user-stories/videos/US-Videos-05-Upload-videos.md)) and the partial unique index on open
+  ([US-Videos-05](../specs/user-stories/videos/US-Videos-05-Upload-videos.md)) and the partial unique index on open
   notifications ([notification-aggregation.md](notification-aggregation.md)) work exactly as well across ten instances
   as within one, because Postgres is the thing deciding. A check-then-insert in application code would not.
 * **Kafka events are keyed by entity id** — `videoId`, `commentId`. This matters more than it looks: see Part 3.
 
 The JWKS cache and the paused-history flag cache
-([US-My-activity-01](../user-stories/my-activity/US-My-activity-01-Watch-history.md))
+([US-My-activity-01](../specs/user-stories/my-activity/US-My-activity-01-Watch-history.md))
 are per-instance, which is fine. They are caches of external truth, not state — the worst case is one instance being a
 few seconds stale.
 
@@ -120,11 +120,11 @@ perfectly.
 Nothing in the code schedules anything yet, so this is a decision to take before the first timer is written rather than
 a bug to fix. The specs already call for several:
 
-* expiring upload sessions older than a day ([US-Videos-05](../user-stories/videos/US-Videos-05-Upload-videos.md));
+* expiring upload sessions older than a day ([US-Videos-05](../specs/user-stories/videos/US-Videos-05-Upload-videos.md));
 * running channel and account purges when their week is up, plus the sweep for schedules whose job was lost
-  ([US-Channels-06](../user-stories/channels/US-Channels-06-delete-own-channel.md));
+  ([US-Channels-06](../specs/user-stories/channels/US-Channels-06-delete-own-channel.md));
 * flushing batched notification emails at the end of their window
-  ([US-Notifications-03](../user-stories/notifications/US-Notifications-03-Email-channel.md)).
+  ([US-Notifications-03](../specs/user-stories/notifications/US-Notifications-03-Email-channel.md)).
 
 A Nest `@Cron` or `@Interval` fires **in every process that is running**. Three instances means three purges of the
 same channel, three flushes of the same batch, three emails in somebody's inbox. Idempotency limits the damage but is

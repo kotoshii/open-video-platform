@@ -100,7 +100,7 @@ Watch a video — branches:
   of the form `/hls/{expiry}/{token}/{videoId}/master.m3u8`, and Nginx validates the token by recomputing a hash with a
   shared secret. HLS playlists reference their segments relatively, so every segment request inherits the prefix and
   carries the token without any playlist being rewritten. No database lookup and no subrequest per segment — see
-  [hls-segment-protection.md](../../explainers/hls-segment-protection.md).
+  [hls-segment-protection.md](../../../explainers/hls-segment-protection.md).
 * Every video is tokenized, public ones included: a plain route cannot tell public from private, so any untokenized
   path would expose private videos too. Nginx leaves the token out of its cache key, so viewers still share one cached
   copy.
@@ -118,7 +118,7 @@ Watch a video — branches:
   here, so it needs a decided value.
 * **The dedup key is built from the viewer alone and does not include the video id**, so counting a view of one video
   currently blocks counting views of every other video for that viewer until the TTL expires — see
-  [known-issues.md](../../known-issues.md).
+  [known-issues.md](../../../known-issues.md).
 * Seek previews need thumbnail sprites generated while the video is processed, which makes this story depend on the
   Video uploading epic.
 * Since anonymous viewing is not planned, the acting channel is always present as the viewer; the IP and user agent
@@ -128,7 +128,7 @@ Watch a video — branches:
 
 * [Figma mockups](https://www.figma.com/design/VGVNL768fIPaiAKDH5bYNU/Open-Video-Platform-Mockups?node-id=18-722&p=f&t=0uaBWT7mgjLi4HBf-0)
 * [Plyr](https://github.com/sampotts/plyr)
-* [hls-segment-protection.md](../../explainers/hls-segment-protection.md)
+* [hls-segment-protection.md](../../../explainers/hls-segment-protection.md)
 * [US-Comments-01 — See comments](../comments/US-Comments-01-See-comments.md)
 * [US-Recommendations-02 — Similar videos](../recommendations/US-Recommendations-02-Similar-videos.md)
 * [US-Videos-02 — Download videos](./US-Videos-02-Download-videos.md)

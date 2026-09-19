@@ -310,8 +310,8 @@ rethrows, so the user gets an error and their like disappears.
 
 ### Why that is the wrong answer
 
-**It contradicts what the stories promise.** [US-Comments-06](../user-stories/comments/US-Comments-06-Like-dislike-comments.md)
-and [US-Videos-04](../user-stories/videos/US-Videos-04-Like-dislike-videos.md) both state that counts are eventually
+**It contradicts what the stories promise.** [US-Comments-06](../specs/user-stories/comments/US-Comments-06-Like-dislike-comments.md)
+and [US-Videos-04](../specs/user-stories/videos/US-Videos-04-Like-dislike-videos.md) both state that counts are eventually
 consistent and that the *button state*, not the number, confirms the action. A late count is the designed behaviour.
 Rolling the rate back turns a few seconds of lag into "nobody can like anything while Kafka is down".
 
@@ -422,6 +422,6 @@ the same failure handled two different ways in one file.
 
 Dropping the saga here is not an argument against the pattern — it is an argument for using it where there is genuinely
 something to compensate. In this project that is the channel and account purge
-([US-Channels-06](../user-stories/channels/US-Channels-06-delete-own-channel.md)) and the video deletion fan-out
-([US-Videos-03](../user-stories/videos/US-Videos-03-Manage-own-videos.md)): several services, each doing real work,
+([US-Channels-06](../specs/user-stories/channels/US-Channels-06-delete-own-channel.md)) and the video deletion fan-out
+([US-Videos-03](../specs/user-stories/videos/US-Videos-03-Manage-own-videos.md)): several services, each doing real work,
 each able to fail in a way the others have to react to. Rating a comment touches one database and one topic.

@@ -18,7 +18,7 @@ Edit the current channel — main flow:
       button (see [US-Channels-06](./US-Channels-06-delete-own-channel.md));
     * **Account** — email, password, the email language
       ([US-I18n-03](../i18n/US-I18n-03-Localized-emails.md)), and the "Delete account" button (not related to channels —
-      see the Account settings epic in [project-overview.md](../../project-overview.md)).
+      see the Account settings epic in [project-overview.md](../../../project-overview.md)).
 4. The Channel tab is open by default.
 5. User changes the channel name or description, or uploads a new user pic (see
    [US-Channels-05](./US-Channels-05-upload-user-pic.md)), and clicks "Save".

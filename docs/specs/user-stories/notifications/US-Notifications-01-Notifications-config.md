@@ -101,7 +101,7 @@ Aggregation:
   channel can forget to.
 * Preferences are checked when a notification is written, not when it is shown.
 * The aggregation mechanism — one open row per key, enforced by a partial unique index, closed when read — is written up
-  step by step in [notification-aggregation.md](../../explainers/notification-aggregation.md).
+  step by step in [notification-aggregation.md](../../../explainers/notification-aggregation.md).
 * **Counting down needs to know which notification an item was counted in.** Without that, a subscriber counted in
   yesterday's already-read notification who unsubscribes today would lower today's unrelated count. No stored lists are
   needed: the aggregated notification records the event time of the first item it counted, the removal event carries
@@ -113,10 +113,10 @@ Aggregation:
   ([US-Comments-04](../comments/US-Comments-04-Reply-to-comments.md)). A channel name is never parsed out of comment
   text: names are not guaranteed to be unique, and the prefilled text can be edited.
 * Creating, increasing and decreasing notifications must all be idempotent, because Kafka redelivers batches. Use the
-  inbox approach from [kafka-dedup-and-inbox-pattern.md](../../explainers/kafka-dedup-and-inbox-pattern.md), and do not
+  inbox approach from [kafka-dedup-and-inbox-pattern.md](../../../explainers/kafka-dedup-and-inbox-pattern.md), and do not
   build this
   worker on the current `BaseCountWorkerService` deduplication, which has the reserve-before-write problem described in
-  [known-issues.md](../../known-issues.md).
+  [known-issues.md](../../../known-issues.md).
 * New videos from subscriptions and likes on videos are not notification types for now.
 
 **Links**
@@ -126,7 +126,7 @@ Aggregation:
 * [US-Notifications-02 — In-app notifications](./US-Notifications-02-In-app-channel.md)
 * [US-Notifications-03 — Email notifications](./US-Notifications-03-Email-channel.md)
 * [US-UI-UX-02 — User-friendly error messages](../ui-ux/US-UI-UX-02-User-friendly-errors.md)
-* [notification-aggregation.md](../../explainers/notification-aggregation.md)
+* [notification-aggregation.md](../../../explainers/notification-aggregation.md)
 
 **Tasks**
 

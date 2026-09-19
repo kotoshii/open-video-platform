@@ -4,7 +4,7 @@ Everything `video-processing-worker` runs, in the order it runs it, with the rea
 be built from directly.
 
 The surrounding pipeline — the BullMQ tasks, the events, the S3 layout — is specified in
-[US-Videos-05](../user-stories/videos/US-Videos-05-Upload-videos.md). This document is the encoding half.
+[US-Videos-05](../specs/user-stories/videos/US-Videos-05-Upload-videos.md). This document is the encoding half.
 
 ---
 
@@ -214,7 +214,7 @@ does no harm and costs nothing.
 **4 seconds**, and this is the dial worth understanding rather than copying. Shorter segments mean playback starts
 sooner and the player reacts to bandwidth changes faster, at the cost of more HTTP requests per minute of video.
 Apple's guidance is 6 seconds; live streaming often uses 2. Four is a reasonable middle for video on demand, and
-segments are cached at the gateway anyway ([US-Videos-01](../user-stories/videos/US-Videos-01-Watch-videos.md)).
+segments are cached at the gateway anyway ([US-Videos-01](../specs/user-stories/videos/US-Videos-01-Watch-videos.md)).
 
 Whatever the number, it appears in three places and they must agree: the `4` in this expression, the `-hls_time` in
 Part 7, and the interval you expect to see when verifying in Part 11.
@@ -269,7 +269,7 @@ The worker writes this file, not ffmpeg. ffmpeg can produce a master playlist it
 packaged in a single command — and this pipeline deliberately encodes rungs as independent jobs that finish in any
 order. So the worker rewrites the master after each rung is packaged, listing the rungs that exist so far, ordered by
 bandwidth ascending. A player loading it mid-processing sees a valid playlist with fewer choices, which is exactly what
-[US-Videos-05](../user-stories/videos/US-Videos-05-Upload-videos.md) means by a video being publishable before every
+[US-Videos-05](../specs/user-stories/videos/US-Videos-05-Upload-videos.md) means by a video being publishable before every
 quality exists.
 
 ### BANDWIDTH
@@ -359,7 +359,7 @@ a keyframe rather than the exact frame, which is irrelevant for a thumbnail.
 `-q:v` is the JPEG quality scale where 2 is best and 31 worst; 2–5 is the usable range.
 
 These go to the private `thumbnails/` prefix. The one the author selects is copied to the public `thumbnail.jpg`
-server-side inside MinIO ([US-Videos-05](../user-stories/videos/US-Videos-05-Upload-videos.md)).
+server-side inside MinIO ([US-Videos-05](../specs/user-stories/videos/US-Videos-05-Upload-videos.md)).
 
 ## Part 10 — Seek previews
 
@@ -462,7 +462,7 @@ sprite1.jpg#xywh=320,0,160,90
 Timestamps are `HH:MM:SS.mmm` and the milliseconds are not optional. Paths are relative to the VTT file's own location.
 
 This is the format Plyr expects for its preview thumbnails, so wiring it up on the player side is a matter of pointing
-it at this file ([US-Videos-01](../user-stories/videos/US-Videos-01-Watch-videos.md)).
+it at this file ([US-Videos-01](../specs/user-stories/videos/US-Videos-01-Watch-videos.md)).
 
 ### Two things to check
 
@@ -524,7 +524,7 @@ emitted is what the player and the download dialog have to agree with:
 
 | Value                  | Used by                                                                                  |
 |------------------------|-------------------------------------------------------------------------------------------|
-| byte size              | the download dialog ([US-Videos-02](../user-stories/videos/US-Videos-02-Download-videos.md)) |
+| byte size              | the download dialog ([US-Videos-02](../specs/user-stories/videos/US-Videos-02-Download-videos.md)) |
 | width, height          | `RESOLUTION` in the master playlist                                                       |
 | actual bitrate         | `BANDWIDTH` in the master playlist                                                        |
 | profile and level      | `CODECS` in the master playlist                                                           |

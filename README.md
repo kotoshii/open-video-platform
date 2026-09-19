@@ -27,13 +27,13 @@ The specification lives in [`docs/`](docs) and is the source of truth for everyt
 
 **Start at [docs/project-overview.md](docs/project-overview.md)** — the tech stack, the epic list and the build order.
 
-| Where                                                  | What                                                   |
-|--------------------------------------------------------|--------------------------------------------------------|
-| [docs/user-stories/](docs/user-stories)                | 48 stories across 12 epics, one file each              |
-| [docs/open-decisions.md](docs/open-decisions.md)       | What the stories deliberately left unanswered          |
-| [docs/known-issues.md](docs/known-issues.md)           | Problems found in the existing implementation          |
-| [docs/infrastructure.md](docs/specs/infrastructure.md) | Setup requirements belonging to no single story        |
-| [docs/explainers/](docs/explainers)                    | Long-form reasoning behind the harder design decisions |
+| Where                                                        | What                                                   |
+|--------------------------------------------------------------|--------------------------------------------------------|
+| [docs/specs/user-stories/](docs/specs/user-stories)          | 48 stories across 12 epics, one file each              |
+| [docs/open-decisions.md](docs/open-decisions.md)             | What the stories deliberately left unanswered          |
+| [docs/known-issues.md](docs/known-issues.md)                 | Problems found in the existing implementation          |
+| [docs/specs/infrastructure.md](docs/specs/infrastructure.md) | Setup requirements belonging to no single story        |
+| [docs/explainers/](docs/explainers)                          | Long-form reasoning behind the harder design decisions |
 
 The explainers are where the interesting parts are: HLS segment protection without a database lookup, the Kafka inbox
 and outbox patterns, notification aggregation, SSE progress across several instances, the FFmpeg encoding ladder.
@@ -83,7 +83,7 @@ but predates the current design: it has no Keycloak, Elasticsearch or Gorse, and
 file-server. The application services are run from the host.
 
 The target setup — one `docker compose up` per environment, a database per service, healthchecks and init containers —
-is specified in [docs/infrastructure.md](docs/specs/infrastructure.md), with the reasoning in
+is specified in [docs/specs/infrastructure.md](docs/specs/infrastructure.md), with the reasoning in
 [docs/explainers/environments-explained.md](docs/explainers/environments-explained.md).
 
 Database migrations across every API, once the databases are up:

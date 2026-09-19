@@ -157,7 +157,7 @@ Processing:
   per resolution to produce the master MP4s. Each finished master file schedules a follow-up task that produces the HLS
   playlist and segments for it.
 * The encoding ladder and the exact ffmpeg parameters are in
-  [ffmpeg-processing-parameters.md](../../explainers/ffmpeg-processing-parameters.md). The HLS step is a remux
+  [ffmpeg-processing-parameters.md](../../../explainers/ffmpeg-processing-parameters.md). The HLS step is a remux
   (`-c copy`) rather than a second encode, which is what makes the follow-up task cheap.
 * Events flow back as they happen: `VideoThumbnailsGenerated`, then a `VideoQualityReady` per quality, and finally
   `VideoProcessingCompleted` once every task for that video is done. The worker tracks per-video task state to know
@@ -177,7 +177,7 @@ Progress updates:
   thumbnails ready, each quality ready, processing complete.
 * SSE needs response buffering turned off in Nginx, otherwise updates arrive in clumps or not at all.
 * The pub/sub decision below is explained step by step in
-  [sse-progress-and-redis-pubsub.md](../../explainers/sse-progress-and-redis-pubsub.md).
+  [sse-progress-and-redis-pubsub.md](../../../explainers/sse-progress-and-redis-pubsub.md).
 * **Decision: progress reaches the right instance through Redis pub/sub.** With several video-upload instances, a
   client's SSE connection lives on one of them while the Kafka event about its video may be consumed by another. The
   instance that consumes the event publishes a small update to a Redis channel named after the video; every instance
@@ -253,7 +253,7 @@ Access control and routing:
 * Access is decided by route in Nginx, not by bucket. Public routes: `hls/` and the selected `thumbnail.jpg`. Gated
   routes: everything else.
 * Private and age-restricted videos are served under a signed token in the path prefix, validated by Nginx without any
-  database lookup ([hls-segment-protection.md](../../explainers/hls-segment-protection.md),
+  database lookup ([hls-segment-protection.md](../../../explainers/hls-segment-protection.md),
   [US-Videos-01](./US-Videos-01-Watch-videos.md)). Public videos are tokenized as well, and the
   gateway's cache key leaves the token out.
 * Downloads are the exception to route-based serving: they go through a short-lived presigned MinIO URL rather than the
@@ -298,7 +298,7 @@ Traps to avoid:
 
 Still open:
 
-* All of the above are tracked in [open-decisions.md](../../open-decisions.md).
+* All of the above are tracked in [open-decisions.md](../../../open-decisions.md).
 
 **Links**
 
@@ -308,11 +308,11 @@ Still open:
 * [US-Channels-05 — Upload user pic](../channels/US-Channels-05-upload-user-pic.md)
 * [US-Recommendations-02 — Similar videos](../recommendations/US-Recommendations-02-Similar-videos.md)
 * [US-UI-UX-02 — User-friendly error messages](../ui-ux/US-UI-UX-02-User-friendly-errors.md)
-* [open-decisions.md](../../open-decisions.md)
-* [known-issues.md](../../known-issues.md)
+* [open-decisions.md](../../../open-decisions.md)
+* [known-issues.md](../../../known-issues.md)
 * [tus resumable upload protocol](https://tus.io/)
-* [hls-segment-protection.md](../../explainers/hls-segment-protection.md)
-* [sse-progress-and-redis-pubsub.md](../../explainers/sse-progress-and-redis-pubsub.md)
+* [hls-segment-protection.md](../../../explainers/hls-segment-protection.md)
+* [sse-progress-and-redis-pubsub.md](../../../explainers/sse-progress-and-redis-pubsub.md)
 * [nginx-s3-gateway](https://github.com/nginxinc/nginx-s3-gateway)
 
 **Tasks**

@@ -5,9 +5,9 @@ seconds saying a slightly larger number. Also: how counts go back down, what tim
 works differently.
 
 Written up for the Notifications epic:
-[US-Notifications-01](../user-stories/notifications/US-Notifications-01-Notifications-config.md) (the types and the
-rules), [US-Notifications-02](../user-stories/notifications/US-Notifications-02-In-app-channel.md) (the notification
-center) and [US-Notifications-03](../user-stories/notifications/US-Notifications-03-Email-channel.md) (email).
+[US-Notifications-01](../specs/user-stories/notifications/US-Notifications-01-Notifications-config.md) (the types and the
+rules), [US-Notifications-02](../specs/user-stories/notifications/US-Notifications-02-In-app-channel.md) (the notification
+center) and [US-Notifications-03](../specs/user-stories/notifications/US-Notifications-03-Email-channel.md) (email).
 
 ---
 

@@ -43,7 +43,7 @@ problem.
 **Where:** `infra/` — `api-gateway/nginx.local.conf`, `file-server/`, `minio/`.
 
 **What happens:** all three predate the current architecture and have been superseded.
-[US-Videos-05](./user-stories/videos/US-Videos-05-Upload-videos.md) deprecates the file-server outright — MinIO behind
+[US-Videos-05](./specs/user-stories/videos/US-Videos-05-Upload-videos.md) deprecates the file-server outright — MinIO behind
 `nginx-s3-gateway` replaces it, and the story says in as many words not to rebuild it. The gateway config there is
 superseded by `docker/nginx/templates/default.conf.template`, and the MinIO setup by the Compose init containers
 described in [infrastructure.md](specs/infrastructure.md).

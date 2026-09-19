@@ -62,7 +62,7 @@ Download a video — branches:
 * Every quality has an MP4, so the download dialog offers the same set of qualities the player does. The cost is that
   each video is stored twice over — once as HLS, once as MP4.
 * This story depends on the Video uploading epic producing those MP4 renditions in the first place (see
-  [project-overview.md](../../project-overview.md)).
+  [project-overview.md](../../../project-overview.md)).
 
 **Links**
 

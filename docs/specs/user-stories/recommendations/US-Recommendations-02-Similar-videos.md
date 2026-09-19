@@ -54,7 +54,7 @@ See similar videos — branches:
 * Start with a content-based recommender and add a `users`-based one once there is real interaction data; several
   item-to-item recommenders can be defined side by side, so this is a configuration change rather than a rewrite.
 * This depends on videos carrying labels — tags, category, language. The Video uploading epic has to capture them
-  (see [project-overview.md](../../project-overview.md)); without labels the content-based path is closed and only
+  (see [project-overview.md](../../../project-overview.md)); without labels the content-based path is closed and only
   embeddings remain.
 * If embeddings are used, this service produces them (from title, description and tags) and Gorse only stores and
   compares the vectors. That means picking an embedding model — an external API or a local one — which is a dependency

@@ -3,8 +3,8 @@
 How private and age-restricted videos are kept from being fetched by anyone who has the URL, without asking the
 database on every segment.
 
-Related: [US-Videos-01](../user-stories/videos/US-Videos-01-Watch-videos.md),
-[US-Videos-05](../user-stories/videos/US-Videos-05-Upload-videos.md).
+Related: [US-Videos-01](../specs/user-stories/videos/US-Videos-01-Watch-videos.md),
+[US-Videos-05](../specs/user-stories/videos/US-Videos-05-Upload-videos.md).
 
 ---
 
