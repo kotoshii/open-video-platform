@@ -64,7 +64,7 @@ Watch a video — branches:
 * The player supports play and pause, seeking, a preview while seeking, quality selection, playback speed,
   picture-in-picture and fullscreen.
 * A view is registered when the page loads the video for watching, not when playback starts.
-* Repeated views by the same viewer within the deduplication window do not increase the view count.
+* Repeated views of the same video by the same viewer within 24 hours do not increase the view count.
 * A video that is still processing shows only that state — no player, no video info, no comments, no similar videos.
 * A video the viewer is not allowed to watch shows only the corresponding state, with nothing else loaded.
 * A video that does not exist shows a full-page error state.
@@ -114,8 +114,8 @@ Watch a video — branches:
 * Watching emits a `VideoViewed` Kafka event keyed by video id, carrying the acting channel as the viewer together with
   the user agent and the IP address.
 * The `video-view-count-worker` deduplicates before counting: `ViewsDeduplicationService` reserves a Redis key per
-  viewer with a TTL, so repeat views inside that window are ignored. The TTL is what "once per viewer" actually means
-  here, so it needs a decided value.
+  viewer with a TTL, so repeat views inside that window are ignored. The TTL is **24 hours**, so a viewer counts once
+  per video per day.
 * **The dedup key is built from the viewer alone and does not include the video id**, so counting a view of one video
   currently blocks counting views of every other video for that viewer until the TTL expires — see
   [known-issues.md](../../../known-issues.md).

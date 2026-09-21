@@ -61,7 +61,12 @@ Branches:
 
 **Tech notes**
 
-* Keycloak already stores sessions and exposes an API to list and end them — no own session storage is needed.
+* Keycloak already stores sessions and exposes an API to list and end them — no own session storage is needed:
+    * list: `GET /admin/realms/{realm}/users/{user-id}/sessions`;
+    * end one: `DELETE /admin/realms/{realm}/sessions/{session}`.
+* The current session is the one whose id matches the `sid` claim of the request's access token. That is how the page
+  knows which entry to show on top, and how "End all other sessions" skips it — list, then delete every session except
+  `sid` ([US-Auth-06](US-Auth-06-Logging-out.md)).
 * OS and device name are derived by parsing the user agent; keep the raw user agent as well, since parsing is
   best-effort.
 * Location comes from a GeoIP lookup by IP; resolve it when the session is created and store the result, don't look it

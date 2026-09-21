@@ -110,8 +110,10 @@ The deletion itself:
 * The purge also removes the account's stored data export archive
   ([US-Account-04](./US-Account-04-Download-own-user-data.md)), which is an account-level object and so belongs to
   this story rather than to the per-channel list.
-* The identity lives in Keycloak, so the purge deletes the Keycloak user as well, not only the platform's own records.
-  That is also what ends every session: the tokens have no user left to belong to.
+* The identity lives in Keycloak, so the purge deletes the Keycloak user as well, not only the platform's own records —
+  as its last step, by asking `auth-api`, the only service that talks to Keycloak
+  ([service-map.md](../../service-map.md)). That is also what ends every session: the tokens have no user left to
+  belong to.
 * The email address needs no reservation of its own: the account is live until the purge, so nothing else can register
   on that address in the meantime, and it becomes free the moment the account is gone.
 * An account scheduled for deletion is still a normal account for everything else, including data export

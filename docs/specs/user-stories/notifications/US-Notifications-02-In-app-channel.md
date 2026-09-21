@@ -78,6 +78,7 @@ List:
 * Aggregated notifications show a count without names, in the singular or plural as needed — "1 person has subscribed
   to your channel recently", "47 people have subscribed to your channel recently".
 * The list is paginated with page controls at the bottom, not infinite scroll.
+* A short note in the notification center says that read notifications are deleted 90 days after they were read.
 
 Actions:
 
@@ -114,8 +115,11 @@ Actions:
   ([US-Channels-06](../channels/US-Channels-06-delete-own-channel.md)).
 * Opening a reply or a mention needs the video page to open one specific comment thread directly. That thread may sit
   far down an infinitely scrolled comment list ([US-Comments-01](../comments/US-Comments-01-See-comments.md)), so it has
-  to be loaded on its own — through a comment id in the URL, for example — rather than by scrolling until it appears.
-* How long read notifications are kept needs a decided value; without one the table only ever grows.
+  to be loaded on its own rather than by scrolling until it appears. That is the video page's `?comment=<id>` link,
+  specified in [US-Comments-01](../comments/US-Comments-01-See-comments.md).
+* **Read notifications are deleted 90 days after they were read**, by a daily cleanup job — without one the table only
+  ever grows. Unread notifications are never deleted by it. Run it as a BullMQ repeatable job, so it fires once however
+  many instances run ([scaling-to-multiple-instances.md](../../../explainers/scaling-to-multiple-instances.md)).
 
 **Links**
 

@@ -85,6 +85,7 @@ Edit:
   ([US-Comments-01](../comments/US-Comments-01-See-comments.md)).
 * Turning off rates hides the like and dislike buttons on the video page and prevents new ones
   ([US-Videos-04](./US-Videos-04-Like-dislike-videos.md)).
+* Neither deletes anything: turning comments or rates back on shows the existing ones again, as they were.
 
 Change visibility:
 
@@ -115,11 +116,11 @@ All three:
   ([US-Search-01](../search/US-Search-01-Search-videos.md)) and the recommender
   ([US-Recommendations-01](../recommendations/US-Recommendations-01-Feed.md)) can update their copies. Re-indexing is
   asynchronous, which is exactly why the UI has to warn about the delay rather than pretend the change is instant.
-* A thumbnail change probably does not need re-indexing — the search index does not rank on it — but the video list and
-  the feed cache do show it, so decide whether it rides along on the same event or is handled separately.
-* Tags are what content-based similar videos are built from
-  ([US-Recommendations-02](../recommendations/US-Recommendations-02-Similar-videos.md)), so editing them changes
-  recommendations, not only search.
+* A thumbnail change goes out on the same video-updated event as any other edit. One event per edit keeps it simple;
+  consumers that do not use the thumbnail, such as the search index, ignore the field.
+* The title, description and tags are what similar videos are found from
+  ([US-Recommendations-02](../recommendations/US-Recommendations-02-Similar-videos.md)), so editing them changes the
+  similar videos as well as search — through the same re-index.
 * The three visibility values already exist in the schema as `public`, `accessible_by_link` and `private`.
 * Enforcement differs per value, and this is worth being explicit about: **private** is enforced on the watch path — the
   API refuses the video to anyone but the author. **Accessible by link** is enforced on the *listing* paths instead: the
@@ -145,8 +146,9 @@ All three:
   not need one.
 * The files are large, so the removal from S3 may be better done by a background job than inside the request — the row
   and the listings can go immediately while the bytes follow.
-* Turning comments or rates off raises a question the mockups do not answer: whether the existing comments and rates are
-  hidden or simply frozen. Both are defensible; it needs a decision.
+* Turning comments or rates off **hides them and deletes nothing**. The existing comments and rates stay in their
+  databases, and turning the setting back on shows them exactly as they were — so this is a flag checked when serving
+  and when writing, not a cleanup.
 * The audience setting is first chosen on upload ([US-Videos-05](./US-Videos-05-Upload-videos.md)) and can be changed
   here. It is enforced on the watch path ([US-Videos-01](./US-Videos-01-Watch-videos.md)), so restricting a video takes
   effect for viewers straight away — but the search index stores the flag too, so the change has to be re-indexed like

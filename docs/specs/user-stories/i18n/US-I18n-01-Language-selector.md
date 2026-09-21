@@ -77,7 +77,9 @@ Change the language — branches:
 * The interface language never reaches emails: they use a separate account setting
   ([US-I18n-03](./US-I18n-03-Localized-emails.md)), which is why changing the language here shows a toast pointing
   to it.
-* Which languages the app ships with needs a decided list; the selector and the translation files follow from it.
+* The app ships with **English and Ukrainian** (listed as "English" and "Українська"). Ukrainian has more plural forms
+  than English, so shipping it from the start exercises the plural handling above instead of leaving it untested until a
+  third language arrives.
 
 **Links**
 

@@ -24,6 +24,8 @@ Create a channel — main flow:
 
 Create a channel — branches:
 
+* **Channel limit reached** (step 3) — the account already has 10 channels; "Create new channel" is unavailable and
+  says why.
 * **Empty channel name** (step 7) — the field shows a validation error and the request is not sent.
 * **Request fails** (step 8) — the default error flow applies: a toast notification
   ([US-UI-UX-02](../ui-ux/US-UI-UX-02-User-friendly-errors.md)); the modal stays open with the entered data.
@@ -34,6 +36,7 @@ Create a channel — branches:
 * The switcher has a "Create new channel" button at the very bottom of the list.
 * The creation form has channel name (required), description (optional) and avatar (optional).
 * The channel name cannot be empty.
+* An account can have at most 10 channels. Once it has 10, "Create new channel" is unavailable and says why.
 * On success the user sees a success toast and the app reloads with the new channel as the current identity.
 * Failures follow the default error flow ([US-UI-UX-02](../ui-ux/US-UI-UX-02-User-friendly-errors.md)).
 * The account's first channel is created together with the account, not through this flow
@@ -46,12 +49,16 @@ Create a channel — branches:
 * The channel id is never stored in the JWT. The client sends it in a header, and the gateway validates it against the
   `channelIds` claim of the verified token, passing the request through when it matches and rejecting it when it
   doesn't.
-* Creation is the one case that needs new tokens: the new channel has to appear in the `channelIds` claim, so the token
-  pair is re-issued once the channel is created. This is also why creation reloads the page while switching
+* Creation is the one case that needs new tokens: the new channel has to appear in the `channelIds` claim. Only
+  `auth-api` writes to Keycloak ([service-map.md](../../service-map.md)), so `channel-api` asks it over gRPC to add the
+  channel id — **synchronously, before responding** — and the frontend then refreshes its tokens. Adding it through an
+  event instead would race: the refresh could arrive first and return a token without the new channel.
+* This is also why creation reloads the page while switching
   ([US-Channels-02](./US-Channels-02-freely-switch-between-channels.md)) does not.
 * Once a channel is created, publish a Kafka event so the other services can pick it up (e.g. Search, to index the new
   channel).
-* The maximum number of channels per account needs a decided value.
+* An account can have at most 10 channels. The limit is checked on the server when a channel is created; the
+  unavailable button is only the visible half of it.
 
 **Links**
 

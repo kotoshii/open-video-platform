@@ -76,8 +76,12 @@ Edit the current channel — branches:
   that content, and this toggle decides whether they *want* to. Age is a permission and the toggle is a filter, which
   is why a user too young never sees the toggle at all.
 * The setting is per channel like the notification preferences, so the services that filter listings — Search, the
-  feed, similar videos, the channel page — read it for the acting channel alongside the age check they already do.
-  Both filters are applied when a listing is served, never at index time, since either can change at any moment.
+  feed, similar videos, the channel page, the watch page — read it for the acting channel alongside the age check they
+  already do. Both filters are applied when a listing is served, never at index time, since either can change at any
+  moment.
+* How those services get the two values ([service-map.md](../../service-map.md)): the viewer's date of birth is the
+  token's `birthdate` claim, so age is computed locally with no call; this setting is fetched from `channel-api` over
+  gRPC and cached briefly, since the user can change it at any time.
 
 **Links**
 

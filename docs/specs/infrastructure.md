@@ -32,9 +32,12 @@ emails and localized emails — but none of them owns it, which is why it is des
 
 What is decided:
 
-* [ ] A Nest module using **nodemailer**, sending on an event rather than inline in the request that triggered it. No
-  user-facing request ever waits on mail delivery, and a failed send never fails the action that caused it.
-* [ ] **Handlebars** templates, living inside the module. User-supplied content is rendered with the escaping `{{ }}`
+* [ ] A dedicated **`email-worker`** using **nodemailer**, consuming "send this email" events from the services that
+  need one, rather than sending inline in the request that triggered it. No user-facing request ever waits on mail
+  delivery, and a failed send never fails the action that caused it ([service-map.md](service-map.md)).
+* [ ] The worker looks up the recipient's address from `auth-api` and the email language from `account-api` at send
+  time; the events carry the account id, not the address.
+* [ ] **Handlebars** templates, living inside the worker. User-supplied content is rendered with the escaping `{{ }}`
   and never with `{{{ }}}` ([US-Notifications-03](user-stories/notifications/US-Notifications-03-Email-channel.md)).
 * [ ] Every email is written in the account's email language, read together with the recipient's address
   ([US-I18n-03](user-stories/i18n/US-I18n-03-Localized-emails.md)), with English as the fallback for a template that
@@ -82,9 +85,15 @@ Rules:
 Startup order:
 
 * [ ] Healthchecks on Postgres, Kafka, Keycloak, MinIO and Redis; apps depend on them with `service_healthy`.
+* [ ] Every API and worker exposes a health endpoint and has a Compose healthcheck that uses it, so anything waiting
+  on an app — the gateway, `docker compose up --wait`, the CI smoke test — waits until it can actually answer, not
+  just until its process has started ([ci-with-github-actions.md](../explainers/ci-with-github-actions.md), Part 8).
 * [ ] One-off init containers for dbmate migrations per database, Kafka topic creation, and MinIO buckets with their
   lifecycle rules; apps depend on them with `service_completed_successfully`.
 * [ ] Keycloak imports `docker/keycloak/realm.json` on start.
+* [ ] Elasticsearch runs from an image with the `analysis-ukrainian` plugin installed. Plugins are installed into the
+  image before the node starts, not into a running container — a node without it refuses any index that uses the
+  `ukrainian` analyzer ([US-Search-01](user-stories/search/US-Search-01-Search-videos.md)).
 
 Development mode:
 

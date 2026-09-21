@@ -49,6 +49,8 @@ Search videos — branches:
 * "Clear filters" removes every selected filter at once and leaves the order as it is.
 * Submitting the search opens the dedicated search page, which loads and shows the results.
 * Results match the query and respect the selected filters and order.
+* A search finds other forms of the same word, in English and in Ukrainian — "cats" finds "cat", and "котик" finds
+  "котики".
 * Videos of channels that no longer exist never appear in results. A channel scheduled for deletion is still a live
   channel, so its videos are found as usual until the purge runs
   ([US-Channels-06](../channels/US-Channels-06-delete-own-channel.md),
@@ -72,6 +74,29 @@ Search videos — branches:
 
 * Use Elasticsearch in Docker for the search implementation, reached through the API — the client never talks to
   Elasticsearch directly.
+* **Language analysis.** Titles and descriptions may be English or Ukrainian, and a video's language is not recorded.
+  A field can have only one analyzer, so index title and description as multi-fields: the base field with the
+  `standard` analyzer, `.en` with the built-in `english` analyzer, and `.uk` with the `ukrainian` analyzer — then
+  query all three with `multi_match`. Every video's text goes through every language's analyzer; the one that fits
+  produces proper word roots, and the others only add a few harmless terms.
+* The `ukrainian` analyzer is **not built into Elasticsearch**. It comes from the official `analysis-ukrainian`
+  plugin, which reduces Ukrainian words to their base form, so "котик", "котики" and "котиків" match each other.
+  Without it, Cyrillic text is still split into words correctly, but every form of a word counts as a different word.
+  The plugin has to be part of the Elasticsearch image — it cannot be added to a running node
+  ([infrastructure.md](../../infrastructure.md)).
+* Adding a language later: most have a built-in analyzer — German, French, Russian, Spanish and about thirty others —
+  so they need only a new sub-field and a re-index. A few need a plugin: Polish (`analysis-stempel`), Japanese, Korean
+  and Chinese. `analysis-icu` splits and normalises text in any language, but does not reduce words to their roots, so
+  it is a fallback for a language with no analyzer, not a replacement for one.
+* **Language detection is deliberately not used** while the app has two languages. Indexing every video through every
+  analyzer already handles English, Ukrainian and mixed titles ("Minecraft стрім #5") with nothing to guess, and
+  queries have to cover every language field anyway, since a search's language is unknown too. Detection would add a
+  way to be wrong without making the search side simpler.
+* It becomes worth it once there are many languages and running every video through every analyzer gets expensive.
+  Then: detect the language from title, description and tags when indexing — a small in-process detector such as
+  `franc`, `eld` or `tinyld`, or simply the alphabet (Cyrillic or Latin) when that is enough — and index the text into
+  that language's field only. Keep indexing into every field as the fallback for text the detector is not confident
+  about: titles are short and often mixed, which is exactly where detectors are weakest.
 * The Search service owns its index and fills it by consuming Kafka events: videos are indexed when published, updated
   when changed and dropped when their channel or account is deleted. This is the same fan-out the channel-updated event
   already uses ([US-Channels-03](../channels/US-Channels-03-current-channel-settings.md)), so consumers must be

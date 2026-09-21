@@ -167,9 +167,9 @@ Processing:
   ([US-Videos-02](./US-Videos-02-Download-videos.md)). HLS segments cannot be handed to a user as one playable file,
   which is why the MP4s exist. Store the byte size of each MP4 as it is produced, so the download dialog reads a stored
   number rather than measuring anything.
-* Tags entered here are what content-based similar videos are built from
-  ([US-Recommendations-02](../recommendations/US-Recommendations-02-Similar-videos.md)), so capturing them at upload is
-  a dependency of that story, not a nicety.
+* The title, description and tags entered here are what similar videos are found from
+  ([US-Recommendations-02](../recommendations/US-Recommendations-02-Similar-videos.md)). Only the title is required, and
+  that story works from the title alone — the description and tags make its results better, not possible.
 
 Progress updates:
 

@@ -68,9 +68,10 @@ Download the data — branches:
 
 **Tech notes**
 
-* The export belongs to the service that owns the account record: the last export time is a plain column on that row,
-  and the password check already lives there ([US-Account-03](./US-Account-03-Change-password.md)). The password is
-  verified against Keycloak the same way, and failed attempts need the same throttling.
+* The export belongs to `account-api`, which owns the account record, so the last export time is a plain column on that
+  row ([service-map.md](../../service-map.md)). The password is checked by `auth-api` over gRPC — the only service that
+  talks to Keycloak — with the same throttling of failed attempts as changing the password
+  ([US-Account-03](./US-Account-03-Change-password.md)).
 * Collection is a **synchronous fan-out over gRPC** — one call per owning service, issued in parallel — not over Kafka.
   Deletion can be a saga because nobody waits for its result; an export is a read with the user waiting for the answer,
   and Kafka offers no way to bring responses back into the request that asked.

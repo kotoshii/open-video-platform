@@ -42,8 +42,10 @@ Switch the current channel — branches:
   session list ([US-Auth-05](../auth/US-Auth-05-Session-management.md)) stays about devices, not identities.
 * localStorage is per browser, so the current channel is per device: the same account can act as different channels on
   different devices at the same time.
-* localStorage is not readable during server-side rendering — decide how server-rendered pages get the current channel
-  (e.g. mirroring it into a cookie).
+* localStorage is not readable during server-side rendering, so the current channel is **mirrored into a cookie** as
+  well, and server-rendered pages read it from there. The interface language
+  ([US-I18n-01](../i18n/US-I18n-01-Language-selector.md)) and the sidebar state
+  ([US-UI-UX-03](../ui-ux/US-UI-UX-03-Global-layout.md)) are cookies for the same reason.
 
 **Links**
 

@@ -56,7 +56,14 @@ Invalid token supplied:
 * Keycloak provides the JWKS endpoint for signature validation and the token endpoint for exchanging a refresh token for
   a new pair — no custom token issuing logic is needed.
 * Cache JWKS keys on the API side instead of fetching them per request; handle key rotation.
-* Token lifetimes (access and refresh) and the "remember me" behaviour need decided values.
+* The access token lives **5 minutes**. The session survives up to **30 days without activity**: every refresh rotates
+  the refresh token and restarts that window, so someone who uses the app at least monthly never has to log in again.
+* There is **no "remember me" option** — every login stays signed in the same way. No story asks for one, and a short
+  access token is what keeps the gap between "session ended" and "actually cut off" small
+  ([US-Auth-05](US-Auth-05-Session-management.md)).
+* In Keycloak these are realm settings: Access Token Lifespan 5 minutes, SSO Session Idle 30 days. **SSO Session Max
+  has to be raised as well** — its default of 10 hours ends every session after a working day, however active the user
+  is, which silently undoes the 30 days.
 * Tokens are stored in httpOnly cookies — not in localStorage or any other storage reachable from JS. Set
   `Secure`, `SameSite` and a path scoped to the refresh endpoint where it makes sense. Since the cookies are not
   readable by the client, the app decides when to refresh by the `401` response, not by inspecting token expiry.

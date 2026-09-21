@@ -37,9 +37,11 @@ Upload a user pic — branches:
 **Tech notes**
 
 * Pictures are stored in an S3 bucket (MinIO).
-* 5 MB is the upload limit and 160x160 px is the stored size, so the pipeline has to downscale what it receives. Where
-  that happens needs a decision — in the browser before upload, in the Channels service, or in an asynchronous worker.
-* GIF is supported, so the downscaling step must preserve animation instead of flattening it to a single frame.
+* 5 MB is the upload limit and 160x160 px is the stored size, so what arrives has to be downscaled. That happens **in
+  the Channels service, during the upload request**, using `sharp`. Five megabytes is small enough to process inline,
+  so no worker or queue is needed.
+* GIF is supported, so the downscaling step must preserve animation instead of flattening it to a single frame. `sharp`
+  keeps every frame when the image is opened with its `animated` option; without it, only the first frame survives.
 * Replacing a picture must not leave orphaned objects in the bucket.
 * A new avatar URL is part of the channel-updated event
   ([US-Channels-03](./US-Channels-03-current-channel-settings.md)), so the other services replace their stored copy the

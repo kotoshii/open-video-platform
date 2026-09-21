@@ -20,6 +20,7 @@ accident, so designs here are chosen to practise a pattern, not to serve product
 | [User stories](specs/user-stories)                   | 48 stories across 12 epics — the specification the build follows |
 | [open-decisions.md](open-decisions.md)               | Everything the stories deliberately left unanswered              |
 | [known-issues.md](known-issues.md)                   | Problems found in the existing implementation                    |
+| [service-map.md](specs/service-map.md)               | Which service owns which stories, data and workers — and why     |
 | [infrastructure.md](specs/infrastructure.md)         | Setup requirements that belong to no story                       |
 | [observability-plan.md](specs/observability-plan.md) | Logs, metrics and traces, in the order they get built            |
 | [explainers/](explainers)                            | Why a given design was chosen, at length — see below             |
@@ -45,6 +46,8 @@ accident, so designs here are chosen to practise a pattern, not to serve product
 * [FFmpeg parameters for video processing](explainers/ffmpeg-processing-parameters.md) — the encoding ladder and every
   parameter behind it
 * [Running more than one instance of everything](explainers/scaling-to-multiple-instances.md)
+* [Continuous integration with GitHub Actions](explainers/ci-with-github-actions.md) — the two jobs, what the repo
+  needs first, and running the whole stack on a free runner
 * [Environments, explained](explainers/environments-explained.md) — how the Compose setups fit together
 * [Observability, explained](explainers/observability-explained.md)
 * [Kubernetes, explained](explainers/kubernetes-explained.md)
@@ -65,7 +68,7 @@ accident, so designs here are chosen to practise a pattern, not to serve product
 * Kysely (DB query builder)
 * Dbmate (DB migration tool)
 * Redis (BullMQ queues, view deduplication, short-lived tokens and cooldowns, pub/sub for upload progress)
-* Elasticsearch (video and channel search)
+* Elasticsearch (video and channel search, similar videos)
 
 **Communication**
 
@@ -78,7 +81,7 @@ accident, so designs here are chosen to practise a pattern, not to serve product
 * FFmpeg (video processing, thumbnail generation)
 * Tus (resumable file uploading)
 * Plyr + hls.js (player)
-* Gorse (recommendations and similar videos)
+* Gorse (the recommended feed)
 
 **Platform**
 

@@ -78,8 +78,8 @@ Branches:
   both, store the title with the comment and refresh it from the video-updated event — the comments service already
   keeps the channel name and avatar the same way ([US-Comments-01](../comments/US-Comments-01-See-comments.md)). A
   `pg_trgm` index is the step after a plain substring match if it ever becomes slow.
-* Opening the video at a specific thread depends on the video page being able to open one thread directly, which is
-  still an open gap ([open-decisions.md](../../../open-decisions.md)).
+* Opening the video at a specific thread uses the video page's `?comment=<id>` link
+  ([US-Comments-01](../comments/US-Comments-01-See-comments.md)).
 * Visibility is enforced when the list is served.
 
 **Links**

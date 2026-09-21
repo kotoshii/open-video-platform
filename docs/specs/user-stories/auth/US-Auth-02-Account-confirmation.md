@@ -68,7 +68,7 @@ Trying something that needs a confirmed email:
 * Each of those is visibly unavailable while the email is unconfirmed, and says why.
 * While the email is unconfirmed, a banner on every page says so and links to the confirmation page.
 * Completing a password reset also confirms the email ([US-Auth-03](US-Auth-03-Password-reset.md)).
-* Confirmation links are short-lived.
+* A confirmation link is valid for 24 hours, and a new one can be requested every 60 seconds.
 * Reloading the confirmation page with an already confirmed email redirects to the homepage.
 
 **Tech notes**
@@ -89,8 +89,9 @@ Trying something that needs a confirmed email:
 * Whether the email is confirmed travels in the token as Keycloak's `email_verified` claim, so the features above read
   it from the token without a call to Keycloak.
 * Confirming the email changes that claim, so **re-issue the token pair when the email is confirmed** — otherwise the
-  deletion buttons stay disabled until the access token happens to refresh. Creating a channel re-issues tokens for the
-  same reason ([US-Channels-01](../channels/US-Channels-01-create-multiple-channels.md)).
+  deletion buttons stay disabled until the access token happens to refresh. Confirmation lives in `auth-api`, which
+  also owns the tokens, so the confirming request returns the fresh pair itself
+  ([service-map.md](../../service-map.md)).
 * **Unconfirmed accounts never expire**, so an address stays taken for as long as its account exists, confirmed or
   not. If someone signs up with an address that is not theirs, its real owner gets it back through password reset
   ([US-Auth-03](US-Auth-03-Password-reset.md)), which confirms the email — and takes over the account along with
@@ -98,7 +99,8 @@ Trying something that needs a confirmed email:
 * Keep the confirmation token and the resend cooldown server-side (Redis fits — both are short-lived and TTL-based).
 * Sending is handled by the email module and triggered by an event, not by an inline call inside the sign-up request —
   account creation must not fail or block on mail delivery.
-* Resend cooldown and link lifetime need a decided value (the original draft used 5 minutes for both).
+* The resend cooldown is 60 seconds and a link is valid for 24 hours. Confirming is optional, so a short-lived link
+  would only punish a slow inbox; the cooldown is what stops the resend button being used to flood someone's inbox.
 
 **Links**
 

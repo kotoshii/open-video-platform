@@ -59,8 +59,8 @@ Receive an email — branches:
   for the end of it; events inside the window only accumulate; the flush sends one email if anything accumulated, then
   closes the window. BullMQ delayed jobs already do this kind of work for video processing.
 * Preferences are checked again when the flush runs, since the user may turn email off while events are waiting.
-* The link into a specific thread depends on the video page being able to open a single thread directly — see
-  [US-Notifications-02](./US-Notifications-02-In-app-channel.md).
+* The link into a specific thread is the video page's `?comment=<id>` link
+  ([US-Comments-01](../comments/US-Comments-01-See-comments.md)).
 * Notification emails are written in the recipient account's email language
   ([US-I18n-03](../i18n/US-I18n-03-Localized-emails.md)).
 

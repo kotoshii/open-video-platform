@@ -157,7 +157,9 @@ The purge:
     * its **Gorse user** and the feedback recorded against it
       ([US-Recommendations-01](../recommendations/US-Recommendations-01-Feed.md));
     * its **avatar object** in MinIO ([US-Channels-05](./US-Channels-05-upload-user-pic.md));
-    * its **channel document** in the search index ([US-Search-02](../search/US-Search-02-Search-channels.md)).
+    * its **channel document** in the search index ([US-Search-02](../search/US-Search-02-Search-channels.md));
+    * its id in the account's **`channelIds` claim** — `auth-api` removes it, since only `auth-api` writes to Keycloak
+      ([service-map.md](../../service-map.md)).
 * Logs aside, nothing of the channel is left afterwards.
 
 Tokens and sessions:

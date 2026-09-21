@@ -56,8 +56,11 @@ The workers exist because counters are not written on every click: rating a vide
 whole Kafka batches to the database at once. Counts are eventually consistent by design, which several user stories
 depend on.
 
-**Specified but not built yet:** search, recommendations, notifications, the email module, `video-processing-worker`
-and `comment-reply-count-worker`.
+**Specified but not built yet:** search, recommendations, notifications, watch history, `email-worker`,
+`video-processing-worker` and `comment-reply-count-worker`. `user-api` becomes `account-api` in the rework.
+
+The target layout — which service owns which stories, data and workers — is in
+[docs/specs/service-map.md](docs/specs/service-map.md).
 
 ## Repository layout
 

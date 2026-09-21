@@ -36,7 +36,9 @@ Password reset — branches:
 * The cooldown is enforced on the server: reloading the page does not reset it, and a repeated request before it expires
   returns the actual remaining time, which the UI shows.
 * The response to a reset request does not reveal whether the email is registered.
-* Reset links are short-lived; an expired or invalid link shows a clear message with the option to request a new one.
+* A reset link is valid for 30 minutes; an expired or invalid link shows a clear message with the option to request a
+  new one.
+* A new reset can be requested every 60 seconds.
 * The password update form validates password strength and confirmation, using the same rules as sign-up.
 * After a successful update, the user is redirected to the login page and sees a success notification once (it does not
   reappear on reload).
@@ -67,7 +69,8 @@ Password reset — branches:
   separate theming of the identity provider's pages is needed.
 * Reset request state is not persisted on the client between page reloads; the server is the source of truth for the
   remaining cooldown.
-* Cooldown and link lifetime need a decided value (the story suggests ~10 minutes for the cooldown).
+* The cooldown is 60 seconds and a reset link is valid for 30 minutes. A reset link is a key to the account, which is
+  why it lives far shorter than an email confirmation link.
 
 **Links**
 

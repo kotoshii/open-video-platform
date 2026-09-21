@@ -79,8 +79,13 @@ Navigation between forms:
 **Tech notes**
 
 * Use Keycloak in Docker as the identity provider.
-* Account creation must also create the user's default channel — the two are part of one flow and must not end up out of
-  sync.
+* Sign-up spans three services, so it is a **saga** run by `auth-api` ([service-map.md](../../service-map.md)):
+    1. create the Keycloak user, with the date of birth stored as its `birthdate` attribute so it reaches the token;
+    2. ask `account-api` to create the account record;
+    3. ask `channel-api` to create the first channel.
+
+  If step 2 or 3 fails, undo what was already done, ending with deleting the Keycloak user, so a failed sign-up never
+  leaves an account without a channel or a Keycloak user without an account.
 * The sign-up request also sends the currently selected interface language, which becomes the account's initial email
   language ([US-I18n-03](../i18n/US-I18n-03-Localized-emails.md)).
 

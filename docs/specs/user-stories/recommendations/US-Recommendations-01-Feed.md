@@ -32,6 +32,7 @@ Open the feed — branches:
   page controls.
 * The feed reflects the current channel's watch, like and dislike history.
 * A channel with no history gets the most popular videos first.
+* Videos the channel has already watched are not shown in the feed.
 * If the recommender cannot answer, the feed still returns results, using the same popularity fallback.
 * Videos of channels that no longer exist are never returned. A channel scheduled for deletion is still a live
   channel, so its videos appear as usual until the purge runs
@@ -67,9 +68,13 @@ Open the feed — branches:
   the first page and page over it, rather than re-asking the recommender per batch and hoping the order holds.
 * Cold start is the normal state at first, not an edge case: with no interaction data the recommender returns little or
   nothing, and the popularity fallback carries the feed. Build the fallback as a proper source, not as an error path.
-* Whether recommendations are cached per channel, and for how long, needs a decision — Gorse already caches its own
-  results, so a second cache may be redundant.
-* Whether the feed excludes videos the channel has already watched needs a decision.
+* **No cache of our own in front of Gorse** — it already caches its results, and a second layer would only add a
+  second place for them to go stale. The per-session snapshot described above is a different thing and stays: it keeps
+  the scroll order stable, it does not save work.
+* **The feed excludes videos the channel has already watched.** This should come from how Gorse treats watch feedback
+  rather than from filtering in this service — check the Gorse configuration when the story is built. A channel with
+  its history paused sends no watch feedback ([US-My-activity-01](../my-activity/US-My-activity-01-Watch-history.md)),
+  so videos it watches while paused can still be recommended.
 * This story depends on there being interaction data at all — watch history (My activity epic), likes (Videos epic) and
   subscriptions. Until those exist the recommender has nothing to learn from, so this story only becomes meaningful
   after them.

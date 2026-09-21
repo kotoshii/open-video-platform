@@ -23,7 +23,19 @@ Change the sorting:
 2. User picks one of: Newest first, Oldest first, Most likes, Most dislikes.
 3. The list reloads from the top in the chosen order.
 
+Open one comment from a link:
+
+1. User follows a link to the video page that points at one comment — from an in-app notification
+   ([US-Notifications-02](../notifications/US-Notifications-02-In-app-channel.md)), a notification email
+   ([US-Notifications-03](../notifications/US-Notifications-03-Email-channel.md)) or My comments
+   ([US-My-activity-03](../my-activity/US-My-activity-03-My-comments.md)).
+2. Above the normal list, the comments section shows that comment's thread: the top-level comment and its replies, with
+   the linked comment highlighted.
+3. The rest of the comments load below as usual.
+
 Read the comments — branches:
+
+* **Linked comment no longer exists** — the section says so in place of the thread, and the normal list loads as usual.
 
 * **User's own comments** — the user's own top-level comments are shown at the top of the list, whatever the sorting is.
 * **Long comment** — text longer than 400 characters is truncated, with a control to expand it in place.
@@ -42,6 +54,9 @@ Read the comments — branches:
 * A comment with replies shows a button with the number of replies; a comment without replies shows none.
 * The user's own top-level comments appear at the top of the list under every sort order. Their replies are not pinned.
 * Comment text longer than 400 characters is truncated and can be expanded in place.
+* Opening the video page with `?comment=<id>` shows that comment's thread above the list — the top-level comment and its
+  replies — with the linked comment highlighted, whether it is a top-level comment or a reply.
+* A linked comment that no longer exists is reported with a short note, not an error.
 * The list loads more comments as the user scrolls — infinite scroll, not page controls.
 * Loading more never repeats a comment already shown and never skips one.
 * Comments of channels that no longer exist are not shown. A channel scheduled for deletion is still a live channel,
@@ -64,6 +79,10 @@ Read the comments — branches:
 * The list is paginated on the API side in pages of up to 30 and consumed as infinite scroll on the client.
 * Ordering plus infinite scroll needs a result set that stays stable while new comments arrive: keyset-paginate from the
   ordering key of the first page rather than offsetting into a list that shifts underneath.
+* `?comment=<id>` loads the linked thread through a request of its own instead of scrolling the paginated list until it
+  appears, which on a busy video could mean loading hundreds of comments first. When the id belongs to a reply, the
+  server resolves its top-level comment. The linked thread is left out of the paginated list below, the same way pinned
+  own comments are, or it would appear twice.
 * Pinning the user's own comments on top is a separate query merged into the first page. They must be excluded from the
   paginated list, otherwise they appear a second time when scrolling reaches them.
 * The author's channel name and avatar are denormalized into the comment rows and refreshed by the channel-updated event

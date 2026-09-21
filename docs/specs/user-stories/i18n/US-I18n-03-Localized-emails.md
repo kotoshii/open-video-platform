@@ -65,10 +65,11 @@ Branches:
 * This keeps the interface language exactly as [US-I18n-01](./US-I18n-01-Language-selector.md) decided: client-only,
   never stored on the server. The two are separate settings with separate owners — the browser owns the interface
   language, the account owns the email language.
-* Read the language together with the recipient's email address. The email module has to resolve the address from the
-  account anyway, so the language comes at no extra cost, and an email that waits in the notification batching window
-  ([US-Notifications-03](../notifications/US-Notifications-03-Email-channel.md)) is written in the language current when
-  it is actually sent.
+* The email worker looks up both values when it sends: the address from `auth-api`, since only Keycloak stores it, and
+  the language from `account-api`, which owns this setting ([service-map.md](../../service-map.md)). Looking them up at
+  send time means an email that waits in the notification batching window
+  ([US-Notifications-03](../notifications/US-Notifications-03-Email-channel.md)) goes to the current address, in the
+  language current when it is actually sent.
 * The sign-up request carries the selected interface language as a plain field in its body. Like every stored value it
   is validated against the supported languages, defined once in `lib/` and shared with the language selector; anything
   else becomes English. The value decides which template is used, so it is never used unchecked.

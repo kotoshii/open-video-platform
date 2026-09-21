@@ -39,12 +39,11 @@ Logging out — branches:
 
 **Tech notes**
 
-* Use the Keycloak logout endpoint to end the session; clearing the cookies alone is not enough, as the refresh token
-  would stay valid on the server.
-* The Keycloak logout endpoint may end **all** sessions of the user, not just the current one. Investigate this when the
-  story is picked up and find the way to end only the current session (e.g. back-channel logout for a specific session
-  id via the admin API). If it turns out to be impossible, the "only the current session is affected" criterion has to
-  be revisited.
+* End the session in Keycloak, not only on the client — clearing the cookies alone leaves the refresh token valid on
+  the server.
+* Keycloak ends exactly one session through its admin API: `DELETE /admin/realms/{realm}/sessions/{session}` ("Remove a
+  specific user session"). The current session's id is the `sid` claim of the access token, so logging out is: read
+  `sid` from the token, delete that session. Every other session of the account is untouched.
 * Clear the httpOnly auth cookies on the server response, and reset any cached user state on the client (query cache,
   stores) so no personal data stays behind after logout.
 * Log out across browser tabs: other open tabs of the app should notice the ended session and move to the login page as

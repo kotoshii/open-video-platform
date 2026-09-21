@@ -75,8 +75,11 @@ Change email — branches:
   there (Redis fits — short-lived and TTL-based), following the same pattern as
   [US-Auth-02](../auth/US-Auth-02-Account-confirmation.md) and [US-Auth-03](../auth/US-Auth-03-Password-reset.md).
 * Both emails go through the custom email module.
-* Whether a Kafka event is fired on an email update needs a decision — it depends on whether any service other than
-  Keycloak keeps a copy of the address.
+* No Kafka event is fired on an email change. Only Keycloak stores the address, and the email worker asks `auth-api`
+  for it at the moment it sends ([US-I18n-03](../i18n/US-I18n-03-Localized-emails.md)). If a platform service ever
+  keeps its own copy of the address, it will need one.
+* This story lives in `auth-api`, not `account-api`: the address is the login identifier, changing it ends every
+  session, and both belong to identity ([service-map.md](../../service-map.md)).
 
 **Links**
 
