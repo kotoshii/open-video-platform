@@ -2,7 +2,7 @@
 
 **Description**
 
-As a registered user with a verified account, I want to edit and delete the comments and replies I posted, so that I can
+As a registered user, I want to edit and delete the comments and replies I posted, so that I can
 fix what I wrote or take it back.
 
 **User flows**

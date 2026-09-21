@@ -17,7 +17,7 @@ accident, so designs here are chosen to practise a pattern, not to serve product
 
 | Document                                             | What it holds                                                    |
 |------------------------------------------------------|------------------------------------------------------------------|
-| [User stories](specs/user-stories)                         | 48 stories across 12 epics — the specification the build follows |
+| [User stories](specs/user-stories)                   | 48 stories across 12 epics — the specification the build follows |
 | [open-decisions.md](open-decisions.md)               | Everything the stories deliberately left unanswered              |
 | [known-issues.md](known-issues.md)                   | Problems found in the existing implementation                    |
 | [infrastructure.md](specs/infrastructure.md)         | Setup requirements that belong to no story                       |

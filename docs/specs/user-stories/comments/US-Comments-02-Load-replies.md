@@ -2,7 +2,7 @@
 
 **Description**
 
-As a registered user with a verified account, I want to open the replies under a comment when I'm interested in them, so
+As a registered user, I want to open the replies under a comment when I'm interested in them, so
 that I can follow a conversation without every reply cluttering the comment list.
 
 **User flows**

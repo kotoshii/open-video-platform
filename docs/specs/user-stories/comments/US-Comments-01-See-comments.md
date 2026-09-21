@@ -2,7 +2,7 @@
 
 **Description**
 
-As a registered user with a verified account, I want to read the comments under a video together with their likes and
+As a registered user, I want to read the comments under a video together with their likes and
 dislikes, and choose how they are ordered, so that I can see what other people think about it.
 
 **User flows**

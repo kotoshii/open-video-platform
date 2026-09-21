@@ -2,7 +2,7 @@
 
 **Description**
 
-As a registered user with a verified account, I want to search videos by a query, narrow the results with filters and
+As a registered user, I want to search videos by a query, narrow the results with filters and
 choose how they are ordered, so that I can find a specific video instead of browsing for it.
 
 **User flows**

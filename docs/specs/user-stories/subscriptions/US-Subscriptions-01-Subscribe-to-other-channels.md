@@ -2,7 +2,7 @@
 
 **Description**
 
-As a registered user with a verified account, I want to subscribe to other channels, so that I can keep up with the
+As a registered user, I want to subscribe to other channels, so that I can keep up with the
 channels I like.
 
 Subscriptions belong to a channel, not to the account: the channel the user is currently acting as is the one that

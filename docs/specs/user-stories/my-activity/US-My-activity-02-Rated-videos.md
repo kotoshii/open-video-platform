@@ -2,7 +2,7 @@
 
 **Description**
 
-As a registered user with a verified account, I want to see the videos I have liked or disliked in one place and
+As a registered user, I want to see the videos I have liked or disliked in one place and
 change those rates, so that I can find the videos I rated and keep my rates the way I want them.
 
 This replaces a "liked videos" page: both likes and dislikes are listed, with a toggle to show only the liked ones. The

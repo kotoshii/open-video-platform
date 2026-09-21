@@ -2,7 +2,7 @@
 
 **Description**
 
-As a registered user with a verified account, I want the homepage to show videos picked from what I have watched, liked
+As a registered user, I want the homepage to show videos picked from what I have watched, liked
 and disliked, so that I find something worth watching without searching for it.
 
 **User flows**

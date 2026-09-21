@@ -2,7 +2,7 @@
 
 **Description**
 
-As a registered user with a verified account, I want to change the email address of my account, so that my account is
+As a registered user, I want to change the email address of my account, so that my account is
 tied to an address I actually use.
 
 **User flows**

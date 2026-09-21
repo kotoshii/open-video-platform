@@ -2,7 +2,7 @@
 
 **Description**
 
-As an authenticated user with a verified account, I want to upload a picture for my current channel, so that my channel
+As an authenticated user, I want to upload a picture for my current channel, so that my channel
 is recognisable everywhere it appears in the app.
 
 **User flows**

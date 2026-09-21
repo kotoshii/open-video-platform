@@ -2,7 +2,7 @@
 
 **Description**
 
-As a registered user with a verified account, I want to upload a video, fill in its details while it uploads and
+As a registered user, I want to upload a video, fill in its details while it uploads and
 processes, and publish it once it is ready, so that my content appears on my channel.
 
 **User flows**

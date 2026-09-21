@@ -2,7 +2,7 @@
 
 **Description**
 
-As an authenticated user with a verified account, I want to edit the info of the channel I'm currently acting as, so
+As an authenticated user, I want to edit the info of the channel I'm currently acting as, so
 that my channel shows the name, description and picture I want across the app.
 
 **User flows**

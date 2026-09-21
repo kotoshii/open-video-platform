@@ -2,7 +2,7 @@
 
 **Description**
 
-As a registered user with a verified account who has uploaded videos, I want to edit my videos, control who can see
+As a registered user who has uploaded videos, I want to edit my videos, control who can see
 them and delete them, so that I can keep my channel's content the way I want it.
 
 **User flows**

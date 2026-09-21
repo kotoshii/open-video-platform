@@ -2,7 +2,7 @@
 
 **Description**
 
-As a registered user with a verified account, I want every page of the app to share the same navbar and sidebar, so
+As a registered user, I want every page of the app to share the same navbar and sidebar, so
 that search and navigation are always one click away, wherever I am.
 
 The layout belongs to the part of the app that can actually be used. Signing in is required to use the app, so the auth
@@ -72,6 +72,14 @@ Scheduled deletion banner:
 * The dismissal is remembered on the client and per browser; it is not a server-side setting.
 * When both the account and the current channel have deletions scheduled, the account's banner is the one shown, since
   it supersedes the other.
+
+Unconfirmed email banner:
+
+* While the account's email is unconfirmed ([US-Auth-02](../auth/US-Auth-02-Account-confirmation.md)), a banner at the
+  top of every page inside the layout says so and links to the confirmation page.
+* It closes the same way as the deletion banner — hidden for 24 hours, remembered per browser — and is gone for good
+  once the email is confirmed.
+* It never appears together with a deletion banner, since deleting requires a confirmed email.
 
 Sidebar:
 

@@ -2,7 +2,7 @@
 
 **Description**
 
-As a registered user with a verified account, I want to download everything the platform stores about me and my
+As a registered user, I want to download everything the platform stores about me and my
 channels as a single file, so that I can keep my own copy of it outside the platform.
 
 The export belongs to the account, not to a channel: one file covers every channel of the account, the same way the

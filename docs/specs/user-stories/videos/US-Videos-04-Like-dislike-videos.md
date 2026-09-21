@@ -2,7 +2,7 @@
 
 **Description**
 
-As a registered user with a verified account, I want to like or dislike a video, so that I can show what I think of it
+As a registered user, I want to like or dislike a video, so that I can show what I think of it
 and help other people see how it was received.
 
 **User flows**

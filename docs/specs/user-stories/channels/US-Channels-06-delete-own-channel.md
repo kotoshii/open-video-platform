@@ -45,6 +45,8 @@ Cancel the deletion:
 
 Branches:
 
+* **Email not confirmed** (step 2) — the button is unavailable, with a note that the account's email has to be
+  confirmed first and a link to the confirmation page ([US-Auth-02](../auth/US-Auth-02-Account-confirmation.md)).
 * **User cancels the confirmation** (step 3) — the modal closes and nothing happens.
 * **Expired or invalid link** (step 8) — the page explains what happened. There is deliberately no "resend" button, so
   channel deletion is not encouraged.
@@ -61,6 +63,8 @@ Branches:
 
 Requesting:
 
+* Deleting a channel requires a confirmed email. While it is unconfirmed, the button is unavailable and says why
+  ([US-Auth-02](../auth/US-Auth-02-Account-confirmation.md)).
 * Only an account with more than one channel that is not already scheduled for deletion can schedule one; the last
   remaining channel goes with the account itself
   ([US-Account-01](../account/US-Account-01-Delete-own-account.md)).
@@ -158,6 +162,9 @@ The purge:
 
 Tokens and sessions:
 
+* The emailed link is what authorises the deletion, so it only proves anything when the inbox is known to be the
+  user's — hence the confirmed-email requirement. Check `email_verified` from the token on the server too; an
+  unavailable button is not the enforcement.
 * Both emails go through the custom email module, the same one used for account confirmation
   ([US-Auth-02](../auth/US-Auth-02-Account-confirmation.md)).
 * The confirmation token is single-use with a 5-minute lifetime and belongs server-side (Redis fits). The cancel token

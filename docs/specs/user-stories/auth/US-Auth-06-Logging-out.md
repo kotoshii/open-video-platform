@@ -2,7 +2,7 @@
 
 **Description**
 
-As an authenticated user with a verified account, I want to log out of my account, so that I end my current session and
+As an authenticated user, I want to log out of my account, so that I end my current session and
 leave the app in a state where nobody can keep using it on this device without logging in again.
 
 **User flows**

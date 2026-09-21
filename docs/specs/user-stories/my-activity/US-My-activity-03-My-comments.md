@@ -2,7 +2,7 @@
 
 **Description**
 
-As a registered user with a verified account, I want to see every comment and reply I have posted in one place, so that
+As a registered user, I want to see every comment and reply I have posted in one place, so that
 I can find what I wrote and remove what I no longer want to keep.
 
 The list is the current channel's comments and replies. Some elements are not in the mockups; this story is the source

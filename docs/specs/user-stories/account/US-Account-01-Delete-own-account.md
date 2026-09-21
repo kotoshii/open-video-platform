@@ -44,6 +44,8 @@ Cancel the deletion:
 
 Branches:
 
+* **Email not confirmed** (step 2) — the button is unavailable, with a note that the email has to be confirmed first
+  and a link to the confirmation page ([US-Auth-02](../auth/US-Auth-02-Account-confirmation.md)).
 * **User cancels the confirmation** (step 3) — the modal closes and nothing happens.
 * **Expired or invalid link** (step 8) — the page explains what happened. There is deliberately no "resend" button, so
   account deletion is not encouraged.
@@ -57,6 +59,8 @@ Branches:
 
 Requesting:
 
+* Deleting the account requires a confirmed email. While it is unconfirmed, the button is unavailable and says why
+  ([US-Auth-02](../auth/US-Auth-02-Account-confirmation.md)).
 * The "Delete account" button is in the Account tab of the settings page and is styled as destructive.
 * Deleting requires a confirmation modal that states the consequences — including that it removes every channel of the
   account — with the confirm button disabled for 10 seconds and a visible countdown.
@@ -90,6 +94,8 @@ The deletion itself:
 
 **Tech notes**
 
+* Deleting requires a confirmed email for the same reason as deleting a channel: the emailed link authorises it, so it
+  only proves anything when the inbox is known to be the user's. Check `email_verified` from the token on the server.
 * The schedule works exactly as in [US-Channels-06](../channels/US-Channels-06-delete-own-channel.md):
   `deletion_scheduled_at` on the account row is the source of truth, a BullMQ delayed job triggers the purge, and a
   periodic sweep picks up rows whose job was lost. Cancelling removes the job and clears the column.

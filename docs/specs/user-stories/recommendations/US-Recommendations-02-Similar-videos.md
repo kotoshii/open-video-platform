@@ -2,7 +2,7 @@
 
 **Description**
 
-As a registered user with a verified account, I want to see videos related to the one I'm watching next to the player,
+As a registered user, I want to see videos related to the one I'm watching next to the player,
 so that I can keep watching around a topic without going back to search.
 
 **User flows**

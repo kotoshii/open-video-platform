@@ -2,7 +2,7 @@
 
 **Description**
 
-As a registered user with a verified account, I want to see the videos I have watched, remove the ones I don't want
+As a registered user, I want to see the videos I have watched, remove the ones I don't want
 kept, and pause or clear my history, so that I can get back to something I watched and control what the platform
 remembers about my viewing.
 

@@ -2,7 +2,7 @@
 
 **Description**
 
-As a registered user with a verified account, I want to download a video in a quality of my choice, so that I can keep
+As a registered user, I want to download a video in a quality of my choice, so that I can keep
 it and watch it without the platform.
 
 **User flows**

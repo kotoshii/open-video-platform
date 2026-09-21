@@ -42,6 +42,8 @@ Password reset — branches:
   reappear on reload).
 * The user can log in with the new password, and the old password no longer works.
 * Resetting the password ends every session of the account — every device has to log in again with the new password.
+* Completing a reset also confirms the account's email, if it was not confirmed yet
+  ([US-Auth-02](US-Auth-02-Account-confirmation.md)).
 
 **Tech notes**
 
@@ -55,6 +57,9 @@ Password reset — branches:
   may not belong to the owner. Changing the password from the settings page
   ([US-Account-03](../account/US-Account-03-Change-password.md)) ends every other session but keeps the current one,
   since the user has just proven who they are with the old password.
+* A completed reset marks the email as verified in Keycloak too, in the same admin API update that sets the password.
+  Following the emailed link is exactly the proof that account confirmation asks for, so asking for it a second time
+  would only make the user do the same thing twice.
 * Keep the reset token and the cooldown server-side (Redis fits — both are short-lived and TTL-based).
 * Sending is handled by the email module and triggered by an event, not by an inline call inside the reset request; the
   response must not depend on mail delivery, and must not reveal whether the email is registered either way.

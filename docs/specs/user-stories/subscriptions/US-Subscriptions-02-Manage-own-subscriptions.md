@@ -2,7 +2,7 @@
 
 **Description**
 
-As a registered user with a verified account, I want to see every channel I'm subscribed to and unsubscribe from the
+As a registered user, I want to see every channel I'm subscribed to and unsubscribe from the
 ones I no longer want, so that my subscriptions stay the way I want them.
 
 **User flows**

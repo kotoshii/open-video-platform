@@ -2,7 +2,7 @@
 
 **Description**
 
-As a registered user with a verified account, I want to search channels by a query and choose how the results are
+As a registered user, I want to search channels by a query and choose how the results are
 ordered, so that I can find a channel by name instead of looking for one of its videos first.
 
 **User flows**

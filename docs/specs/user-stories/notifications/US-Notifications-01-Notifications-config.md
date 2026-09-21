@@ -2,7 +2,7 @@
 
 **Description**
 
-As a registered user with a verified account, I want to choose which notifications my channel receives and whether they
+As a registered user, I want to choose which notifications my channel receives and whether they
 reach me in the app or by email, so that I hear about what matters to me without being flooded.
 
 Preferences belong to a channel, not to the account: every channel has its own, and they apply to whichever channel the
@@ -27,6 +27,9 @@ Change the preferences — main flow:
 
 Change the preferences — branches:
 
+* **Email not confirmed** (step 4) — the Email toggles cannot be turned on; the section says the account's email has to
+  be confirmed first and links to the confirmation page ([US-Auth-02](../auth/US-Auth-02-Account-confirmation.md)).
+  The In-app toggles work as usual.
 * **Request fails** (step 6) — the default toast behaviour applies
   ([US-UI-UX-02](../ui-ux/US-UI-UX-02-User-friendly-errors.md)), and the toggles keep the user's changes so saving can
   be
@@ -61,6 +64,7 @@ Preferences:
   an Email column.
 * New subscribers and New comments on my videos offer only In-app; Replies to my comments and Mentions offer both.
 * By default every In-app toggle is on and every Email toggle is off.
+* While the account's email is unconfirmed, the Email toggles cannot be turned on, and the section says why.
 * Changes apply only after "Save". Success shows a toast; failure follows the default toast behaviour.
 * Preferences belong to the channel the user is acting as, and switching channel shows that channel's own preferences.
 * Turning a type off stops new notifications of that type; notifications already received stay.
@@ -100,6 +104,10 @@ Aggregation:
   then writes nothing, and no path that creates a
   channel can forget to.
 * Preferences are checked when a notification is written, not when it is shown.
+* The preferences endpoint rejects turning an Email toggle on while the token's `email_verified` claim is false — an
+  unavailable toggle in the UI is not the enforcement. Once confirmed, an email stays confirmed (a changed address is
+  confirmed by its own link, [US-Account-02](../account/US-Account-02-Change-email.md)), so a toggle that was allowed
+  on never has to be switched back off.
 * The aggregation mechanism — one open row per key, enforced by a partial unique index, closed when read — is written up
   step by step in [notification-aggregation.md](../../../explainers/notification-aggregation.md).
 * **Counting down needs to know which notification an item was counted in.** Without that, a subscriber counted in

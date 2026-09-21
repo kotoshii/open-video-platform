@@ -2,7 +2,7 @@
 
 **Description**
 
-As a registered user with a verified account, I want to see my channel's notifications in one place and keep track of
+As a registered user, I want to see my channel's notifications in one place and keep track of
 which ones I have read, so that I don't miss replies, mentions and what is happening on my channel.
 
 **User flows**

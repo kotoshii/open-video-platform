@@ -2,7 +2,7 @@
 
 **Description**
 
-As a registered user with a verified account, I want to reply to a comment or to someone's reply, so that I can answer a
+As a registered user, I want to reply to a comment or to someone's reply, so that I can answer a
 specific person in the conversation.
 
 **User flows**

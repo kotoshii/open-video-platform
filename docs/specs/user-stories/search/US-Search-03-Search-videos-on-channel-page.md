@@ -2,7 +2,7 @@
 
 **Description**
 
-As a registered user with a verified account, I want to search within the videos of the channel I'm looking at, so that
+As a registered user, I want to search within the videos of the channel I'm looking at, so that
 I can find something in its catalogue without searching the whole platform.
 
 **User flows**

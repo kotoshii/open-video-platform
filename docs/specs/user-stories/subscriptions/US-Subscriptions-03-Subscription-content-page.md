@@ -2,7 +2,7 @@
 
 **Description**
 
-As a registered user with a verified account, I want one page where I can move between the channels I'm subscribed to
+As a registered user, I want one page where I can move between the channels I'm subscribed to
 and browse each one's videos, so that I can catch up on the channels I follow without visiting them one by one.
 
 **User flows**

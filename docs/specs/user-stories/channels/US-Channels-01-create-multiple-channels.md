@@ -2,7 +2,7 @@
 
 **Description**
 
-As an authenticated user with a verified account, I want to create additional channels on my account, so that I can keep
+As an authenticated user, I want to create additional channels on my account, so that I can keep
 separate identities for different kinds of content without registering another account.
 
 **User flows**

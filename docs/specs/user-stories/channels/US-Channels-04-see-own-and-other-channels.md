@@ -2,7 +2,7 @@
 
 **Description**
 
-As an authenticated user with a verified account, I want to open my own channel page and other users' channel pages, so
+As an authenticated user, I want to open my own channel page and other users' channel pages, so
 that I can browse a channel's videos and info, with the editing and management actions available only on my own channel.
 
 **User flows**

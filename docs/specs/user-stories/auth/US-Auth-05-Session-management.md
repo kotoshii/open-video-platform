@@ -2,7 +2,7 @@
 
 **Description**
 
-As an authenticated user with a verified account, I want to see all my active sessions in one place and end any of them,
+As an authenticated user, I want to see all my active sessions in one place and end any of them,
 so that I can check where my account is logged in and cut off access from devices I no longer use or don't recognise.
 
 A session entry contains: OS, device name, user agent, IP address, location (country, city), creation time and last

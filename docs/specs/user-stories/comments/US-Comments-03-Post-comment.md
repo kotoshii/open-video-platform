@@ -2,7 +2,7 @@
 
 **Description**
 
-As a registered user with a verified account, I want to post a comment under a video, so that I can say what I think
+As a registered user, I want to post a comment under a video, so that I can say what I think
 about it.
 
 **User flows**

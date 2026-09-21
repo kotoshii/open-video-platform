@@ -2,7 +2,7 @@
 
 **Description**
 
-As a registered user with a verified account, I want to change my password from the settings page by confirming my
+As a registered user, I want to change my password from the settings page by confirming my
 current one, so that I can rotate my password without going through the password reset flow.
 
 **User flows**

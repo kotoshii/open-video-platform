@@ -2,7 +2,7 @@
 
 **Description**
 
-As a registered user with a verified account, I want to like or dislike comments and replies, so that I can show what I
+As a registered user, I want to like or dislike comments and replies, so that I can show what I
 agree with and help the good ones surface.
 
 **User flows**

@@ -2,7 +2,7 @@
 
 **Description**
 
-As a registered user with a verified account, I want to open a video page and watch the video with a proper set of
+As a registered user, I want to open a video page and watch the video with a proper set of
 player controls, so that I can actually consume the content the platform hosts.
 
 **User flows**
