@@ -51,4 +51,6 @@ Client-side exception:
 
 FE:
 
-* TODO
+* [Task-01 — Add the error state components](../../tasks/ui-ux/US-UI-UX-02/frontend/Task-01-Add-the-error-state-components.md)
+* [Task-02 — Catch client-side exceptions with error boundaries](../../tasks/ui-ux/US-UI-UX-02/frontend/Task-02-Catch-client-side-exceptions-with-error-boundaries.md)
+* [Task-03 — Show failed actions as toasts](../../tasks/ui-ux/US-UI-UX-02/frontend/Task-03-Show-failed-actions-as-toasts.md)

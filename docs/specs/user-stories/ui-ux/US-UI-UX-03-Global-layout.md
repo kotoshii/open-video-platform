@@ -149,4 +149,8 @@ Sidebar drawer — mobile:
 
 FE:
 
-* TODO
+* [Task-01 — Build the app shell layout](../../tasks/ui-ux/US-UI-UX-03/frontend/Task-01-Build-the-app-shell-layout.md)
+* [Task-02 — Build the sidebar navigation](../../tasks/ui-ux/US-UI-UX-03/frontend/Task-02-Build-the-sidebar-navigation.md)
+* [Task-03 — Collapse and expand the sidebar on desktop](../../tasks/ui-ux/US-UI-UX-03/frontend/Task-03-Collapse-and-expand-the-sidebar-on-desktop.md)
+* [Task-04 — Open the sidebar as a drawer on mobile](../../tasks/ui-ux/US-UI-UX-03/frontend/Task-04-Open-the-sidebar-as-a-drawer-on-mobile.md)
+* [Task-05 — Show the theme toggle on pages without the layout](../../tasks/ui-ux/US-UI-UX-03/frontend/Task-05-Show-the-theme-toggle-on-pages-without-the-layout.md)

@@ -28,4 +28,5 @@ and keep the look I prefer.
 
 FE:
 
-* TODO
+* [Task-01 — Add dark theme support to the app](../../tasks/ui-ux/US-UI-UX-01/frontend/Task-01-Add-dark-theme-support-to-the-app.md)
+* [Task-02 — Build the theme toggle](../../tasks/ui-ux/US-UI-UX-01/frontend/Task-02-Build-the-theme-toggle.md)
