@@ -86,8 +86,12 @@ Branches:
 
 BE:
 
-* TODO
+* [Task-01 — auth-api: Store device and location for each session](../../tasks/auth/US-Auth-05/backend/Task-01-auth-api-Store-device-and-location-for-each-session.md)
+* [Task-02 — auth-api: Implement GET /auth/sessions](../../tasks/auth/US-Auth-05/backend/Task-02-auth-api-Implement-GET-auth-sessions.md)
+* [Task-03 — auth-api: Implement DELETE /auth/sessions/{sessionId}](../../tasks/auth/US-Auth-05/backend/Task-03-auth-api-Implement-DELETE-auth-sessions-sessionId.md)
+* [Task-04 — auth-api: Implement DELETE /auth/sessions/others](../../tasks/auth/US-Auth-05/backend/Task-04-auth-api-Implement-DELETE-auth-sessions-others.md)
 
 FE:
 
-* TODO
+* [Task-05 — Build the Sessions tab](../../tasks/auth/US-Auth-05/frontend/Task-05-Build-the-Sessions-tab.md)
+* [Task-06 — End sessions from the Sessions tab](../../tasks/auth/US-Auth-05/frontend/Task-06-End-sessions-from-the-Sessions-tab.md)

@@ -100,8 +100,17 @@ Navigation between forms:
 
 BE:
 
-* TODO
+* [Task-01 — Migrate auth-api to the new structure](../../tasks/auth/US-Auth-01/backend/Task-01-Migrate-auth-api-to-the-new-structure.md)
+* [Task-02 — Migrate channel-api to the new structure](../../tasks/auth/US-Auth-01/backend/Task-02-Migrate-channel-api-to-the-new-structure.md)
+* [Task-03 — Set up the Keycloak realm and its claims](../../tasks/auth/US-Auth-01/backend/Task-03-Set-up-the-Keycloak-realm-and-its-claims.md)
+* [Task-04 — account-api: Create and delete the account over gRPC](../../tasks/auth/US-Auth-01/backend/Task-04-account-api-Create-and-delete-the-account-over-gRPC.md)
+* [Task-05 — channel-api: Create and delete a channel over gRPC](../../tasks/auth/US-Auth-01/backend/Task-05-channel-api-Create-and-delete-a-channel-over-gRPC.md)
+* [Task-06 — auth-api: Return the token pair in httpOnly cookies](../../tasks/auth/US-Auth-01/backend/Task-06-auth-api-Return-the-token-pair-in-httpOnly-cookies.md)
+* [Task-07 — auth-api: Implement POST /auth/sign-up as a saga](../../tasks/auth/US-Auth-01/backend/Task-07-auth-api-Implement-POST-auth-sign-up-as-a-saga.md)
+* [Task-08 — auth-api: Implement POST /auth/login](../../tasks/auth/US-Auth-01/backend/Task-08-auth-api-Implement-POST-auth-login.md)
+* [Task-09 — auth-api: Implement GET /auth/current-user](../../tasks/auth/US-Auth-01/backend/Task-09-auth-api-Implement-GET-auth-current-user.md)
 
 FE:
 
-* TODO
+* [Task-10 — Implement the sign-up page](../../tasks/auth/US-Auth-01/frontend/Task-10-Implement-the-sign-up-page.md)
+* [Task-11 — Implement the log in page](../../tasks/auth/US-Auth-01/frontend/Task-11-Implement-the-log-in-page.md)

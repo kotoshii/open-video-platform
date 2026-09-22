@@ -59,8 +59,8 @@ Logging out — branches:
 
 BE:
 
-* TODO
+* [Task-01 — auth-api: Implement POST /auth/logout](../../tasks/auth/US-Auth-06/backend/Task-01-auth-api-Implement-POST-auth-logout.md)
 
 FE:
 
-* TODO
+* [Task-02 — Add Log out to the sidebar with a confirmation](../../tasks/auth/US-Auth-06/frontend/Task-02-Add-Log-out-to-the-sidebar-with-a-confirmation.md)

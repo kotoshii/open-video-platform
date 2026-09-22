@@ -82,8 +82,11 @@ Invalid token supplied:
 
 BE:
 
-* TODO
+* [Task-01 — Set the Keycloak token and session lifespans](../../tasks/auth/US-Auth-04/backend/Task-01-Set-the-Keycloak-token-and-session-lifespans.md)
+* [Task-02 — auth-api: Implement POST /auth/refresh](../../tasks/auth/US-Auth-04/backend/Task-02-auth-api-Implement-POST-auth-refresh.md)
+* [_platform infrastructure Task-17 — Verify access tokens in the gateway](../../tasks/_platform/infrastructure/Task-17-Verify-access-tokens-in-the-gateway.md)
 
 FE:
 
-* TODO
+* [Task-03 — Redirect a visitor with no session to login](../../tasks/auth/US-Auth-04/frontend/Task-03-Redirect-a-visitor-with-no-session-to-login.md)
+* [_platform frontend Task-04 — Add single-flight token refresh to the API client](../../tasks/_platform/frontend/Task-04-Add-single-flight-token-refresh-to-the-API-client.md)

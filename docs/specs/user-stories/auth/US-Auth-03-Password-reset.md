@@ -84,8 +84,10 @@ Password reset — branches:
 
 BE:
 
-* TODO
+* [Task-01 — auth-api: Implement POST /auth/password-reset/request](../../tasks/auth/US-Auth-03/backend/Task-01-auth-api-Implement-POST-auth-password-reset-request.md)
+* [Task-02 — auth-api: Implement POST /auth/password-reset/confirm](../../tasks/auth/US-Auth-03/backend/Task-02-auth-api-Implement-POST-auth-password-reset-confirm.md)
 
 FE:
 
-* TODO
+* [Task-03 — Implement the password reset request page](../../tasks/auth/US-Auth-03/frontend/Task-03-Implement-the-password-reset-request-page.md)
+* [Task-04 — Implement the password update page](../../tasks/auth/US-Auth-03/frontend/Task-04-Implement-the-password-update-page.md)

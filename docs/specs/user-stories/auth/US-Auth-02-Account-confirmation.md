@@ -113,8 +113,14 @@ Trying something that needs a confirmed email:
 
 BE:
 
-* TODO
+* [Task-01 — auth-api: Expose the account's email over gRPC](../../tasks/auth/US-Auth-02/backend/Task-01-auth-api-Expose-the-accounts-email-over-gRPC.md)
+* [Task-02 — auth-api: Send a confirmation email after sign-up](../../tasks/auth/US-Auth-02/backend/Task-02-auth-api-Send-a-confirmation-email-after-sign-up.md)
+* [Task-03 — auth-api: Implement GET /auth/email-confirmation](../../tasks/auth/US-Auth-02/backend/Task-03-auth-api-Implement-GET-auth-email-confirmation.md)
+* [Task-04 — auth-api: Implement POST /auth/email-confirmation/resend](../../tasks/auth/US-Auth-02/backend/Task-04-auth-api-Implement-POST-auth-email-confirmation-resend.md)
+* [Task-05 — auth-api: Implement POST /auth/email-confirmation/confirm](../../tasks/auth/US-Auth-02/backend/Task-05-auth-api-Implement-POST-auth-email-confirmation-confirm.md)
 
 FE:
 
-* TODO
+* [Task-06 — Implement the confirmation page](../../tasks/auth/US-Auth-02/frontend/Task-06-Implement-the-confirmation-page.md)
+* [Task-07 — Implement the confirmation link page](../../tasks/auth/US-Auth-02/frontend/Task-07-Implement-the-confirmation-link-page.md)
+* [Task-08 — Show the unconfirmed email banner](../../tasks/auth/US-Auth-02/frontend/Task-08-Show-the-unconfirmed-email-banner.md)
