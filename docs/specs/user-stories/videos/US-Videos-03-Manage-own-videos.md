@@ -168,8 +168,16 @@ All three:
 
 BE:
 
-* TODO
+* [Task-01 — Migrate comment-api to the new structure](../../tasks/videos/US-Videos-03/backend/Task-01-Migrate-comment-api-to-the-new-structure.md)
+* [Task-02 — Migrate video-rate-api to the new structure](../../tasks/videos/US-Videos-03/backend/Task-02-Migrate-video-rate-api-to-the-new-structure.md)
+* [Task-03 — video-api: Implement PUT /videos/{videoId}/visibility](../../tasks/videos/US-Videos-03/backend/Task-03-video-api-Implement-PUT-videos-videoId-visibility.md)
+* [Task-04 — video-api: Implement DELETE /videos/{videoId}](../../tasks/videos/US-Videos-03/backend/Task-04-video-api-Implement-DELETE-videos-videoId.md)
+* [Task-05 — comment-api: Delete a video's comments on deletion](../../tasks/videos/US-Videos-03/backend/Task-05-comment-api-Delete-a-videos-comments-on-deletion.md)
+* [Task-06 — video-rate-api: Delete a video's rates on deletion](../../tasks/videos/US-Videos-03/backend/Task-06-video-rate-api-Delete-a-videos-rates-on-deletion.md)
 
 FE:
 
-* TODO
+* [Task-07 — Build the video management menu](../../tasks/videos/US-Videos-03/frontend/Task-07-Build-the-video-management-menu.md)
+* [Task-08 — Implement the edit video modal](../../tasks/videos/US-Videos-03/frontend/Task-08-Implement-the-edit-video-modal.md)
+* [Task-09 — Implement the change visibility modal](../../tasks/videos/US-Videos-03/frontend/Task-09-Implement-the-change-visibility-modal.md)
+* [Task-10 — Implement the delete video confirmation](../../tasks/videos/US-Videos-03/frontend/Task-10-Implement-the-delete-video-confirmation.md)

@@ -139,8 +139,13 @@ Watch a video — branches:
 
 BE:
 
-* TODO
+* [Task-01 — video-api: Implement GET /videos/{videoId}/watch](../../tasks/videos/US-Videos-01/backend/Task-01-video-api-Implement-GET-videos-videoId-watch.md)
+* [Task-02 — Migrate video-view-count-worker to the new structure](../../tasks/videos/US-Videos-01/backend/Task-02-Migrate-video-view-count-worker-to-the-new-structure.md)
+* [Task-03 — video-view-count-worker: Count a view once per day](../../tasks/videos/US-Videos-01/backend/Task-03-video-view-count-worker-Count-a-view-once-per-day.md)
 
 FE:
 
-* TODO
+* [Task-04 — Build the video page layout](../../tasks/videos/US-Videos-01/frontend/Task-04-Build-the-video-page-layout.md)
+* [Task-05 — Build the player](../../tasks/videos/US-Videos-01/frontend/Task-05-Build-the-player.md)
+* [Task-06 — Show the video details under the player](../../tasks/videos/US-Videos-01/frontend/Task-06-Show-the-video-details-under-the-player.md)
+* [Task-07 — Show the blocked and processing states](../../tasks/videos/US-Videos-01/frontend/Task-07-Show-the-blocked-and-processing-states.md)

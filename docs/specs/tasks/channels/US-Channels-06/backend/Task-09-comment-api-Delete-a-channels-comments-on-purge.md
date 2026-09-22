@@ -1,6 +1,7 @@
 ## comment-api: Delete a channel's comments on purge
 
-Needs: [Task-07 — channel-api: Run the purge as a saga](Task-07-channel-api-Run-the-purge-as-a-saga.md)
+Needs: [Task-07 — channel-api: Run the purge as a saga](Task-07-channel-api-Run-the-purge-as-a-saga.md),
+[US-Videos-03 Task-01 — Migrate comment-api to the new structure](../../../videos/US-Videos-03/backend/Task-01-Migrate-comment-api-to-the-new-structure.md)
 
 Consume the purge event: delete every comment and reply the channel wrote, a batch per transaction, writing the
 comment-deleted events to the outbox as it goes, then report back.

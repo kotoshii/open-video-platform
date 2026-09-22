@@ -80,8 +80,13 @@ Rate a video — branches:
 
 BE:
 
-* TODO
+* [Task-01 — Migrate video-rate-count-worker to the new structure](../../tasks/videos/US-Videos-04/backend/Task-01-Migrate-video-rate-count-worker-to-the-new-structure.md)
+* [Task-02 — video-api: Expose a video's rate permission over gRPC](../../tasks/videos/US-Videos-04/backend/Task-02-video-api-Expose-a-videos-rate-permission-over-gRPC.md)
+* [Task-03 — video-rate-api: Implement POST /video-rates/{videoId}](../../tasks/videos/US-Videos-04/backend/Task-03-video-rate-api-Implement-POST-video-rates-videoId.md)
+* [Task-04 — video-rate-api: Implement DELETE /video-rates/{videoId}](../../tasks/videos/US-Videos-04/backend/Task-04-video-rate-api-Implement-DELETE-video-rates-videoId.md)
+* [Task-05 — video-rate-api: Implement GET /video-rates/{videoId}](../../tasks/videos/US-Videos-04/backend/Task-05-video-rate-api-Implement-GET-video-rates-videoId.md)
+* [Task-06 — video-rate-count-worker: Apply the rate counts](../../tasks/videos/US-Videos-04/backend/Task-06-video-rate-count-worker-Apply-the-rate-counts.md)
 
 FE:
 
-* TODO
+* [Task-07 — Add the rate buttons to the video page](../../tasks/videos/US-Videos-04/frontend/Task-07-Add-the-rate-buttons-to-the-video-page.md)

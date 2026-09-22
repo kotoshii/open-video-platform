@@ -1,6 +1,7 @@
 ## video-api: Implement GET /videos/for-channel/{channelId}
 
-Needs: [US-Channels-03 Task-03 — channel-api: Expose the age-restricted setting over gRPC](../../US-Channels-03/backend/Task-03-channel-api-Expose-the-age-restricted-setting-over-gRPC.md)
+Needs: [US-Channels-03 Task-03 — channel-api: Expose the age-restricted setting over gRPC](../../US-Channels-03/backend/Task-03-channel-api-Expose-the-age-restricted-setting-over-gRPC.md),
+[US-Videos-05 Task-01 — Migrate video-api to the new structure](../../../videos/US-Videos-05/backend/Task-01-Migrate-video-api-to-the-new-structure.md)
 
 `GET /videos/for-channel/{channelId}` — a page of that channel's videos, with the total the same filter produced
 

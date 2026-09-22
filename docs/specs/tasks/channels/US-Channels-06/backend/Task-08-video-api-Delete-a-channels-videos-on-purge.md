@@ -1,6 +1,7 @@
 ## video-api: Delete a channel's videos on purge
 
-Needs: [Task-07 — channel-api: Run the purge as a saga](Task-07-channel-api-Run-the-purge-as-a-saga.md)
+Needs: [Task-07 — channel-api: Run the purge as a saga](Task-07-channel-api-Run-the-purge-as-a-saga.md),
+[US-Videos-03 Task-04 — video-api: Implement DELETE /videos/{videoId}](../../../videos/US-Videos-03/backend/Task-04-video-api-Implement-DELETE-videos-videoId.md)
 
 Consume the purge event: delete the channel's videos and report back.
 

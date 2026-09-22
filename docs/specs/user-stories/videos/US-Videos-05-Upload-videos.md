@@ -319,8 +319,32 @@ Still open:
 
 BE:
 
-* TODO
+* [Task-01 — Migrate video-api to the new structure](../../tasks/videos/US-Videos-05/backend/Task-01-Migrate-video-api-to-the-new-structure.md)
+* [Task-02 — Migrate video-upload-api to the new structure](../../tasks/videos/US-Videos-05/backend/Task-02-Migrate-video-upload-api-to-the-new-structure.md)
+* [Task-03 — Create video-processing-worker](../../tasks/videos/US-Videos-05/backend/Task-03-Create-video-processing-worker.md)
+* [Task-04 — video-api: Create a video record over gRPC](../../tasks/videos/US-Videos-05/backend/Task-04-video-api-Create-a-video-record-over-gRPC.md)
+* [Task-05 — video-upload-api: Implement POST /video-uploads/initialize](../../tasks/videos/US-Videos-05/backend/Task-05-video-upload-api-Implement-POST-video-uploads-initialize.md)
+* [Task-06 — video-upload-api: Implement the tus hooks](../../tasks/videos/US-Videos-05/backend/Task-06-video-upload-api-Implement-the-tus-hooks.md)
+* [Task-07 — video-upload-api: Implement GET /video-uploads/{videoId}](../../tasks/videos/US-Videos-05/backend/Task-07-video-upload-api-Implement-GET-video-uploads-videoId.md)
+* [Task-08 — video-upload-api: Stream upload progress over SSE](../../tasks/videos/US-Videos-05/backend/Task-08-video-upload-api-Stream-upload-progress-over-SSE.md)
+* [Task-09 — video-upload-api: Expire upload sessions after a day](../../tasks/videos/US-Videos-05/backend/Task-09-video-upload-api-Expire-upload-sessions-after-a-day.md)
+* [Task-10 — video-processing-worker: Probe the upload and plan the rungs](../../tasks/videos/US-Videos-05/backend/Task-10-video-processing-worker-Probe-the-upload-and-plan-the-rungs.md)
+* [Task-11 — video-processing-worker: Encode a rendition](../../tasks/videos/US-Videos-05/backend/Task-11-video-processing-worker-Encode-a-rendition.md)
+* [Task-12 — video-processing-worker: Package a rendition as HLS](../../tasks/videos/US-Videos-05/backend/Task-12-video-processing-worker-Package-a-rendition-as-HLS.md)
+* [Task-13 — video-processing-worker: Generate the thumbnails](../../tasks/videos/US-Videos-05/backend/Task-13-video-processing-worker-Generate-the-thumbnails.md)
+* [Task-14 — video-processing-worker: Generate the seek previews](../../tasks/videos/US-Videos-05/backend/Task-14-video-processing-worker-Generate-the-seek-previews.md)
+* [Task-15 — video-processing-worker: Finish a video when its jobs are done](../../tasks/videos/US-Videos-05/backend/Task-15-video-processing-worker-Finish-a-video-when-its-jobs-are-done.md)
+* [Task-16 — video-api: Store what processing produced](../../tasks/videos/US-Videos-05/backend/Task-16-video-api-Store-what-processing-produced.md)
+* [Task-17 — video-api: Implement PUT /videos/{videoId}](../../tasks/videos/US-Videos-05/backend/Task-17-video-api-Implement-PUT-videos-videoId.md)
+* [Task-18 — video-api: Implement PUT /videos/{videoId}/thumbnail](../../tasks/videos/US-Videos-05/backend/Task-18-video-api-Implement-PUT-videos-videoId-thumbnail.md)
+* [Task-19 — video-api: Implement POST /videos/{videoId}/publish](../../tasks/videos/US-Videos-05/backend/Task-19-video-api-Implement-POST-videos-videoId-publish.md)
 
 FE:
 
-* TODO
+* [Task-20 — Implement the file selection page](../../tasks/videos/US-Videos-05/frontend/Task-20-Implement-the-file-selection-page.md)
+* [Task-21 — Implement the uploading page](../../tasks/videos/US-Videos-05/frontend/Task-21-Implement-the-uploading-page.md)
+* [Task-22 — Upload the file with tus](../../tasks/videos/US-Videos-05/frontend/Task-22-Upload-the-file-with-tus.md)
+* [Task-23 — Show processing progress from SSE](../../tasks/videos/US-Videos-05/frontend/Task-23-Show-processing-progress-from-SSE.md)
+* [Task-24 — Implement the video details form](../../tasks/videos/US-Videos-05/frontend/Task-24-Implement-the-video-details-form.md)
+* [Task-25 — Pick a thumbnail on the uploading page](../../tasks/videos/US-Videos-05/frontend/Task-25-Pick-a-thumbnail-on-the-uploading-page.md)
+* [Task-26 — Publish the video from the uploading page](../../tasks/videos/US-Videos-05/frontend/Task-26-Publish-the-video-from-the-uploading-page.md)

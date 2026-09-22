@@ -1,6 +1,7 @@
 ## video-api: Hide and restore a channel's videos
 
-Needs: [Task-02 — channel-api: Implement POST /channels/deletion/confirm](Task-02-channel-api-Implement-POST-channels-deletion-confirm.md)
+Needs: [Task-02 — channel-api: Implement POST /channels/deletion/confirm](Task-02-channel-api-Implement-POST-channels-deletion-confirm.md),
+[US-Videos-03 Task-03 — video-api: Implement PUT /videos/{videoId}/visibility](../../../videos/US-Videos-03/backend/Task-03-video-api-Implement-PUT-videos-videoId-visibility.md)
 
 Consume the deletion-scheduled and deletion-cancelled events.
 
