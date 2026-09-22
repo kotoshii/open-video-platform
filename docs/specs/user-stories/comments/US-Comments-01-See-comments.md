@@ -112,8 +112,12 @@ Read the comments — branches:
 
 BE:
 
-* TODO
+* [Task-01 — comment-api: Implement GET /comments](../../tasks/comments/US-Comments-01/backend/Task-01-comment-api-Implement-GET-comments.md)
+* [Task-02 — comment-api: Implement GET /comments/{commentId}/thread](../../tasks/comments/US-Comments-01/backend/Task-02-comment-api-Implement-GET-comments-commentId-thread.md)
+* [Task-03 — comment-api: Keep the author's name and avatar fresh](../../tasks/comments/US-Comments-01/backend/Task-03-comment-api-Keep-the-authors-name-and-avatar-fresh.md)
 
 FE:
 
-* TODO
+* [Task-04 — Build the comments section](../../tasks/comments/US-Comments-01/frontend/Task-04-Build-the-comments-section.md)
+* [Task-05 — Show a comment](../../tasks/comments/US-Comments-01/frontend/Task-05-Show-a-comment.md)
+* [Task-06 — Open a linked comment thread](../../tasks/comments/US-Comments-01/frontend/Task-06-Open-a-linked-comment-thread.md)

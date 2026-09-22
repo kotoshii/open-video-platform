@@ -77,8 +77,15 @@ Rate a comment — branches:
 
 BE:
 
-* TODO
+* [Task-01 — Migrate comment-rate-api to the new structure](../../tasks/comments/US-Comments-06/backend/Task-01-Migrate-comment-rate-api-to-the-new-structure.md)
+* [Task-02 — Migrate comment-rate-count-worker to the new structure](../../tasks/comments/US-Comments-06/backend/Task-02-Migrate-comment-rate-count-worker-to-the-new-structure.md)
+* [Task-03 — comment-api: Expose a comment's existence over gRPC](../../tasks/comments/US-Comments-06/backend/Task-03-comment-api-Expose-a-comments-existence-over-gRPC.md)
+* [Task-04 — comment-rate-api: Implement POST /comment-rates/{commentId}](../../tasks/comments/US-Comments-06/backend/Task-04-comment-rate-api-Implement-POST-comment-rates-commentId.md)
+* [Task-05 — comment-rate-api: Implement DELETE /comment-rates/{commentId}](../../tasks/comments/US-Comments-06/backend/Task-05-comment-rate-api-Implement-DELETE-comment-rates-commentId.md)
+* [Task-06 — comment-rate-api: Return the channel's rates for comments](../../tasks/comments/US-Comments-06/backend/Task-06-comment-rate-api-Return-the-channels-rates-for-comments.md)
+* [Task-07 — comment-rate-api: Delete rates when a comment goes](../../tasks/comments/US-Comments-06/backend/Task-07-comment-rate-api-Delete-rates-when-a-comment-goes.md)
+* [Task-08 — comment-rate-count-worker: Apply the comment rate counts](../../tasks/comments/US-Comments-06/backend/Task-08-comment-rate-count-worker-Apply-the-comment-rate-counts.md)
 
 FE:
 
-* TODO
+* [Task-09 — Add the rate buttons to comments](../../tasks/comments/US-Comments-06/frontend/Task-09-Add-the-rate-buttons-to-comments.md)

@@ -87,8 +87,8 @@ Reply — branches:
 
 BE:
 
-* TODO
+* [Task-01 — comment-api: Implement POST /comments/{commentId}/replies](../../tasks/comments/US-Comments-04/backend/Task-01-comment-api-Implement-POST-comments-commentId-replies.md)
 
 FE:
 
-* TODO
+* [Task-02 — Reply to a comment or a reply](../../tasks/comments/US-Comments-04/frontend/Task-02-Reply-to-a-comment-or-a-reply.md)

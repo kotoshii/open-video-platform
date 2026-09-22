@@ -80,8 +80,10 @@ Branches:
 
 BE:
 
-* TODO
+* [Task-01 — comment-api: Implement PUT /comments/{commentId}](../../tasks/comments/US-Comments-05/backend/Task-01-comment-api-Implement-PUT-comments-commentId.md)
+* [Task-02 — comment-api: Implement DELETE /comments/{commentId}](../../tasks/comments/US-Comments-05/backend/Task-02-comment-api-Implement-DELETE-comments-commentId.md)
 
 FE:
 
-* TODO
+* [Task-03 — Edit an own comment in place](../../tasks/comments/US-Comments-05/frontend/Task-03-Edit-an-own-comment-in-place.md)
+* [Task-04 — Delete an own comment or reply](../../tasks/comments/US-Comments-05/frontend/Task-04-Delete-an-own-comment-or-reply.md)

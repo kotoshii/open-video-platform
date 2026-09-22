@@ -62,8 +62,10 @@ Post a comment — branches:
 
 BE:
 
-* TODO
+* [Task-01 — Migrate video-comment-count-worker to the new structure](../../tasks/comments/US-Comments-03/backend/Task-01-Migrate-video-comment-count-worker-to-the-new-structure.md)
+* [Task-02 — comment-api: Implement POST /comments/{videoId}](../../tasks/comments/US-Comments-03/backend/Task-02-comment-api-Implement-POST-comments-videoId.md)
+* [Task-03 — video-comment-count-worker: Apply the comment counts](../../tasks/comments/US-Comments-03/backend/Task-03-video-comment-count-worker-Apply-the-comment-counts.md)
 
 FE:
 
-* TODO
+* [Task-04 — Add the comment box](../../tasks/comments/US-Comments-03/frontend/Task-04-Add-the-comment-box.md)
