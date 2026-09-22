@@ -1,7 +1,8 @@
 ## Add the email language setting to the Account tab
 
 Needs: [Task-02 — Store and change the account's email language](../backend/Task-02-Store-and-change-the-accounts-email-language.md),
-[US-I18n-01 Task-02 — Set up the i18n library](../../US-I18n-01/frontend/Task-02-Set-up-the-i18n-library.md)
+[US-I18n-01 Task-02 — Set up the i18n library](../../US-I18n-01/frontend/Task-02-Set-up-the-i18n-library.md),
+[US-Channels-03 Task-04 — Build the settings page with its tabs](../../../channels/US-Channels-03/frontend/Task-04-Build-the-settings-page-with-its-tabs.md)
 
 Add the email language setting to the Account tab of the settings page
 ([US-Channels-03](../../../../user-stories/channels/US-Channels-03-current-channel-settings.md)), with a Save of its

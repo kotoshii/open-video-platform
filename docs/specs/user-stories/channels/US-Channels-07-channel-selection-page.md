@@ -77,8 +77,9 @@ Create a channel from this page:
 
 BE:
 
-* TODO
+* None — the page uses [US-Channels-01 Task-02](../../tasks/channels/US-Channels-01/backend/Task-02-channel-api-Implement-GET-channels-mine.md), the same endpoint the switcher lists from
 
 FE:
 
-* TODO
+* [Task-01 — Build the channel selection page](../../tasks/channels/US-Channels-07/frontend/Task-01-Build-the-channel-selection-page.md)
+* [Task-02 — Send users here when no channel is chosen](../../tasks/channels/US-Channels-07/frontend/Task-02-Send-users-here-when-no-channel-is-chosen.md)

@@ -57,8 +57,10 @@ Switch the current channel — branches:
 
 BE:
 
-* TODO
+* [_platform infrastructure Task-17 — Verify access tokens in the gateway](../../tasks/_platform/infrastructure/Task-17-Verify-access-tokens-in-the-gateway.md) — the gateway checks the channel id against the token's claim
+* The channel list comes from [US-Channels-01 Task-02](../../tasks/channels/US-Channels-01/backend/Task-02-channel-api-Implement-GET-channels-mine.md); nothing else is needed on the server
 
 FE:
 
-* TODO
+* [Task-01 — Store the current channel and send it with requests](../../tasks/channels/US-Channels-02/frontend/Task-01-Store-the-current-channel-and-send-it-with-requests.md)
+* [Task-02 — Switch the current channel from the switcher](../../tasks/channels/US-Channels-02/frontend/Task-02-Switch-the-current-channel-from-the-switcher.md)

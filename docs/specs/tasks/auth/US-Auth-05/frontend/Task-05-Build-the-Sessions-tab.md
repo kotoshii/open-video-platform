@@ -1,6 +1,7 @@
 ## Build the Sessions tab
 
-Needs: [Task-02 — auth-api: Implement GET /auth/sessions](../backend/Task-02-auth-api-Implement-GET-auth-sessions.md)
+Needs: [Task-02 — auth-api: Implement GET /auth/sessions](../backend/Task-02-auth-api-Implement-GET-auth-sessions.md),
+[US-Channels-03 Task-04 — Build the settings page with its tabs](../../../channels/US-Channels-03/frontend/Task-04-Build-the-settings-page-with-its-tabs.md)
 
 Add the "Sessions" tab to the settings page
 ([US-Channels-03](../../../../user-stories/channels/US-Channels-03-current-channel-settings.md)). It lists the

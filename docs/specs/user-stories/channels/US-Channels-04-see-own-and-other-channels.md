@@ -115,8 +115,10 @@ Mobile:
 
 BE:
 
-* TODO
+* [Task-01 — channel-api: Implement GET /channels/{channelId}](../../tasks/channels/US-Channels-04/backend/Task-01-channel-api-Implement-GET-channels-channelId.md)
+* [Task-02 — video-api: Implement GET /videos/for-channel/{channelId}](../../tasks/channels/US-Channels-04/backend/Task-02-video-api-Implement-GET-videos-for-channel-channelId.md)
 
 FE:
 
-* TODO
+* [Task-03 — Build the channel page header](../../tasks/channels/US-Channels-04/frontend/Task-03-Build-the-channel-page-header.md)
+* [Task-04 — Build the channel video list](../../tasks/channels/US-Channels-04/frontend/Task-04-Build-the-channel-video-list.md)

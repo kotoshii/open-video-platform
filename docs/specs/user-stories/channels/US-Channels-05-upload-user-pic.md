@@ -56,8 +56,9 @@ Upload a user pic — branches:
 
 BE:
 
-* TODO
+* [Task-01 — channel-api: Implement PUT /channels/current/avatar](../../tasks/channels/US-Channels-05/backend/Task-01-channel-api-Implement-PUT-channels-current-avatar.md)
 
 FE:
 
-* TODO
+* [Task-02 — Add the avatar upload to the Channel tab](../../tasks/channels/US-Channels-05/frontend/Task-02-Add-the-avatar-upload-to-the-Channel-tab.md)
+* [Task-03 — Add the avatar to the create channel modal](../../tasks/channels/US-Channels-05/frontend/Task-03-Add-the-avatar-to-the-create-channel-modal.md)

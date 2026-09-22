@@ -190,8 +190,25 @@ Tokens and sessions:
 
 BE:
 
-* TODO
+* [Task-01 — channel-api: Implement POST /channels/current/deletion](../../tasks/channels/US-Channels-06/backend/Task-01-channel-api-Implement-POST-channels-current-deletion.md)
+* [Task-02 — channel-api: Implement POST /channels/deletion/confirm](../../tasks/channels/US-Channels-06/backend/Task-02-channel-api-Implement-POST-channels-deletion-confirm.md)
+* [Task-03 — channel-api: Implement POST /channels/deletion/cancel](../../tasks/channels/US-Channels-06/backend/Task-03-channel-api-Implement-POST-channels-deletion-cancel.md)
+* [Task-04 — channel-api: Sweep for deletions whose job was lost](../../tasks/channels/US-Channels-06/backend/Task-04-channel-api-Sweep-for-deletions-whose-job-was-lost.md)
+* [Task-05 — video-api: Hide and restore a channel's videos](../../tasks/channels/US-Channels-06/backend/Task-05-video-api-Hide-and-restore-a-channels-videos.md)
+* [Task-06 — auth-api: Remove a channel id over gRPC](../../tasks/channels/US-Channels-06/backend/Task-06-auth-api-Remove-a-channel-id-over-gRPC.md)
+* [Task-07 — channel-api: Run the purge as a saga](../../tasks/channels/US-Channels-06/backend/Task-07-channel-api-Run-the-purge-as-a-saga.md)
+* [Task-08 — video-api: Delete a channel's videos on purge](../../tasks/channels/US-Channels-06/backend/Task-08-video-api-Delete-a-channels-videos-on-purge.md)
+* [Task-09 — comment-api: Delete a channel's comments on purge](../../tasks/channels/US-Channels-06/backend/Task-09-comment-api-Delete-a-channels-comments-on-purge.md)
+* [Task-10 — comment-rate-api: Delete a channel's comment rates on purge](../../tasks/channels/US-Channels-06/backend/Task-10-comment-rate-api-Delete-a-channels-comment-rates-on-purge.md)
+* [Task-11 — video-rate-api: Delete a channel's video rates on purge](../../tasks/channels/US-Channels-06/backend/Task-11-video-rate-api-Delete-a-channels-video-rates-on-purge.md)
+* [Task-12 — subscription-api: Delete a channel's subscriptions on purge](../../tasks/channels/US-Channels-06/backend/Task-12-subscription-api-Delete-a-channels-subscriptions-on-purge.md)
+* [Task-13 — watch-history-api: Delete a channel's history on purge](../../tasks/channels/US-Channels-06/backend/Task-13-watch-history-api-Delete-a-channels-history-on-purge.md)
+* [Task-14 — notification-api: Delete a channel's notifications on purge](../../tasks/channels/US-Channels-06/backend/Task-14-notification-api-Delete-a-channels-notifications-on-purge.md)
+* [Task-15 — search-api: Delete a channel's documents on purge](../../tasks/channels/US-Channels-06/backend/Task-15-search-api-Delete-a-channels-documents-on-purge.md)
+* [Task-16 — recommendation-api: Delete a channel's Gorse data on purge](../../tasks/channels/US-Channels-06/backend/Task-16-recommendation-api-Delete-a-channels-Gorse-data-on-purge.md)
 
 FE:
 
-* TODO
+* [Task-17 — Add Delete channel to the Channel tab](../../tasks/channels/US-Channels-06/frontend/Task-17-Add-Delete-channel-to-the-Channel-tab.md)
+* [Task-18 — Implement the channel deletion pages](../../tasks/channels/US-Channels-06/frontend/Task-18-Implement-the-channel-deletion-pages.md)
+* [Task-19 — Show the scheduled deletion banner](../../tasks/channels/US-Channels-06/frontend/Task-19-Show-the-scheduled-deletion-banner.md)

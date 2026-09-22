@@ -70,8 +70,11 @@ Create a channel — branches:
 
 BE:
 
-* TODO
+* [Task-01 — auth-api: Add a channel id over gRPC](../../tasks/channels/US-Channels-01/backend/Task-01-auth-api-Add-a-channel-id-over-gRPC.md)
+* [Task-02 — channel-api: Implement GET /channels/mine](../../tasks/channels/US-Channels-01/backend/Task-02-channel-api-Implement-GET-channels-mine.md)
+* [Task-03 — channel-api: Implement POST /channels](../../tasks/channels/US-Channels-01/backend/Task-03-channel-api-Implement-POST-channels.md)
 
 FE:
 
-* TODO
+* [Task-04 — Build the channel block and switcher](../../tasks/channels/US-Channels-01/frontend/Task-04-Build-the-channel-block-and-switcher.md)
+* [Task-05 — Implement the create channel modal](../../tasks/channels/US-Channels-01/frontend/Task-05-Implement-the-create-channel-modal.md)

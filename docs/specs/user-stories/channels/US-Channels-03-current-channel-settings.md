@@ -94,8 +94,11 @@ Edit the current channel — branches:
 
 BE:
 
-* TODO
+* [Task-01 — channel-api: Implement GET /channels/current](../../tasks/channels/US-Channels-03/backend/Task-01-channel-api-Implement-GET-channels-current.md)
+* [Task-02 — channel-api: Implement PUT /channels/current](../../tasks/channels/US-Channels-03/backend/Task-02-channel-api-Implement-PUT-channels-current.md)
+* [Task-03 — channel-api: Expose the age-restricted setting over gRPC](../../tasks/channels/US-Channels-03/backend/Task-03-channel-api-Expose-the-age-restricted-setting-over-gRPC.md)
 
 FE:
 
-* TODO
+* [Task-04 — Build the settings page with its tabs](../../tasks/channels/US-Channels-03/frontend/Task-04-Build-the-settings-page-with-its-tabs.md)
+* [Task-05 — Build the Channel tab form](../../tasks/channels/US-Channels-03/frontend/Task-05-Build-the-Channel-tab-form.md)
