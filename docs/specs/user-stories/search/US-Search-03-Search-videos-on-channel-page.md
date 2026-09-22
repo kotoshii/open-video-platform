@@ -82,8 +82,8 @@ Search within a channel — branches:
 
 BE:
 
-* TODO
+* [Task-01 — video-api: Search a channel's videos](../../tasks/search/US-Search-03/backend/Task-01-video-api-Search-a-channels-videos.md)
 
 FE:
 
-* TODO
+* [Task-02 — Add the search input to the channel video list](../../tasks/search/US-Search-03/frontend/Task-02-Add-the-search-input-to-the-channel-video-list.md)

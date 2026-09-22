@@ -127,8 +127,12 @@ Search videos — branches:
 
 BE:
 
-* TODO
+* [Task-01 — Create search-api](../../tasks/search/US-Search-01/backend/Task-01-Create-search-api.md)
+* [Task-02 — search-api: Define the video index](../../tasks/search/US-Search-01/backend/Task-02-search-api-Define-the-video-index.md)
+* [Task-03 — search-api: Index videos from their events](../../tasks/search/US-Search-01/backend/Task-03-search-api-Index-videos-from-their-events.md)
+* [Task-04 — search-api: Implement GET /search/videos](../../tasks/search/US-Search-01/backend/Task-04-search-api-Implement-GET-search-videos.md)
 
 FE:
 
-* TODO
+* [Task-05 — Build the search input in the navbar](../../tasks/search/US-Search-01/frontend/Task-05-Build-the-search-input-in-the-navbar.md)
+* [Task-06 — Build the video search page](../../tasks/search/US-Search-01/frontend/Task-06-Build-the-video-search-page.md)
