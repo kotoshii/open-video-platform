@@ -64,8 +64,10 @@ See a message — branches:
 
 BE:
 
-* TODO
+* [_platform foundation Task-03 — Define the API error codes in lib](../../tasks/_platform/foundation/Task-03-Define-the-API-error-codes-in-lib.md)
+* [_platform foundation Task-04 — Return error codes from every API](../../tasks/_platform/foundation/Task-04-Return-error-codes-from-every-API.md)
 
 FE:
 
-* TODO
+* [Task-01 — Turn error codes into localized messages](../../tasks/i18n/US-I18n-02/frontend/Task-01-Turn-error-codes-into-localized-messages.md)
+* [Task-02 — Show field-level errors under their fields](../../tasks/i18n/US-I18n-02/frontend/Task-02-Show-field-level-errors-under-their-fields.md)

@@ -1,7 +1,8 @@
 ## Build the sidebar navigation
 
 Needs: [Task-01 — Build the app shell layout](Task-01-Build-the-app-shell-layout.md),
-[US-UI-UX-01 Task-02 — Build the theme toggle](../../US-UI-UX-01/frontend/Task-02-Build-the-theme-toggle.md)
+[US-UI-UX-01 Task-02 — Build the theme toggle](../../US-UI-UX-01/frontend/Task-02-Build-the-theme-toggle.md),
+[US-I18n-01 Task-02 — Set up the i18n library](../../../i18n/US-I18n-01/frontend/Task-02-Set-up-the-i18n-library.md)
 
 Fill the sidebar. From the top: the logo, a slot for the current channel block
 ([US-Channels-02](../../../../user-stories/channels/US-Channels-02-freely-switch-between-channels.md)), a divider, then

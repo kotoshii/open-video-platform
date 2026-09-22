@@ -93,4 +93,7 @@ Change the language — branches:
 
 FE:
 
-* TODO
+* [Task-01 — Spike: Choose the i18n library](../../tasks/i18n/US-I18n-01/frontend/Task-01-Spike-Choose-the-i18n-library.md)
+* [Task-02 — Set up the i18n library](../../tasks/i18n/US-I18n-01/frontend/Task-02-Set-up-the-i18n-library.md)
+* [Task-03 — Build the language selector](../../tasks/i18n/US-I18n-01/frontend/Task-03-Build-the-language-selector.md)
+* [Task-04 — Format dates, counts and plurals with Intl](../../tasks/i18n/US-I18n-01/frontend/Task-04-Format-dates-counts-and-plurals-with-Intl.md)

@@ -1,6 +1,7 @@
 ## Look up the address and language when sending
 
-Needs: [Task-23 — Create email-worker](Task-23-Create-email-worker.md)
+Needs: [Task-23 — Create email-worker](Task-23-Create-email-worker.md),
+[US-I18n-03 Task-03 — Expose the email language over gRPC](../../i18n/US-I18n-03/backend/Task-03-Expose-the-email-language-over-gRPC.md)
 
 Before sending, ask `auth-api` over gRPC for the account's email address and `account-api` for its email language.
 

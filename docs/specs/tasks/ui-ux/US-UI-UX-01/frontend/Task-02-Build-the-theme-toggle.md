@@ -1,6 +1,7 @@
 ## Build the theme toggle
 
-Needs: [Task-01 — Add dark theme support to the app](Task-01-Add-dark-theme-support-to-the-app.md)
+Needs: [Task-01 — Add dark theme support to the app](Task-01-Add-dark-theme-support-to-the-app.md),
+[US-I18n-01 Task-02 — Set up the i18n library](../../../i18n/US-I18n-01/frontend/Task-02-Set-up-the-i18n-library.md)
 
 Build the control that switches between light and dark: an icon button showing which theme is on. The layout places it —
 in the sidebar, and in the top right corner on pages that have no sidebar

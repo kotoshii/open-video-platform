@@ -90,8 +90,11 @@ Branches:
 
 BE:
 
-* TODO
+* [Task-01 — Migrate user-api to the new structure as account-api](../../tasks/i18n/US-I18n-03/backend/Task-01-Migrate-user-api-to-the-new-structure-as-account-api.md)
+* [Task-02 — Store and change the account's email language](../../tasks/i18n/US-I18n-03/backend/Task-02-Store-and-change-the-accounts-email-language.md)
+* [Task-03 — Expose the email language over gRPC](../../tasks/i18n/US-I18n-03/backend/Task-03-Expose-the-email-language-over-gRPC.md)
+* [_platform infrastructure Task-25 — Render emails from Handlebars templates](../../tasks/_platform/infrastructure/Task-25-Render-emails-from-Handlebars-templates.md)
 
 FE:
 
-* TODO
+* [Task-04 — Add the email language setting to the Account tab](../../tasks/i18n/US-I18n-03/frontend/Task-04-Add-the-email-language-setting-to-the-Account-tab.md)
