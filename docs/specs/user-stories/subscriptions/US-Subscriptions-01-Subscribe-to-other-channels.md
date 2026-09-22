@@ -85,8 +85,13 @@ Branches:
 
 BE:
 
-* TODO
+* [Task-01 — Migrate subscription-api to the new structure](../../tasks/subscriptions/US-Subscriptions-01/backend/Task-01-Migrate-subscription-api-to-the-new-structure.md)
+* [Task-02 — Migrate subscriber-count-worker to the new structure](../../tasks/subscriptions/US-Subscriptions-01/backend/Task-02-Migrate-subscriber-count-worker-to-the-new-structure.md)
+* [Task-03 — subscription-api: Implement POST /subscriptions](../../tasks/subscriptions/US-Subscriptions-01/backend/Task-03-subscription-api-Implement-POST-subscriptions.md)
+* [Task-04 — subscription-api: Implement DELETE /subscriptions/{channelId}](../../tasks/subscriptions/US-Subscriptions-01/backend/Task-04-subscription-api-Implement-DELETE-subscriptions-channelId.md)
+* [Task-05 — subscription-api: Implement GET /subscriptions/{channelId}](../../tasks/subscriptions/US-Subscriptions-01/backend/Task-05-subscription-api-Implement-GET-subscriptions-channelId.md)
+* [Task-06 — subscriber-count-worker: Apply and publish the counts](../../tasks/subscriptions/US-Subscriptions-01/backend/Task-06-subscriber-count-worker-Apply-and-publish-the-counts.md)
 
 FE:
 
-* TODO
+* [Task-07 — Add the subscribe button](../../tasks/subscriptions/US-Subscriptions-01/frontend/Task-07-Add-the-subscribe-button.md)

@@ -1,6 +1,7 @@
 ## subscription-api: Delete a channel's subscriptions on purge
 
-Needs: [Task-07 — channel-api: Run the purge as a saga](Task-07-channel-api-Run-the-purge-as-a-saga.md)
+Needs: [Task-07 — channel-api: Run the purge as a saga](Task-07-channel-api-Run-the-purge-as-a-saga.md),
+[US-Subscriptions-01 Task-04 — subscription-api: Implement DELETE /subscriptions/{channelId}](../../../subscriptions/US-Subscriptions-01/backend/Task-04-subscription-api-Implement-DELETE-subscriptions-channelId.md)
 
 Consume the purge event: delete the channel's subscriptions in both directions — the channels it followed and the ones
 that followed it — writing an unsubscribe event for each, carrying the subscription's original creation time, then

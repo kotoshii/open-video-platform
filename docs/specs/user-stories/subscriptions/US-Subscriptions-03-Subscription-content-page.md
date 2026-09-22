@@ -101,8 +101,9 @@ Branches:
 
 BE:
 
-* TODO
+* [Task-01 — subscription-api: Keep the subscribed channels' details fresh](../../tasks/subscriptions/US-Subscriptions-03/backend/Task-01-subscription-api-Keep-the-subscribed-channels-details-fresh.md)
+* [Task-02 — subscription-api: Implement GET /subscriptions/current](../../tasks/subscriptions/US-Subscriptions-03/backend/Task-02-subscription-api-Implement-GET-subscriptions-current.md)
 
 FE:
 
-* TODO
+* [Task-03 — Build the subscriptions page](../../tasks/subscriptions/US-Subscriptions-03/frontend/Task-03-Build-the-subscriptions-page.md)

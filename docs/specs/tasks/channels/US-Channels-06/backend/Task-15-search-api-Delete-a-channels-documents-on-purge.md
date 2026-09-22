@@ -1,6 +1,7 @@
 ## search-api: Delete a channel's documents on purge
 
-Needs: [Task-07 — channel-api: Run the purge as a saga](Task-07-channel-api-Run-the-purge-as-a-saga.md)
+Needs: [Task-07 — channel-api: Run the purge as a saga](Task-07-channel-api-Run-the-purge-as-a-saga.md),
+[US-Search-01 Task-01 — Create search-api](../../../search/US-Search-01/backend/Task-01-Create-search-api.md)
 
 Consume the purge event: delete the channel's document and every video document belonging to it, then report back.
 
