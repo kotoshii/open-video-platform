@@ -36,7 +36,9 @@ What is decided:
   need one, rather than sending inline in the request that triggered it. No user-facing request ever waits on mail
   delivery, and a failed send never fails the action that caused it ([service-map.md](service-map.md)).
 * [ ] The worker looks up the recipient's address from `auth-api` and the email language from `account-api` at send
-  time; the events carry the account id, not the address.
+  time; the events carry the account id, not the address. The one exception is changing the address
+  ([US-Account-02](user-stories/account/US-Account-02-Change-email.md)): the confirmation goes to an address the account
+  does not have yet, and the notice to the one it no longer has, so those two events carry the address explicitly.
 * [ ] **Handlebars** templates, living inside the worker. User-supplied content is rendered with the escaping `{{ }}`
   and never with `{{{ }}}` ([US-Notifications-03](user-stories/notifications/US-Notifications-03-Email-channel.md)).
 * [ ] Every email is written in the account's email language, read together with the recipient's address

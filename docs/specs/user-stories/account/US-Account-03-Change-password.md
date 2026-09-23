@@ -73,8 +73,8 @@ Change password — branches:
 
 BE:
 
-* TODO
+* [Task-01 — auth-api: Implement PUT /auth/password](../../tasks/account/US-Account-03/backend/Task-01-auth-api-Implement-PUT-auth-password.md)
 
 FE:
 
-* TODO
+* [Task-02 — Add the password change to the Account tab](../../tasks/account/US-Account-03/frontend/Task-02-Add-the-password-change-to-the-Account-tab.md)

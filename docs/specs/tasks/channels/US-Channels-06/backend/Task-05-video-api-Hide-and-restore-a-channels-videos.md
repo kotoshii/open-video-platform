@@ -17,6 +17,9 @@ Main flow — cancelled:
 Either way, write a video-updated event per video to the outbox in the same transaction, so the search index drops the
 videos and Gorse hides them — and takes them back on a cancel.
 
+While the mark is set, refuse a visibility change with its code — through `PUT /videos/{videoId}/visibility` and
+through the visibility in `PUT /videos/{videoId}` — or a cancel would overwrite it with the stored one.
+
 Why: `private` is a value every read path already handles, so nothing else in the system needs a notion of "scheduled
 for deletion" — and the channel's video count follows by itself, because it is computed from what the viewer can see.
 The copies still have to hear about it: without the events they would keep serving the videos for the whole week, held

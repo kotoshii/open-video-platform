@@ -76,6 +76,10 @@ During the window:
 * **Nothing is deleted before the window ends** — not a database row, not a file in storage.
 * The videos of every channel of the account become private as soon as the deletion is scheduled; everything else
   about those channels stays live ([US-Channels-06](../channels/US-Channels-06-delete-own-channel.md)).
+* As with a channel's deletion, no video's visibility can be changed while the account's deletion is scheduled — in
+  the UI or through the API. A video published during the window, by any channel of the account, is private as well.
+* Cancelling the account's deletion does not bring back the videos of a channel that has its own deletion scheduled;
+  those stay private until that deletion is cancelled too.
 * The account and every one of its channels stay usable, with nothing restricted.
 * Logging in with the account's credentials keeps working, as does everything else the account can normally do.
 * The Account tab states that a deletion is scheduled, when it will happen, and offers "Cancel deletion".
@@ -137,8 +141,20 @@ The deletion itself:
 
 BE:
 
-* TODO
+* [Task-01 — account-api: Implement POST /accounts/current/deletion](../../tasks/account/US-Account-01/backend/Task-01-account-api-Implement-POST-accounts-current-deletion.md)
+* [Task-02 — account-api: Implement POST /accounts/deletion/confirm](../../tasks/account/US-Account-01/backend/Task-02-account-api-Implement-POST-accounts-deletion-confirm.md)
+* [Task-03 — account-api: Implement POST /accounts/deletion/cancel](../../tasks/account/US-Account-01/backend/Task-03-account-api-Implement-POST-accounts-deletion-cancel.md)
+* [Task-04 — account-api: Sweep for account deletions whose job was lost](../../tasks/account/US-Account-01/backend/Task-04-account-api-Sweep-for-account-deletions-whose-job-was-lost.md)
+* [Task-05 — video-api: Hide and restore an account's videos](../../tasks/account/US-Account-01/backend/Task-05-video-api-Hide-and-restore-an-accounts-videos.md)
+* [Task-06 — channel-api: Purge every channel of an account](../../tasks/account/US-Account-01/backend/Task-06-channel-api-Purge-every-channel-of-an-account.md)
+* [Task-07 — auth-api: Delete an account's identity over gRPC](../../tasks/account/US-Account-01/backend/Task-07-auth-api-Delete-an-accounts-identity-over-gRPC.md)
+* [Task-08 — account-api: Run the account purge as a saga](../../tasks/account/US-Account-01/backend/Task-08-account-api-Run-the-account-purge-as-a-saga.md)
+* [Task-09 — auth-api: Tell a deleted account apart on refresh](../../tasks/account/US-Account-01/backend/Task-09-auth-api-Tell-a-deleted-account-apart-on-refresh.md)
 
 FE:
 
-* TODO
+* [Task-10 — Add Delete account to the Account tab](../../tasks/account/US-Account-01/frontend/Task-10-Add-Delete-account-to-the-Account-tab.md)
+* [Task-11 — Implement the account deletion pages](../../tasks/account/US-Account-01/frontend/Task-11-Implement-the-account-deletion-pages.md)
+* [Task-12 — Show the account deletion banner](../../tasks/account/US-Account-01/frontend/Task-12-Show-the-account-deletion-banner.md)
+* [Task-13 — Lock the visibility while the account deletion is scheduled](../../tasks/account/US-Account-01/frontend/Task-13-Lock-the-visibility-while-the-account-deletion-is-scheduled.md)
+* [Task-14 — Send a deleted account to the sign-up page](../../tasks/account/US-Account-01/frontend/Task-14-Send-a-deleted-account-to-the-sign-up-page.md)

@@ -129,8 +129,18 @@ Download the data — branches:
 
 BE:
 
-* TODO
+* [Task-01 — auth-api: Verify a password over gRPC](../../tasks/account/US-Account-04/backend/Task-01-auth-api-Verify-a-password-over-gRPC.md)
+* [Task-02 — channel-api: Export an account's channels over gRPC](../../tasks/account/US-Account-04/backend/Task-02-channel-api-Export-an-accounts-channels-over-gRPC.md)
+* [Task-03 — video-api: Export channels' videos over gRPC](../../tasks/account/US-Account-04/backend/Task-03-video-api-Export-channels-videos-over-gRPC.md)
+* [Task-04 — comment-api: Export channels' comments over gRPC](../../tasks/account/US-Account-04/backend/Task-04-comment-api-Export-channels-comments-over-gRPC.md)
+* [Task-05 — video-rate-api: Export channels' video rates over gRPC](../../tasks/account/US-Account-04/backend/Task-05-video-rate-api-Export-channels-video-rates-over-gRPC.md)
+* [Task-06 — comment-rate-api: Export channels' comment rates over gRPC](../../tasks/account/US-Account-04/backend/Task-06-comment-rate-api-Export-channels-comment-rates-over-gRPC.md)
+* [Task-07 — subscription-api: Export channels' subscriptions over gRPC](../../tasks/account/US-Account-04/backend/Task-07-subscription-api-Export-channels-subscriptions-over-gRPC.md)
+* [Task-08 — watch-history-api: Export channels' watch history over gRPC](../../tasks/account/US-Account-04/backend/Task-08-watch-history-api-Export-channels-watch-history-over-gRPC.md)
+* [Task-09 — notification-api: Export channels' notification preferences over gRPC](../../tasks/account/US-Account-04/backend/Task-09-notification-api-Export-channels-notification-preferences-over-gRPC.md)
+* [Task-10 — account-api: Collect the account's data into an archive](../../tasks/account/US-Account-04/backend/Task-10-account-api-Collect-the-accounts-data-into-an-archive.md)
+* [Task-11 — account-api: Implement POST /accounts/current/export](../../tasks/account/US-Account-04/backend/Task-11-account-api-Implement-POST-accounts-current-export.md)
 
 FE:
 
-* TODO
+* [Task-12 — Add Download my data to the Account tab](../../tasks/account/US-Account-04/frontend/Task-12-Add-Download-my-data-to-the-Account-tab.md)

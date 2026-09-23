@@ -84,6 +84,10 @@ During the window:
 * Every video of the channel becomes private as soon as the deletion is scheduled, so no one but the author can watch
   it, and it is absent from search, feeds and the channel page for visitors.
 * A video published while the deletion is scheduled is private as well.
+* While the deletion is scheduled, no video's visibility can be changed: the "Change visibility" option and the
+  visibility field of the video details form are unavailable, with a note saying why, and the API refuses the change.
+  Cancelling the deletion puts back the visibility each video had before, so a change made during the window would be
+  lost anyway.
 * Everything else about the channel stays live and visible: its page, its comments and replies, its subscriptions in
   both directions and its subscriber count.
 * Counts still agree with what they count: the channel's video count follows what the viewer can see
@@ -212,3 +216,4 @@ FE:
 * [Task-17 — Add Delete channel to the Channel tab](../../tasks/channels/US-Channels-06/frontend/Task-17-Add-Delete-channel-to-the-Channel-tab.md)
 * [Task-18 — Implement the channel deletion pages](../../tasks/channels/US-Channels-06/frontend/Task-18-Implement-the-channel-deletion-pages.md)
 * [Task-19 — Show the scheduled deletion banner](../../tasks/channels/US-Channels-06/frontend/Task-19-Show-the-scheduled-deletion-banner.md)
+* [Task-20 — Lock the visibility while a deletion is scheduled](../../tasks/channels/US-Channels-06/frontend/Task-20-Lock-the-visibility-while-a-deletion-is-scheduled.md)
