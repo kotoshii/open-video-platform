@@ -82,6 +82,21 @@ Open the feed — branches:
   ([US-My-activity-01](../my-activity/US-My-activity-01-Watch-history.md)): a channel with its history paused sends no
   watch feedback, and clearing the history — or removing one video from it — removes those watch signals from Gorse
   again.
+* **Decided while writing the tasks:**
+    * The channel's own videos are left out of its feed, from Gorse's candidates and the popular ones alike. Similar
+      videos keep them, since there they are related by content.
+    * "Most popular" means published public videos ordered by all-time view count, served by the video service, so the
+      fallback works when Gorse is down.
+    * A feed session's snapshot holds about 200 videos: Gorse's candidates first, then popular videos after them, with
+      duplicates dropped and — while Gorse answers — the videos the channel has already watched left out. With no
+      history, or with Gorse down, it is all popular videos.
+    * Scrolling past the end of the snapshot, or reaching it after the snapshot has expired (an hour after its last page
+      was read), simply stops the loading, with no message. The next visit to the homepage builds a new snapshot.
+    * If loading more fails, the cards already shown stay and the bottom of the list shows a section error with a
+      retry; only a failed first page is a full-screen error.
+    * Gorse's feedback types: watch and like are positive, dislike is negative, and there is no read type — Gorse treats
+      an item a user has only read as a negative example. Subscriptions reach Gorse as labels: the subscribed channel
+      ids on the user, and the channel id on each video.
 
 **Links**
 

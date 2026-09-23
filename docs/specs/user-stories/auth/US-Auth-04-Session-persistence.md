@@ -34,7 +34,7 @@ Invalid token supplied:
 
 1. A request arrives with a malformed, tampered with, or otherwise invalid token (e.g. sent manually from an API
    client).
-2. The server validates the token signature and rejects the request with `401`.
+2. The gateway validates the token and rejects the request with `401`.
 
 **Acceptance criteria**
 
@@ -44,7 +44,10 @@ Invalid token supplied:
 * Refresh tokens are rotated: every refresh returns a new pair, and the previous refresh token stops working.
 * The session survives page reloads and app restarts as long as the refresh token is valid.
 * When the refresh token is expired or rejected, the app clears the session, redirects to the login page and tells the
-  user the session has expired.
+  user the session has expired. The exception is an account that has been deleted: its user goes to the sign-up page
+  instead ([US-Account-01](../account/US-Account-01-Delete-own-account.md)).
+* A visitor with no session who opens a page inside the layout goes straight to the login page, without the page
+  rendering first. The auth pages and the pages opened from email links stay public.
 * The app never shows a raw `401` to the user — it either refreshes silently or redirects to login.
 * The server rejects requests with a missing, malformed, expired or invalid signature token with `401`.
 * Token validation happens against the identity provider's public keys, not a shared secret.
@@ -55,7 +58,10 @@ Invalid token supplied:
 
 * Keycloak provides the JWKS endpoint for signature validation and the token endpoint for exchanging a refresh token for
   a new pair — no custom token issuing logic is needed.
-* Cache JWKS keys on the API side instead of fetching them per request; handle key rotation.
+* The nginx gateway verifies every access token against Keycloak's JWKS keys, cached and fetched again when it meets
+  an unknown key, and passes the result to the services as headers — `User-ID`, `Channel-ID`, `Session-ID`,
+  `Birthdate`, `Email-Verified` ([infrastructure.md](../../infrastructure.md)). Services never parse tokens. Login,
+  sign-up, refresh and the email-link routes are public.
 * The access token lives **5 minutes**. The session survives up to **30 days without activity**: every refresh rotates
   the refresh token and restarts that window, so someone who uses the app at least monthly never has to log in again.
 * There is **no "remember me" option** — every login stays signed in the same way. No story asks for one, and a short

@@ -19,7 +19,7 @@ Search videos — main flow:
     * **Duration** — Shorter than 5 minutes, 5-15 minutes, 16-30 minutes, Longer than 30 minutes;
     * **Order** — Relevancy, Recently uploaded, Most popular.
 5. User selects the filters and the order they want. No filter is selected by default, and the default order is
-   Relevancy.
+   Relevancy. Recently uploaded puts the newest first; Most popular means the most views.
 6. User presses Enter or clicks the search button.
 7. The app opens the dedicated search page, which loads the results.
 8. User sees the videos matching the query, filtered and ordered as selected.
@@ -44,11 +44,14 @@ Search videos — branches:
   ("Search videos...").
 * The filters and sorting popup offers Upload date and Duration filters, and the three order options, exactly as listed
   above.
-* No filter is selected by default; the default order is Relevancy.
+* No filter is selected by default; the default order is Relevancy. Recently uploaded puts the newest first; Most
+  popular means the most views.
 * Each filter group allows one option at a time; the selected option is highlighted and has an × that removes it.
 * "Clear filters" removes every selected filter at once and leaves the order as it is.
 * Submitting the search opens the dedicated search page, which loads and shows the results.
-* Results match the query and respect the selected filters and order.
+* Results match the query in the title, the description or the tags, and respect the selected filters and order.
+* Only public, published videos appear in results. Private and accessible-by-link videos never do
+  ([US-Videos-03](../videos/US-Videos-03-Manage-own-videos.md)).
 * A search finds other forms of the same word, in English and in Ukrainian — "cats" finds "cat", and "котик" finds
   "котики".
 * Videos of channels that no longer exist never appear in results. A channel scheduled for deletion is still a live
@@ -97,8 +100,9 @@ Search videos — branches:
   `franc`, `eld` or `tinyld`, or simply the alphabet (Cyrillic or Latin) when that is enough — and index the text into
   that language's field only. Keep indexing into every field as the fallback for text the detector is not confident
   about: titles are short and often mixed, which is exactly where detectors are weakest.
-* The Search service owns its index and fills it by consuming Kafka events: videos are indexed when published, updated
-  when changed and dropped when their channel or account is deleted. This is the same fan-out the channel-updated event
+* The Search service owns its index and fills it by consuming Kafka events: public videos are indexed when published,
+  updated when changed, and dropped when deleted, made private or accessible by link, or when their channel or account
+  is deleted. This is the same fan-out the channel-updated event
   already uses ([US-Channels-03](../channels/US-Channels-03-current-channel-settings.md)), so consumers must be
   idempotent and deduplicate.
 * Visibility still has to be enforced when serving: the index lags behind the database, so a video just made private,
@@ -111,8 +115,8 @@ Search videos — branches:
 * Duration and upload date are range queries over indexed fields — keep duration in seconds and the upload date as a
   timestamp, and translate the UI buckets on the API side rather than storing the buckets.
 * Results are paginated with classic page controls at the bottom of the search page, not infinite scroll.
-* Elasticsearch limits how deep `from`/`size` paging can go (`index.max_result_window`), so either cap the number of
-  reachable pages or switch to `search_after` for deep ones.
+* Elasticsearch limits how deep `from`/`size` paging can go (`index.max_result_window`), so the number of reachable
+  pages is capped. The page controls never offer a page past the cap, and a request for one is rejected.
 
 **Links**
 

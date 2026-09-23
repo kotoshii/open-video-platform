@@ -44,6 +44,8 @@ Branches:
 * The button state changes immediately, before the server confirms, and reverts if the request fails.
 * The button is not rendered for the user's own channel.
 * Subscribing twice in a row still results in a single subscription.
+* Unsubscribing from a channel that is not subscribed is not an error. The server refuses a channel subscribing to
+  itself, even though the button is never shown for it.
 * The subscriber count shown for a channel is the stored one. It is not adjusted on the client after subscribing, so it
   may take a few seconds to change — the button state is what confirms the action.
 * A channel with no subscribers shows no subscriber count at all, rather than "0 subscribers".

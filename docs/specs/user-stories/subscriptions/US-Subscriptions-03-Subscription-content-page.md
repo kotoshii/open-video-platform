@@ -76,12 +76,18 @@ Branches:
 * That search is the server-side channel search, submitted with Enter or its button. It is not the client-side filter
   of [US-Subscriptions-02](./US-Subscriptions-02-Manage-own-subscriptions.md), and the two should not be confused.
 * Reusing the channel listing also means inheriting its visibility rules: private and accessible-by-link videos never
-  appear, and age-restricted ones are filtered by the viewer's date of birth
-  ([US-Videos-03](../videos/US-Videos-03-Manage-own-videos.md)).
+  appear, and age-restricted ones are filtered by the viewer's date of birth and by the acting channel's "Show
+  age-restricted content" setting ([US-Videos-03](../videos/US-Videos-03-Manage-own-videos.md),
+  [US-Channels-03](../channels/US-Channels-03-current-channel-settings.md)).
 * There are no 3-dot menus because the channel being browsed is never the acting channel — a channel cannot subscribe to
   itself.
 * The avatar row and the list in US-Subscriptions-02 are the same data — the current channel's subscriptions, most
   recent first — and can come from the same request.
+* The Subscriptions service keeps its own copy of each subscribed channel's name, avatar, description and subscriber
+  count, refreshed when the channel or its subscriber count changes
+  ([US-Channels-03](../channels/US-Channels-03-current-channel-settings.md)). The list is not paged, so this avoids
+  asking the Channels service about hundreds of channels on every load; the row and the list may show old values for a
+  short time.
 * A channel scheduled for deletion is still live, so it stays in the row until its purge removes the subscription
   ([US-Channels-06](../channels/US-Channels-06-delete-own-channel.md)).
 * The page shows one channel at a time rather than a merged timeline of everything the user follows. That keeps it a

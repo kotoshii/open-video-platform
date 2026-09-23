@@ -15,9 +15,13 @@ it can run.
   headers the gateway sets. Without it, tusd hands the browser upload URLs that point at its own internal address.
 * [ ] **MinIO presigns for `storage.localhost`** (`MINIO_SERVER_URL`). A presigned signature covers the host, so a URL
   signed for `minio:9000` fails when the browser requests it through the gateway.
-* [ ] **auth-api exposes `/auth/verify`** for the gateway's subrequest: 200 with `User-ID` and `Channel-ID` response
-  headers when the access token in the cookie is valid and `X-Channel-Id` is one of its channels; 401 for a missing
-  or invalid token; 403 for a channel that does not belong to the account.
+* [ ] **The gateway verifies the access token itself** — there is no subrequest to `auth-api`. It reads the token from
+  its cookie, checks the signature against Keycloak's JWKS (cached, and fetched again when the keys rotate), the expiry
+  and the issuer, checks `X-Channel-Id` against the token's `channelIds` claim, and passes `User-ID`, `Channel-ID`,
+  `Session-ID`, `Birthdate` and `Email-Verified` on to the services as headers: 401 for a missing or invalid token, 403
+  for a channel that does not belong to the account. How nginx does it — njs, a third-party module or OpenResty — is
+  what [the Spike](tasks/_platform/infrastructure/Task-16-Spike-Verify-Keycloak-tokens-in-the-nginx-gateway.md) decides
+  and writes in here.
 * [ ] **One nginx-s3-gateway instance per bucket** — `s3-gateway-videos` and `s3-gateway-avatars`. Check whether a
   single instance can serve several buckets before running two.
 * [ ] **Shared secrets are set in the environment**: `HLS_SECURE_LINK_SECRET` for the gateway and video-api, and

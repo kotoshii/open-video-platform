@@ -19,6 +19,7 @@ Switch the current channel — branches:
 
 * **Only one channel on the account** (step 2) — the list shows that channel alone; there is nothing to switch to, only
   the "Create new channel" action ([US-Channels-01](./US-Channels-01-create-multiple-channels.md)).
+* **User picks the current channel** (step 3) — the switcher closes and the page does not reload.
 * **Stored channel no longer exists** (step 4) — e.g. it was deleted meanwhile
   ([US-Channels-06](./US-Channels-06-delete-own-channel.md)); the gateway rejects the channel id, the app drops the
   stored value and asks the user to pick a channel again.

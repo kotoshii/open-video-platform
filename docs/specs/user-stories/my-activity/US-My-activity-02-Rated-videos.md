@@ -68,6 +68,8 @@ Branches:
 * "Show only liked videos" sits on the right and is on by default.
 * The toggle is reflected in a query parameter and remembered in localStorage. An address that carries the parameter
   wins; without it, the remembered choice applies; without that, the toggle is on.
+* On mobile the toggle sits in a bottom drawer opened by a filter button next to the search, and applies when "Apply"
+  is pressed.
 * Switching between like and dislike updates the button immediately, without loading the list again, and reverts if the
   request fails.
 * Removing a rate asks for confirmation, then loads the list again.

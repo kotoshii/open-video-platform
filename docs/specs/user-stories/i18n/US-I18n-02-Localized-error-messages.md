@@ -33,12 +33,15 @@ See a message — branches:
 * A code without a translation in the selected language falls back to English.
 * An unknown code, and a failure with no response at all, show a generic message in the selected language.
 * Nothing technical reaches the user: no raw codes, exception text or stack traces.
-* Field-level validation errors are localized too, and still appear under the field they belong to.
+* Field-level validation errors are localized too, and still appear under the field they belong to. A field error for
+  a field the form does not show appears as a toast instead, so no message is lost.
 
 **Tech notes**
 
 * Codes are identifiers, not sentences — `video_not_found`, `comment_creation_failed` and the like. Those two are only
   examples, not a real list.
+* When an API fails because another service it called failed, the response carries that service's code rather than a
+  generic one, so the user sees what actually went wrong.
 * When a message needs details, the response carries them as separate values next to the code — a maximum file size, a
   field name — and the sentence is put together on the client. Text formatted on the server would be in one language and
   impossible to translate.

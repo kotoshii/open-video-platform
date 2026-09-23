@@ -3,8 +3,11 @@
 Needs: [Task-07 — channel-api: Run the purge as a saga](Task-07-channel-api-Run-the-purge-as-a-saga.md),
 [US-Notifications-01 Task-01 — Create notification-api](../../../notifications/US-Notifications-01/backend/Task-01-Create-notification-api.md)
 
-Consume the purge event: delete the notifications the channel received and its notification preferences, then report
-back.
+Consume the purge event and delete, then report back:
 
-Why: a comment preview inside a notification is a copy of somebody else's comment, so the notifications go with the
-channel that received them rather than with the comments they quote.
+* the notifications the channel received, and its notification preferences;
+* the reply and mention notifications it caused in other channels' lists, found by the replier's channel id.
+
+Why: those notifications hold a copy of the purged channel's name and comment text. A single deleted comment keeps its
+notification, as an email already sent would, but a purged channel leaves nothing behind
+([US-Channels-06](../../../../user-stories/channels/US-Channels-06-delete-own-channel.md)).

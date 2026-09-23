@@ -34,6 +34,8 @@ Search channels — branches:
 * Switching the toggle inside the search input to channels searches channels instead of videos, and its icon shows
   that channel mode is on.
 * The sorting popup offers Relevancy and Most popular; there are no filters for channel search.
+* The query is matched against the channel name and description. Other forms of the same word are found, in English and
+  in Ukrainian, as in video search.
 * The default order is Relevancy, and Most popular orders by subscriber count.
 * Submitting the search opens the dedicated search page, which loads and shows the results.
 * Channels that no longer exist never appear in results. A channel scheduled for deletion is still a live channel, so
@@ -43,6 +45,7 @@ Search channels — branches:
 * A query with no matches shows an empty state, not an error.
 * Results are paginated, with page controls at the bottom of the page; the list does not load more on scroll.
 * Clicking a result opens the corresponding channel page.
+* Each result shows the channel's avatar, name, description and subscriber count.
 * A channel with no subscribers shows no subscriber count in the results, rather than "0 subscribers".
 * Failures follow the error flow for page data ([US-UI-UX-02](../ui-ux/US-UI-UX-02-User-friendly-errors.md)).
 * On mobile, the sorting options open as a bottom drawer instead of a popup.

@@ -29,10 +29,13 @@ Create a channel — branches:
 * **Empty channel name** (step 7) — the field shows a validation error and the request is not sent.
 * **Request fails** (step 8) — the default error flow applies: a toast notification
   ([US-UI-UX-02](../ui-ux/US-UI-UX-02-User-friendly-errors.md)); the modal stays open with the entered data.
+* **Picture upload fails** (step 8) — the channel is created first, then its picture is uploaded. If the picture fails,
+  the channel stays; the toast says the picture was not saved and can be added in the settings.
 
 **Acceptance criteria**
 
 * The channel switcher opens from the sidebar and lists all channels of the account.
+* Channels are listed oldest first, both in the switcher and on the channel selection page.
 * The switcher has a "Create new channel" button at the very bottom of the list.
 * The creation form has channel name (required), description (optional) and avatar (optional).
 * The channel name cannot be empty.
@@ -53,8 +56,10 @@ Create a channel — branches:
   `auth-api` writes to Keycloak ([service-map.md](../../service-map.md)), so `channel-api` asks it over gRPC to add the
   channel id — **synchronously, before responding** — and the frontend then refreshes its tokens. Adding it through an
   event instead would race: the refresh could arrive first and return a token without the new channel.
-* This is also why creation reloads the page while switching
-  ([US-Channels-02](./US-Channels-02-freely-switch-between-channels.md)) does not.
+* If the id cannot be added to the claim, the channel is deleted again and the request fails — a channel the token does
+  not list could never be acted as.
+* This is also why creation refreshes the tokens before the page reloads, while switching
+  ([US-Channels-02](./US-Channels-02-freely-switch-between-channels.md)) only reloads.
 * Once a channel is created, publish a Kafka event so the other services can pick it up (e.g. Search, to index the new
   channel).
 * An account can have at most 10 channels. The limit is checked on the server when a channel is created; the

@@ -99,7 +99,7 @@ The deletion itself:
 **Tech notes**
 
 * Deleting requires a confirmed email for the same reason as deleting a channel: the emailed link authorises it, so it
-  only proves anything when the inbox is known to be the user's. Check `email_verified` from the token on the server.
+  only proves anything when the inbox is known to be the user's. Check the `Email-Verified` header the gateway sets on the server.
 * The schedule works exactly as in [US-Channels-06](../channels/US-Channels-06-delete-own-channel.md):
   `deletion_scheduled_at` on the account row is the source of truth, a BullMQ delayed job triggers the purge, and a
   periodic sweep picks up rows whose job was lost. Cancelling removes the job and clears the column.

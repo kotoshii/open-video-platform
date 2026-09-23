@@ -39,7 +39,8 @@ Login — main flow:
 
 Login — branches:
 
-* **Invalid credentials** (step 4) — the user sees an error message and stays on the form.
+* **Invalid credentials** (step 4) — the user sees an error message and stays on the form. The message does not say
+  whether the email or the password was wrong.
 * **Email not confirmed yet** (step 5) — the user logs in as normal. A banner reminds them to confirm the email
   ([US-Auth-02](US-Auth-02-Account-confirmation.md)); only the features that rely on the email wait for it.
 * **Multiple channels on the account** (step 5) — the user is taken to the channel selection page
@@ -79,12 +80,18 @@ Navigation between forms:
 **Tech notes**
 
 * Use Keycloak in Docker as the identity provider.
+* Login uses the app's own form: `auth-api` exchanges the email and the password for tokens with Keycloak's direct
+  access grant, so users never see Keycloak's pages. Repeated wrong passwords are throttled by the realm's brute force
+  protection; there is no attempt counter of our own.
 * Sign-up spans three services, so it is a **saga** run by `auth-api` ([service-map.md](../../service-map.md)):
     1. create the Keycloak user, with the date of birth stored as its `birthdate` attribute so it reaches the token;
     2. ask `account-api` to create the account record;
-    3. ask `channel-api` to create the first channel.
+    3. ask `channel-api` to create the first channel;
+    4. add the new channel's id to the user's `channelIds` attribute in Keycloak, so the first token already carries it
+       ([US-Channels-01](../channels/US-Channels-01-create-multiple-channels.md));
+    5. log the user in.
 
-  If step 2 or 3 fails, undo what was already done, ending with deleting the Keycloak user, so a failed sign-up never
+  If any step after the first fails, undo what was already done, ending with deleting the Keycloak user, so a failed sign-up never
   leaves an account without a channel or a Keycloak user without an account.
 * The sign-up request also sends the currently selected interface language, which becomes the account's initial email
   language ([US-I18n-03](../i18n/US-I18n-03-Localized-emails.md)).

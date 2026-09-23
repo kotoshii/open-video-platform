@@ -40,6 +40,9 @@ Receive an email — branches:
 * The first reply or mention in a thread is emailed straight away; further ones in the same thread within 15 minutes
   arrive together in a single follow-up email.
 * A channel is never emailed about its own action.
+* Email follows the Email toggle alone: with In-app off and Email on, the email is still sent.
+* The footer link opens the settings as the channel the email concerns — the app switches to that channel first, when
+  it is one of the account's channels.
 * A channel scheduled for deletion still sends and receives notification emails, since it is still live
   ([US-Channels-06](../channels/US-Channels-06-delete-own-channel.md)); its purge is what stops them.
 

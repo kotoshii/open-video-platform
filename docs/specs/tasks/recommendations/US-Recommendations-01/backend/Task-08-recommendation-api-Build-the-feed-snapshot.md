@@ -10,7 +10,8 @@ Main flow:
 1. Ask Gorse for the channel's recommendations, up to the snapshot size (about 200), with a short timeout.
 2. Ask `video-api` for the most viewed videos this viewer may see.
 3. Append those after Gorse's, dropping duplicates and the videos the channel already has `watch` feedback for in Gorse.
-4. Ask `video-api` which of the ids this viewer may see, keep those in order, and cut the list to the snapshot size.
+4. Ask `video-api` which of the ids this viewer may see, keep those in order — leaving out the acting channel's own
+   videos — and cut the list to the snapshot size.
 5. Store it in Redis under a new snapshot id, together with the channel id, expiring an hour after its last read.
 
 Branch — Gorse fails or times out:

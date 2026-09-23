@@ -66,6 +66,9 @@ Rate a video — branches:
   subscriber counts in channel search and for comment rates.
 * When rates are turned off for a video, the API must reject new ones as well; hiding the buttons is not the
   enforcement.
+* A user can rate only a video they are allowed to watch, by the same rules as
+  [US-Videos-01](./US-Videos-01-Watch-videos.md). The API refuses a rate on any other video, or on one that does not
+  exist.
 
 **Links**
 

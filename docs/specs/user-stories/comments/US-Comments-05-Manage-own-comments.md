@@ -32,7 +32,9 @@ Branches:
 
 **Acceptance criteria**
 
-* The 3-dot menu is shown only on the user's own comments and replies — on hover on desktop, always visible on mobile.
+* The 3-dot menu is shown only on comments and replies written by the channel the user is currently acting as — on
+  hover on desktop, always visible on mobile. Comments by the account's other channels get no menu until the user
+  switches to that channel.
 * The menu offers "Edit" and "Delete".
 * Editing replaces the text in place: the comment keeps its position in the list and its likes and dislikes.
 * An edited comment or reply is marked as edited.
@@ -44,6 +46,8 @@ Branches:
 * After a deletion, the video's total comment count goes down by the number of items removed, and the comment's reply
   count is corrected ([US-Comments-01](./US-Comments-01-See-comments.md),
   [US-Comments-02](./US-Comments-02-Load-replies.md)).
+* The counts shown change straight away, on the client, as they do after posting. The stored counts catch up once the
+  workers have applied the deletion.
 * The likes and dislikes of a deleted comment are removed with it.
 * Failures are shown as a toast and change nothing.
 

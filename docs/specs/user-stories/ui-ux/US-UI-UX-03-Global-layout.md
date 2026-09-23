@@ -22,7 +22,8 @@ Move around the app — main flow:
 Collapse and expand the sidebar — desktop:
 
 1. User clicks the menu button at the left of the navbar.
-2. The sidebar collapses: only the channel avatar on top and an icon for each item remain, without names.
+2. The sidebar collapses: only the channel avatar on top, with the switcher arrow next to it, and an icon for each item
+   remain, without names.
 3. Hovering over an icon shows the item's name.
 4. Clicking the menu button again expands the sidebar back to the avatar with the channel name, and icons with item
    names.
@@ -49,6 +50,7 @@ Branches:
 Where it appears:
 
 * Every page that requires being signed in shows the navbar at the top and the sidebar on the left.
+* Only the page content scrolls; the navbar and the sidebar stay in place.
 * Pages that can be used without being signed in — the auth pages, and email-link pages that ask the user to sign in —
   show neither, and neither does the channel selection page
   ([US-Channels-07](../channels/US-Channels-07-channel-selection-page.md)), where the user is signed in but has no
@@ -111,7 +113,7 @@ Collapsed sidebar — desktop:
 
 * The sidebar can be collapsed and expanded with the menu button in the navbar.
 * Expanded, it shows the channel avatar with the channel name, and every item as an icon with its name.
-* Collapsed, it shows only the channel avatar and every item as an icon.
+* Collapsed, it shows the channel avatar with the switcher arrow next to it, and every item as an icon.
 * In the collapsed sidebar, hovering over an icon shows the item's name, and the unread notifications badge stays
   visible on its icon.
 * Whether the sidebar is collapsed is remembered across page reloads.

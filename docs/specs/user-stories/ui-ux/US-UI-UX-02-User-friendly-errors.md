@@ -33,7 +33,8 @@ Client-side exception:
 * Every failed API request produces a visible error message — no silent failures.
 * Error messages are written for humans: no stack traces, raw exception text, or internal implementation details.
 * Errors that occur during an action (submit, like, delete, etc.) are shown as a toast/notification; the user stays on
-  the page.
+  the page, and anything they typed is kept.
+* A failed submit that returns errors for particular fields shows each one under its field instead of a toast.
 * Errors that occur while loading page data are shown as a full-screen message in place of the content.
 * Data-loading sections have their own error state with a retry button; a failure in one section does not break the rest
   of the page.

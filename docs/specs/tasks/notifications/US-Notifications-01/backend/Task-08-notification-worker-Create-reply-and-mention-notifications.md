@@ -11,7 +11,8 @@ Main flow:
 2. The mentioned channel gets a Mention notification — unless it started the thread, in which case its Reply already
    covers it.
 3. Skip any recipient that is the replier itself, or has the type turned off in-app.
-4. Store the replier's name, the text, the comment and the video as they are now, with the event time as `activity_at`.
+4. Store the replier's channel id and name, the text, the comment and the video as they are now, with the event time
+   as `activity_at`.
 
 The notification stays when its comment is deleted later.
 

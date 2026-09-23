@@ -73,6 +73,7 @@ Requesting:
   and a visible countdown.
 * Confirming in the modal schedules nothing yet — it only sends the confirmation email.
 * The confirmation link is valid for 5 minutes and works once.
+* Both emailed links work without signing in, in any browser: the token in the link is what authorises the action.
 * An expired or invalid link shows a clear message and offers no way to resend it.
 * Opening a valid link schedules the deletion for one week later and states the date and time.
 * A second email confirms that date and carries a link to cancel the deletion, valid until the deletion happens.
@@ -97,9 +98,13 @@ During the window:
   rating all work as usual.
 * The Channel tab states that a deletion is scheduled, when it will happen, and offers "Cancel deletion".
 * A banner at the top of every page states the same while the user acts as that channel, and can be dismissed for 24
-  hours at a time ([US-UI-UX-03](../ui-ux/US-UI-UX-03-Global-layout.md)).
+  hours at a time ([US-UI-UX-03](../ui-ux/US-UI-UX-03-Global-layout.md)). It links to the Channel tab, where the
+  deletion can be cancelled. If the account's deletion is scheduled too, the account's banner is shown instead
+  ([US-Account-01](../account/US-Account-01-Delete-own-account.md)).
 * Cancelling from the settings page or from the email link clears the schedule and returns every video to the
   visibility it had before, leaving the channel exactly as it was.
+* If the account's deletion is scheduled too, cancelling the channel's deletion leaves its videos private until the
+  account's deletion is cancelled as well ([US-Account-01](../account/US-Account-01-Delete-own-account.md)).
 * After cancelling, the channel can be scheduled for deletion again in the same way.
 
 The deletion itself:
@@ -156,8 +161,11 @@ The purge:
       ([US-Subscriptions-01](../subscriptions/US-Subscriptions-01-Subscribe-to-other-channels.md),
       [US-Notifications-01](../notifications/US-Notifications-01-Notifications-config.md));
     * its **watch history** rows ([US-My-activity-01](../my-activity/US-My-activity-01-Watch-history.md));
-    * the **notifications it received** and its **notification preferences**
+    * the **notifications it received** and its **notification preferences**, and the **reply and mention
+      notifications it caused** in other channels' lists, which hold its name and its comment text
       ([US-Notifications-01](../notifications/US-Notifications-01-Notifications-config.md));
+    * the **titles of its videos** stored in other channels' watch histories — the rows stay as "Deleted video"
+      placeholders ([US-My-activity-01](../my-activity/US-My-activity-01-Watch-history.md));
     * its **Gorse user** and the feedback recorded against it
       ([US-Recommendations-01](../recommendations/US-Recommendations-01-Feed.md));
     * its **avatar object** in MinIO ([US-Channels-05](./US-Channels-05-upload-user-pic.md));
@@ -169,8 +177,8 @@ The purge:
 Tokens and sessions:
 
 * The emailed link is what authorises the deletion, so it only proves anything when the inbox is known to be the
-  user's — hence the confirmed-email requirement. Check `email_verified` from the token on the server too; an
-  unavailable button is not the enforcement.
+  user's — hence the confirmed-email requirement. Check the `Email-Verified` header the gateway sets on the
+  server too; an unavailable button is not the enforcement.
 * Both emails go through the custom email module, the same one used for account confirmation
   ([US-Auth-02](../auth/US-Auth-02-Account-confirmation.md)).
 * The confirmation token is single-use with a 5-minute lifetime and belongs server-side (Redis fits). The cancel token

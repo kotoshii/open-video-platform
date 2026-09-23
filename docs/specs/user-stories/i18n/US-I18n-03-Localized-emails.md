@@ -44,13 +44,16 @@ Branches:
 
 **Acceptance criteria**
 
-* The Account tab of the settings page has an email language setting that offers every supported language.
+* The Account tab of the settings page has an email language setting that offers every supported language, each
+  listed by its own name, as in the language selector.
 * The setting belongs to the account, not to a channel: all channels of an account share it, just as they share one
   inbox.
 * Every email the platform sends, subject line included, is written in the account's email language — account
   confirmation, password reset, email change, deletion emails and notifications alike.
 * Sign-up sets the email language to the interface language in use at that moment; with none, or an unsupported one,
   it is English.
+* Saving an unsupported language in the settings is rejected with an error, and the stored language stays as it was.
+  Only sign-up falls back to English.
 * Changing the interface language does not change the email language.
 * A saved change applies to every email sent after it.
 * A template without a translation for the chosen language falls back to English.
@@ -70,6 +73,9 @@ Branches:
   send time means an email that waits in the notification batching window
   ([US-Notifications-03](../notifications/US-Notifications-03-Email-channel.md)) goes to the current address, in the
   language current when it is actually sent.
+* The two emails about changing the address are the exception: they go to an address the account does not have yet,
+  or no longer has, so the event carries that address — but they still use the account's email language
+  ([US-Account-02](../account/US-Account-02-Change-email.md)).
 * The sign-up request carries the selected interface language as a plain field in its body. Like every stored value it
   is validated against the supported languages, defined once in `lib/` and shared with the language selector; anything
   else becomes English. The value decides which template is used, so it is never used unchecked.

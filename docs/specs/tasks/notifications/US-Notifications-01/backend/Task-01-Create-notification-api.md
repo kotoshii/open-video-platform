@@ -6,7 +6,7 @@ its Kafka topics and the gateway route.
 * Preferences: a row per channel, written only when a user saves.
 * Notifications: the recipient channel, the type, the subject — the video for new comments, none for new subscribers —
   the count, `first_event_at`, `activity_at`, `read_at` and `hidden_at`; the video's title for new comments; and for
-  replies and mentions the comment, the video, the replier's name and the text.
+  replies and mentions the comment, the video, the replier's channel id and name, and the text.
 * The partial unique index from
   [notification-aggregation.md](../../../../../explainers/notification-aggregation.md) (Part 5): one row per channel,
   type and subject while `read_at` is null.

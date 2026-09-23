@@ -41,7 +41,9 @@ Watch a video — branches:
 * **Age-restricted video with the setting turned off** (step 2) — the viewer is old enough but their channel has
   "Show age-restricted content" off ([US-Channels-03](../channels/US-Channels-03-current-channel-settings.md)); the
   page says so and points at the setting, since this one is the viewer's own choice rather than a refusal.
-* **Video does not exist** (step 2) — the page shows a full-page error state.
+* **Video does not exist** (step 2) — the page says the video is no longer available, with nothing else loaded. This is
+  not an error: notifications and emails can link to a video deleted since
+  ([US-Notifications-02](../notifications/US-Notifications-02-In-app-channel.md)).
 * **Loading fails** (step 2) — a full-page error state ([US-UI-UX-02](../ui-ux/US-UI-UX-02-User-friendly-errors.md)).
   Failures inside the comments or the similar videos are
   handled by their own stories and do not take the page down.
@@ -67,7 +69,7 @@ Watch a video — branches:
 * Repeated views of the same video by the same viewer within 24 hours do not increase the view count.
 * A video that is still processing shows only that state — no player, no video info, no comments, no similar videos.
 * A video the viewer is not allowed to watch shows only the corresponding state, with nothing else loaded.
-* A video that does not exist shows a full-page error state.
+* A video that does not exist shows only a "no longer available" state, not an error.
 * Failures loading the page are shown as a full-page error.
 * On desktop, the comments section sits in the main column under the description, and the similar videos run down the
   right column alongside both.
@@ -111,11 +113,15 @@ Watch a video — branches:
 * Visibility is decided on the server, in the same call that returns the video: a video that is not published does not
   exist for anyone but its author, and private or age-restricted videos are refused. The page renders only what the API
   agrees to return, which is why the blocked states show nothing else.
-* Watching emits a `VideoViewed` Kafka event keyed by video id, carrying the acting channel as the viewer together with
-  the user agent and the IP address.
+* Watching emits a `VideoViewed` Kafka event keyed by video id, carrying the acting channel as the viewer, the user
+  agent, the IP address and the video's title — the watch history stores the title for its search
+  ([US-My-activity-01](../my-activity/US-My-activity-01-Watch-history.md)).
 * The `video-view-count-worker` deduplicates before counting: `ViewsDeduplicationService` reserves a Redis key per
   viewer with a TTL, so repeat views inside that window are ignored. The TTL is **24 hours**, so a viewer counts once
   per video per day.
+* After applying a batch, the worker publishes the new view counts of those videos. It writes straight into the video
+  service's database, so nothing else would announce them, and the search index keeps the view count to order by
+  ([US-Search-01](../search/US-Search-01-Search-videos.md)).
 * **The dedup key is built from the viewer alone and does not include the video id**, so counting a view of one video
   currently blocks counting views of every other video for that viewer until the TTL expires — see
   [known-issues.md](../../../known-issues.md).

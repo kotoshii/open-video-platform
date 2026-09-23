@@ -75,6 +75,9 @@ See similar videos — branches:
 * **The list is exactly what the query returns** — no top-up from another source, whether random, same-channel or
   popular. A short list next to a video is honest; a padded one mixes unrelated videos in with related ones and gives
   the reader no way to tell them apart.
+* A watched video that is not in the index — accessible by link, private, or published a moment ago — gives
+  `more_like_this` nothing to read, so its list is empty and the section shows its empty state.
+* On desktop the list uses the same video card as the feed, one per row down the right column.
 * Not now, but possible later: "people who watched this also watched" from Gorse's `users` item-to-item recommender,
   once there is real watch data. Embeddings are not used.
 

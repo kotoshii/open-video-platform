@@ -30,6 +30,9 @@ Post a comment — branches:
 * The comments section has a comment box at the top, showing the current channel's avatar.
 * A comment cannot be empty.
 * A comment cannot be longer than 5000 characters, and the form does not let the user go over it.
+* A comment cannot be posted on a video that does not exist, that the user is not allowed to watch, or whose author
+  has turned comments off ([US-Videos-03](../videos/US-Videos-03-Manage-own-videos.md)). The server refuses it; hiding
+  the comment box is not what enforces it.
 * The comment is attributed to the channel the user is currently acting as, not to the account.
 * After posting, the new comment appears at the top of the list without reloading the page.
 * The total number of comments in the section header goes up.

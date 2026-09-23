@@ -92,7 +92,9 @@ Aggregation:
   count that reaches zero deletes the notification.
 * Deleting a video deletes its New comments notification.
 * A reply or mention notification is kept when its comment is deleted. An email about it may already be in the inbox,
-  and removing only the in-app copy would make the two disagree.
+  and removing only the in-app copy would make the two disagree. It is deleted when the channel that replied or
+  mentioned is purged, since nothing of a purged channel is left
+  ([US-Channels-06](../channels/US-Channels-06-delete-own-channel.md)).
 
 **Tech notes**
 

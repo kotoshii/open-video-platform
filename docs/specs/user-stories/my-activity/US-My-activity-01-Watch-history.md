@@ -107,9 +107,9 @@ Branches:
   it ever is not.
 * **History rows outlive the videos they point at.** A video deletion does not remove them
   ([US-Videos-03](../videos/US-Videos-03-Manage-own-videos.md)); the row stays and is rendered as a placeholder, so a
-  history keeps its shape instead of quietly losing entries. The placeholder shows "Deleted video" rather than the
-  title stored on the row; the stored title is what keeps searching the history working over entries whose video is
-  gone.
+  history keeps its shape instead of quietly losing entries. When a video is deleted — by its author, or by its
+  channel's purge — its rows lose the stored title: the placeholder shows "Deleted video", and search no longer finds
+  them, since nothing of a deleted video is kept. A private video keeps its title, so search still finds it.
 * Whether a row is still watchable is decided when the list is served, so a video made private — including one whose
   channel has a deletion scheduled — becomes a placeholder without anything being written.
 * The paused state comes with the list response, so the button and the notice render correctly on the first paint.
