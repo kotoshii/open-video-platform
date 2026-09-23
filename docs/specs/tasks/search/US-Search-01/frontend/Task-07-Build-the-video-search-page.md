@@ -1,7 +1,7 @@
 ## Build the video search page
 
-Needs: [Task-04 — search-api: Implement GET /search/videos](../backend/Task-04-search-api-Implement-GET-search-videos.md),
-[Task-05 — Build the search input in the navbar](Task-05-Build-the-search-input-in-the-navbar.md)
+Needs: [Task-05 — search-api: Implement GET /search/videos](../backend/Task-05-search-api-Implement-GET-search-videos.md),
+[Task-06 — Build the search input in the navbar](Task-06-Build-the-search-input-in-the-navbar.md)
 
 Build the page the search opens, reading its query, filters and order from the address and loading the results, with
 page controls at the bottom rather than infinite scroll.

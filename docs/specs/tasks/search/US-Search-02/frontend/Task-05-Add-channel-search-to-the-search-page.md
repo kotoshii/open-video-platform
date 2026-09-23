@@ -1,7 +1,7 @@
 ## Add channel search to the search page
 
-Needs: [Task-03 — search-api: Implement GET /search/channels](../backend/Task-03-search-api-Implement-GET-search-channels.md),
-[US-Search-01 Task-06 — Build the video search page](../../US-Search-01/frontend/Task-06-Build-the-video-search-page.md)
+Needs: [Task-04 — search-api: Implement GET /search/channels](../backend/Task-04-search-api-Implement-GET-search-channels.md),
+[US-Search-01 Task-07 — Build the video search page](../../US-Search-01/frontend/Task-07-Build-the-video-search-page.md)
 
 Wire the navbar toggle's channel mode: the placeholder changes, the filters popup offers only the order — Relevancy or
 Most popular — and the search page shows channel results.

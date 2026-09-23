@@ -1,6 +1,7 @@
 ## search-api: Implement GET /search/videos
 
 Needs: [Task-03 — search-api: Index videos from their events](Task-03-search-api-Index-videos-from-their-events.md),
+[Task-04 — video-api: Look up the visible videos over gRPC](Task-04-video-api-Look-up-the-visible-videos-over-gRPC.md),
 [US-Channels-03 Task-03 — channel-api: Expose the age-restricted setting over gRPC](../../../channels/US-Channels-03/backend/Task-03-channel-api-Expose-the-age-restricted-setting-over-gRPC.md)
 
 `GET /search/videos?query=...&uploadedWithin=...&duration=...&order=...&page=...`
@@ -12,7 +13,8 @@ Main flow:
 3. Order by relevance, upload date or view count.
 4. Leave out age-restricted videos when the viewer is too young by the `Birthdate` header, or their acting channel has
    the setting off.
-5. Ask `video-api` over gRPC whether the page's ids are still visible to this viewer, and drop the ones it rejects.
+5. Ask `video-api` over gRPC which of the page's videos this viewer may still see, drop the rest, and take each
+   result's view count and thumbnail version from its answer.
 
 Branch — the requested page is past the index's paging limit:
 

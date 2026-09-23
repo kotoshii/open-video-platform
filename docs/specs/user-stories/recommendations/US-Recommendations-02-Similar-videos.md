@@ -91,8 +91,8 @@ See similar videos — branches:
 
 BE:
 
-* TODO
+* [Task-01 — search-api: Implement GET /search/videos/{videoId}/similar](../../tasks/recommendations/US-Recommendations-02/backend/Task-01-search-api-Implement-GET-search-videos-videoId-similar.md)
 
 FE:
 
-* TODO
+* [Task-02 — Build the similar videos list](../../tasks/recommendations/US-Recommendations-02/frontend/Task-02-Build-the-similar-videos-list.md)

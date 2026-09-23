@@ -97,8 +97,16 @@ Open the feed — branches:
 
 BE:
 
-* TODO
+* [Task-01 — Run Gorse in Compose](../../tasks/recommendations/US-Recommendations-01/backend/Task-01-Run-Gorse-in-Compose.md)
+* [Task-02 — Create recommendation-api](../../tasks/recommendations/US-Recommendations-01/backend/Task-02-Create-recommendation-api.md)
+* [Task-03 — recommendation-api: Keep Gorse's items in step with videos](../../tasks/recommendations/US-Recommendations-01/backend/Task-03-recommendation-api-Keep-Gorses-items-in-step-with-videos.md)
+* [Task-04 — recommendation-api: Send watches to Gorse](../../tasks/recommendations/US-Recommendations-01/backend/Task-04-recommendation-api-Send-watches-to-Gorse.md)
+* [Task-05 — recommendation-api: Send likes and dislikes to Gorse](../../tasks/recommendations/US-Recommendations-01/backend/Task-05-recommendation-api-Send-likes-and-dislikes-to-Gorse.md)
+* [Task-06 — recommendation-api: Send subscriptions to Gorse](../../tasks/recommendations/US-Recommendations-01/backend/Task-06-recommendation-api-Send-subscriptions-to-Gorse.md)
+* [Task-07 — video-api: List the most viewed videos over gRPC](../../tasks/recommendations/US-Recommendations-01/backend/Task-07-video-api-List-the-most-viewed-videos-over-gRPC.md)
+* [Task-08 — recommendation-api: Build the feed snapshot](../../tasks/recommendations/US-Recommendations-01/backend/Task-08-recommendation-api-Build-the-feed-snapshot.md)
+* [Task-09 — recommendation-api: Implement GET /feed](../../tasks/recommendations/US-Recommendations-01/backend/Task-09-recommendation-api-Implement-GET-feed.md)
 
 FE:
 
-* TODO
+* [Task-10 — Build the homepage feed](../../tasks/recommendations/US-Recommendations-01/frontend/Task-10-Build-the-homepage-feed.md)

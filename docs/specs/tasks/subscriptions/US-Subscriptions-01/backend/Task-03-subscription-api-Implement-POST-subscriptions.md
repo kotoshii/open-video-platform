@@ -7,7 +7,8 @@ Needs: [Task-01 — Migrate subscription-api to the new structure](Task-01-Migra
 Main flow:
 
 1. Take the subscriber from the `Channel-ID` header the gateway set.
-2. In one transaction, insert the pair and write the subscription-created event to the outbox.
+2. In one transaction, insert the pair and write the subscription-created event to the outbox, keyed by the
+   subscriber — the deleted event uses the same key.
 
 Branch — the subscription already exists:
 

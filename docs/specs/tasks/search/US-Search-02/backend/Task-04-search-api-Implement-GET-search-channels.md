@@ -1,6 +1,7 @@
 ## search-api: Implement GET /search/channels
 
-Needs: [Task-02 — search-api: Index channels from their events](Task-02-search-api-Index-channels-from-their-events.md)
+Needs: [Task-02 — search-api: Index channels from their events](Task-02-search-api-Index-channels-from-their-events.md),
+[Task-03 — channel-api: Look up channels by id over gRPC](Task-03-channel-api-Look-up-channels-by-id-over-gRPC.md)
 
 `GET /search/channels?query=...&order=...&page=...`
 

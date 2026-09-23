@@ -4,7 +4,10 @@ Needs: [Task-02 — Migrate video-view-count-worker to the new structure](Task-0
 [_platform known-issues Task-04 — Add the video id to the view dedup key](../../../_platform/known-issues/Task-04-Add-the-video-id-to-the-view-dedup-key.md)
 
 Consume the viewed events in batches and apply the counts: reserve a Redis key per viewer and video with a 24-hour
-lifetime, drop the events whose key was already taken, and add the rest to the videos' view counts.
+lifetime, drop the events whose key was already taken, and add the rest to the videos' view counts. Then publish the
+new counts of the videos in the batch: the worker writes straight into `video-api`'s database, so nothing else would
+announce them, and the search index orders by them
+([US-Search-01](../../../../user-stories/search/US-Search-01-Search-videos.md)).
 
 Branch — the same viewer watches the same video again within the day:
 
