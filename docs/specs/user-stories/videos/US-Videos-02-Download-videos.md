@@ -74,8 +74,9 @@ Download a video — branches:
 
 BE:
 
-* TODO
+* [Task-01 — video-api: Implement GET /videos/{videoId}/downloads](../../tasks/videos/US-Videos-02/backend/Task-01-video-api-Implement-GET-videos-videoId-downloads.md)
+* [Task-02 — video-api: Issue a download link for a quality](../../tasks/videos/US-Videos-02/backend/Task-02-video-api-Issue-a-download-link-for-a-quality.md)
 
 FE:
 
-* TODO
+* [Task-03 — Add the download dialog to the video page](../../tasks/videos/US-Videos-02/frontend/Task-03-Add-the-download-dialog-to-the-video-page.md)

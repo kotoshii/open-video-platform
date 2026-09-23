@@ -66,6 +66,9 @@ Rate a video — branches:
   subscriber counts in channel search and for comment rates.
 * When rates are turned off for a video, the API must reject new ones as well; hiding the buttons is not the
   enforcement.
+* A user can rate only a video they are allowed to watch, by the same rules as
+  [US-Videos-01](./US-Videos-01-Watch-videos.md). The API refuses a rate on any other video, or on one that does not
+  exist.
 
 **Links**
 
@@ -80,8 +83,13 @@ Rate a video — branches:
 
 BE:
 
-* TODO
+* [Task-01 — Migrate video-rate-count-worker to the new structure](../../tasks/videos/US-Videos-04/backend/Task-01-Migrate-video-rate-count-worker-to-the-new-structure.md)
+* [Task-02 — video-api: Expose a video's rate permission over gRPC](../../tasks/videos/US-Videos-04/backend/Task-02-video-api-Expose-a-videos-rate-permission-over-gRPC.md)
+* [Task-03 — video-rate-api: Implement POST /video-rates/{videoId}](../../tasks/videos/US-Videos-04/backend/Task-03-video-rate-api-Implement-POST-video-rates-videoId.md)
+* [Task-04 — video-rate-api: Implement DELETE /video-rates/{videoId}](../../tasks/videos/US-Videos-04/backend/Task-04-video-rate-api-Implement-DELETE-video-rates-videoId.md)
+* [Task-05 — video-rate-api: Implement GET /video-rates/{videoId}](../../tasks/videos/US-Videos-04/backend/Task-05-video-rate-api-Implement-GET-video-rates-videoId.md)
+* [Task-06 — video-rate-count-worker: Apply the rate counts](../../tasks/videos/US-Videos-04/backend/Task-06-video-rate-count-worker-Apply-the-rate-counts.md)
 
 FE:
 
-* TODO
+* [Task-07 — Add the rate buttons to the video page](../../tasks/videos/US-Videos-04/frontend/Task-07-Add-the-rate-buttons-to-the-video-page.md)

@@ -15,9 +15,13 @@ it can run.
   headers the gateway sets. Without it, tusd hands the browser upload URLs that point at its own internal address.
 * [ ] **MinIO presigns for `storage.localhost`** (`MINIO_SERVER_URL`). A presigned signature covers the host, so a URL
   signed for `minio:9000` fails when the browser requests it through the gateway.
-* [ ] **auth-api exposes `/auth/verify`** for the gateway's subrequest: 200 with `User-ID` and `Channel-ID` response
-  headers when the access token in the cookie is valid and `X-Channel-Id` is one of its channels; 401 for a missing
-  or invalid token; 403 for a channel that does not belong to the account.
+* [ ] **The gateway verifies the access token itself** — there is no subrequest to `auth-api`. It reads the token from
+  its cookie, checks the signature against Keycloak's JWKS (cached, and fetched again when the keys rotate), the expiry
+  and the issuer, checks `X-Channel-Id` against the token's `channelIds` claim, and passes `User-ID`, `Channel-ID`,
+  `Session-ID`, `Birthdate` and `Email-Verified` on to the services as headers: 401 for a missing or invalid token, 403
+  for a channel that does not belong to the account. How nginx does it — njs, a third-party module or OpenResty — is
+  what [the Spike](tasks/_platform/infrastructure/Task-16-Spike-Verify-Keycloak-tokens-in-the-nginx-gateway.md) decides
+  and writes in here.
 * [ ] **One nginx-s3-gateway instance per bucket** — `s3-gateway-videos` and `s3-gateway-avatars`. Check whether a
   single instance can serve several buckets before running two.
 * [ ] **Shared secrets are set in the environment**: `HLS_SECURE_LINK_SECRET` for the gateway and video-api, and
@@ -36,7 +40,9 @@ What is decided:
   need one, rather than sending inline in the request that triggered it. No user-facing request ever waits on mail
   delivery, and a failed send never fails the action that caused it ([service-map.md](service-map.md)).
 * [ ] The worker looks up the recipient's address from `auth-api` and the email language from `account-api` at send
-  time; the events carry the account id, not the address.
+  time; the events carry the account id, not the address. The one exception is changing the address
+  ([US-Account-02](user-stories/account/US-Account-02-Change-email.md)): the confirmation goes to an address the account
+  does not have yet, and the notice to the one it no longer has, so those two events carry the address explicitly.
 * [ ] **Handlebars** templates, living inside the worker. User-supplied content is rendered with the escaping `{{ }}`
   and never with `{{{ }}}` ([US-Notifications-03](user-stories/notifications/US-Notifications-03-Email-channel.md)).
 * [ ] Every email is written in the account's email language, read together with the recipient's address
@@ -63,7 +69,8 @@ One `docker compose up` per environment. The reasoning behind every item is expl
 Structure:
 
 * [ ] Compose pieces under `docker/compose/` — `infra.yaml`, `postgres.shared.yaml`, `postgres.isolated.yaml`,
-  `apps.yaml`, `observability.yaml` — assembled by the top-level files with `include:`.
+  `migrations.yaml`, `apps.yaml`, `observability.yaml` — assembled by the top-level files with `include:`. The
+  migrations are a piece of their own so development, which runs no app containers, still gets them.
 * [ ] Observability behind a Compose profile (`--profile observability`).
 * [ ] One `docker/Dockerfile.nest` for every Nest app, selected with `ARG APP`, and a `docker/Dockerfile.ui` using the
   Next.js standalone output.

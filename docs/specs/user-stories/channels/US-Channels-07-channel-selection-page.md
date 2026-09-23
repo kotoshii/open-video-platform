@@ -41,7 +41,9 @@ Create a channel from this page:
   than the homepage.
 * An account with exactly one channel never sees the page — it is skipped and that channel becomes the current one.
 * The page lists every channel of the account with its avatar and name.
-* Choosing a channel makes it the current one and opens the homepage.
+* Choosing a channel makes it the current one and opens the homepage — or, when the user was sent to log in from a
+  page that needs a session, brings them back to that page
+  ([US-Auth-04](../auth/US-Auth-04-Session-persistence.md)).
 * The page has neither the navbar nor the sidebar; like the auth pages, it shows the language selector and the theme
   toggle in the top right corner ([US-UI-UX-03](../ui-ux/US-UI-UX-03-Global-layout.md)).
 * The page has a "Create new channel" action, which opens the same creation form as the channel switcher and, on
@@ -77,8 +79,9 @@ Create a channel from this page:
 
 BE:
 
-* TODO
+* None — the page uses [US-Channels-01 Task-02](../../tasks/channels/US-Channels-01/backend/Task-02-channel-api-Implement-GET-channels-mine.md), the same endpoint the switcher lists from
 
 FE:
 
-* TODO
+* [Task-01 — Build the channel selection page](../../tasks/channels/US-Channels-07/frontend/Task-01-Build-the-channel-selection-page.md)
+* [Task-02 — Send users here when no channel is chosen](../../tasks/channels/US-Channels-07/frontend/Task-02-Send-users-here-when-no-channel-is-chosen.md)

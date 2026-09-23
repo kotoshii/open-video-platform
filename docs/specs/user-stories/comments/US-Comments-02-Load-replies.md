@@ -80,8 +80,10 @@ Open a thread — branches:
 
 BE:
 
-* TODO
+* [Task-01 — Create comment-reply-count-worker](../../tasks/comments/US-Comments-02/backend/Task-01-Create-comment-reply-count-worker.md)
+* [Task-02 — comment-api: Implement GET /comments/{commentId}/replies](../../tasks/comments/US-Comments-02/backend/Task-02-comment-api-Implement-GET-comments-commentId-replies.md)
+* [Task-03 — comment-reply-count-worker: Apply the reply counts](../../tasks/comments/US-Comments-02/backend/Task-03-comment-reply-count-worker-Apply-the-reply-counts.md)
 
 FE:
 
-* TODO
+* [Task-04 — Load and collapse replies](../../tasks/comments/US-Comments-02/frontend/Task-04-Load-and-collapse-replies.md)

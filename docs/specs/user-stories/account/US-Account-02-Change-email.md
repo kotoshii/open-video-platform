@@ -93,8 +93,11 @@ Change email — branches:
 
 BE:
 
-* TODO
+* [Task-01 — auth-api: Implement POST /auth/email-change](../../tasks/account/US-Account-02/backend/Task-01-auth-api-Implement-POST-auth-email-change.md)
+* [Task-02 — auth-api: Implement GET /auth/email-change](../../tasks/account/US-Account-02/backend/Task-02-auth-api-Implement-GET-auth-email-change.md)
+* [Task-03 — auth-api: Implement POST /auth/email-change/confirm](../../tasks/account/US-Account-02/backend/Task-03-auth-api-Implement-POST-auth-email-change-confirm.md)
 
 FE:
 
-* TODO
+* [Task-04 — Add the email change to the Account tab](../../tasks/account/US-Account-02/frontend/Task-04-Add-the-email-change-to-the-Account-tab.md)
+* [Task-05 — Implement the email change confirmation page](../../tasks/account/US-Account-02/frontend/Task-05-Implement-the-email-change-confirmation-page.md)

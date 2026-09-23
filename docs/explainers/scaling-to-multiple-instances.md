@@ -97,9 +97,9 @@ Two details worth knowing before doing this:
 
 * A variable in `proxy_pass` changes how nginx handles the URI, so the rewrite rules have to be written with that in
   mind rather than added on afterwards.
-* The `auth_request` subrequest that validates the token ([infrastructure.md](../specs/infrastructure.md)) has the same
-  problem and needs the same treatment, otherwise every
-  request in the system is validated by one instance no matter how many are running.
+* Token validation does not have this problem any more: the gateway verifies the token itself rather than asking
+  `auth-api` through an `auth_request` subrequest ([infrastructure.md](../specs/infrastructure.md)). A subrequest added
+  back later would need the same treatment, or every request in the system would be validated by one instance.
 
 ## Part 5 — A client's connection lives on one instance
 
@@ -168,8 +168,8 @@ Either way the rule is: **parallelise across keys, never within one.**
 pool: new Pool({connectionString: databaseConfig.databaseUrl})
 ```
 
-`node-postgres` defaults to **10 connections per pool**, and each instance has its own pool. Nine API services at two
-instances each is 180 connections; Postgres defaults to `max_connections = 100`. The failure mode is not gradual —
+`node-postgres` defaults to **10 connections per pool**, and each instance has its own pool. Thirteen API services at
+two instances each is 260 connections; Postgres defaults to `max_connections = 100`. The failure mode is not gradual —
 connections are refused, and the service that happens to start last is the one that breaks.
 
 In the current setup each service has its own database, which spreads the load but does not change the arithmetic when
@@ -216,7 +216,7 @@ Not every box is a Nest process, and the stateful ones each have their own answe
 | Cooldowns, tokens, view dedup in Redis | Works                        | —                                                            |
 | Races settled by unique constraints    | Works                        | Keep it that way; no check-then-insert                       |
 | Kafka consumer groups                  | Works                        | Enough partitions; the inbox fix first                       |
-| Gateway upstream resolution            | **Resolves once at startup** | `resolver` + variable `proxy_pass`, including `auth_request` |
+| Gateway upstream resolution            | **Resolves once at startup** | `resolver` + variable `proxy_pass`                           |
 | SSE progress                           | Decided, not built           | Redis pub/sub as specified                                   |
 | Scheduled jobs                         | None yet                     | BullMQ repeatable jobs, or an advisory lock                  |
 | Outbox relay                           | Not built                    | One publisher per key: advisory lock or shard by key         |

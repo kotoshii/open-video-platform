@@ -47,7 +47,10 @@ Branches:
   until the list is loaded again.
 * **The author has turned rates off for the video** ([US-Videos-03](../videos/US-Videos-03-Manage-own-videos.md)) —
   changing the rate is rejected and a toast explains why.
-* **A rated video is no longer available** — it is not shown.
+* **A rated video is no longer available** — it stays in the list as a placeholder, the way YouTube shows such
+  videos: a grey box instead of the thumbnail, "Private video" instead of the title, and no channel name or view count.
+  It cannot be opened. Its rate can be removed but not switched. A deleted video takes its rates with it
+  ([US-Videos-03](../videos/US-Videos-03-Manage-own-videos.md)), so it never reaches this list.
 * **No rated videos, or nothing matches the search** — the list shows an empty state.
 * **Cancelling the confirmation** — the modal closes and the rate stays.
 * **The list fails to load** — a full-page error state with a retry action
@@ -65,13 +68,16 @@ Branches:
 * "Show only liked videos" sits on the right and is on by default.
 * The toggle is reflected in a query parameter and remembered in localStorage. An address that carries the parameter
   wins; without it, the remembered choice applies; without that, the toggle is on.
+* On mobile the toggle sits in a bottom drawer opened by a filter button next to the search, and applies when "Apply"
+  is pressed.
 * Switching between like and dislike updates the button immediately, without loading the list again, and reverts if the
   request fails.
 * Removing a rate asks for confirmation, then loads the list again.
 * The search bar finds videos whose title contains the query, and is submitted rather than filtering as the user types.
 * The first load shows skeletons. Loading the list again after a change — removing a rate, flipping the toggle — keeps
   the current items on screen instead of showing skeletons.
-* Videos that are no longer available are not shown.
+* Videos that are no longer available stay in the list as placeholders — a grey box instead of the thumbnail and
+  "Private video" instead of the title — whose rate can be removed but not switched.
 * Failures to load the list are shown as a full-page error; failures to change a rate are shown as a toast.
 
 **Tech notes**
@@ -100,8 +106,10 @@ Branches:
 
 BE:
 
-* TODO
+* [Task-01 — video-rate-api: Store the video title on each rate](../../tasks/my-activity/US-My-activity-02/backend/Task-01-video-rate-api-Store-the-video-title-on-each-rate.md)
+* [Task-02 — video-rate-api: Implement GET /video-rates](../../tasks/my-activity/US-My-activity-02/backend/Task-02-video-rate-api-Implement-GET-video-rates.md)
 
 FE:
 
-* TODO
+* [Task-03 — Build the rated videos page](../../tasks/my-activity/US-My-activity-02/frontend/Task-03-Build-the-rated-videos-page.md)
+* [Task-04 — Change and remove rates from the list](../../tasks/my-activity/US-My-activity-02/frontend/Task-04-Change-and-remove-rates-from-the-list.md)

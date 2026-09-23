@@ -53,11 +53,16 @@ Trying something that needs a confirmed email:
 * The confirmation page lets the user continue into the app without confirming.
 * The resend button is disabled with a visible countdown until the next attempt is allowed; the initially sent email
   counts as the first attempt.
-* Clicking resend sends a new email, shows a notification, and restarts the cooldown.
+* Clicking resend sends a new email, shows a notification, and restarts the cooldown. Sending a new link makes the
+  previous one invalid.
 * The cooldown is enforced on the server — reloading the page does not reset it, and the UI shows the actual remaining
   time returned by the server.
 * Opening a valid link confirms the email, redirects to the homepage and shows a success notification once (it does
   not reappear on reload).
+* The link needs a session. Opened without one, it sends the user to log in — and to pick a channel if the account has
+  several — and then brings them back to the link, which confirms the email
+  ([US-Auth-04](US-Auth-04-Session-persistence.md)). A link opened while signed in to a different account is refused
+  with a message saying it belongs to another account.
 * Opening an expired or invalid link returns the user to the confirmation page with a message explaining the reason and
   the option to resend.
 * A user with an unconfirmed email can use the whole app, except:
@@ -66,7 +71,9 @@ Trying something that needs a confirmed email:
     * turning on notification emails
       ([US-Notifications-01](../notifications/US-Notifications-01-Notifications-config.md)).
 * Each of those is visibly unavailable while the email is unconfirmed, and says why.
-* While the email is unconfirmed, a banner on every page says so and links to the confirmation page.
+* While the email is unconfirmed, a banner on every page says so and links to the confirmation page. The banner can
+  be closed; it then stays hidden for 24 hours in that browser, like the deletion banners
+  ([US-UI-UX-03](../ui-ux/US-UI-UX-03-Global-layout.md)), and is gone for good once the email is confirmed.
 * Completing a password reset also confirms the email ([US-Auth-03](US-Auth-03-Password-reset.md)).
 * A confirmation link is valid for 24 hours, and a new one can be requested every 60 seconds.
 * Reloading the confirmation page with an already confirmed email redirects to the homepage.
@@ -86,8 +93,9 @@ Trying something that needs a confirmed email:
   a deletion confirmed by an emailed link would otherwise be at the mercy of whoever owns a mistyped address, and
   notification emails would go to an address nobody has proven. Gating those three places is simpler than checking the
   flag on every request and redirecting on every page.
-* Whether the email is confirmed travels in the token as Keycloak's `email_verified` claim, so the features above read
-  it from the token without a call to Keycloak.
+* Whether the email is confirmed travels in the token as Keycloak's `email_verified` claim. The gateway passes it to
+  the services in the `Email-Verified` header, and the app learns it from the current-user response — neither calls
+  Keycloak.
 * Confirming the email changes that claim, so **re-issue the token pair when the email is confirmed** — otherwise the
   deletion buttons stay disabled until the access token happens to refresh. Confirmation lives in `auth-api`, which
   also owns the tokens, so the confirming request returns the fresh pair itself
@@ -113,8 +121,14 @@ Trying something that needs a confirmed email:
 
 BE:
 
-* TODO
+* [Task-01 — auth-api: Expose the account's email over gRPC](../../tasks/auth/US-Auth-02/backend/Task-01-auth-api-Expose-the-accounts-email-over-gRPC.md)
+* [Task-02 — auth-api: Send a confirmation email after sign-up](../../tasks/auth/US-Auth-02/backend/Task-02-auth-api-Send-a-confirmation-email-after-sign-up.md)
+* [Task-03 — auth-api: Implement GET /auth/email-confirmation](../../tasks/auth/US-Auth-02/backend/Task-03-auth-api-Implement-GET-auth-email-confirmation.md)
+* [Task-04 — auth-api: Implement POST /auth/email-confirmation/resend](../../tasks/auth/US-Auth-02/backend/Task-04-auth-api-Implement-POST-auth-email-confirmation-resend.md)
+* [Task-05 — auth-api: Implement POST /auth/email-confirmation/confirm](../../tasks/auth/US-Auth-02/backend/Task-05-auth-api-Implement-POST-auth-email-confirmation-confirm.md)
 
 FE:
 
-* TODO
+* [Task-06 — Implement the confirmation page](../../tasks/auth/US-Auth-02/frontend/Task-06-Implement-the-confirmation-page.md)
+* [Task-07 — Implement the confirmation link page](../../tasks/auth/US-Auth-02/frontend/Task-07-Implement-the-confirmation-link-page.md)
+* [Task-08 — Show the unconfirmed email banner](../../tasks/auth/US-Auth-02/frontend/Task-08-Show-the-unconfirmed-email-banner.md)

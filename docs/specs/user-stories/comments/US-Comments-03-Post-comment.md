@@ -30,6 +30,9 @@ Post a comment — branches:
 * The comments section has a comment box at the top, showing the current channel's avatar.
 * A comment cannot be empty.
 * A comment cannot be longer than 5000 characters, and the form does not let the user go over it.
+* A comment cannot be posted on a video that does not exist, that the user is not allowed to watch, or whose author
+  has turned comments off ([US-Videos-03](../videos/US-Videos-03-Manage-own-videos.md)). The server refuses it; hiding
+  the comment box is not what enforces it.
 * The comment is attributed to the channel the user is currently acting as, not to the account.
 * After posting, the new comment appears at the top of the list without reloading the page.
 * The total number of comments in the section header goes up.
@@ -62,8 +65,11 @@ Post a comment — branches:
 
 BE:
 
-* TODO
+* [Task-01 — Migrate video-comment-count-worker to the new structure](../../tasks/comments/US-Comments-03/backend/Task-01-Migrate-video-comment-count-worker-to-the-new-structure.md)
+* [Task-02 — channel-api: Look up channels by id over gRPC](../../tasks/comments/US-Comments-03/backend/Task-02-channel-api-Look-up-channels-by-id-over-gRPC.md)
+* [Task-03 — comment-api: Implement POST /comments/{videoId}](../../tasks/comments/US-Comments-03/backend/Task-03-comment-api-Implement-POST-comments-videoId.md)
+* [Task-04 — video-comment-count-worker: Apply the comment counts](../../tasks/comments/US-Comments-03/backend/Task-04-video-comment-count-worker-Apply-the-comment-counts.md)
 
 FE:
 
-* TODO
+* [Task-05 — Add the comment box](../../tasks/comments/US-Comments-03/frontend/Task-05-Add-the-comment-box.md)

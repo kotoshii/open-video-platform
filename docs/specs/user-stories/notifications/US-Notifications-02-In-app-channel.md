@@ -76,7 +76,8 @@ List:
 * Replies and mentions name the channel that replied or mentioned, and preview the comment cut after 200 characters,
   expandable with "See more".
 * Aggregated notifications show a count without names, in the singular or plural as needed — "1 person has subscribed
-  to your channel recently", "47 people have subscribed to your channel recently".
+  to your channel recently", "47 people have subscribed to your channel recently". A new comments notification names
+  its video: "23 new comments on *How to cook pasta*".
 * The list is paginated with page controls at the bottom, not infinite scroll.
 * A short note in the notification center says that read notifications are deleted 90 days after they were read.
 
@@ -89,7 +90,8 @@ Actions:
 * Hiding marks the notification as read and removes it from the list for good.
 * "Mark all as read" affects only the current channel, and is disabled when nothing is unread.
 * Clicking a reply or a mention opens the video with that comment thread, clicking a new comments notification opens
-  the video, and either way the notification becomes read. A new subscribers notification has nothing to open.
+  the video, and either way the notification becomes read. A new subscribers notification has nothing to open: it is
+  not clickable, and is read through its own button.
 * Opening a notification whose comment or video no longer exists says it is no longer available.
 
 **Tech notes**
@@ -120,6 +122,9 @@ Actions:
 * **Read notifications are deleted 90 days after they were read**, by a daily cleanup job — without one the table only
   ever grows. Unread notifications are never deleted by it. Run it as a BullMQ repeatable job, so it fires once however
   many instances run ([scaling-to-multiple-instances.md](../../../explainers/scaling-to-multiple-instances.md)).
+* A reply or mention notification keeps the replier's name and the comment text as they were when it was created. A
+  later rename or edit changes neither, just as neither could change an email already sent. Purging the replier's
+  channel deletes the notification.
 
 **Links**
 
@@ -134,8 +139,16 @@ Actions:
 
 BE:
 
-* TODO
+* [Task-01 — notification-api: Implement GET /notifications](../../tasks/notifications/US-Notifications-02/backend/Task-01-notification-api-Implement-GET-notifications.md)
+* [Task-02 — notification-api: Implement GET /notifications/unread-count](../../tasks/notifications/US-Notifications-02/backend/Task-02-notification-api-Implement-GET-notifications-unread-count.md)
+* [Task-03 — notification-api: Implement POST /notifications/{notificationId}/read](../../tasks/notifications/US-Notifications-02/backend/Task-03-notification-api-Implement-POST-notifications-notificationId-read.md)
+* [Task-04 — notification-api: Implement POST /notifications/{notificationId}/hide](../../tasks/notifications/US-Notifications-02/backend/Task-04-notification-api-Implement-POST-notifications-notificationId-hide.md)
+* [Task-05 — notification-api: Implement POST /notifications/read-all](../../tasks/notifications/US-Notifications-02/backend/Task-05-notification-api-Implement-POST-notifications-read-all.md)
+* [Task-06 — notification-worker: Delete read notifications after 90 days](../../tasks/notifications/US-Notifications-02/backend/Task-06-notification-worker-Delete-read-notifications-after-90-days.md)
 
 FE:
 
-* TODO
+* [Task-07 — Show the unread badge in the sidebar](../../tasks/notifications/US-Notifications-02/frontend/Task-07-Show-the-unread-badge-in-the-sidebar.md)
+* [Task-08 — Build the notification center](../../tasks/notifications/US-Notifications-02/frontend/Task-08-Build-the-notification-center.md)
+* [Task-09 — Open a notification](../../tasks/notifications/US-Notifications-02/frontend/Task-09-Open-a-notification.md)
+* [Task-10 — Mark as read, hide and mark all as read](../../tasks/notifications/US-Notifications-02/frontend/Task-10-Mark-as-read-hide-and-mark-all-as-read.md)

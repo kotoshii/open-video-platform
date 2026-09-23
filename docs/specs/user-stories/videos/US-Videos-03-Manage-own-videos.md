@@ -59,6 +59,8 @@ Delete — branches:
 
 * **Cancel** (step 3) — the modal closes and nothing happens.
 * **Request fails** (step 4) — the default toast behaviour applies and the video stays.
+* **Video still uploading or processing** — it can be deleted the same way. Its upload and processing stop, and
+  everything produced so far goes with it.
 
 **Acceptance criteria**
 
@@ -96,10 +98,13 @@ Change visibility:
   channel's video list.
 * **Private** — only the author can watch it.
 * The change takes effect for other users without them reloading anything they had not already loaded.
+* While the channel or its account has a deletion scheduled, "Change visibility" is unavailable, with a note saying why
+  ([US-Channels-06](../channels/US-Channels-06-delete-own-channel.md)).
 
 Delete:
 
 * Deleting requires a confirmation, with the confirm button disabled for 10 seconds.
+* A video can be deleted at any stage, including while it is still uploading or processing.
 * The confirmation states plainly that the deletion is permanent and immediate: the video, its files, its comments and
   all rates are destroyed and cannot be recovered. There is no window and no undo.
 * After a deletion the video is gone from the channel, from search and from the feed.
@@ -131,9 +136,11 @@ All three:
   rates on the video itself, and its entries in the search index and the recommender. That is a fan-out over Kafka with
   each service deleting what it owns, the same shape as channel deletion
   ([US-Channels-06](../channels/US-Channels-06-delete-own-channel.md)), and every step has to be idempotent.
-* Inside the comments service, deleting the comments and the rates on them is one local transaction — same database,
-  so nothing has to be coordinated. The saga is the part that crosses services: the video service tells the comments,
-  search, recommendation and my-activity services to remove what they own, and each reports back.
+* The comments and replies on the video are deleted by the comments service in one local transaction, which writes
+  their deleted events; the rates on those comments belong to the comment rates service, which deletes them from those
+  events. Across services it is a fan-out rather than a saga with replies: the video's row is gone at once, so nothing
+  waits for the others — the comments, the rates, the search index, the recommender and the watch history's stored
+  titles are each removed by the service that owns them when the video-deleted event reaches them.
 * **Watch history rows are not deleted with the video.** The row stays and renders as a placeholder saying the video is
   no longer available, so a viewer's history keeps its shape instead of silently losing entries
   ([US-My-activity-01](../my-activity/US-My-activity-01-Watch-history.md)). Rates are different: they are destroyed
@@ -168,8 +175,16 @@ All three:
 
 BE:
 
-* TODO
+* [Task-01 — Migrate comment-api to the new structure](../../tasks/videos/US-Videos-03/backend/Task-01-Migrate-comment-api-to-the-new-structure.md)
+* [Task-02 — Migrate video-rate-api to the new structure](../../tasks/videos/US-Videos-03/backend/Task-02-Migrate-video-rate-api-to-the-new-structure.md)
+* [Task-03 — video-api: Implement PUT /videos/{videoId}/visibility](../../tasks/videos/US-Videos-03/backend/Task-03-video-api-Implement-PUT-videos-videoId-visibility.md)
+* [Task-04 — video-api: Implement DELETE /videos/{videoId}](../../tasks/videos/US-Videos-03/backend/Task-04-video-api-Implement-DELETE-videos-videoId.md)
+* [Task-05 — comment-api: Delete a video's comments on deletion](../../tasks/videos/US-Videos-03/backend/Task-05-comment-api-Delete-a-videos-comments-on-deletion.md)
+* [Task-06 — video-rate-api: Delete a video's rates on deletion](../../tasks/videos/US-Videos-03/backend/Task-06-video-rate-api-Delete-a-videos-rates-on-deletion.md)
 
 FE:
 
-* TODO
+* [Task-07 — Build the video management menu](../../tasks/videos/US-Videos-03/frontend/Task-07-Build-the-video-management-menu.md)
+* [Task-08 — Implement the edit video modal](../../tasks/videos/US-Videos-03/frontend/Task-08-Implement-the-edit-video-modal.md)
+* [Task-09 — Implement the change visibility modal](../../tasks/videos/US-Videos-03/frontend/Task-09-Implement-the-change-visibility-modal.md)
+* [Task-10 — Implement the delete video confirmation](../../tasks/videos/US-Videos-03/frontend/Task-10-Implement-the-delete-video-confirmation.md)

@@ -22,7 +22,8 @@ Upload a video — main flow:
    the tab and publish later.
 8. Processing starts.
 9. When the thumbnails are ready, they appear for the user to choose from.
-10. When the lowest quality (240p) is ready, the alert says so and the "Publish" button becomes available.
+10. When the lowest quality (240p, or the source's own size if it is smaller) is ready, the alert says so and the
+    "Publish" button becomes available.
 11. Every further quality that becomes ready is reflected in the alert.
 12. User clicks "Publish".
 13. The video is published and the page confirms it.
@@ -60,6 +61,9 @@ Upload a video — branches:
 * **Opening the uploading page for someone else's video** — the page is not available and the user is sent to the
   homepage.
 * **Request fails** — the default toast behaviour applies ([US-UI-UX-02](../ui-ux/US-UI-UX-02-User-friendly-errors.md)).
+* **A quality fails to process** — it is retried; if it keeps failing, the video goes on without that quality.
+* **The lowest quality fails** — the video cannot be published. The alert says so instead of leaving "Publish" waiting,
+  and the video shows a failed status on the channel.
 
 **Acceptance criteria**
 
@@ -79,7 +83,8 @@ While uploading and processing:
 
 * The uploading page shows the upload progress as a percentage, and then the processing progress.
 * From the moment it opens, the page shows the video's own link with a control to copy it, the file name and the size.
-* The user can edit the title, description, tags, allowed interactions, thumbnail, visibility and audience at any time.
+* The user can edit the title, description, tags, allowed interactions, thumbnail, visibility and audience at any time
+  (except the visibility while a deletion is scheduled, see Publishing).
 * Audience is a yes or no answer to whether the video contains material unsuitable for younger viewers; "yes"
   restricts it to viewers over 18.
 * The thumbnail area offers "Upload your own" alongside the generated suggestions, which stay placeholders until they
@@ -89,13 +94,16 @@ While uploading and processing:
 * When the file has finished uploading, that warning is replaced by a message saying the upload is complete and the
   user may leave and publish later.
 * Thumbnails appear for selection as soon as they are generated.
-* There is a single alert, and its content is replaced at each milestone: the upload finishing, then each quality as
-  it becomes available. It shows the current state, not a history of what happened.
+* There is a single alert, and its content is replaced at each milestone: the upload finishing, the thumbnails being
+  ready, each quality as it becomes available, and processing finishing. It shows the current state, not a history of what happened.
 
 Publishing:
 
-* The "Publish" button becomes available once the lowest quality (240p) is ready, not before.
+* The "Publish" button becomes available once the lowest quality is ready, not before. That is 240p; a source
+  smaller than 240p gets a single quality at its own size, and no quality above the source's own size is made.
 * Publishing makes the video visible according to the visibility that was set.
+* While the channel or its account has a deletion scheduled, the visibility field is unavailable, with a note saying
+  why, and a video published then is private ([US-Channels-06](../channels/US-Channels-06-delete-own-channel.md)).
 * After publishing, the uploading page is no longer reachable for that video and leads to the watch page instead.
 
 Interruptions:
@@ -147,14 +155,15 @@ Transport:
 
 Initialization:
 
-* `POST /video-upload/initialize` carries the video metadata. The server checks the MIME type — unreliable, but it
+* `POST /video-uploads/initialize` carries the video metadata. The server checks the MIME type — unreliable, but it
   removes obviously wrong files early — creates the video record in the video service over gRPC, creates a local record
   with status `upload_pending`, and returns the video id. The user is then sent to `/upload/{videoId}`.
 
 Processing:
 
-* `video-processing-worker` consumes `VideoUploadCompleted` and schedules BullMQ tasks: one for the thumbnails, and one
-  per resolution to produce the master MP4s. Each finished master file schedules a follow-up task that produces the HLS
+* `video-processing-worker` consumes `VideoUploadCompleted` and schedules BullMQ tasks: one for the thumbnails, one
+  for the seek previews (sprite sheets plus a WEBVTT file the player reads, stored under `hls/` so the playback token
+  covers them), and one per resolution to produce the master MP4s. Each finished master file schedules a follow-up task that produces the HLS
   playlist and segments for it.
 * The encoding ladder and the exact ffmpeg parameters are in
   [ffmpeg-processing-parameters.md](../../../explainers/ffmpeg-processing-parameters.md). The HLS step is a remux
@@ -210,6 +219,7 @@ video-bucket/
     │   └── ...
     ├── hls/                   <- served publicly through nginx-s3-gateway
     │   ├── master.m3u8
+    │   ├── previews/          <- seek preview sprite sheets and their WEBVTT file
     │   ├── 240/
     │   │   ├── index.m3u8
     │   │   ├── segment0.ts
@@ -296,9 +306,8 @@ Traps to avoid:
   in the same process, so progress works even without the pub/sub step — and silently stops for some uploads the moment
   a second instance starts. Test with at least two.
 
-Still open:
-
-* All of the above are tracked in [open-decisions.md](../../../open-decisions.md).
+All of the above are decided; the ones that are easy to get wrong are in the Traps table of
+[open-decisions.md](../../../open-decisions.md).
 
 **Links**
 
@@ -319,8 +328,32 @@ Still open:
 
 BE:
 
-* TODO
+* [Task-01 — Migrate video-api to the new structure](../../tasks/videos/US-Videos-05/backend/Task-01-Migrate-video-api-to-the-new-structure.md)
+* [Task-02 — Migrate video-upload-api to the new structure](../../tasks/videos/US-Videos-05/backend/Task-02-Migrate-video-upload-api-to-the-new-structure.md)
+* [Task-03 — Create video-processing-worker](../../tasks/videos/US-Videos-05/backend/Task-03-Create-video-processing-worker.md)
+* [Task-04 — video-api: Create a video record over gRPC](../../tasks/videos/US-Videos-05/backend/Task-04-video-api-Create-a-video-record-over-gRPC.md)
+* [Task-05 — video-upload-api: Implement POST /video-uploads/initialize](../../tasks/videos/US-Videos-05/backend/Task-05-video-upload-api-Implement-POST-video-uploads-initialize.md)
+* [Task-06 — video-upload-api: Implement the tus hooks](../../tasks/videos/US-Videos-05/backend/Task-06-video-upload-api-Implement-the-tus-hooks.md)
+* [Task-07 — video-upload-api: Implement GET /video-uploads/{videoId}](../../tasks/videos/US-Videos-05/backend/Task-07-video-upload-api-Implement-GET-video-uploads-videoId.md)
+* [Task-08 — video-upload-api: Stream upload progress over SSE](../../tasks/videos/US-Videos-05/backend/Task-08-video-upload-api-Stream-upload-progress-over-SSE.md)
+* [Task-09 — video-upload-api: Expire upload sessions after a day](../../tasks/videos/US-Videos-05/backend/Task-09-video-upload-api-Expire-upload-sessions-after-a-day.md)
+* [Task-10 — video-processing-worker: Probe the upload and plan the rungs](../../tasks/videos/US-Videos-05/backend/Task-10-video-processing-worker-Probe-the-upload-and-plan-the-rungs.md)
+* [Task-11 — video-processing-worker: Encode a rendition](../../tasks/videos/US-Videos-05/backend/Task-11-video-processing-worker-Encode-a-rendition.md)
+* [Task-12 — video-processing-worker: Package a rendition as HLS](../../tasks/videos/US-Videos-05/backend/Task-12-video-processing-worker-Package-a-rendition-as-HLS.md)
+* [Task-13 — video-processing-worker: Generate the thumbnails](../../tasks/videos/US-Videos-05/backend/Task-13-video-processing-worker-Generate-the-thumbnails.md)
+* [Task-14 — video-processing-worker: Generate the seek previews](../../tasks/videos/US-Videos-05/backend/Task-14-video-processing-worker-Generate-the-seek-previews.md)
+* [Task-15 — video-processing-worker: Finish a video when its jobs are done](../../tasks/videos/US-Videos-05/backend/Task-15-video-processing-worker-Finish-a-video-when-its-jobs-are-done.md)
+* [Task-16 — video-api: Store what processing produced](../../tasks/videos/US-Videos-05/backend/Task-16-video-api-Store-what-processing-produced.md)
+* [Task-17 — video-api: Implement GET and PUT /videos/{videoId}](../../tasks/videos/US-Videos-05/backend/Task-17-video-api-Implement-GET-and-PUT-videos-videoId.md)
+* [Task-18 — video-api: Implement PUT /videos/{videoId}/thumbnail](../../tasks/videos/US-Videos-05/backend/Task-18-video-api-Implement-PUT-videos-videoId-thumbnail.md)
+* [Task-19 — video-api: Implement POST /videos/{videoId}/publish](../../tasks/videos/US-Videos-05/backend/Task-19-video-api-Implement-POST-videos-videoId-publish.md)
 
 FE:
 
-* TODO
+* [Task-20 — Implement the file selection page](../../tasks/videos/US-Videos-05/frontend/Task-20-Implement-the-file-selection-page.md)
+* [Task-21 — Implement the uploading page](../../tasks/videos/US-Videos-05/frontend/Task-21-Implement-the-uploading-page.md)
+* [Task-22 — Upload the file with tus](../../tasks/videos/US-Videos-05/frontend/Task-22-Upload-the-file-with-tus.md)
+* [Task-23 — Show processing progress from SSE](../../tasks/videos/US-Videos-05/frontend/Task-23-Show-processing-progress-from-SSE.md)
+* [Task-24 — Implement the video details form](../../tasks/videos/US-Videos-05/frontend/Task-24-Implement-the-video-details-form.md)
+* [Task-25 — Pick a thumbnail on the uploading page](../../tasks/videos/US-Videos-05/frontend/Task-25-Pick-a-thumbnail-on-the-uploading-page.md)
+* [Task-26 — Publish the video from the uploading page](../../tasks/videos/US-Videos-05/frontend/Task-26-Publish-the-video-from-the-uploading-page.md)

@@ -73,6 +73,9 @@ Requesting:
   and a visible countdown.
 * Confirming in the modal schedules nothing yet — it only sends the confirmation email.
 * The confirmation link is valid for 5 minutes and works once.
+* Both emailed links need a session: opened without one, they send the user to log in and then back to the link
+  ([US-Auth-04](../auth/US-Auth-04-Session-persistence.md)). The token in the link says which channel it is for, and
+  a link opened while signed in to a different account is refused.
 * An expired or invalid link shows a clear message and offers no way to resend it.
 * Opening a valid link schedules the deletion for one week later and states the date and time.
 * A second email confirms that date and carries a link to cancel the deletion, valid until the deletion happens.
@@ -84,6 +87,10 @@ During the window:
 * Every video of the channel becomes private as soon as the deletion is scheduled, so no one but the author can watch
   it, and it is absent from search, feeds and the channel page for visitors.
 * A video published while the deletion is scheduled is private as well.
+* While the deletion is scheduled, no video's visibility can be changed: the "Change visibility" option and the
+  visibility field of the video details form are unavailable, with a note saying why, and the API refuses the change.
+  Cancelling the deletion puts back the visibility each video had before, so a change made during the window would be
+  lost anyway.
 * Everything else about the channel stays live and visible: its page, its comments and replies, its subscriptions in
   both directions and its subscriber count.
 * Counts still agree with what they count: the channel's video count follows what the viewer can see
@@ -93,9 +100,13 @@ During the window:
   rating all work as usual.
 * The Channel tab states that a deletion is scheduled, when it will happen, and offers "Cancel deletion".
 * A banner at the top of every page states the same while the user acts as that channel, and can be dismissed for 24
-  hours at a time ([US-UI-UX-03](../ui-ux/US-UI-UX-03-Global-layout.md)).
+  hours at a time ([US-UI-UX-03](../ui-ux/US-UI-UX-03-Global-layout.md)). It links to the Channel tab, where the
+  deletion can be cancelled. If the account's deletion is scheduled too, the account's banner is shown instead
+  ([US-Account-01](../account/US-Account-01-Delete-own-account.md)).
 * Cancelling from the settings page or from the email link clears the schedule and returns every video to the
   visibility it had before, leaving the channel exactly as it was.
+* If the account's deletion is scheduled too, cancelling the channel's deletion leaves its videos private until the
+  account's deletion is cancelled as well ([US-Account-01](../account/US-Account-01-Delete-own-account.md)).
 * After cancelling, the channel can be scheduled for deletion again in the same way.
 
 The deletion itself:
@@ -152,8 +163,11 @@ The purge:
       ([US-Subscriptions-01](../subscriptions/US-Subscriptions-01-Subscribe-to-other-channels.md),
       [US-Notifications-01](../notifications/US-Notifications-01-Notifications-config.md));
     * its **watch history** rows ([US-My-activity-01](../my-activity/US-My-activity-01-Watch-history.md));
-    * the **notifications it received** and its **notification preferences**
+    * the **notifications it received** and its **notification preferences**, and the **reply and mention
+      notifications it caused** in other channels' lists, which hold its name and its comment text
       ([US-Notifications-01](../notifications/US-Notifications-01-Notifications-config.md));
+    * the **titles of its videos** stored in other channels' watch histories — the rows stay as "Deleted video"
+      placeholders ([US-My-activity-01](../my-activity/US-My-activity-01-Watch-history.md));
     * its **Gorse user** and the feedback recorded against it
       ([US-Recommendations-01](../recommendations/US-Recommendations-01-Feed.md));
     * its **avatar object** in MinIO ([US-Channels-05](./US-Channels-05-upload-user-pic.md));
@@ -165,8 +179,8 @@ The purge:
 Tokens and sessions:
 
 * The emailed link is what authorises the deletion, so it only proves anything when the inbox is known to be the
-  user's — hence the confirmed-email requirement. Check `email_verified` from the token on the server too; an
-  unavailable button is not the enforcement.
+  user's — hence the confirmed-email requirement. Check the `Email-Verified` header the gateway sets on the
+  server too; an unavailable button is not the enforcement.
 * Both emails go through the custom email module, the same one used for account confirmation
   ([US-Auth-02](../auth/US-Auth-02-Account-confirmation.md)).
 * The confirmation token is single-use with a 5-minute lifetime and belongs server-side (Redis fits). The cancel token
@@ -190,8 +204,26 @@ Tokens and sessions:
 
 BE:
 
-* TODO
+* [Task-01 — channel-api: Implement POST /channels/current/deletion](../../tasks/channels/US-Channels-06/backend/Task-01-channel-api-Implement-POST-channels-current-deletion.md)
+* [Task-02 — channel-api: Implement POST /channels/deletion/confirm](../../tasks/channels/US-Channels-06/backend/Task-02-channel-api-Implement-POST-channels-deletion-confirm.md)
+* [Task-03 — channel-api: Implement POST /channels/deletion/cancel](../../tasks/channels/US-Channels-06/backend/Task-03-channel-api-Implement-POST-channels-deletion-cancel.md)
+* [Task-04 — channel-api: Sweep for deletions whose job was lost](../../tasks/channels/US-Channels-06/backend/Task-04-channel-api-Sweep-for-deletions-whose-job-was-lost.md)
+* [Task-05 — video-api: Hide and restore a channel's videos](../../tasks/channels/US-Channels-06/backend/Task-05-video-api-Hide-and-restore-a-channels-videos.md)
+* [Task-06 — auth-api: Remove a channel id over gRPC](../../tasks/channels/US-Channels-06/backend/Task-06-auth-api-Remove-a-channel-id-over-gRPC.md)
+* [Task-07 — channel-api: Run the purge as a saga](../../tasks/channels/US-Channels-06/backend/Task-07-channel-api-Run-the-purge-as-a-saga.md)
+* [Task-08 — video-api: Delete a channel's videos on purge](../../tasks/channels/US-Channels-06/backend/Task-08-video-api-Delete-a-channels-videos-on-purge.md)
+* [Task-09 — comment-api: Delete a channel's comments on purge](../../tasks/channels/US-Channels-06/backend/Task-09-comment-api-Delete-a-channels-comments-on-purge.md)
+* [Task-10 — comment-rate-api: Delete a channel's comment rates on purge](../../tasks/channels/US-Channels-06/backend/Task-10-comment-rate-api-Delete-a-channels-comment-rates-on-purge.md)
+* [Task-11 — video-rate-api: Delete a channel's video rates on purge](../../tasks/channels/US-Channels-06/backend/Task-11-video-rate-api-Delete-a-channels-video-rates-on-purge.md)
+* [Task-12 — subscription-api: Delete a channel's subscriptions on purge](../../tasks/channels/US-Channels-06/backend/Task-12-subscription-api-Delete-a-channels-subscriptions-on-purge.md)
+* [Task-13 — watch-history-api: Delete a channel's history on purge](../../tasks/channels/US-Channels-06/backend/Task-13-watch-history-api-Delete-a-channels-history-on-purge.md)
+* [Task-14 — notification-api: Delete a channel's notifications on purge](../../tasks/channels/US-Channels-06/backend/Task-14-notification-api-Delete-a-channels-notifications-on-purge.md)
+* [Task-15 — search-api: Delete a channel's documents on purge](../../tasks/channels/US-Channels-06/backend/Task-15-search-api-Delete-a-channels-documents-on-purge.md)
+* [Task-16 — recommendation-api: Delete a channel's Gorse data on purge](../../tasks/channels/US-Channels-06/backend/Task-16-recommendation-api-Delete-a-channels-Gorse-data-on-purge.md)
 
 FE:
 
-* TODO
+* [Task-17 — Add Delete channel to the Channel tab](../../tasks/channels/US-Channels-06/frontend/Task-17-Add-Delete-channel-to-the-Channel-tab.md)
+* [Task-18 — Implement the channel deletion pages](../../tasks/channels/US-Channels-06/frontend/Task-18-Implement-the-channel-deletion-pages.md)
+* [Task-19 — Show the scheduled deletion banner](../../tasks/channels/US-Channels-06/frontend/Task-19-Show-the-scheduled-deletion-banner.md)
+* [Task-20 — Lock the visibility while a deletion is scheduled](../../tasks/channels/US-Channels-06/frontend/Task-20-Lock-the-visibility-while-a-deletion-is-scheduled.md)

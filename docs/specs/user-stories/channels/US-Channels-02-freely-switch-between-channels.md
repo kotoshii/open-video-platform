@@ -19,6 +19,7 @@ Switch the current channel — branches:
 
 * **Only one channel on the account** (step 2) — the list shows that channel alone; there is nothing to switch to, only
   the "Create new channel" action ([US-Channels-01](./US-Channels-01-create-multiple-channels.md)).
+* **User picks the current channel** (step 3) — the switcher closes and the page does not reload.
 * **Stored channel no longer exists** (step 4) — e.g. it was deleted meanwhile
   ([US-Channels-06](./US-Channels-06-delete-own-channel.md)); the gateway rejects the channel id, the app drops the
   stored value and asks the user to pick a channel again.
@@ -57,8 +58,10 @@ Switch the current channel — branches:
 
 BE:
 
-* TODO
+* [_platform infrastructure Task-17 — Verify access tokens in the gateway](../../tasks/_platform/infrastructure/Task-17-Verify-access-tokens-in-the-gateway.md) — the gateway checks the channel id against the token's claim
+* The channel list comes from [US-Channels-01 Task-02](../../tasks/channels/US-Channels-01/backend/Task-02-channel-api-Implement-GET-channels-mine.md); nothing else is needed on the server
 
 FE:
 
-* TODO
+* [Task-01 — Store the current channel and send it with requests](../../tasks/channels/US-Channels-02/frontend/Task-01-Store-the-current-channel-and-send-it-with-requests.md)
+* [Task-02 — Switch the current channel from the switcher](../../tasks/channels/US-Channels-02/frontend/Task-02-Switch-the-current-channel-from-the-switcher.md)

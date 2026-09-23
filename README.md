@@ -25,11 +25,13 @@ Inspired by [Open Streaming Platform](https://github.com/Open-Streaming-Platform
 
 The specification lives in [`docs/`](docs) and is the source of truth for everything below.
 
-**Start at [docs/project-overview.md](docs/project-overview.md)** — the tech stack, the epic list and the build order.
+**Start at [docs/project-overview.md](docs/project-overview.md)** — the tech stack and the epic list. The build order
+is in [docs/development-plan.md](docs/development-plan.md).
 
 | Where                                                        | What                                                   |
 |--------------------------------------------------------------|--------------------------------------------------------|
 | [docs/specs/user-stories/](docs/specs/user-stories)          | 48 stories across 12 epics, one file each              |
+| [docs/development-plan.md](docs/development-plan.md)         | The order the stories are built in                     |
 | [docs/open-decisions.md](docs/open-decisions.md)             | What the stories deliberately left unanswered          |
 | [docs/known-issues.md](docs/known-issues.md)                 | Problems found in the existing implementation          |
 | [docs/specs/infrastructure.md](docs/specs/infrastructure.md) | Setup requirements belonging to no single story        |

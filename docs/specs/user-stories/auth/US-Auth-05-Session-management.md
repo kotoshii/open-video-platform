@@ -22,7 +22,8 @@ See the list of sessions:
 
 End a single session — main flow:
 
-1. User hovers over a session entry and the "end session" button appears.
+1. User hovers over a session entry and the "end session" button appears. On mobile, where there is no hover, the
+   button is always visible.
 2. User clicks the button.
 3. A confirmation modal appears, stating that this will end the selected session and showing that session's details, so
    the user doesn't end the wrong one by mistake.
@@ -64,7 +65,8 @@ Branches:
 * Keycloak already stores sessions and exposes an API to list and end them — no own session storage is needed:
     * list: `GET /admin/realms/{realm}/users/{user-id}/sessions`;
     * end one: `DELETE /admin/realms/{realm}/sessions/{session}`.
-* The current session is the one whose id matches the `sid` claim of the request's access token. That is how the page
+* The current session is the one whose id matches the `Session-ID` header the gateway sets from the token's `sid`
+  claim. That is how the page
   knows which entry to show on top, and how "End all other sessions" skips it — list, then delete every session except
   `sid` ([US-Auth-06](US-Auth-06-Logging-out.md)).
 * OS and device name are derived by parsing the user agent; keep the raw user agent as well, since parsing is
@@ -86,8 +88,12 @@ Branches:
 
 BE:
 
-* TODO
+* [Task-01 — auth-api: Store device and location for each session](../../tasks/auth/US-Auth-05/backend/Task-01-auth-api-Store-device-and-location-for-each-session.md)
+* [Task-02 — auth-api: Implement GET /auth/sessions](../../tasks/auth/US-Auth-05/backend/Task-02-auth-api-Implement-GET-auth-sessions.md)
+* [Task-03 — auth-api: Implement DELETE /auth/sessions/{sessionId}](../../tasks/auth/US-Auth-05/backend/Task-03-auth-api-Implement-DELETE-auth-sessions-sessionId.md)
+* [Task-04 — auth-api: Implement DELETE /auth/sessions/others](../../tasks/auth/US-Auth-05/backend/Task-04-auth-api-Implement-DELETE-auth-sessions-others.md)
 
 FE:
 
-* TODO
+* [Task-05 — Build the Sessions tab](../../tasks/auth/US-Auth-05/frontend/Task-05-Build-the-Sessions-tab.md)
+* [Task-06 — End sessions from the Sessions tab](../../tasks/auth/US-Auth-05/frontend/Task-06-End-sessions-from-the-Sessions-tab.md)

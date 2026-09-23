@@ -99,8 +99,8 @@ Branches:
 
 BE:
 
-* TODO
+* None — the page uses [US-Subscriptions-03 Task-02](../../tasks/subscriptions/US-Subscriptions-03/backend/Task-02-subscription-api-Implement-GET-subscriptions-current.md), the same endpoint the avatar row lists from
 
 FE:
 
-* TODO
+* [Task-01 — Build the full subscriptions list](../../tasks/subscriptions/US-Subscriptions-02/frontend/Task-01-Build-the-full-subscriptions-list.md)

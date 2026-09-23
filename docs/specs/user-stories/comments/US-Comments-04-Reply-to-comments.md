@@ -49,6 +49,9 @@ Reply — branches:
 * A reply cannot be empty, and is subject to the same 5000-character limit as a comment
   ([US-Comments-03](./US-Comments-03-Post-comment.md)) — the mention counts towards it.
 * After posting, the thread shows the new reply and the number of replies on the comment goes up.
+* A reply is refused on the same grounds as a comment: a video that does not exist, that the user is not allowed to
+  watch, or whose author has turned comments off ([US-Comments-03](./US-Comments-03-Post-comment.md)). The server
+  enforces it; hiding the "Reply" button is not what does.
 * The video's total comment count goes up as well, since replies are counted too
   ([US-Comments-01](./US-Comments-01-See-comments.md)).
 * Cancelling discards the text and closes the box.
@@ -87,8 +90,8 @@ Reply — branches:
 
 BE:
 
-* TODO
+* [Task-01 — comment-api: Implement POST /comments/{commentId}/replies](../../tasks/comments/US-Comments-04/backend/Task-01-comment-api-Implement-POST-comments-commentId-replies.md)
 
 FE:
 
-* TODO
+* [Task-02 — Reply to a comment or a reply](../../tasks/comments/US-Comments-04/frontend/Task-02-Reply-to-a-comment-or-a-reply.md)

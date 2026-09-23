@@ -63,8 +63,8 @@ configuration, and the other cross-service building blocks.
 ## Flows that cross services
 
 * **Sign-up** is a saga run by `auth-api`: create the Keycloak user, then ask `account-api` for the account record and
-  `channel-api` for the first channel. If either fails, delete what was already created, starting with the Keycloak
-  user. This is the kind of multi-service flow with a real undo that the saga pattern is for.
+  `channel-api` for the first channel. If either fails, undo what was already created in reverse, ending with the
+  Keycloak user. This is the kind of multi-service flow with a real undo that the saga pattern is for.
 * **Creating a channel**: `channel-api` asks `auth-api` to add the channel id to `channelIds` — synchronously, before
   it responds — and the frontend then refreshes its tokens, so the new token carries the new channel.
 * **Channel purge**, run by `channel-api`: a fan-out over Kafka in which every service deletes the data it owns, and

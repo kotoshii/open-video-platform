@@ -11,14 +11,16 @@ Edit the current channel — main flow:
 
 1. User clicks the settings button in the sidebar.
 2. The settings page opens.
-3. The page has two tabs:
+3. The page has three tabs:
     * **Channel** — user pic, channel name, channel description, the "Show age-restricted content" toggle, the
       notification preferences (see
       [US-Notifications-01](../notifications/US-Notifications-01-Notifications-config.md)), and the "Delete channel"
       button (see [US-Channels-06](./US-Channels-06-delete-own-channel.md));
     * **Account** — email, password, the email language
-      ([US-I18n-03](../i18n/US-I18n-03-Localized-emails.md)), and the "Delete account" button (not related to channels —
-      see the Account settings epic in [project-overview.md](../../../project-overview.md)).
+      ([US-I18n-03](../i18n/US-I18n-03-Localized-emails.md)), the "Download my data" section
+      ([US-Account-04](../account/US-Account-04-Download-own-user-data.md)), and the "Delete account" button (not
+      related to channels — see the Account settings epic in [project-overview.md](../../../project-overview.md));
+    * **Sessions** — the account's active sessions ([US-Auth-05](../auth/US-Auth-05-Session-management.md)).
 4. The Channel tab is open by default.
 5. User changes the channel name or description, or uploads a new user pic (see
    [US-Channels-05](./US-Channels-05-upload-user-pic.md)), and clicks "Save".
@@ -47,13 +49,16 @@ Edit the current channel — branches:
   ([US-Auth-01](../auth/US-Auth-01-Account-creation-and-login.md)); for anyone younger it is not shown, and the
   content stays hidden regardless.
 * The setting belongs to the channel, so each channel of an account has its own.
-* The Account tab contains email, password, the email language and the "Delete account" button; its content belongs to
-  the Account settings and I18n epics, not to this story.
+* The Account tab contains email, password, the email language, "Download my data" and the "Delete account" button,
+  and the Sessions tab lists the account's active sessions; their content belongs to the Account settings, I18n and
+  Auth epics, not to this story.
 * When a deletion is already scheduled for the channel or the account, the corresponding tab states that, gives the
   date it will run, and offers "Cancel deletion" in place of the delete button
   ([US-Channels-06](./US-Channels-06-delete-own-channel.md),
   [US-Account-01](../account/US-Account-01-Delete-own-account.md)).
-* Changes are applied only after an explicit "Save".
+* Changes are applied only after an explicit "Save". Each section saves on its own: the picture, name, description and
+  "Show age-restricted content" share one "Save"; the notification preferences have their own, and so does each setting
+  on the Account tab.
 * The channel name cannot be empty; validation matches the creation form
   ([US-Channels-01](./US-Channels-01-create-multiple-channels.md)).
 * A successful save shows a success toast; a failed one follows the default error flow.
@@ -63,24 +68,26 @@ Edit the current channel — branches:
 
 **Tech notes**
 
-* When the channel name or avatar changes, the Channels service publishes a Kafka event so the services keeping their
-  own copy of that data (videos, comments, subscriptions, search) can update it.
+* When the channel name, description or avatar changes, the Channels service publishes a Kafka event so the services keeping their
+  own copy of that data (comments, subscriptions, search) can update it.
 * This is deliberate eventual consistency: each service stores a denormalized copy of the channel name and avatar
   instead of querying the Channels service on every read, which is why the UI has to tolerate stale values for a while.
-* Consumers must tolerate duplicate and out-of-order events — dedup via Redis, and ignore events older than the copy
-  already stored.
+* Consumers must tolerate duplicate and out-of-order events — deduplicate through each consumer's inbox, and ignore
+  events older than the copy already stored.
 * The settings page needs no service or endpoints of its own; it composes the existing per-service endpoints.
 * **"Show age-restricted content" is a preference over the flag that already exists**, not a second classification.
   A video is marked once, on upload or in the edit dialog
   ([US-Videos-03](../videos/US-Videos-03-Manage-own-videos.md)); the date of birth decides whether a viewer *may* see
   that content, and this toggle decides whether they *want* to. Age is a permission and the toggle is a filter, which
   is why a user too young never sees the toggle at all.
+* The server refuses to turn the toggle on for an account too young for that content; hiding the toggle is only the
+  visible half.
 * The setting is per channel like the notification preferences, so the services that filter listings — Search, the
   feed, similar videos, the channel page, the watch page — read it for the acting channel alongside the age check they
   already do. Both filters are applied when a listing is served, never at index time, since either can change at any
   moment.
-* How those services get the two values ([service-map.md](../../service-map.md)): the viewer's date of birth is the
-  token's `birthdate` claim, so age is computed locally with no call; this setting is fetched from `channel-api` over
+* How those services get the two values ([service-map.md](../../service-map.md)): the viewer's date of birth comes in the
+  `Birthdate` header the gateway sets from the token, so age is computed locally with no call; this setting is fetched from `channel-api` over
   gRPC and cached briefly, since the user can change it at any time.
 
 **Links**
@@ -94,8 +101,11 @@ Edit the current channel — branches:
 
 BE:
 
-* TODO
+* [Task-01 — channel-api: Implement GET /channels/current](../../tasks/channels/US-Channels-03/backend/Task-01-channel-api-Implement-GET-channels-current.md)
+* [Task-02 — channel-api: Implement PUT /channels/current](../../tasks/channels/US-Channels-03/backend/Task-02-channel-api-Implement-PUT-channels-current.md)
+* [Task-03 — channel-api: Expose the age-restricted setting over gRPC](../../tasks/channels/US-Channels-03/backend/Task-03-channel-api-Expose-the-age-restricted-setting-over-gRPC.md)
 
 FE:
 
-* TODO
+* [Task-04 — Build the settings page with its tabs](../../tasks/channels/US-Channels-03/frontend/Task-04-Build-the-settings-page-with-its-tabs.md)
+* [Task-05 — Build the Channel tab form](../../tasks/channels/US-Channels-03/frontend/Task-05-Build-the-Channel-tab-form.md)

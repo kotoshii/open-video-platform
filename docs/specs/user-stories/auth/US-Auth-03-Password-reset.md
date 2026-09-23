@@ -38,7 +38,8 @@ Password reset — branches:
 * The response to a reset request does not reveal whether the email is registered.
 * A reset link is valid for 30 minutes; an expired or invalid link shows a clear message with the option to request a
   new one.
-* A new reset can be requested every 60 seconds.
+* A new reset can be requested every 60 seconds. The cooldown belongs to the email address and starts for
+  unregistered addresses too, so the countdown does not reveal whether an account exists.
 * The password update form validates password strength and confirmation, using the same rules as sign-up.
 * After a successful update, the user is redirected to the login page and sees a success notification once (it does not
   reappear on reload).
@@ -84,8 +85,10 @@ Password reset — branches:
 
 BE:
 
-* TODO
+* [Task-01 — auth-api: Implement POST /auth/password-reset/request](../../tasks/auth/US-Auth-03/backend/Task-01-auth-api-Implement-POST-auth-password-reset-request.md)
+* [Task-02 — auth-api: Implement POST /auth/password-reset/confirm](../../tasks/auth/US-Auth-03/backend/Task-02-auth-api-Implement-POST-auth-password-reset-confirm.md)
 
 FE:
 
-* TODO
+* [Task-03 — Implement the password reset request page](../../tasks/auth/US-Auth-03/frontend/Task-03-Implement-the-password-reset-request-page.md)
+* [Task-04 — Implement the password update page](../../tasks/auth/US-Auth-03/frontend/Task-04-Implement-the-password-update-page.md)

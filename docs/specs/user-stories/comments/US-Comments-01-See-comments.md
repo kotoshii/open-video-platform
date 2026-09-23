@@ -37,9 +37,13 @@ Read the comments — branches:
 
 * **Linked comment no longer exists** — the section says so in place of the thread, and the normal list loads as usual.
 
-* **User's own comments** — the user's own top-level comments are shown at the top of the list, whatever the sorting is.
+* **User's own comments** — the current channel's own top-level comments are shown at the top of the list, whatever the
+  sorting is.
 * **Long comment** — text longer than 400 characters is truncated, with a control to expand it in place.
 * **No comments yet** — the section shows an empty state inviting the user to be the first to comment.
+* **Comments turned off** — the video's author has turned comments off
+  ([US-Videos-03](../videos/US-Videos-03-Manage-own-videos.md)). The comments section is not shown. Nothing is
+  deleted: turning comments back on shows the existing ones again, as they were.
 * **Request fails** — the whole comments section is replaced by an error state with a retry action, not a toast. The
   rest of the video page keeps working ([US-UI-UX-02](../ui-ux/US-UI-UX-02-User-friendly-errors.md)).
 
@@ -52,7 +56,8 @@ Read the comments — branches:
 * Each comment shows the author's avatar and channel name, the relative time since posting, the text, the like count,
   the dislike count and a "Reply" action.
 * A comment with replies shows a button with the number of replies; a comment without replies shows none.
-* The user's own top-level comments appear at the top of the list under every sort order. Their replies are not pinned.
+* The top-level comments of the channel the user is currently acting as appear at the top of the list under every
+  sort order. Comments by the account's other channels are not pinned, and neither are replies.
 * Comment text longer than 400 characters is truncated and can be expanded in place.
 * Opening the video page with `?comment=<id>` shows that comment's thread above the list — the top-level comment and its
   replies — with the linked comment highlighted, whether it is a top-level comment or a reply.
@@ -66,6 +71,8 @@ Read the comments — branches:
 * The total in the header therefore always agrees with the list: comments are removed and the counter decremented by
   the same purge, so there is no state in which the header counts comments the list hides.
 * An empty section shows an empty state, not an error.
+* When the video's author has turned comments off, the section is not shown and the comments are not served. Turning
+  them back on shows them again, unchanged.
 * A failure loading the comments replaces the section content with a full error state and a retry action — a toast is
   not enough here, since there would be nothing to look at behind it.
 * A failure loading the comments does not break the video page: the player, the description and everything else keep
@@ -112,8 +119,12 @@ Read the comments — branches:
 
 BE:
 
-* TODO
+* [Task-01 — comment-api: Implement GET /comments](../../tasks/comments/US-Comments-01/backend/Task-01-comment-api-Implement-GET-comments.md)
+* [Task-02 — comment-api: Implement GET /comments/{commentId}/thread](../../tasks/comments/US-Comments-01/backend/Task-02-comment-api-Implement-GET-comments-commentId-thread.md)
+* [Task-03 — comment-api: Keep the author's name and avatar fresh](../../tasks/comments/US-Comments-01/backend/Task-03-comment-api-Keep-the-authors-name-and-avatar-fresh.md)
 
 FE:
 
-* TODO
+* [Task-04 — Build the comments section](../../tasks/comments/US-Comments-01/frontend/Task-04-Build-the-comments-section.md)
+* [Task-05 — Show a comment](../../tasks/comments/US-Comments-01/frontend/Task-05-Show-a-comment.md)
+* [Task-06 — Open a linked comment thread](../../tasks/comments/US-Comments-01/frontend/Task-06-Open-a-linked-comment-thread.md)

@@ -22,7 +22,8 @@ Move around the app — main flow:
 Collapse and expand the sidebar — desktop:
 
 1. User clicks the menu button at the left of the navbar.
-2. The sidebar collapses: only the channel avatar on top and an icon for each item remain, without names.
+2. The sidebar collapses: only the channel avatar on top, with the switcher arrow next to it, and an icon for each item
+   remain, without names.
 3. Hovering over an icon shows the item's name.
 4. Clicking the menu button again expands the sidebar back to the avatar with the channel name, and icons with item
    names.
@@ -41,16 +42,18 @@ Branches:
   ([US-Auth-03](../auth/US-Auth-03-Password-reset.md)) show neither the navbar nor the sidebar.
 * **Channel selection** ([US-Channels-07](../channels/US-Channels-07-channel-selection-page.md)) — the user is
   authenticated but has no channel to act as yet, so the layout has nothing to render and is not shown.
-* **Pages opened from an email link** — the same rule applies: a page that has to work without the user being signed
-  in, such as the confirmation page after changing the email or the password, has no layout.
+* **Pages opened from an email link** — confirming the email, confirming or cancelling a deletion, resetting the
+  password, confirming a new email — have no layout either, whether or not they need a session. A visitor with no
+  session who opens one that needs it logs in first and comes back
+  ([US-Auth-04](../auth/US-Auth-04-Session-persistence.md)).
 
 **Acceptance criteria**
 
 Where it appears:
 
-* Every page that requires being signed in shows the navbar at the top and the sidebar on the left.
-* Pages that can be used without being signed in — the auth pages, and email-link pages that ask the user to sign in —
-  show neither, and neither does the channel selection page
+* Every page of the app shows the navbar at the top and the sidebar on the left, except the ones listed below.
+* Only the page content scrolls; the navbar and the sidebar stay in place.
+* The auth pages and the pages opened from email links show neither, and neither does the channel selection page
   ([US-Channels-07](../channels/US-Channels-07-channel-selection-page.md)), where the user is signed in but has no
   channel to act as yet.
 * Those pages still show the language selector and the theme toggle, in the top right corner.
@@ -111,7 +114,7 @@ Collapsed sidebar — desktop:
 
 * The sidebar can be collapsed and expanded with the menu button in the navbar.
 * Expanded, it shows the channel avatar with the channel name, and every item as an icon with its name.
-* Collapsed, it shows only the channel avatar and every item as an icon.
+* Collapsed, it shows the channel avatar with the switcher arrow next to it, and every item as an icon.
 * In the collapsed sidebar, hovering over an icon shows the item's name, and the unread notifications badge stays
   visible on its icon.
 * Whether the sidebar is collapsed is remembered across page reloads.
@@ -149,4 +152,8 @@ Sidebar drawer — mobile:
 
 FE:
 
-* TODO
+* [Task-01 — Build the app shell layout](../../tasks/ui-ux/US-UI-UX-03/frontend/Task-01-Build-the-app-shell-layout.md)
+* [Task-02 — Build the sidebar navigation](../../tasks/ui-ux/US-UI-UX-03/frontend/Task-02-Build-the-sidebar-navigation.md)
+* [Task-03 — Collapse and expand the sidebar on desktop](../../tasks/ui-ux/US-UI-UX-03/frontend/Task-03-Collapse-and-expand-the-sidebar-on-desktop.md)
+* [Task-04 — Open the sidebar as a drawer on mobile](../../tasks/ui-ux/US-UI-UX-03/frontend/Task-04-Open-the-sidebar-as-a-drawer-on-mobile.md)
+* [Task-05 — Show the theme toggle on pages without the layout](../../tasks/ui-ux/US-UI-UX-03/frontend/Task-05-Show-the-theme-toggle-on-pages-without-the-layout.md)

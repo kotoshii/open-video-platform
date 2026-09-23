@@ -17,9 +17,12 @@ and keep the look I prefer.
   ([US-I18n-01](../i18n/US-I18n-01-Language-selector.md)), on every page that has the sidebar
   ([US-UI-UX-03](./US-UI-UX-03-Global-layout.md)) — in both the expanded and the collapsed sidebar on desktop, and in
   the sidebar drawer on mobile.
-* Pages without the sidebar — the auth pages — show the theme toggle in the top right corner, next to the language
-  selector ([US-I18n-01](../i18n/US-I18n-01-Language-selector.md)).
+* Pages without the sidebar — the auth pages, the channel selection page and the pages opened from email links — show
+  the theme toggle in the top right corner, next to the language selector
+  ([US-I18n-01](../i18n/US-I18n-01-Language-selector.md)).
 * On first visit the app uses the system preferred theme.
+* The toggle is an icon button with two states, light and dark, and shows which one is on. There is no "system"
+  option: once the user picks a theme, changes to the system preference no longer affect the app.
 * The chosen theme persists between visits and page reloads.
 * The theme applies consistently across all pages and switches smoothly, on both desktop and mobile.
 * No flash of the wrong theme on page load.
@@ -28,4 +31,5 @@ and keep the look I prefer.
 
 FE:
 
-* TODO
+* [Task-01 — Add dark theme support to the app](../../tasks/ui-ux/US-UI-UX-01/frontend/Task-01-Add-dark-theme-support-to-the-app.md)
+* [Task-02 — Build the theme toggle](../../tasks/ui-ux/US-UI-UX-01/frontend/Task-02-Build-the-theme-toggle.md)

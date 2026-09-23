@@ -12,7 +12,7 @@ The checklist version is the Environments section of [infrastructure.md](../spec
 The project needs to run in three different situations:
 
 * **Production** — the real thing. Every service's data is isolated on its own database server.
-* **Preview** — someone clones the repository and wants to see the whole platform working. They should not need nine
+* **Preview** — someone clones the repository and wants to see the whole platform working. They should not need a dozen
   database servers for that. Shared infrastructure is fine.
 * **Development** — you are writing code. The infrastructure should run in Docker, but the APIs, workers and UI should
   run straight on your machine with hot reload, because rebuilding an image after every change is far too slow.
@@ -92,17 +92,18 @@ split into pieces, and each environment is a small file that lists which pieces 
 docker/compose/infra.yaml               Kafka, Redis, MinIO, Keycloak, tusd, Gorse, nginx, s3-gateways
 docker/compose/postgres.shared.yaml     one Postgres server, a database and user per service
 docker/compose/postgres.isolated.yaml   one Postgres server per service
-docker/compose/apps.yaml                the APIs, workers and UI as built images, plus migrations
+docker/compose/migrations.yaml          one dbmate container per database, run once and exited
+docker/compose/apps.yaml                the APIs, workers and UI as built images
 docker/compose/observability.yaml       Grafana, Alloy, Loki, Prometheus, Tempo
 ```
 
 The top-level files pull these in with Compose's `include:`:
 
-| File                     | Pieces it includes                          |
-|--------------------------|---------------------------------------------|
-| `compose.yaml` (preview) | infra, postgres.shared, apps                |
-| `compose.prod.yaml`      | infra, postgres.isolated, apps              |
-| `compose.dev.yaml`       | infra, postgres.shared — and no apps at all |
+| File                     | Pieces it includes                                      |
+|--------------------------|---------------------------------------------------------|
+| `compose.yaml` (preview) | infra, postgres.shared, migrations, apps                |
+| `compose.prod.yaml`      | infra, postgres.isolated, migrations, apps              |
+| `compose.dev.yaml`       | infra, postgres.shared, migrations — and no apps at all |
 
 `compose.yaml` is the name Docker Compose looks for by default, which is why preview gets it: a stranger who clones the
 repository types `docker compose up` and gets the preview. On a production machine, one line in its `.env` —
@@ -180,9 +181,9 @@ environments. It has to be a setting per environment, like everything else.
 
 ### Starting the apps
 
-Nine APIs, five workers and a UI is too much to start in separate terminals. A single root command — `yarn dev` —
-should start them all in watch mode, with each app's output prefixed by its name. A monorepo task runner such as
-Turborepo handles this well.
+Thirteen APIs, nine workers and a UI is too much to start in separate terminals. A single root command — `yarn dev` —
+should start them all in watch mode, with each app's output prefixed by its name. Yarn's own
+`workspaces foreach --parallel --interlaced` does this without adding a task runner.
 
 ## Part 7 — What "production" on one machine is, and is not
 

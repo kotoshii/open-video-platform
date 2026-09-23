@@ -32,7 +32,7 @@ See similar videos — branches:
 * When fewer than 20 related videos are found, the list is shorter; it is never padded with unrelated videos.
 * The video currently being watched is never in the list.
 * Videos of channels that no longer exist are never returned. A channel scheduled for deletion is still a live
-  channel, so its videos appear as usual until the purge runs
+  channel, but its videos are private until the purge runs, so they are not returned either
   ([US-Channels-06](../channels/US-Channels-06-delete-own-channel.md),
   [US-Account-01](../account/US-Account-01-Delete-own-account.md)).
 * Age-restricted videos are excluded for users whose date of birth
@@ -75,6 +75,9 @@ See similar videos — branches:
 * **The list is exactly what the query returns** — no top-up from another source, whether random, same-channel or
   popular. A short list next to a video is honest; a padded one mixes unrelated videos in with related ones and gives
   the reader no way to tell them apart.
+* A watched video that is not in the index — accessible by link, private, or published a moment ago — gives
+  `more_like_this` nothing to read, so its list is empty and the section shows its empty state.
+* On desktop the list uses the same video card as the feed, one per row down the right column.
 * Not now, but possible later: "people who watched this also watched" from Gorse's `users` item-to-item recommender,
   once there is real watch data. Embeddings are not used.
 
@@ -91,8 +94,8 @@ See similar videos — branches:
 
 BE:
 
-* TODO
+* [Task-01 — search-api: Implement GET /search/videos/{videoId}/similar](../../tasks/recommendations/US-Recommendations-02/backend/Task-01-search-api-Implement-GET-search-videos-videoId-similar.md)
 
 FE:
 
-* TODO
+* [Task-02 — Build the similar videos list](../../tasks/recommendations/US-Recommendations-02/frontend/Task-02-Build-the-similar-videos-list.md)

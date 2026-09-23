@@ -422,6 +422,8 @@ the same failure handled two different ways in one file.
 
 Dropping the saga here is not an argument against the pattern — it is an argument for using it where there is genuinely
 something to compensate. In this project that is the channel and account purge
-([US-Channels-06](../specs/user-stories/channels/US-Channels-06-delete-own-channel.md)) and the video deletion fan-out
-([US-Videos-03](../specs/user-stories/videos/US-Videos-03-Manage-own-videos.md)): several services, each doing real work,
-each able to fail in a way the others have to react to. Rating a comment touches one database and one topic.
+([US-Channels-06](../specs/user-stories/channels/US-Channels-06-delete-own-channel.md)): several services, each doing
+real work, each reporting back before the channel's row may go. Deleting one video is a plain fan-out instead
+([US-Videos-03](../specs/user-stories/videos/US-Videos-03-Manage-own-videos.md)): the row is gone at once and nothing
+waits for the others, so there is nothing to report and nothing to undo. Rating a comment touches one database and one
+topic.

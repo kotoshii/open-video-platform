@@ -28,7 +28,8 @@ Change the language — main flow:
 
 Change the language — branches:
 
-* **Pages without the sidebar** (step 1) — the auth pages show the language selector in the top right corner, next to
+* **Pages without the sidebar** (step 1) — the auth pages, the channel selection page and the pages opened from email
+  links show the language selector in the top right corner, next to
   the theme toggle ([US-UI-UX-01](../ui-ux/US-UI-UX-01-Dark-theme-support.md)), and it works the same way.
 * **Closing the modal without choosing** (step 5) — nothing changes.
 * **Coming back later** — the app opens in the language chosen last time in this browser.
@@ -52,7 +53,8 @@ Change the language — branches:
   never translated.
 * English is the default language.
 * After the language is changed, an info toast says that the language of emails is not affected and can be changed in
-  the settings. On pages without the sidebar, where nobody is signed in, the toast is not shown.
+  the settings. On pages without the sidebar the toast is not shown — including the channel selection page, where the
+  settings cannot be reached until a channel is chosen.
 * The choice is remembered in the browser and applies on the next visit. It is not stored on the server and does not
   follow the account to other devices.
 
@@ -93,4 +95,7 @@ Change the language — branches:
 
 FE:
 
-* TODO
+* [Task-01 — Spike: Choose the i18n library](../../tasks/i18n/US-I18n-01/frontend/Task-01-Spike-Choose-the-i18n-library.md)
+* [Task-02 — Set up the i18n library](../../tasks/i18n/US-I18n-01/frontend/Task-02-Set-up-the-i18n-library.md)
+* [Task-03 — Build the language selector](../../tasks/i18n/US-I18n-01/frontend/Task-03-Build-the-language-selector.md)
+* [Task-04 — Format dates, counts and plurals with Intl](../../tasks/i18n/US-I18n-01/frontend/Task-04-Format-dates-counts-and-plurals-with-Intl.md)

@@ -58,7 +58,9 @@ Change password — branches:
   [US-Auth-05](../auth/US-Auth-05-Session-management.md). The current session is kept and re-issued instead of ended, so
   the user is not thrown out of the page they are working on.
 * Failed attempts against the "Current password" field need throttling — this form is the only credential check standing
-  between an open session and a new password.
+  between an open session and a new password. **Decided:** the current password is checked with Keycloak's direct
+  grant, the same one login uses, so the realm's brute force protection counts the failures. While it locks the
+  account, logging in is locked as well.
 * No Kafka event is needed: no service other than Keycloak stores the password.
 
 **Links**
@@ -73,8 +75,8 @@ Change password — branches:
 
 BE:
 
-* TODO
+* [Task-01 — auth-api: Implement PUT /auth/password](../../tasks/account/US-Account-03/backend/Task-01-auth-api-Implement-PUT-auth-password.md)
 
 FE:
 
-* TODO
+* [Task-02 — Add the password change to the Account tab](../../tasks/account/US-Account-03/frontend/Task-02-Add-the-password-change-to-the-Account-tab.md)

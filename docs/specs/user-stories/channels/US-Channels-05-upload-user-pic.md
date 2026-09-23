@@ -21,12 +21,13 @@ Upload a user pic — branches:
 
 * **File too large or of an unsupported format** (step 3) — the user sees a readable error and nothing is uploaded.
 * **Upload fails** (step 5) — the default error flow applies
-  ([US-UI-UX-02](../ui-ux/US-UI-UX-02-User-friendly-errors.md)); the previous picture stays in place.
+  ([US-UI-UX-02](../ui-ux/US-UI-UX-02-User-friendly-errors.md)); the previous picture stays in place. The name and
+  description are not saved either: the picture is uploaded first, and the rest is saved only once that succeeds.
 
 **Acceptance criteria**
 
 * The Channel tab has an avatar upload form: a drop area on desktop, an upload button on mobile.
-* The picture is applied together with the rest of the Channel tab, with the "Save" button.
+* The picture is applied together with the channel's name and description, with the "Save" button.
 * Files up to 5 MB are accepted; a larger file is rejected with a readable error before anything is uploaded.
 * The commonly used image formats are supported, GIF included.
 * Stored pictures are at most 160x160 px.
@@ -56,8 +57,9 @@ Upload a user pic — branches:
 
 BE:
 
-* TODO
+* [Task-01 — channel-api: Implement PUT /channels/current/avatar](../../tasks/channels/US-Channels-05/backend/Task-01-channel-api-Implement-PUT-channels-current-avatar.md)
 
 FE:
 
-* TODO
+* [Task-02 — Add the avatar upload to the Channel tab](../../tasks/channels/US-Channels-05/frontend/Task-02-Add-the-avatar-upload-to-the-Channel-tab.md)
+* [Task-03 — Add the avatar to the create channel modal](../../tasks/channels/US-Channels-05/frontend/Task-03-Add-the-avatar-to-the-create-channel-modal.md)

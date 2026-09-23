@@ -44,6 +44,8 @@ Branches:
 * The button state changes immediately, before the server confirms, and reverts if the request fails.
 * The button is not rendered for the user's own channel.
 * Subscribing twice in a row still results in a single subscription.
+* Unsubscribing from a channel that is not subscribed is not an error. The server refuses a channel subscribing to
+  itself, even though the button is never shown for it.
 * The subscriber count shown for a channel is the stored one. It is not adjusted on the client after subscribing, so it
   may take a few seconds to change — the button state is what confirms the action.
 * A channel with no subscribers shows no subscriber count at all, rather than "0 subscribers".
@@ -85,8 +87,13 @@ Branches:
 
 BE:
 
-* TODO
+* [Task-01 — Migrate subscription-api to the new structure](../../tasks/subscriptions/US-Subscriptions-01/backend/Task-01-Migrate-subscription-api-to-the-new-structure.md)
+* [Task-02 — Migrate subscriber-count-worker to the new structure](../../tasks/subscriptions/US-Subscriptions-01/backend/Task-02-Migrate-subscriber-count-worker-to-the-new-structure.md)
+* [Task-03 — subscription-api: Implement POST /subscriptions](../../tasks/subscriptions/US-Subscriptions-01/backend/Task-03-subscription-api-Implement-POST-subscriptions.md)
+* [Task-04 — subscription-api: Implement DELETE /subscriptions/{channelId}](../../tasks/subscriptions/US-Subscriptions-01/backend/Task-04-subscription-api-Implement-DELETE-subscriptions-channelId.md)
+* [Task-05 — subscription-api: Implement GET /subscriptions/{channelId}](../../tasks/subscriptions/US-Subscriptions-01/backend/Task-05-subscription-api-Implement-GET-subscriptions-channelId.md)
+* [Task-06 — subscriber-count-worker: Apply and publish the counts](../../tasks/subscriptions/US-Subscriptions-01/backend/Task-06-subscriber-count-worker-Apply-and-publish-the-counts.md)
 
 FE:
 
-* TODO
+* [Task-07 — Add the subscribe button](../../tasks/subscriptions/US-Subscriptions-01/frontend/Task-07-Add-the-subscribe-button.md)

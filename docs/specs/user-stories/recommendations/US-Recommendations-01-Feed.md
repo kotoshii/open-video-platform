@@ -35,7 +35,7 @@ Open the feed — branches:
 * Videos the channel has already watched are not shown in the feed.
 * If the recommender cannot answer, the feed still returns results, using the same popularity fallback.
 * Videos of channels that no longer exist are never returned. A channel scheduled for deletion is still a live
-  channel, so its videos appear as usual until the purge runs
+  channel, but its videos are private until the purge runs, so they are not returned either
   ([US-Channels-06](../channels/US-Channels-06-delete-own-channel.md),
   [US-Account-01](../account/US-Account-01-Delete-own-account.md)).
 * Age-restricted videos are excluded for users whose date of birth
@@ -82,6 +82,21 @@ Open the feed — branches:
   ([US-My-activity-01](../my-activity/US-My-activity-01-Watch-history.md)): a channel with its history paused sends no
   watch feedback, and clearing the history — or removing one video from it — removes those watch signals from Gorse
   again.
+* **Decided while writing the tasks:**
+    * The channel's own videos are left out of its feed, from Gorse's candidates and the popular ones alike. Similar
+      videos keep them, since there they are related by content.
+    * "Most popular" means published public videos ordered by all-time view count, served by the video service, so the
+      fallback works when Gorse is down.
+    * A feed session's snapshot holds about 200 videos: Gorse's candidates first, then popular videos after them, with
+      duplicates dropped and — while Gorse answers — the videos the channel has already watched left out. With no
+      history, or with Gorse down, it is all popular videos.
+    * Scrolling past the end of the snapshot, or reaching it after the snapshot has expired (an hour after its last page
+      was read), simply stops the loading, with no message. The next visit to the homepage builds a new snapshot.
+    * If loading more fails, the cards already shown stay and the bottom of the list shows a section error with a
+      retry; only a failed first page is a full-screen error.
+    * Gorse's feedback types: watch and like are positive, dislike is negative, and there is no read type — Gorse treats
+      an item a user has only read as a negative example. Subscriptions reach Gorse as labels: the subscribed channel
+      ids on the user, and the channel id on each video.
 
 **Links**
 
@@ -97,8 +112,16 @@ Open the feed — branches:
 
 BE:
 
-* TODO
+* [Task-01 — Run Gorse in Compose](../../tasks/recommendations/US-Recommendations-01/backend/Task-01-Run-Gorse-in-Compose.md)
+* [Task-02 — Create recommendation-api](../../tasks/recommendations/US-Recommendations-01/backend/Task-02-Create-recommendation-api.md)
+* [Task-03 — recommendation-api: Keep Gorse's items in step with videos](../../tasks/recommendations/US-Recommendations-01/backend/Task-03-recommendation-api-Keep-Gorses-items-in-step-with-videos.md)
+* [Task-04 — recommendation-api: Send watches to Gorse](../../tasks/recommendations/US-Recommendations-01/backend/Task-04-recommendation-api-Send-watches-to-Gorse.md)
+* [Task-05 — recommendation-api: Send likes and dislikes to Gorse](../../tasks/recommendations/US-Recommendations-01/backend/Task-05-recommendation-api-Send-likes-and-dislikes-to-Gorse.md)
+* [Task-06 — recommendation-api: Send subscriptions to Gorse](../../tasks/recommendations/US-Recommendations-01/backend/Task-06-recommendation-api-Send-subscriptions-to-Gorse.md)
+* [Task-07 — video-api: List the most viewed videos over gRPC](../../tasks/recommendations/US-Recommendations-01/backend/Task-07-video-api-List-the-most-viewed-videos-over-gRPC.md)
+* [Task-08 — recommendation-api: Build the feed snapshot](../../tasks/recommendations/US-Recommendations-01/backend/Task-08-recommendation-api-Build-the-feed-snapshot.md)
+* [Task-09 — recommendation-api: Implement GET /feed](../../tasks/recommendations/US-Recommendations-01/backend/Task-09-recommendation-api-Implement-GET-feed.md)
 
 FE:
 
-* TODO
+* [Task-10 — Build the homepage feed](../../tasks/recommendations/US-Recommendations-01/frontend/Task-10-Build-the-homepage-feed.md)
