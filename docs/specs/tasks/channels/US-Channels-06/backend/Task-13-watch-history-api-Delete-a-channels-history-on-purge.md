@@ -1,6 +1,7 @@
 ## watch-history-api: Delete a channel's history on purge
 
-Needs: [Task-07 — channel-api: Run the purge as a saga](Task-07-channel-api-Run-the-purge-as-a-saga.md)
+Needs: [Task-07 — channel-api: Run the purge as a saga](Task-07-channel-api-Run-the-purge-as-a-saga.md),
+[US-My-activity-01 Task-01 — Create watch-history-api](../../../my-activity/US-My-activity-01/backend/Task-01-Create-watch-history-api.md)
 
 Consume the purge event: delete the channel's watch history rows and its paused flag, then report back.
 

@@ -32,7 +32,7 @@ See similar videos — branches:
 * When fewer than 20 related videos are found, the list is shorter; it is never padded with unrelated videos.
 * The video currently being watched is never in the list.
 * Videos of channels that no longer exist are never returned. A channel scheduled for deletion is still a live
-  channel, so its videos appear as usual until the purge runs
+  channel, but its videos are private until the purge runs, so they are not returned either
   ([US-Channels-06](../channels/US-Channels-06-delete-own-channel.md),
   [US-Account-01](../account/US-Account-01-Delete-own-account.md)).
 * Age-restricted videos are excluded for users whose date of birth

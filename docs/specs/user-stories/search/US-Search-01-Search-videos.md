@@ -52,7 +52,7 @@ Search videos — branches:
 * A search finds other forms of the same word, in English and in Ukrainian — "cats" finds "cat", and "котик" finds
   "котики".
 * Videos of channels that no longer exist never appear in results. A channel scheduled for deletion is still a live
-  channel, so its videos are found as usual until the purge runs
+  channel, but its videos are private until the purge runs, so they are not found either
   ([US-Channels-06](../channels/US-Channels-06-delete-own-channel.md),
   [US-Account-01](../account/US-Account-01-Delete-own-account.md)).
 * Age-restricted videos are excluded for users whose date of birth

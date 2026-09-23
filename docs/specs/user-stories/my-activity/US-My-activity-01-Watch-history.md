@@ -50,8 +50,9 @@ Branches:
   with the new time.
 * **A video in the history can no longer be watched** — it was deleted, or it was made private, which includes every
   video of a channel with a deletion scheduled ([US-Channels-06](../channels/US-Channels-06-delete-own-channel.md)).
-  The row stays in the history and shows a placeholder saying the video is no longer available, instead of vanishing
-  from the list.
+  The row stays in the history as a placeholder, the way YouTube shows such videos: a grey box instead of the
+  thumbnail, "Private video" or "Deleted video" instead of the title, and no channel name or view count. It cannot be
+  opened, and it can still be removed.
 * **No history yet** — the page shows an empty state.
 * **Nothing matches the search** — the list shows an empty state until the search is changed.
 * **Cancelling a confirmation** — the modal closes and nothing changes.
@@ -75,8 +76,9 @@ Branches:
 * "Resume watch history" takes effect without a confirmation.
 * Pausing the history does not stop views from being counted ([US-Videos-01](../videos/US-Videos-01-Watch-videos.md)).
 * Removing an item or clearing the history also removes those videos' watch signals from the recommendations.
-* A video that can no longer be watched keeps its row in the history, shown as a placeholder saying so rather than
-  removed from the list; the row can still be deleted by the user like any other.
+* A video that can no longer be watched keeps its row in the history, shown as a placeholder — a grey box instead of
+  the thumbnail and "Private video" or "Deleted video" instead of the title — rather than removed from the list; the
+  row can still be deleted by the user like any other.
 * Failures to load the list are shown as a full-page error; failures of an action are shown as a toast.
 
 **Tech notes**
@@ -105,8 +107,9 @@ Branches:
   it ever is not.
 * **History rows outlive the videos they point at.** A video deletion does not remove them
   ([US-Videos-03](../videos/US-Videos-03-Manage-own-videos.md)); the row stays and is rendered as a placeholder, so a
-  history keeps its shape instead of quietly losing entries. The title already stored on the row is what the
-  placeholder shows, and it is also why searching the history still works over entries whose video is gone.
+  history keeps its shape instead of quietly losing entries. The placeholder shows "Deleted video" rather than the
+  title stored on the row; the stored title is what keeps searching the history working over entries whose video is
+  gone.
 * Whether a row is still watchable is decided when the list is served, so a video made private — including one whose
   channel has a deletion scheduled — becomes a placeholder without anything being written.
 * The paused state comes with the list response, so the button and the notice render correctly on the first paint.
@@ -123,8 +126,20 @@ Branches:
 
 BE:
 
-* TODO
+* [Task-01 — Create watch-history-api](../../tasks/my-activity/US-My-activity-01/backend/Task-01-Create-watch-history-api.md)
+* [Task-02 — watch-history-api: Record watches from the viewed event](../../tasks/my-activity/US-My-activity-01/backend/Task-02-watch-history-api-Record-watches-from-the-viewed-event.md)
+* [Task-03 — watch-history-api: Keep the stored titles fresh](../../tasks/my-activity/US-My-activity-01/backend/Task-03-watch-history-api-Keep-the-stored-titles-fresh.md)
+* [Task-04 — video-api: Report video availability over gRPC](../../tasks/my-activity/US-My-activity-01/backend/Task-04-video-api-Report-video-availability-over-gRPC.md)
+* [Task-05 — watch-history-api: Implement GET /watch-history](../../tasks/my-activity/US-My-activity-01/backend/Task-05-watch-history-api-Implement-GET-watch-history.md)
+* [Task-06 — watch-history-api: Implement DELETE /watch-history/{videoId}](../../tasks/my-activity/US-My-activity-01/backend/Task-06-watch-history-api-Implement-DELETE-watch-history-videoId.md)
+* [Task-07 — watch-history-api: Implement DELETE /watch-history](../../tasks/my-activity/US-My-activity-01/backend/Task-07-watch-history-api-Implement-DELETE-watch-history.md)
+* [Task-08 — watch-history-api: Implement PUT /watch-history/paused](../../tasks/my-activity/US-My-activity-01/backend/Task-08-watch-history-api-Implement-PUT-watch-history-paused.md)
+* [Task-09 — watch-history-api: Expose the paused flag over gRPC](../../tasks/my-activity/US-My-activity-01/backend/Task-09-watch-history-api-Expose-the-paused-flag-over-gRPC.md)
+* [Task-10 — recommendation-api: Skip watches of paused channels](../../tasks/my-activity/US-My-activity-01/backend/Task-10-recommendation-api-Skip-watches-of-paused-channels.md)
+* [Task-11 — recommendation-api: Forget removed and cleared watches](../../tasks/my-activity/US-My-activity-01/backend/Task-11-recommendation-api-Forget-removed-and-cleared-watches.md)
 
 FE:
 
-* TODO
+* [Task-12 — Build the watch history page](../../tasks/my-activity/US-My-activity-01/frontend/Task-12-Build-the-watch-history-page.md)
+* [Task-13 — Remove a video from the history](../../tasks/my-activity/US-My-activity-01/frontend/Task-13-Remove-a-video-from-the-history.md)
+* [Task-14 — Clear, pause and resume the history](../../tasks/my-activity/US-My-activity-01/frontend/Task-14-Clear-pause-and-resume-the-history.md)

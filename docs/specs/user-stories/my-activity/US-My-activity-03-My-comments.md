@@ -42,7 +42,10 @@ Delete a comment:
 
 Branches:
 
-* **The video is no longer available** — the comment is not shown.
+* **The video is no longer available** — the comment stays in the list, and the video is shown as a placeholder, the
+  way YouTube shows such videos: a grey box instead of the thumbnail, "Private video" instead of the title, and no
+  channel name. The video cannot be opened from it; the comment can still be deleted. A deleted video takes its
+  comments with it ([US-Videos-03](../videos/US-Videos-03-Manage-own-videos.md)), so it never reaches this list.
 * **No comments yet, or nothing matches the search** — the list shows an empty state.
 * **Cancelling the confirmation** — the modal closes and nothing changes.
 * **The list fails to load** — a full-page error state with a retry action
@@ -64,7 +67,8 @@ Branches:
   the user types.
 * Hovering over an item shows a delete button, always visible on mobile. Deleting asks for confirmation and loads the
   list again afterwards.
-* Comments on videos that are no longer available are not shown.
+* Comments on videos that are no longer available stay in the list, with the video shown as a placeholder — a grey
+  box instead of the thumbnail and "Private video" instead of the title.
 * Failures to load the list are shown as a full-page error; a failure to delete is shown as a toast.
 
 **Tech notes**
@@ -94,8 +98,10 @@ Branches:
 
 BE:
 
-* TODO
+* [Task-01 — comment-api: Store the video title on each comment](../../tasks/my-activity/US-My-activity-03/backend/Task-01-comment-api-Store-the-video-title-on-each-comment.md)
+* [Task-02 — comment-api: Implement GET /comments/current](../../tasks/my-activity/US-My-activity-03/backend/Task-02-comment-api-Implement-GET-comments-current.md)
 
 FE:
 
-* TODO
+* [Task-03 — Build the My comments page](../../tasks/my-activity/US-My-activity-03/frontend/Task-03-Build-the-My-comments-page.md)
+* [Task-04 — Delete a comment from the list](../../tasks/my-activity/US-My-activity-03/frontend/Task-04-Delete-a-comment-from-the-list.md)
