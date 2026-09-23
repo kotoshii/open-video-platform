@@ -9,5 +9,6 @@ changes, and remove it when it is purged. Keep the subscriber count up to date f
 
 Deduplicate through the inbox and ignore events older than the stored document.
 
-Why: until subscriptions exist every channel has no subscribers, so the count arrives with its own story and the
-ordering by it starts working then.
+Why: `subscriber-count-worker` writes the count straight into `channel-api`'s database, so `channel-api` never
+announces it — the index follows the counts the worker publishes instead, which is why subscriptions come before search
+in the [development plan](../../../../../development-plan.md). The ordering by it lags a batch behind by design.

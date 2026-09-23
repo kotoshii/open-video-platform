@@ -1,7 +1,7 @@
 # Platform tasks — the order to do them in
 
 The tasks here belong to no story. This file says when each one is done, relative to the stories in the
-[work plan](../../../project-overview.md#work-plan). Inside each area the numbers follow the same order.
+[development plan](../../../development-plan.md). Inside each area the numbers follow the same order.
 
 Most of the groundwork comes before the first story, since every migrated or new service is built on it. Tasks that
 only one feature needs wait until just before that feature's story.
@@ -124,8 +124,8 @@ These wait for the story named next to them.
 | After Videos-01 (MVP 16) | [ci Task-07 — Write the smoke test script](ci/Task-07-Write-the-smoke-test-script.md) |
 | After Videos-01 (MVP 16) | [ci Task-08 — Add the preview smoke test workflow](ci/Task-08-Add-the-preview-smoke-test-workflow.md) |
 | After Comments-04 (MVP 22) | [seed-data Task-05 — Seed comments and replies](seed-data/Task-05-Seed-comments-and-replies.md) |
-| Before Search-01 (MVP 25) | [infrastructure Task-27 — Run Elasticsearch with the Ukrainian analysis plugin](infrastructure/Task-27-Run-Elasticsearch-with-the-Ukrainian-analysis-plugin.md) |
-| After Subscriptions-01 (MVP 28) | [seed-data Task-06 — Seed rates, subscriptions and views](seed-data/Task-06-Seed-rates-subscriptions-and-views.md) |
+| After Subscriptions-01 (MVP 25) | [seed-data Task-06 — Seed rates, subscriptions and views](seed-data/Task-06-Seed-rates-subscriptions-and-views.md) |
+| Before Search-01 (MVP 26) | [infrastructure Task-27 — Run Elasticsearch with the Ukrainian analysis plugin](infrastructure/Task-27-Run-Elasticsearch-with-the-Ukrainian-analysis-plugin.md) |
 
 ## 4. After the MVP
 
