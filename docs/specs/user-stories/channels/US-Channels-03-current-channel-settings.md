@@ -69,7 +69,7 @@ Edit the current channel — branches:
 **Tech notes**
 
 * When the channel name, description or avatar changes, the Channels service publishes a Kafka event so the services keeping their
-  own copy of that data (videos, comments, subscriptions, search) can update it.
+  own copy of that data (comments, subscriptions, search) can update it.
 * This is deliberate eventual consistency: each service stores a denormalized copy of the channel name and avatar
   instead of querying the Channels service on every read, which is why the UI has to tolerate stale values for a while.
 * Consumers must tolerate duplicate and out-of-order events — deduplicate through each consumer's inbox, and ignore

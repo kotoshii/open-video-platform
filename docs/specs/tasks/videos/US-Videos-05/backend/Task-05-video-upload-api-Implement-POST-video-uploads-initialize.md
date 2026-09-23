@@ -12,6 +12,11 @@ Main flow:
 3. Create the upload session with status `upload_pending`, storing the file name, the size and the video id.
 4. Return the video id, which the app uses as the uploading page's address.
 
+Branch — the body names an existing video of the acting channel whose upload expired or failed:
+
+1. Open a new `upload_pending` session for that video instead of creating one; the file is uploaded again from the
+   start.
+
 Branch — the type or the size is not allowed:
 
 1. Reject with its code and the limit; no video is created.

@@ -22,6 +22,7 @@ accident, so designs here are chosen to practise a pattern, not to serve product
 | [open-decisions.md](open-decisions.md)               | Everything the stories deliberately left unanswered              |
 | [known-issues.md](known-issues.md)                   | Problems found in the existing implementation                    |
 | [service-map.md](specs/service-map.md)               | Which service owns which stories, data and workers — and why     |
+| [architecture.md](specs/architecture.md)             | Every service, store, event and call, and the flows between them |
 | [infrastructure.md](specs/infrastructure.md)         | Setup requirements that belong to no story                       |
 | [observability-plan.md](specs/observability-plan.md) | Logs, metrics and traces, in the order they get built            |
 | [explainers/](explainers)                            | Why a given design was chosen, at length — see below             |

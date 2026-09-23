@@ -2,7 +2,8 @@
 
 Needs: [Task-05 — video-upload-api: Implement POST /video-uploads/initialize](Task-05-video-upload-api-Implement-POST-video-uploads-initialize.md)
 
-Add a repeatable job that marks upload sessions older than a day as expired, so their uploads can no longer be resumed.
+Add a repeatable job that marks upload sessions older than a day as expired, so their uploads can no longer be resumed,
+and publishes `VideoUploadExpired` for each.
 
 The bytes are the bucket's problem: the lifecycle rule that aborts incomplete multipart uploads removes them
 ([_platform infrastructure Task-07](../../../_platform/infrastructure/Task-07-Create-MinIO-buckets-and-lifecycle-rules.md)).

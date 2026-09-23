@@ -11,8 +11,8 @@ joins it in [US-Channels-05](../../../../user-stories/channels/US-Channels-05-up
 Main flow:
 
 1. User fills the form and clicks "Create".
-2. A success toast appears, the app refreshes its tokens so the new channel is in the claim, and the page reloads with
-   it as the current channel.
+2. A success toast appears, the app refreshes its tokens so the new channel is in the claim, stores it as the current
+   channel, and reloads.
 
 Branch — the name is empty:
 

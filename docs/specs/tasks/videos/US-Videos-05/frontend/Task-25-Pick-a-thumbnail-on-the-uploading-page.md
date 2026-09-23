@@ -9,7 +9,8 @@ with the current choice marked. On mobile the tiles scroll horizontally, startin
 Main flow:
 
 1. Until the suggestions exist, the tiles are empty placeholders.
-2. When they arrive through the event stream, they appear for choosing.
+2. When the event stream says they exist, the page loads the video again for their short-lived URLs, and they appear
+   for choosing.
 3. Choosing one, or uploading an image, sets the video's thumbnail.
 
 Branch — the uploaded image is rejected:

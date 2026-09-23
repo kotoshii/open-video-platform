@@ -1,6 +1,6 @@
 ## Implement the video details form
 
-Needs: [Task-17 — video-api: Implement PUT /videos/{videoId}](../backend/Task-17-video-api-Implement-PUT-videos-videoId.md),
+Needs: [Task-17 — video-api: Implement GET and PUT /videos/{videoId}](../backend/Task-17-video-api-Implement-GET-and-PUT-videos-videoId.md),
 [Task-21 — Implement the uploading page](Task-21-Implement-the-uploading-page.md)
 
 Build the details form as one component: title, description, tags as removable chips, the "Allow comments" and "Allow

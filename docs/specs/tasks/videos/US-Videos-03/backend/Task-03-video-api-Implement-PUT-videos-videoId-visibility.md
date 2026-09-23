@@ -1,6 +1,6 @@
 ## video-api: Implement PUT /videos/{videoId}/visibility
 
-Needs: [US-Videos-05 Task-17 — video-api: Implement PUT /videos/{videoId}](../../US-Videos-05/backend/Task-17-video-api-Implement-PUT-videos-videoId.md)
+Needs: [US-Videos-05 Task-17 — video-api: Implement GET and PUT /videos/{videoId}](../../US-Videos-05/backend/Task-17-video-api-Implement-GET-and-PUT-videos-videoId.md)
 
 `PUT /videos/{videoId}/visibility` — body `{ visibility: "public" | "accessible_by_link" | "private" }`
 

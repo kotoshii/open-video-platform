@@ -155,7 +155,7 @@ Transport:
 
 Initialization:
 
-* `POST /video-upload/initialize` carries the video metadata. The server checks the MIME type — unreliable, but it
+* `POST /video-uploads/initialize` carries the video metadata. The server checks the MIME type — unreliable, but it
   removes obviously wrong files early — creates the video record in the video service over gRPC, creates a local record
   with status `upload_pending`, and returns the video id. The user is then sent to `/upload/{videoId}`.
 
@@ -344,7 +344,7 @@ BE:
 * [Task-14 — video-processing-worker: Generate the seek previews](../../tasks/videos/US-Videos-05/backend/Task-14-video-processing-worker-Generate-the-seek-previews.md)
 * [Task-15 — video-processing-worker: Finish a video when its jobs are done](../../tasks/videos/US-Videos-05/backend/Task-15-video-processing-worker-Finish-a-video-when-its-jobs-are-done.md)
 * [Task-16 — video-api: Store what processing produced](../../tasks/videos/US-Videos-05/backend/Task-16-video-api-Store-what-processing-produced.md)
-* [Task-17 — video-api: Implement PUT /videos/{videoId}](../../tasks/videos/US-Videos-05/backend/Task-17-video-api-Implement-PUT-videos-videoId.md)
+* [Task-17 — video-api: Implement GET and PUT /videos/{videoId}](../../tasks/videos/US-Videos-05/backend/Task-17-video-api-Implement-GET-and-PUT-videos-videoId.md)
 * [Task-18 — video-api: Implement PUT /videos/{videoId}/thumbnail](../../tasks/videos/US-Videos-05/backend/Task-18-video-api-Implement-PUT-videos-videoId-thumbnail.md)
 * [Task-19 — video-api: Implement POST /videos/{videoId}/publish](../../tasks/videos/US-Videos-05/backend/Task-19-video-api-Implement-POST-videos-videoId-publish.md)
 

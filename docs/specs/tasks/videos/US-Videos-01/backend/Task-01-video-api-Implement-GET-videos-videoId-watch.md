@@ -28,7 +28,7 @@ Branch — the video is still processing:
 
 The token is `base64url(md5("{videoId}{expires} {secret}"))` — the space before the secret is part of the string, and
 `expires` is in seconds ([hls-segment-protection.md](../../../../../explainers/hls-segment-protection.md), Part 8).
-Make the expiry generous: if it lapses mid-playback the segments start returning 403, which looks like a broken player.
+Make the expiry generous: if it lapses mid-playback the segments start returning 410, which looks like a broken player.
 
 Why: this is the one permission check for the whole video. The gateway then validates every segment request by
 recomputing that hash, with no call and no database lookup — about 150 of them for a 10-minute video.

@@ -15,7 +15,7 @@ enough of it exists.
 
 Branch — a check fails:
 
-1. Reject the hook, so tusd refuses the request, and mark the session failed.
+1. Reject the hook, so tusd refuses the request, mark the session failed, and publish `VideoUploadFailed`.
 
 Why: the upload is bound to a video once, in `pre-create`, and everything after that is authorised from the record tusd
 already holds. The tus protocol identifies an upload by its URL, so re-sending `Upload-Metadata` on every `PATCH` would

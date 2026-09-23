@@ -18,5 +18,10 @@ Branch — the link is expired, invalid or already used:
 
 1. The page explains what happened, with no way to resend — deleting a channel is deliberately not made easy.
 
-Why: both pages are public, because the links are opened from an inbox as often as from inside the app, and the token
-in the URL is what authorises the action.
+Branch — the link is for a channel of another account:
+
+1. The page says the link belongs to another account.
+
+Why: the pages sit outside the layout but need a session — a visitor without one logs in first and comes back
+([US-Auth-04](../../../../user-stories/auth/US-Auth-04-Session-persistence.md)) — and the token in the URL says which
+channel the action is for, whichever channel the user is acting as.

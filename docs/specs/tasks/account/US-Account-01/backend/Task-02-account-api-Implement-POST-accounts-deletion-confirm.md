@@ -7,7 +7,7 @@ Needs: [Task-01 — account-api: Implement POST /accounts/current/deletion](Task
 
 Main flow:
 
-1. Consume the token from Redis, so the link works once.
+1. Check the token belongs to the account in `User-ID`, then consume it from Redis, so the link works once.
 2. Set `deletion_scheduled_at` on the account a week ahead, store a cancel token with it, and write the
    deletion-scheduled event to the outbox in the same transaction.
 3. Schedule the delayed BullMQ job that will run the purge.
@@ -19,7 +19,9 @@ Branch — the token is unknown or expired:
 
 1. Return its code. The page says so and offers no resend.
 
-The route is public at the gateway.
+The route needs a session; a browser without one is sent to log in and back to the link
+([US-Auth-04](../../../../user-stories/auth/US-Auth-04-Session-persistence.md)). A token for another account is refused
+with its code.
 
 Why: the same shape as a channel's deletion
 ([US-Channels-06 Task-02](../../../channels/US-Channels-06/backend/Task-02-channel-api-Implement-POST-channels-deletion-confirm.md)):

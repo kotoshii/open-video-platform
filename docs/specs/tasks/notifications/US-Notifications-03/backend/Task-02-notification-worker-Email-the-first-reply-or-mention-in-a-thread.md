@@ -2,7 +2,7 @@
 
 Needs: [Task-01 — email-worker: Add the reply and mention templates](Task-01-email-worker-Add-the-reply-and-mention-templates.md),
 [US-Notifications-01 Task-08 — notification-worker: Create reply and mention notifications](../../US-Notifications-01/backend/Task-08-notification-worker-Create-reply-and-mention-notifications.md),
-[US-Search-02 Task-03 — channel-api: Look up channels by id over gRPC](../../../search/US-Search-02/backend/Task-03-channel-api-Look-up-channels-by-id-over-gRPC.md)
+[US-Comments-03 Task-02 — channel-api: Look up channels by id over gRPC](../../../comments/US-Comments-03/backend/Task-02-channel-api-Look-up-channels-by-id-over-gRPC.md)
 
 When a reply or a mention reaches a channel with email turned on for that type, send it or gather it. This follows the
 email toggle alone: it happens even when the in-app one is off.

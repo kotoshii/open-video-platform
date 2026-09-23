@@ -7,16 +7,21 @@ Needs: [Task-02 — auth-api: Send a confirmation email after sign-up](Task-02-a
 
 Main flow:
 
-1. Look the token up in Redis and delete it, so it works once.
+1. Look the token up in Redis and check it belongs to the account in `User-ID`; then delete it, so it works once.
 2. Mark the user's email as verified in Keycloak.
-3. Issue a fresh token pair and return it in cookies.
+3. Refresh the current session and return the new token pair in cookies.
 
 Branch — the token is unknown or expired:
 
 1. Return its code, which the page turns into "this link has expired", with the resend still offered.
 
-The route is public at the gateway, since the link may be opened in a browser nobody is signed in on. Keycloak's own
-"Verify Email" required action stays off, or Keycloak refuses to issue tokens to a user whose email is unconfirmed.
+Branch — the token belongs to another account:
+
+1. Return its code; the token stays usable, and the page says the link belongs to another account.
+
+The route needs a session like any other: a browser without one is sent to log in first and brought back to the link
+([US-Auth-04](../../../../user-stories/auth/US-Auth-04-Session-persistence.md)). Keycloak's own "Verify Email" required
+action stays off, or Keycloak refuses to issue tokens to a user whose email is unconfirmed.
 
 Why: `email_verified` travels in the token, so without a fresh pair the features that need a confirmed email stay
 unavailable until the token happens to refresh.

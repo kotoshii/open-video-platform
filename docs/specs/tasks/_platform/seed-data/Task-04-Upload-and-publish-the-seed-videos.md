@@ -3,7 +3,7 @@
 Needs: [Task-02 — Seed accounts and channels](Task-02-Seed-accounts-and-channels.md),
 [Task-03 — Generate test videos with FFmpeg](Task-03-Generate-test-videos-with-FFmpeg.md),
 [US-Videos-05 Task-06 — video-upload-api: Implement the tus hooks](../../videos/US-Videos-05/backend/Task-06-video-upload-api-Implement-the-tus-hooks.md),
-[US-Videos-05 Task-17 — video-api: Implement PUT /videos/{videoId}](../../videos/US-Videos-05/backend/Task-17-video-api-Implement-PUT-videos-videoId.md),
+[US-Videos-05 Task-17 — video-api: Implement GET and PUT /videos/{videoId}](../../videos/US-Videos-05/backend/Task-17-video-api-Implement-GET-and-PUT-videos-videoId.md),
 [US-Videos-05 Task-19 — video-api: Implement POST /videos/{videoId}/publish](../../videos/US-Videos-05/backend/Task-19-video-api-Implement-POST-videos-videoId-publish.md),
 [US-Videos-03 Task-03 — video-api: Implement PUT /videos/{videoId}/visibility](../../videos/US-Videos-03/backend/Task-03-video-api-Implement-PUT-videos-videoId-visibility.md)
 

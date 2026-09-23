@@ -2,7 +2,7 @@
 
 Needs: [Task-01 — video-rate-api: Store the video title on each rate](Task-01-video-rate-api-Store-the-video-title-on-each-rate.md),
 [US-My-activity-01 Task-04 — video-api: Report video availability over gRPC](../../US-My-activity-01/backend/Task-04-video-api-Report-video-availability-over-gRPC.md),
-[US-Search-02 Task-03 — channel-api: Look up channels by id over gRPC](../../../search/US-Search-02/backend/Task-03-channel-api-Look-up-channels-by-id-over-gRPC.md)
+[US-Comments-03 Task-02 — channel-api: Look up channels by id over gRPC](../../../comments/US-Comments-03/backend/Task-02-channel-api-Look-up-channels-by-id-over-gRPC.md)
 
 `GET /video-rates?onlyLiked=...&query=...&page=...` — a page of the acting channel's rates and its total
 

@@ -1,7 +1,7 @@
 ## comment-api: Store the video title on each comment
 
 Needs: [US-Comments-04 Task-01 — comment-api: Implement POST /comments/{commentId}/replies](../../../comments/US-Comments-04/backend/Task-01-comment-api-Implement-POST-comments-commentId-replies.md),
-[US-Videos-05 Task-17 — video-api: Implement PUT /videos/{videoId}](../../../videos/US-Videos-05/backend/Task-17-video-api-Implement-PUT-videos-videoId.md)
+[US-Videos-05 Task-17 — video-api: Implement GET and PUT /videos/{videoId}](../../../videos/US-Videos-05/backend/Task-17-video-api-Implement-GET-and-PUT-videos-videoId.md)
 
 Keep the video's title on each comment and reply.
 

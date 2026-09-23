@@ -2,7 +2,7 @@
 
 Needs: [Task-02 — watch-history-api: Record watches from the viewed event](Task-02-watch-history-api-Record-watches-from-the-viewed-event.md),
 [Task-04 — video-api: Report video availability over gRPC](Task-04-video-api-Report-video-availability-over-gRPC.md),
-[US-Search-02 Task-03 — channel-api: Look up channels by id over gRPC](../../../search/US-Search-02/backend/Task-03-channel-api-Look-up-channels-by-id-over-gRPC.md)
+[US-Comments-03 Task-02 — channel-api: Look up channels by id over gRPC](../../../comments/US-Comments-03/backend/Task-02-channel-api-Look-up-channels-by-id-over-gRPC.md)
 
 `GET /watch-history?query=...&page=...` — a page of the acting channel's history, its total, and whether it is paused
 

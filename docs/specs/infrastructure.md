@@ -69,7 +69,8 @@ One `docker compose up` per environment. The reasoning behind every item is expl
 Structure:
 
 * [ ] Compose pieces under `docker/compose/` — `infra.yaml`, `postgres.shared.yaml`, `postgres.isolated.yaml`,
-  `apps.yaml`, `observability.yaml` — assembled by the top-level files with `include:`.
+  `migrations.yaml`, `apps.yaml`, `observability.yaml` — assembled by the top-level files with `include:`. The
+  migrations are a piece of their own so development, which runs no app containers, still gets them.
 * [ ] Observability behind a Compose profile (`--profile observability`).
 * [ ] One `docker/Dockerfile.nest` for every Nest app, selected with `ARG APP`, and a `docker/Dockerfile.ui` using the
   Next.js standalone output.

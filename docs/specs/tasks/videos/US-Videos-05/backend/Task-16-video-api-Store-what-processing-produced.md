@@ -3,7 +3,12 @@
 Needs: [Task-12 — video-processing-worker: Package a rendition as HLS](Task-12-video-processing-worker-Package-a-rendition-as-HLS.md),
 [Task-15 — video-processing-worker: Finish a video when its jobs are done](Task-15-video-processing-worker-Finish-a-video-when-its-jobs-are-done.md)
 
-Consume the processing events and store what they carry.
+Consume the upload and processing events and store what they carry.
+
+* `VideoUploadCompleted`, `VideoUploadFailed`, `VideoUploadExpired` — the upload part of the video's state, which the
+  author's channel list shows
+  ([US-Channels-04](../../../../user-stories/channels/US-Channels-04-see-own-and-other-channels.md)).
+  A new video starts as uploading.
 
 * `VideoQualityReady` — one rendition row per quality: the label, the byte size, the resolution, the bitrate and the
   codec string, plus the video's duration the first time.

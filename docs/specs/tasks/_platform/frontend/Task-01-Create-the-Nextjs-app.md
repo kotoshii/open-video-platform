@@ -11,6 +11,6 @@ reference app in `docs/_internal/chift-test-develop/apps/ui/web`.
   languages come from the same code the APIs use.
 * Biome, like the rest of the repository, instead of ESLint and Prettier.
 
-Why: page data is fetched in the browser only, and the server renders the shell from cookies — language, theme, sidebar
-state, current channel. The token refresh then lives in one place, the browser API client, since a server component
-can't set the new cookies a refresh returns.
+Why: page data is fetched in the browser only, and the server renders the shell from cookies — language, sidebar state,
+current channel; the theme is set before the first paint by the script `next-themes` injects. The token refresh then
+lives in one place, the browser API client, since a server component can't set the new cookies a refresh returns.

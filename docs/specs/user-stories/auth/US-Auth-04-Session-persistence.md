@@ -46,8 +46,13 @@ Invalid token supplied:
 * When the refresh token is expired or rejected, the app clears the session, redirects to the login page and tells the
   user the session has expired. The exception is an account that has been deleted: its user goes to the sign-up page
   instead ([US-Account-01](../account/US-Account-01-Delete-own-account.md)).
-* A visitor with no session who opens a page inside the layout goes straight to the login page, without the page
-  rendering first. The auth pages and the pages opened from email links stay public.
+* A visitor with no session who opens a page that needs one goes straight to the login page, without the page
+  rendering first. After logging in — and picking a channel, if the account has several
+  ([US-Channels-07](../channels/US-Channels-07-channel-selection-page.md)) — they are brought back to the page they
+  opened, and its flow continues. This holds for every such page, the ones opened from email links included.
+* Only the auth pages and two email-link pages work without a session: the password reset page, since its user cannot
+  log in, and the email change confirmation page, since the change ends every session and the page then asks for the
+  password anyway ([US-Account-02](../account/US-Account-02-Change-email.md)).
 * The app never shows a raw `401` to the user — it either refreshes silently or redirects to login.
 * The server rejects requests with a missing, malformed, expired or invalid signature token with `401`.
 * Token validation happens against the identity provider's public keys, not a shared secret.
@@ -61,7 +66,8 @@ Invalid token supplied:
 * The nginx gateway verifies every access token against Keycloak's JWKS keys, cached and fetched again when it meets
   an unknown key, and passes the result to the services as headers — `User-ID`, `Channel-ID`, `Session-ID`,
   `Birthdate`, `Email-Verified` ([infrastructure.md](../../infrastructure.md)). Services never parse tokens. Login,
-  sign-up, refresh and the email-link routes are public.
+  sign-up, refresh, the password reset routes and the email change confirmation are public; every other route needs a
+  valid token.
 * The access token lives **5 minutes**. The session survives up to **30 days without activity**: every refresh rotates
   the refresh token and restarts that window, so someone who uses the app at least monthly never has to log in again.
 * There is **no "remember me" option** — every login stays signed in the same way. No story asks for one, and a short

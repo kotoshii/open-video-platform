@@ -106,7 +106,7 @@ Watch a video — branches:
 * Every video is tokenized, public ones included: a plain route cannot tell public from private, so any untokenized
   path would expose private videos too. Nginx leaves the token out of its cache key, so viewers still share one cached
   copy.
-* The expiry has to cover the video plus pauses. If it lapses mid-playback the segments start returning 403, which
+* The expiry has to cover the video plus pauses. If it lapses mid-playback the segments start returning 410, which
   looks like a broken player rather than a permission check.
 * The watch endpoint still carries a TODO to put the HLS playlist URL into its response. Nothing can play until that is
   done, so it is the first thing this story needs.

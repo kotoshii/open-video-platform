@@ -1,7 +1,7 @@
 ## recommendation-api: Implement GET /feed
 
 Needs: [Task-08 — recommendation-api: Build the feed snapshot](Task-08-recommendation-api-Build-the-feed-snapshot.md),
-[US-Search-02 Task-03 — channel-api: Look up channels by id over gRPC](../../../search/US-Search-02/backend/Task-03-channel-api-Look-up-channels-by-id-over-gRPC.md)
+[US-Comments-03 Task-02 — channel-api: Look up channels by id over gRPC](../../../comments/US-Comments-03/backend/Task-02-channel-api-Look-up-channels-by-id-over-gRPC.md)
 
 `GET /feed?cursor=...` — a page of 24 video cards and the cursor for the next one
 

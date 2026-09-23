@@ -22,7 +22,10 @@ Branch — any service fails or times out:
 
 1. The whole collection fails. Nothing is stored.
 
-Keep the list of services the export asks in one place in `lib` with the list the channel purge waits for
+Keep the list of services the export asks next to the list the channel purge waits for, in one place in `lib`. They
+differ on purpose — the search index and Gorse hold only copies, so they are purged but not exported, and `channel-api`
+is exported per account but runs the purge rather than taking part in it — and keeping them side by side is what makes
+a service added to one visibly missing from the other
 ([US-Channels-06 Task-07](../../../channels/US-Channels-06/backend/Task-07-channel-api-Run-the-purge-as-a-saga.md)), so
 a service added to one cannot be forgotten in the other.
 

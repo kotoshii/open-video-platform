@@ -1,7 +1,7 @@
 ## video-api: Implement POST /videos/{videoId}/publish
 
 Needs: [Task-16 — video-api: Store what processing produced](Task-16-video-api-Store-what-processing-produced.md),
-[Task-17 — video-api: Implement PUT /videos/{videoId}](Task-17-video-api-Implement-PUT-videos-videoId.md)
+[Task-17 — video-api: Implement GET and PUT /videos/{videoId}](Task-17-video-api-Implement-GET-and-PUT-videos-videoId.md)
 
 `POST /videos/{videoId}/publish`
 

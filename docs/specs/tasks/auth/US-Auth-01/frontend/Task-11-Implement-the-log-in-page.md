@@ -9,7 +9,8 @@ Build the log in page next to the sign-up one: email, password, a "Forgot passwo
 Main flow:
 
 1. User submits and the app calls the login endpoint.
-2. The user lands on the homepage.
+2. The user lands on the homepage — or on the page they were sent here from, when the address carries one
+   ([US-Auth-04](../../../../user-stories/auth/US-Auth-04-Session-persistence.md)).
 
 Branch — the credentials are wrong:
 

@@ -9,5 +9,10 @@ Branch — the link is expired, invalid or already used:
 
 1. The user lands on the confirmation page with a message saying what happened, and can send a new link from there.
 
-Why: the page is public, because the link may be opened in a browser that is not signed in — the token in it is what
-authorises the confirmation, and the response signs that browser in.
+Branch — the link belongs to another account:
+
+1. The page says so and suggests logging out and opening the link again.
+
+Why: the page needs a session, so the middleware sends a visitor without one to log in and back here
+([US-Auth-04](../../../../user-stories/auth/US-Auth-04-Session-persistence.md)). Confirming then only has to refresh
+the session that already exists, which is what puts the new `email_verified` into the token.

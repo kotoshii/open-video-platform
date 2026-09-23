@@ -8,7 +8,7 @@ Main flow:
 
 1. The delayed job fires, or the sweep picks the account up.
 2. Write a purge record and publish the account purge event.
-3. Once `channel-api` reports every channel purged, ask `auth-api` to delete the identity.
+3. Once `channel-api`'s event says every channel is purged, ask `auth-api` to delete the identity.
 4. Delete the account row.
 
 [US-Account-04](../../../../user-stories/account/US-Account-04-Download-own-user-data.md) adds one step before the

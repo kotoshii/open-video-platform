@@ -42,17 +42,18 @@ Branches:
   ([US-Auth-03](../auth/US-Auth-03-Password-reset.md)) show neither the navbar nor the sidebar.
 * **Channel selection** ([US-Channels-07](../channels/US-Channels-07-channel-selection-page.md)) — the user is
   authenticated but has no channel to act as yet, so the layout has nothing to render and is not shown.
-* **Pages opened from an email link** — the same rule applies: a page that has to work without the user being signed
-  in, such as the confirmation page after changing the email or the password, has no layout.
+* **Pages opened from an email link** — confirming the email, confirming or cancelling a deletion, resetting the
+  password, confirming a new email — have no layout either, whether or not they need a session. A visitor with no
+  session who opens one that needs it logs in first and comes back
+  ([US-Auth-04](../auth/US-Auth-04-Session-persistence.md)).
 
 **Acceptance criteria**
 
 Where it appears:
 
-* Every page that requires being signed in shows the navbar at the top and the sidebar on the left.
+* Every page of the app shows the navbar at the top and the sidebar on the left, except the ones listed below.
 * Only the page content scrolls; the navbar and the sidebar stay in place.
-* Pages that can be used without being signed in — the auth pages, and email-link pages that ask the user to sign in —
-  show neither, and neither does the channel selection page
+* The auth pages and the pages opened from email links show neither, and neither does the channel selection page
   ([US-Channels-07](../channels/US-Channels-07-channel-selection-page.md)), where the user is signed in but has no
   channel to act as yet.
 * Those pages still show the language selector and the theme toggle, in the top right corner.

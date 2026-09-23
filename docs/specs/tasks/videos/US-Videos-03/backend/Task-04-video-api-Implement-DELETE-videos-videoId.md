@@ -11,7 +11,8 @@ Main flow:
 3. Schedule a background job that removes the video's whole prefix from the bucket.
 
 Every service that owns something about the video reacts to that event: the comments and their rates, the video's
-rates, the search document and the recommender's item.
+rates, the search document and the recommender's item —
+and `video-upload-api` drops the video's upload session if one is still open.
 
 Branch — the video is still uploading or processing:
 

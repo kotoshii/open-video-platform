@@ -19,7 +19,8 @@ Branch — the video belongs to somebody else:
 
 Branch — the upload never finished and can no longer be resumed:
 
-1. The page offers the file selection again, and choosing the same file starts a fresh upload.
+1. The page offers the file selection again, and choosing the same file starts a fresh upload: `initialize` with this
+   video's id opens a new session for it.
 
 Why: the link is shown from the start because the video record exists from `initialize` — it is not a share link, since
 an unpublished video is not visible to anyone but its author.

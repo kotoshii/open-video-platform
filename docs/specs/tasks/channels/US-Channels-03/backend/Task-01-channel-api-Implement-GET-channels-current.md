@@ -4,10 +4,11 @@ Needs: [US-Auth-01 Task-02 — Migrate channel-api to the new structure](../../.
 
 `GET /channels/current`
 
-Returns the channel being acted as: name, description, avatar and the "Show age-restricted content" setting. Later
-stories add to it — the date a scheduled deletion will run
-([US-Channels-06](../../../../user-stories/channels/US-Channels-06-delete-own-channel.md)) and the notification
-preferences ([US-Notifications-01](../../../../user-stories/notifications/US-Notifications-01-Notifications-config.md)).
+Returns the channel being acted as: name, description, avatar and the "Show age-restricted content" setting. A later
+story adds the date a scheduled deletion will run
+([US-Channels-06](../../../../user-stories/channels/US-Channels-06-delete-own-channel.md)). The notification preferences
+on the same tab come from `notification-api`
+([US-Notifications-01](../../../../user-stories/notifications/US-Notifications-01-Notifications-config.md)).
 
 Main flow:
 

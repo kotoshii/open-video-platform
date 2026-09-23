@@ -73,7 +73,9 @@ Requesting:
   and a visible countdown.
 * Confirming in the modal schedules nothing yet — it only sends the confirmation email.
 * The confirmation link is valid for 5 minutes and works once.
-* Both emailed links work without signing in, in any browser: the token in the link is what authorises the action.
+* Both emailed links need a session: opened without one, they send the user to log in and then back to the link
+  ([US-Auth-04](../auth/US-Auth-04-Session-persistence.md)). The token in the link says which channel it is for, and
+  a link opened while signed in to a different account is refused.
 * An expired or invalid link shows a clear message and offers no way to resend it.
 * Opening a valid link schedules the deletion for one week later and states the date and time.
 * A second email confirms that date and carries a link to cancel the deletion, valid until the deletion happens.

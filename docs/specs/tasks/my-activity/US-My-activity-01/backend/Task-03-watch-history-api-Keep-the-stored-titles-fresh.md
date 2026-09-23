@@ -1,7 +1,7 @@
 ## watch-history-api: Keep the stored titles fresh
 
 Needs: [Task-01 — Create watch-history-api](Task-01-Create-watch-history-api.md),
-[US-Videos-05 Task-17 — video-api: Implement PUT /videos/{videoId}](../../../videos/US-Videos-05/backend/Task-17-video-api-Implement-PUT-videos-videoId.md)
+[US-Videos-05 Task-17 — video-api: Implement GET and PUT /videos/{videoId}](../../../videos/US-Videos-05/backend/Task-17-video-api-Implement-GET-and-PUT-videos-videoId.md)
 
 Consume the video-updated event and set the new title on every history row of that video. Deduplicate through the inbox
 and ignore events older than what is stored.

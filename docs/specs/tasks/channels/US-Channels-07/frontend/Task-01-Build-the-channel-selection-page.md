@@ -9,7 +9,8 @@ the auth pages.
 
 Main flow:
 
-1. User clicks a channel; it becomes the current one and the homepage opens.
+1. User clicks a channel; it becomes the current one and the homepage opens — or the page the user was on its way to
+   before logging in, when the address carries one.
 2. Creating one here makes the new channel current and continues to the homepage the same way.
 
 Why: this is the one screen where somebody is signed in but has no channel to act as, so the sidebar's channel block and

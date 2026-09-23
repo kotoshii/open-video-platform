@@ -81,9 +81,8 @@ BE:
 
 * [Task-01 — search-api: Define the channel index](../../tasks/search/US-Search-02/backend/Task-01-search-api-Define-the-channel-index.md)
 * [Task-02 — search-api: Index channels from their events](../../tasks/search/US-Search-02/backend/Task-02-search-api-Index-channels-from-their-events.md)
-* [Task-03 — channel-api: Look up channels by id over gRPC](../../tasks/search/US-Search-02/backend/Task-03-channel-api-Look-up-channels-by-id-over-gRPC.md)
-* [Task-04 — search-api: Implement GET /search/channels](../../tasks/search/US-Search-02/backend/Task-04-search-api-Implement-GET-search-channels.md)
+* [Task-03 — search-api: Implement GET /search/channels](../../tasks/search/US-Search-02/backend/Task-03-search-api-Implement-GET-search-channels.md)
 
 FE:
 
-* [Task-05 — Add channel search to the search page](../../tasks/search/US-Search-02/frontend/Task-05-Add-channel-search-to-the-search-page.md)
+* [Task-04 — Add channel search to the search page](../../tasks/search/US-Search-02/frontend/Task-04-Add-channel-search-to-the-search-page.md)

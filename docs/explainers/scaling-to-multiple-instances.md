@@ -168,8 +168,8 @@ Either way the rule is: **parallelise across keys, never within one.**
 pool: new Pool({connectionString: databaseConfig.databaseUrl})
 ```
 
-`node-postgres` defaults to **10 connections per pool**, and each instance has its own pool. Nine API services at two
-instances each is 180 connections; Postgres defaults to `max_connections = 100`. The failure mode is not gradual —
+`node-postgres` defaults to **10 connections per pool**, and each instance has its own pool. Thirteen API services at
+two instances each is 260 connections; Postgres defaults to `max_connections = 100`. The failure mode is not gradual —
 connections are refused, and the service that happens to start last is the one that breaks.
 
 In the current setup each service has its own database, which spreads the load but does not change the arithmetic when

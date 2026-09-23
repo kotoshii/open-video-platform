@@ -66,9 +66,10 @@ Post a comment — branches:
 BE:
 
 * [Task-01 — Migrate video-comment-count-worker to the new structure](../../tasks/comments/US-Comments-03/backend/Task-01-Migrate-video-comment-count-worker-to-the-new-structure.md)
-* [Task-02 — comment-api: Implement POST /comments/{videoId}](../../tasks/comments/US-Comments-03/backend/Task-02-comment-api-Implement-POST-comments-videoId.md)
-* [Task-03 — video-comment-count-worker: Apply the comment counts](../../tasks/comments/US-Comments-03/backend/Task-03-video-comment-count-worker-Apply-the-comment-counts.md)
+* [Task-02 — channel-api: Look up channels by id over gRPC](../../tasks/comments/US-Comments-03/backend/Task-02-channel-api-Look-up-channels-by-id-over-gRPC.md)
+* [Task-03 — comment-api: Implement POST /comments/{videoId}](../../tasks/comments/US-Comments-03/backend/Task-03-comment-api-Implement-POST-comments-videoId.md)
+* [Task-04 — video-comment-count-worker: Apply the comment counts](../../tasks/comments/US-Comments-03/backend/Task-04-video-comment-count-worker-Apply-the-comment-counts.md)
 
 FE:
 
-* [Task-04 — Add the comment box](../../tasks/comments/US-Comments-03/frontend/Task-04-Add-the-comment-box.md)
+* [Task-05 — Add the comment box](../../tasks/comments/US-Comments-03/frontend/Task-05-Add-the-comment-box.md)

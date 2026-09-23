@@ -4,7 +4,8 @@ Needs: [Task-02 — account-api: Implement POST /accounts/deletion/confirm](../b
 [Task-03 — account-api: Implement POST /accounts/deletion/cancel](../backend/Task-03-account-api-Implement-POST-accounts-deletion-cancel.md),
 [US-Channels-06 Task-18 — Implement the channel deletion pages](../../../channels/US-Channels-06/frontend/Task-18-Implement-the-channel-deletion-pages.md)
 
-Build the two public pages the emails link to, outside the layout, in the shape of the channel deletion pages.
+Build the two pages the emails link to, outside the layout, in the shape of the channel deletion pages. They need a
+session, like the channel ones: a visitor without one logs in first and comes back.
 
 Main flow — the confirmation link:
 

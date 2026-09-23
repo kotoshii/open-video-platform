@@ -2,7 +2,7 @@
 
 Needs: [US-Channels-06 Task-07 — channel-api: Run the purge as a saga](../../../channels/US-Channels-06/backend/Task-07-channel-api-Run-the-purge-as-a-saga.md)
 
-Consume the account purge event: run the channel purge for every channel of the account, and report back to
+Consume the account purge event: run the channel purge for every channel of the account, and publish an event telling
 `account-api` once all of them have finished.
 
 Branch — a channel's own purge is already running, or done:

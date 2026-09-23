@@ -17,5 +17,5 @@ Branch — the gateway answers 403 because the channel is not in the claim any m
    ([US-Channels-07](../../../../user-stories/channels/US-Channels-07-channel-selection-page.md)).
 
 Why: localStorage is per browser, so one account can act as different channels on two devices at once. The cookie exists
-only because the server cannot read localStorage while it renders a page — the same reason the theme and the sidebar
-state are cookies.
+only because the server cannot read localStorage while it renders a page — the same reason the interface language and
+the sidebar state are cookies.

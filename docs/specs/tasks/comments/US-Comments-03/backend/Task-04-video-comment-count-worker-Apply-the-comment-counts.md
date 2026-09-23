@@ -1,7 +1,7 @@
 ## video-comment-count-worker: Apply the comment counts
 
 Needs: [Task-01 — Migrate video-comment-count-worker to the new structure](Task-01-Migrate-video-comment-count-worker-to-the-new-structure.md),
-[Task-02 — comment-api: Implement POST /comments/{videoId}](Task-02-comment-api-Implement-POST-comments-videoId.md)
+[Task-03 — comment-api: Implement POST /comments/{videoId}](Task-03-comment-api-Implement-POST-comments-videoId.md)
 
 Consume the comment events in batches: record their ids in the inbox, sum the per-video deltas in memory, and apply
 them to the videos in one statement, inside the same transaction.

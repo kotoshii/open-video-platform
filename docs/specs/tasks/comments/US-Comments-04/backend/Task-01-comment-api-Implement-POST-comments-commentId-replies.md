@@ -1,6 +1,6 @@
 ## comment-api: Implement POST /comments/{commentId}/replies
 
-Needs: [US-Comments-03 Task-02 — comment-api: Implement POST /comments/{videoId}](../../US-Comments-03/backend/Task-02-comment-api-Implement-POST-comments-videoId.md),
+Needs: [US-Comments-03 Task-03 — comment-api: Implement POST /comments/{videoId}](../../US-Comments-03/backend/Task-03-comment-api-Implement-POST-comments-videoId.md),
 [US-Videos-04 Task-02 — video-api: Expose a video's rate permission over gRPC](../../../videos/US-Videos-04/backend/Task-02-video-api-Expose-a-videos-rate-permission-over-gRPC.md),
 [US-Comments-02 Task-03 — comment-reply-count-worker: Apply the reply counts](../../US-Comments-02/backend/Task-03-comment-reply-count-worker-Apply-the-reply-counts.md)
 

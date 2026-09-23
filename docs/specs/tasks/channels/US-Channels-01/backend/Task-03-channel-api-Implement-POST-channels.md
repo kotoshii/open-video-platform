@@ -7,7 +7,8 @@ Needs: [Task-01 — auth-api: Add a channel id over gRPC](Task-01-auth-api-Add-a
 
 Main flow:
 
-1. Take the account from the `User-ID` header.
+1. Take the account from the `User-ID` header. The endpoint works without `Channel-ID`, like `GET /channels/mine`: the
+   channel selection page creates channels before any channel is chosen.
 2. Refuse if it already has 10 channels.
 3. In one transaction, insert the channel and write the channel-created event to the outbox.
 4. Ask `auth-api` over gRPC to add the id to the account's channels, before answering.

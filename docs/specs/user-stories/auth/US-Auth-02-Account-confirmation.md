@@ -59,8 +59,10 @@ Trying something that needs a confirmed email:
   time returned by the server.
 * Opening a valid link confirms the email, redirects to the homepage and shows a success notification once (it does
   not reappear on reload).
-* The link works in any browser, even one that is not signed in: opening it there confirms the email and signs that
-  browser in.
+* The link needs a session. Opened without one, it sends the user to log in — and to pick a channel if the account has
+  several — and then brings them back to the link, which confirms the email
+  ([US-Auth-04](US-Auth-04-Session-persistence.md)). A link opened while signed in to a different account is refused
+  with a message saying it belongs to another account.
 * Opening an expired or invalid link returns the user to the confirmation page with a message explaining the reason and
   the option to resend.
 * A user with an unconfirmed email can use the whole app, except:
