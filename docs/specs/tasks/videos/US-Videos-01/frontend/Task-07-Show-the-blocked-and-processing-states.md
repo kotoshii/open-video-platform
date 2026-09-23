@@ -17,7 +17,12 @@ Branch — the viewer is old enough but has age-restricted content turned off:
 
 1. Say so and point at the setting, since this one is the viewer's own choice rather than a refusal.
 
-Branch — the video does not exist, or loading it failed:
+Branch — the video does not exist:
+
+1. Say that it is no longer available. This is not an error: notifications and emails can link to a video deleted
+   since ([US-Notifications-02](../../../../user-stories/notifications/US-Notifications-02-In-app-channel.md)).
+
+Branch — loading it failed:
 
 1. A full-page error state.
 

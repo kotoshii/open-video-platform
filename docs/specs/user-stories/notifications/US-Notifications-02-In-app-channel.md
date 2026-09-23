@@ -134,8 +134,16 @@ Actions:
 
 BE:
 
-* TODO
+* [Task-01 — notification-api: Implement GET /notifications](../../tasks/notifications/US-Notifications-02/backend/Task-01-notification-api-Implement-GET-notifications.md)
+* [Task-02 — notification-api: Implement GET /notifications/unread-count](../../tasks/notifications/US-Notifications-02/backend/Task-02-notification-api-Implement-GET-notifications-unread-count.md)
+* [Task-03 — notification-api: Implement POST /notifications/{notificationId}/read](../../tasks/notifications/US-Notifications-02/backend/Task-03-notification-api-Implement-POST-notifications-notificationId-read.md)
+* [Task-04 — notification-api: Implement POST /notifications/{notificationId}/hide](../../tasks/notifications/US-Notifications-02/backend/Task-04-notification-api-Implement-POST-notifications-notificationId-hide.md)
+* [Task-05 — notification-api: Implement POST /notifications/read-all](../../tasks/notifications/US-Notifications-02/backend/Task-05-notification-api-Implement-POST-notifications-read-all.md)
+* [Task-06 — notification-worker: Delete read notifications after 90 days](../../tasks/notifications/US-Notifications-02/backend/Task-06-notification-worker-Delete-read-notifications-after-90-days.md)
 
 FE:
 
-* TODO
+* [Task-07 — Show the unread badge in the sidebar](../../tasks/notifications/US-Notifications-02/frontend/Task-07-Show-the-unread-badge-in-the-sidebar.md)
+* [Task-08 — Build the notification center](../../tasks/notifications/US-Notifications-02/frontend/Task-08-Build-the-notification-center.md)
+* [Task-09 — Open a notification](../../tasks/notifications/US-Notifications-02/frontend/Task-09-Open-a-notification.md)
+* [Task-10 — Mark as read, hide and mark all as read](../../tasks/notifications/US-Notifications-02/frontend/Task-10-Mark-as-read-hide-and-mark-all-as-read.md)

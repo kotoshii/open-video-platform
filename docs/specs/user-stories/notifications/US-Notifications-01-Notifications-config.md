@@ -140,8 +140,15 @@ Aggregation:
 
 BE:
 
-* TODO
+* [Task-01 — Create notification-api](../../tasks/notifications/US-Notifications-01/backend/Task-01-Create-notification-api.md)
+* [Task-02 — Create notification-worker](../../tasks/notifications/US-Notifications-01/backend/Task-02-Create-notification-worker.md)
+* [Task-03 — notification-api: Implement GET /notifications/preferences](../../tasks/notifications/US-Notifications-01/backend/Task-03-notification-api-Implement-GET-notifications-preferences.md)
+* [Task-04 — notification-api: Implement PUT /notifications/preferences](../../tasks/notifications/US-Notifications-01/backend/Task-04-notification-api-Implement-PUT-notifications-preferences.md)
+* [Task-05 — comment-api: Carry the recipients on comment events](../../tasks/notifications/US-Notifications-01/backend/Task-05-comment-api-Carry-the-recipients-on-comment-events.md)
+* [Task-06 — notification-worker: Count new subscribers](../../tasks/notifications/US-Notifications-01/backend/Task-06-notification-worker-Count-new-subscribers.md)
+* [Task-07 — notification-worker: Count new comments on videos](../../tasks/notifications/US-Notifications-01/backend/Task-07-notification-worker-Count-new-comments-on-videos.md)
+* [Task-08 — notification-worker: Create reply and mention notifications](../../tasks/notifications/US-Notifications-01/backend/Task-08-notification-worker-Create-reply-and-mention-notifications.md)
 
 FE:
 
-* TODO
+* [Task-09 — Add the notification preferences to the Channel tab](../../tasks/notifications/US-Notifications-01/frontend/Task-09-Add-the-notification-preferences-to-the-Channel-tab.md)

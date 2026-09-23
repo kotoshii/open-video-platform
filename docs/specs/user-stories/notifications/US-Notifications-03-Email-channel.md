@@ -76,4 +76,10 @@ Receive an email — branches:
 
 BE:
 
-* TODO
+* [Task-01 — email-worker: Add the reply and mention templates](../../tasks/notifications/US-Notifications-03/backend/Task-01-email-worker-Add-the-reply-and-mention-templates.md)
+* [Task-02 — notification-worker: Email the first reply or mention in a thread](../../tasks/notifications/US-Notifications-03/backend/Task-02-notification-worker-Email-the-first-reply-or-mention-in-a-thread.md)
+* [Task-03 — notification-worker: Flush the gathered replies and mentions](../../tasks/notifications/US-Notifications-03/backend/Task-03-notification-worker-Flush-the-gathered-replies-and-mentions.md)
+
+FE:
+
+* [Task-04 — Switch to the channel a settings link names](../../tasks/notifications/US-Notifications-03/frontend/Task-04-Switch-to-the-channel-a-settings-link-names.md)
