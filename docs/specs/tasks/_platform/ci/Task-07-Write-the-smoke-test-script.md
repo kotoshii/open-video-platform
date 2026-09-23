@@ -1,6 +1,12 @@
 ## Write the smoke test script
 
-Needs: [Task-06 — Add the CI environment file](Task-06-Add-the-CI-environment-file.md)
+Needs: [Task-06 — Add the CI environment file](Task-06-Add-the-CI-environment-file.md),
+[US-Auth-01 Task-07 — auth-api: Implement POST /auth/sign-up as a saga](../../auth/US-Auth-01/backend/Task-07-auth-api-Implement-POST-auth-sign-up-as-a-saga.md),
+[US-Videos-05 Task-05 — video-upload-api: Implement POST /video-uploads/initialize](../../videos/US-Videos-05/backend/Task-05-video-upload-api-Implement-POST-video-uploads-initialize.md),
+[US-Videos-05 Task-06 — video-upload-api: Implement the tus hooks](../../videos/US-Videos-05/backend/Task-06-video-upload-api-Implement-the-tus-hooks.md),
+[US-Videos-05 Task-07 — video-upload-api: Implement GET /video-uploads/{videoId}](../../videos/US-Videos-05/backend/Task-07-video-upload-api-Implement-GET-video-uploads-videoId.md),
+[US-Videos-05 Task-19 — video-api: Implement POST /videos/{videoId}/publish](../../videos/US-Videos-05/backend/Task-19-video-api-Implement-POST-videos-videoId-publish.md),
+[US-Videos-01 Task-01 — video-api: Implement GET /videos/{videoId}/watch](../../videos/US-Videos-01/backend/Task-01-video-api-Implement-GET-videos-videoId-watch.md)
 
 Write `scripts/smoke-test.sh`, with `curl` and `jq`, that walks one real path through the gateway.
 
